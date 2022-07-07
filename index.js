@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.get("/depts", async (req, res) => {
   try {
-    const allDepts = await pool.query("SELECT * from Department");
+    const allDepts = await pool.query("SELECT * from public.Department");
     res.json(allDepts.rows);
   } catch (err) {
     console.log(err.message);

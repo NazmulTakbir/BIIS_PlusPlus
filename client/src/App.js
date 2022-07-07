@@ -1,16 +1,18 @@
-import React, { Fragment } from "react";
-import "./App.css";
+import './App.css';
+import Sidebar from './Components/Sidebar/Sidebar';
+import Header from './Components/Header/Header';
+import MainContainer from './Components/MainContainer/MainContainer';
 
-//components
-import PlaceHolder from "./components/PlaceHolder";
 
 function App() {
   return (
-    <Fragment>
-      <div className="container">
-        <PlaceHolder />
+    <div className="App">
+      <Header />
+      <div className='wrapper'>
+        <Sidebar />
+        <MainContainer />
       </div>
-    </Fragment>
+    </div>
   );
 }
 

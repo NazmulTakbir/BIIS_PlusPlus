@@ -1,0 +1,29 @@
+Prerequisites:
+	1. create local pgsql database
+	2. clone git repo
+	3. create .env file as shown in screenshot
+
+In root folder of repo:
+	npm install
+	npm install -g nodemon  		
+	nodemon index
+	
+	If this error faced (https://stackoverflow.com/questions/63423584/how-to-fix-error-nodemon-ps1-cannot-be-loaded-because-running-scripts-is-disabl): 
+		Step 1 : Go to this location --> File C:\Users\Dell\AppData\Roaming\npm
+		Step 2 : Delete the nodemon.ps1 file and run the command.
+	
+	In another terminal:	
+		cd client
+		npm install @mui/material @emotion/react @emotion/styled
+		npm install @mui/icons-material
+		npm start
+		
+Connection To Heroku Database (you must be added as collaborator on heroku project):
+	install heroku cli and then use the following commands:
+		heroku login
+		heroku pg:psql -a biis-plus-plus
+		\dt
+		select * from department;
+		\q
+	
+	 
