@@ -237,17 +237,14 @@ CREATE TABLE "result summary"
 );
 
 DROP TABLE IF EXISTS scholarship;
-CREATE TABLE scholarship
-(
-    scholarship_id SERIAL PRIMARY KEY,
+CREATE TABLE public.scholarship (
+    scholarship_id integer NOT NULL,
     student_id integer,
     session_id text,
-    scholarship_state text check (scholarship_state='awaiting_application' OR
-								  scholarship_state='awaiting_provost' OR
-								  scholarship_state='awaiting_head' OR
-								  scholarship_state='awaiting_comptroller' OR
-								  scholarship_state='paid'),
-    scholarship_type_id integer
+    scholarship_state text,
+    scholarship_type_id integer,
+    payment_date date,
+    CONSTRAINT scholarship_scholarship_state_check CHECK (((scholarship_state = 'awaiting_application'::text) OR (scholarship_state = 'awaiting_provost'::text) OR (scholarship_state = 'awaiting_head'::text) OR (scholarship_state = 'awaiting_comptroller'::text) OR (scholarship_state = 'paid'::text)))
 );
 
 DROP TABLE IF EXISTS "scholarship type";
