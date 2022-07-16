@@ -14,9 +14,8 @@ const Navbar = (props) => {
                 window.location.pathname = val.link;
               }}
               id={window.location.pathname === val.link ? "active_menu" : ""}
-              className="row"
+              className="tab"
             >
-              <div id="icon">{val.icon}</div>
               <div id="title">{val.title}</div>
             </li>
           );
