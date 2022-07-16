@@ -1,9 +1,10 @@
 import React from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
+import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
-import DatabaseTest from "../../../shared/components/DatabaseTest";
 import { SidebarData } from "../../components/SidebarData";
+import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
 
@@ -16,8 +17,8 @@ const ExamGrades = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-              <h1>Exam</h1>
-              <DatabaseTest />
+              <Navbar NavbarData={NavbarData} />
+              <h1>ExamGrades</h1>
             </div>
           </div>
         </div>
