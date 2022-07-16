@@ -26,7 +26,11 @@ Connection To Heroku Database (you must be added as collaborator on heroku proje
 		select * from department;
 		\q
 
-pg_dump --column-inserts -U postgres biisplusplus > data.sql
+echo "DROP SCHEMA public CASCADE;" > data.sql
+echo "CREATE SCHEMA public;" >> data.sql
+echo "GRANT ALL ON SCHEMA public TO postgres;" >> data.sql
+echo "GRANT ALL ON SCHEMA public TO public;" >> data.sql
+pg_dump --column-inserts -U postgres biisplusplus >> data.sql
 
 
 ### USE GIT BASH FOR WORKING WITH GIT

@@ -29,6 +29,30 @@ const getRegisteredCourses = async (req, res, next) => {
   }
 };
 
+const getCoursesToAdd = async (req, res, next) => {
+  try {
+    // TODO: get courses in this session for which no previous request has been placed
+    // filter by dept, term, level
+
+    // response should specify if it is first add request of the term. then it is basically normal
+    // course registration
+    res.status(201).json({ message: "getCoursesToAdd" });
+  } catch (err) {
+    const error = new HttpError("Fetching Courses to Add Failed", 500);
+    return next(error);
+  }
+};
+
+const getCoursesToDrop = async (req, res, next) => {
+  try {
+    // TODO: get courses added in this session
+    res.status(201).json({ message: "getCoursesToDrop" });
+  } catch (err) {
+    const error = new HttpError("Fetching Courses to Drop Failed", 500);
+    return next(error);
+  }
+};
+
 const postAddRequest = async (req, res, next) => {
   try {
     placeHolder = {
@@ -92,3 +116,5 @@ const postDropRequest = async (req, res, next) => {
 exports.getRegisteredCourses = getRegisteredCourses;
 exports.postAddRequest = postAddRequest;
 exports.postDropRequest = postDropRequest;
+exports.getCoursesToAdd = getCoursesToAdd;
+exports.getCoursesToDrop = getCoursesToDrop;
