@@ -11,36 +11,36 @@ export const SidebarData = [
   {
     title: "Student Info",
     icon: <PersonIcon />,
-    link: "/studentinfo",
+    link: "/studentinfo/home",
   },
   {
     title: "Courses",
     icon: <LibraryBooksIcon />,
-    link: "/courses",
+    link: "/courses/register",
   },
   {
     title: "Exam",
     icon: <BorderColorIcon />,
-    link: "/exam",
+    link: "/exam/grades",
   },
   {
     title: "Scholarship",
     icon: <PaidIcon />,
-    link: "/scholarship",
+    link: "/scholarship/available",
   },
   {
     title: "General Info",
     icon: <InfoIcon />,
-    link: "/generalinfo",
+    link: "/generalinfo/academiccalender",
   },
   {
     title: "Dues",
     icon: <AttachMoneyIcon />,
-    link: "/dues",
+    link: "/dues/pending",
   },
   {
     title: "Feedback/Complain",
     icon: <FeedbackIcon />,
-    link: "/feedbackcomplaint",
+    link: "/feedbackcomplaint/new",
   },
 ];

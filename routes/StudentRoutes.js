@@ -26,9 +26,9 @@ StudentRoutes.post("/courses/:sid/addRequest", CoursesController.postAddRequest)
 StudentRoutes.post("/courses/:sid/dropRequest", CoursesController.postDropRequest);
 
 StudentRoutes.get("/exam/:sid/grades/:level/:term", ExamsController.getGrades);
-StudentRoutes.get("/exam/:sid/routine/:sessionID", ExamsController.getExamRoutine);
-StudentRoutes.get("/exam/:sid/seatplan/:sessionID", ExamsController.getSeatPlan);
-StudentRoutes.get("/exam/:sid/guidelines/:sessionID", ExamsController.getGuidelines);
+StudentRoutes.get("/exam/:sid/routine", ExamsController.getExamRoutine);
+StudentRoutes.get("/exam/:sid/seatplan", ExamsController.getSeatPlan);
+StudentRoutes.get("/exam/:sid/guidelines", ExamsController.getGuidelines);
 
 StudentRoutes.get("/scholarship/:sid/getData", ScholarshipController.getData);
 StudentRoutes.get("/scholarship/:sid/download/:scid", ScholarshipController.getForm);
