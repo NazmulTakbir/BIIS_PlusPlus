@@ -1,41 +1,88 @@
 import { Route, Redirect, Switch } from "react-router-dom";
 
-import StudentInfo from "../pages/StudentInfo";
-import Courses from "../pages/Courses";
-import Dues from "../pages/Dues";
-import Exam from "../pages/Exam";
-import GeneralInfo from "../pages/GeneralInfo";
-import Scholarship from "../pages/Scholarship";
-import FeedbackComplaint from "../pages/FeedbackComplaint";
+import StudentInfoHome from "../pages/StudentInfo/StudentInfoHome";
+import StudentInfoClassRoutine from "../pages/StudentInfo/StudentInfoClassRoutine";
+import StudentInfoAdvisor from "../pages/StudentInfo/StudentInfoAdvisor";
+
+import CoursesRegister from "../pages/Courses/CoursesRegister";
+import DuesPending from "../pages/Dues/DuesPending";
+import ExamGrades from "../pages/Exam/ExamGrades";
+import GeneralInfoAcademicCalender from "../pages/GeneralInfo/GeneralInfoAcademicCalender";
+import ScholarshipAvailable from "../pages/Scholarship/ScholarshipAvailable";
+import FeedbackComplaintNew from "../pages/FeedbackComplaint/FeedbackComplaintNew";
 
 const StudentRoutes = () => {
   return (
     <Switch>
       <Route path="/" exact>
-        <StudentInfo />
+        <StudentInfoHome />
       </Route>
-      <Route path="/studentinfo" exact>
-        <StudentInfo />
+
+      <Route path="/studentinfo/home" exact>
+        <StudentInfoHome />
       </Route>
-      <Route path="/courses" exact>
-        <Courses />
+      <Route path="/studentinfo/classroutine" exact>
+        <StudentInfoClassRoutine />
       </Route>
-      <Route path="/exam" exact>
-        <Exam />
+      <Route path="/studentinfo/advisor" exact>
+        <StudentInfoAdvisor />
       </Route>
-      <Route path="/dues" exact>
-        <Dues />
+
+      <Route path="/courses/register" exact>
+        <CoursesRegister />
       </Route>
-      <Route path="/generalinfo" exact>
-        <GeneralInfo />
+      <Route path="/courses/adddrop" exact>
+        <CoursesRegister />
       </Route>
-      <Route path="/scholarship" exact>
-        <Scholarship />
+
+      <Route path="/exam/grades" exact>
+        <ExamGrades />
       </Route>
-      <Route path="/feedbackcomplaint" exact>
-        <FeedbackComplaint />
+      <Route path="/exam/routine" exact>
+        <ExamGrades />
       </Route>
-      <Redirect to="/studentinfo" />
+      <Route path="/exam/seatplan" exact>
+        <ExamGrades />
+      </Route>
+      <Route path="/exam/guidelines" exact>
+        <ExamGrades />
+      </Route>
+
+      <Route path="/dues/pending" exact>
+        <DuesPending />
+      </Route>
+      <Route path="/dues/paid" exact>
+        <DuesPending />
+      </Route>
+
+      <Route path="/generalinfo/academiccalender" exact>
+        <GeneralInfoAcademicCalender />
+      </Route>
+      <Route path="/generalinfo/hallsupervisors" exact>
+        <GeneralInfoAcademicCalender />
+      </Route>
+      <Route path="/generalinfo/notice" exact>
+        <GeneralInfoAcademicCalender />
+      </Route>
+
+      <Route path="/scholarship/available" exact>
+        <ScholarshipAvailable />
+      </Route>
+      <Route path="/scholarship/received" exact>
+        <ScholarshipAvailable />
+      </Route>
+      <Route path="/scholarship/processing" exact>
+        <ScholarshipAvailable />
+      </Route>
+
+      <Route path="/feedbackcomplaint/new" exact>
+        <FeedbackComplaintNew />
+      </Route>
+      <Route path="/feedbackcomplaint/old" exact>
+        <FeedbackComplaintNew />
+      </Route>
+
+      <Redirect to="/studentinfo/home" />
     </Switch>
   );
 };

@@ -1,0 +1,57 @@
+.Navbar {
+  height: 100%;
+  width: 250px;
+  background-color: #ffffff;
+  align-items: center;
+  transition: 0.5s;
+}
+
+.NavbarList {
+  height: auto;
+  padding: 0;
+  margin: auto;
+  width: 80%;
+}
+
+.NavbarList .row {
+  width: 100%;
+  height: 50px;
+  list-style-type: none;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  color: #697a8d;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.NavbarList .row:hover {
+  cursor: pointer;
+  background-color: #d4d6da;
+  transition: 0.4s;
+}
+
+.NavbarList #active_menu {
+  justify-content: center;
+  background-color: #ffdbdc;
+  color: #b13137;
+}
+
+.row #icon {
+  flex: 25%;
+  display: grid;
+  place-items: center;
+}
+
+.row #title {
+  flex: 75%;
+}
+
+@media screen and (max-width: 850px) {
+  .Navbar {
+    display: none;
+    margin: auto;
+    width: 90%;
+  }
+}

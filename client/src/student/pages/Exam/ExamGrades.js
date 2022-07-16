@@ -1,13 +1,13 @@
 import React from "react";
 
-import Sidebar from "../../shared/components/Sidebar/Sidebar";
-import Header from "../../shared/components/Header/Header";
-import DatabaseTest from "../../shared/components/DatabaseTest";
-import { SidebarData } from "../components/SidebarData";
+import Sidebar from "../../../shared/components/Sidebar/Sidebar";
+import Header from "../../../shared/components/Header/Header";
+import DatabaseTest from "../../../shared/components/DatabaseTest";
+import { SidebarData } from "../../components/SidebarData";
 
-import "../../shared/components/MainContainer.css";
+import "../../../shared/components/MainContainer.css";
 
-const Courses = () => {
+const ExamGrades = () => {
   return (
     <React.Fragment>
       <div className="App">
@@ -16,7 +16,7 @@ const Courses = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-              <h1>Courses</h1>
+              <h1>Exam</h1>
               <DatabaseTest />
             </div>
           </div>
@@ -26,4 +26,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default ExamGrades;

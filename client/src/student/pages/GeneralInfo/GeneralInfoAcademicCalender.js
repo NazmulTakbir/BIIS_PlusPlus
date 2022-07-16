@@ -1,13 +1,13 @@
 import React from "react";
 
-import Sidebar from "../../shared/components/Sidebar/Sidebar";
-import Header from "../../shared/components/Header/Header";
-import DatabaseTest from "../../shared/components/DatabaseTest";
-import { SidebarData } from "../components/SidebarData";
+import Sidebar from "../../../shared/components/Sidebar/Sidebar";
+import Header from "../../../shared/components/Header/Header";
+import DatabaseTest from "../../../shared/components/DatabaseTest";
+import { SidebarData } from "../../components/SidebarData";
 
-import "../../shared/components/MainContainer.css";
+import "../../../shared/components/MainContainer.css";
 
-const GeneralInfo = () => {
+const GeneralInfoAcademicCalender = () => {
   return (
     <React.Fragment>
       <div className="App">
@@ -26,4 +26,4 @@ const GeneralInfo = () => {
   );
 };
 
-export default GeneralInfo;
+export default GeneralInfoAcademicCalender;
