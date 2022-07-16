@@ -25,5 +25,35 @@ Connection To Heroku Database (you must be added as collaborator on heroku proje
 		\dt
 		select * from department;
 		\q
+
+echo "DROP SCHEMA public CASCADE;" > data.sql
+echo "CREATE SCHEMA public;" >> data.sql
+echo "GRANT ALL ON SCHEMA public TO postgres;" >> data.sql
+echo "GRANT ALL ON SCHEMA public TO public;" >> data.sql
+pg_dump --column-inserts -U postgres biisplusplus >> data.sql
+
+
+### USE GIT BASH FOR WORKING WITH GIT
+
+# see commits 
+git log --oneline
+
+# create new branch
+git branch frontend
+
+# see all branches
+git branch -a
+
+# switch branch
+git checkout frontend
+
+# delete branch with no unmerged changes
+git branch -d frontend
+
+# delete branch with unmerged changes
+git branch -D frontend
+
+# merge branch - you have to in branch to which target branch will be merged
+git merge target-branch
 	
 	 
