@@ -127,9 +127,10 @@ CREATE TABLE "exam time"
 (
     exam_slot_id SERIAL PRIMARY KEY,
     exam_date date,
-    start_time time without time zone,
-    "end time" time without time zone
+    start_time text,
+    end_time text
 );
+
 
 DROP TABLE IF EXISTS location;
 CREATE TABLE location
@@ -143,7 +144,7 @@ DROP TABLE IF EXISTS "offering time location";
 CREATE TABLE "offering time location"
 (
     offering_id integer,
-    class_number integer,
+    class_number integer,--koto number class
     location_id integer,
     day TEXT,
     start_time TEXT,
@@ -264,7 +265,8 @@ CREATE TABLE student_seat_plan
     location_id integer,
     row_no integer,
     col_no integer,
-    session_id integer
+    session_id integer,
+    student_id integer
 );
     
 DROP TABLE IF EXISTS notice;
