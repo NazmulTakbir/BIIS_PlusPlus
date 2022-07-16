@@ -29,6 +29,7 @@ const getPastSubmissions = async (req, res, next) => {
 const postNewSubmission = async (req, res, next) => {
   try {
     sid = req.params.sid;
+    console.log(req.body);
     const {
         complaint_id ,
         student_id ,
@@ -42,7 +43,7 @@ const postNewSubmission = async (req, res, next) => {
       VALUES($1 , $2 , $3 , $4 , $5 , $6)' , 
       [complaint_id , student_id , teacher_id, subject , details , submission_date]
     );
-    
+
     res.status(201).json({ message: "postNewSubmission" });
   } catch (err) {
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
