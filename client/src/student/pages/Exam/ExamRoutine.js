@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -8,7 +8,24 @@ import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
 
+const studentID = require("../../../placeHolder");
+
 const ExamRoutine = () => {
+  const [routine, setRoutine] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/student//exam/${studentID}/routine`);
+        const jsonData = await response.json();
+        setRoutine(jsonData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <React.Fragment>
       <div className="App">
@@ -18,7 +35,7 @@ const ExamRoutine = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <h1>ExamRoutine</h1>
+              <p> {JSON.stringify(routine)} </p>
             </div>
           </div>
         </div>
