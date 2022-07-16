@@ -2,17 +2,17 @@ DROP TABLE IF EXISTS student;
 CREATE TABLE student
 (
     student_id integer PRIMARY KEY,
-    name TEXT,
-    email TEXT,
+    name text,
+    email text,
     hall_id integer,
     dept_id integer,
     advisor_id integer,
-    mobile_no TEXT,
-    bank_acc_no TEXT,
-    present_address TEXT,
-    contact_person_address TEXT,
+    mobile_no text,
+    bank_acc_no text,
+    present_address text,
+    contact_person_address text,
     date_of_birth date,
-    nid_no TEXT,
+    nid_no text,
     level integer,
     term integer
 );
@@ -22,29 +22,29 @@ CREATE TABLE teacher
 (
     teacher_id integer PRIMARY KEY,
     dept_id integer,
-    name TEXT
+    name text
 );
 
 DROP TABLE IF EXISTS department;
 CREATE TABLE department
 (
     dept_id integer PRIMARY KEY,
-    dept_name TEXT
+    dept_name text
 );
 
 DROP TABLE IF EXISTS hall;
 CREATE TABLE hall
 (
     hall_id integer PRIMARY KEY,
-    hall_name TEXT,
+    hall_name text,
     hall_provost_id integer
 );
 
 DROP TABLE IF EXISTS course;
 CREATE TABLE course
 (
-    course_id TEXT PRIMARY KEY,
-    course_name TEXT,
+    course_id text PRIMARY KEY,
+    course_name text,
     offered_by_dept_id integer,
     offered_to_dept_id integer,
     level integer,
@@ -78,10 +78,20 @@ CREATE TABLE "hall admin"
     hall_id integer
 );
 
+DROP TABLE IF EXISTS "hall supervisor";
+CREATE TABLE "hall supervisor"
+(
+    hall_supervisor_id SERIAL PRIMARY KEY,
+    hall_id integer,
+    name text,
+    phone_number text,
+    email text
+);
+
 DROP TABLE IF EXISTS session;
 CREATE TABLE session
 (
-    session_id TEXT PRIMARY KEY,
+    session_id text PRIMARY KEY,
     start date,
     "end" date
 );
@@ -90,16 +100,16 @@ DROP TABLE IF EXISTS "course offering";
 CREATE TABLE "course offering"
 (
     offering_id SERIAL PRIMARY KEY,
-    course_id TEXT,
-    session_id TEXT,
+    course_id text,
+    session_id text,
     exam_slot_id integer
 );
 
 DROP TABLE IF EXISTS prerequisite;
 CREATE TABLE prerequisite
 (
-    course_id TEXT,
-    prerequisite_course_id TEXT,
+    course_id text,
+    prerequisite_course_id text,
     CONSTRAINT prerequisite_pkey PRIMARY KEY (course_id, prerequisite_course_id)
 );
 
@@ -109,7 +119,7 @@ CREATE TABLE "course registration"
     student_id integer,
     offering_id integer, 
     date_of_registration date,
-    session_id TEXT,
+    session_id text,
     CONSTRAINT "course registration_pkey" PRIMARY KEY (student_id, offering_id)
 );
 
@@ -118,7 +128,7 @@ CREATE TABLE "course offering teacher"
 (
     offering_id integer,
     teacher_id integer,
-    "role" TEXT,
+    "role" text,
     CONSTRAINT course_offering_teacher_pkey PRIMARY KEY (offering_id, teacher_id)
 );
 
@@ -136,8 +146,8 @@ DROP TABLE IF EXISTS location;
 CREATE TABLE location
 (
     location_id SERIAL PRIMARY KEY,
-    building TEXT,
-    room_no TEXT
+    building text,
+    room_no text
 );
 
 DROP TABLE IF EXISTS "offering time location";
@@ -146,10 +156,10 @@ CREATE TABLE "offering time location"
     offering_id integer,
     class_number integer,--koto number class
     location_id integer,
-    day TEXT,
-    start_time TEXT,
-    end_time TEXT,
-    section TEXT,
+    day text,
+    start_time text,
+    end_time text,
+    section text,
     CONSTRAINT "offering time location_pkey" PRIMARY KEY (offering_id, class_number)
 );
 
@@ -159,8 +169,8 @@ CREATE TABLE "registration request"
     reg_request_id SERIAL PRIMARY KEY,
     student_id integer,
     offering_id integer,
-    request_type TEXT CHECK (request_type='register' or request_type='add' or request_type='drop'),
-    reg_status TEXT CHECK (reg_status='awaiting_advisor' or
+    request_type text CHECK (request_type='register' or request_type='add' or request_type='drop'),
+    reg_status text CHECK (reg_status='awaiting_advisor' or
 						   reg_status='awaiting_head' or
 						   reg_status='approved')
 );
@@ -175,7 +185,7 @@ CREATE TABLE "mark distribution policy"
 DROP TABLE IF EXISTS "marking criteria";
 CREATE TABLE "marking criteria"
 (
-    criteria_name TEXT,
+    criteria_name text,
     md_policy_id integer,
     criteria_weight real,
     total_marks integer,
@@ -195,8 +205,8 @@ CREATE TABLE "grade distribution policy details"
     policy_number integer,
     upper_bound integer,
     lower_bound integer,
-    letter_grade TEXT,
-    grade_point TEXT,
+    letter_grade text,
+    grade_point text,
     CONSTRAINT grade_dist_policy_details_pkey PRIMARY KEY (gd_policy_id, policy_number)
 );
 
@@ -205,7 +215,7 @@ CREATE TABLE "result util"
 (
     student_id integer,
     offering_id integer,
-    criteria_name TEXT,
+    criteria_name text,
     marks integer,
     teacher_id integer,
     scrutinized boolean,
@@ -217,12 +227,12 @@ CREATE TABLE "result summary"
 (
     offering_id integer,
     student_id integer,
-    grade_point TEXT,
-    letter_grade TEXT,
-    result_status TEXT CHECK (result_status='Pending Department Head Approval' OR
-    						  result_status='Pending Hall Provost Approval' OR
-							  result_status='Pending Exam Controller Approval' OR
-							  result_status='Published'),
+    grade_point text,
+    letter_grade text,
+    result_status text CHECK (result_status='awaiting_headapproval' OR
+    						  result_status='awaiting_provostapproval' OR
+							  result_status='awaiting_examcontroller' OR
+							  result_status='published'),
     CONSTRAINT "result summary_pkey" PRIMARY KEY (offering_id, student_id)
 );
 
@@ -241,7 +251,7 @@ DROP TABLE IF EXISTS "scholarship type";
 CREATE TABLE "scholarship type"
 (
     scholarship_type_id SERIAL PRIMARY KEY,
-    scholarship_name TEXT,
+    scholarship_name text,
     amount integer
 );
     
@@ -251,8 +261,9 @@ CREATE TABLE complaint
     complaint_id SERIAL PRIMARY KEY,
     student_id integer,
     teacher_id integer,
-    subject TEXT,
-    details TEXT
+    subject text,
+    details text,
+    submission_date date
 );
     
 DROP TABLE IF EXISTS student_seat_plan;
@@ -262,7 +273,7 @@ CREATE TABLE student_seat_plan
     location_id integer,
     row_no integer,
     col_no integer,
-    session_id integer,
+    session_id text,
     student_id integer
 );
     
@@ -270,29 +281,30 @@ DROP TABLE IF EXISTS notice;
 CREATE TABLE notice
 (
     notice_id SERIAL PRIMARY KEY,
-    description TEXT,
-    file_path TEXT,
-    uploaded_by_admin_id integer
+    description text,
+    file_path text,
+    upload_date date
+);
+
+DROP TABLE IF EXISTS exam_guidelines;
+CREATE TABLE exam_guidelines
+(
+    guideline_id SERIAL PRIMARY KEY,
+    description text,
+    file_path text,
+    session_id text
 );
     
-DROP TABLE IF EXISTS "academic calendar";
-CREATE TABLE "academic calendar"
+DROP TABLE IF EXISTS session_phase;
+CREATE TABLE session_phase
 (
-    academic_calendar_id integer PRIMARY KEY,
-    session_id integer,
-    level integer,
-    term integer
-);
-    
-DROP TABLE IF EXISTS phase;
-CREATE TABLE phase
-(
-    phase_id integer PRIMARY KEY,
-    academic_calendar_id integer,
+    phase_number integer,
+    session_id text,
     start_date date,
     end_date date,
     no_of_weeks integer,
-    description TEXT
+    description text,
+    CONSTRAINT "result summary_pkey" PRIMARY KEY (phase_number, session_id)
 );
     
 DROP TABLE IF EXISTS dues;
@@ -302,7 +314,7 @@ CREATE TABLE dues
     student_id integer,
     dues_type_id integer,
     deadline date,
-    dues_status TEXT CHECK (dues_status='Not Paid' OR dues_status='Paid'),
+    dues_status text CHECK (dues_status='Not Paid' OR dues_status='Paid'),
 	payment_date date
 );
     
@@ -310,6 +322,6 @@ DROP TABLE IF EXISTS "dues type";
 CREATE TABLE "dues type"
 (
     "dues type id" SERIAL PRIMARY KEY,
-    description TEXT,
-    amount TEXT
+    description text,
+    amount text
 );
