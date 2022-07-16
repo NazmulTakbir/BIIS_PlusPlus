@@ -6,13 +6,24 @@
 }
 
 .content{
-    margin: auto;
-    font-size: 24px;
+    font-size: 16px;
+    min-height: 550px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin: auto 15px auto 35px;
+    border: 1px solid #d0d5da;
 }
 
 
 @media screen and (max-width: 850px){
     .main_container{
         width: 100%;
+    }
+
+    .content{
+        border: none;
+        border-radius: 0;
+        min-height: 600px;
+        margin: 20px auto auto auto;
     }
 }
