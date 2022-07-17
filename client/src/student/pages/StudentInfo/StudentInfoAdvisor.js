@@ -7,11 +7,12 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
+import AdvisorProfile from "../../components/AdvisorProfile/AdvisorProfile";
 
 const studentID = require("../../../placeHolder");
 
 const StudentInfoAdvisor = () => {
-  const [advisorInfo, setAdvisorInfo] = useState();
+  const [advisorInfo, setAdvisorInfo] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +36,7 @@ const StudentInfoAdvisor = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(advisorInfo)} </p>
+              <AdvisorProfile ProfileData={advisorInfo} />
             </div>
           </div>
         </div>
