@@ -12,20 +12,19 @@ import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 
-const columnLabels = ["COURSE ID", "COURSE TITLE", "DATE", "START", "END"];
+const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "SELECT"];
 
-const ExamRoutine = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 5));
+const CoursesDropDrop = () => {
+  const [tableData, setTableData] = useState(make2DArray(1, 4));
 
   useEffect(() => {
     fetchTableData(
-      `/api/student//exam/${studentID}/routine`,
-      5,
+      `/api/student/courses/${studentID}/coursestodrop`,
+      4,
       {
         course_id: 0,
         course_name: 1,
-        exam_date: 2,
-        start_time: 3,
+        credits: 2,
         end_time: 4,
       },
       setTableData
@@ -50,4 +49,4 @@ const ExamRoutine = () => {
   );
 };
 
-export default ExamRoutine;
+export default CoursesDropDrop;

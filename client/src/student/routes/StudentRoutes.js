@@ -4,8 +4,9 @@ import StudentInfoHome from "../pages/StudentInfo/StudentInfoHome";
 import StudentInfoClassRoutine from "../pages/StudentInfo/StudentInfoClassRoutine";
 import StudentInfoAdvisor from "../pages/StudentInfo/StudentInfoAdvisor";
 
-import CoursesRegister from "../pages/Courses/CoursesRegister";
-import CoursesAddDrop from "../pages/Courses/CoursesAddDrop";
+import CoursesRegistered from "../pages/Courses/CoursesRegistered";
+import CoursesAdd from "../pages/Courses/CoursesAdd";
+import CoursesDrop from "../pages/Courses/CoursesDrop";
 
 import DuesPending from "../pages/Dues/DuesPending";
 import DuesPaid from "../pages/Dues/DuesPaid";
@@ -43,11 +44,14 @@ const StudentRoutes = () => {
         <StudentInfoAdvisor />
       </Route>
 
-      <Route path="/courses/register" exact>
-        <CoursesRegister />
+      <Route path="/courses/registered" exact>
+        <CoursesRegistered />
       </Route>
-      <Route path="/courses/adddrop" exact>
-        <CoursesAddDrop />
+      <Route path="/courses/add" exact>
+        <CoursesAdd />
+      </Route>
+      <Route path="/courses/drop" exact>
+        <CoursesDrop />
       </Route>
 
       <Route path="/exam/grades" exact>

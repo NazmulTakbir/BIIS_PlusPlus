@@ -16,7 +16,7 @@ export const SidebarData = [
   {
     title: "Courses",
     icon: <LibraryBooksIcon />,
-    link: "/courses/register",
+    link: "/courses/registered",
   },
   {
     title: "Exam",

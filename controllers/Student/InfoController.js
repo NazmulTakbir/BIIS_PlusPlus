@@ -43,7 +43,7 @@ const getHomeInfo = async (req, res, next) => {
 const getClassRoutine = async (req, res, next) => {
   try {
     let queryRes = await pool.query(
-      'SELECT offering_id from "course registration" where student_id = $1 and session_id = $2',
+      'SELECT offering_id from "course registrations" where student_id = $1 and session_id = $2',
       [req.params.sid, session_id]
     );
 

@@ -6,7 +6,7 @@ const session_id = require("../../placeHolder");
 const get_total_credit = async (sid, level, term) => {
   let total_credits = 0.0;
   let queryRes = await pool.query(
-    'SELECT offering_id from "course registration" where student_id = $1 and session_id = $2',
+    'SELECT offering_id from "course registrations" where student_id = $1 and session_id = $2',
     [sid, session_id]
   );
 
@@ -77,22 +77,28 @@ const getGrades = async (req, res, next) => {
 const getExamRoutine = async (req, res, next) => {
   try {
     const sid = req.params.sid;
-
+    //console.log(sid);
     let queryRes = await pool.query(
-      'SELECT co.course_id , et.exam_date, et.start_time, et.end_time \
-      from "course offering" as co , "course registration" as cr, "exam time" as et \
-       where cr.student_id = $1 and cr.session_id = $2 \
-       and cr.offering_id = co.offering_id and co.exam_slot_id = et.exam_slot_id',
+      'SELECT co.course_id , et.exam_date, et.start_time, et.end_time , c.course_name\
+        from "course offering" as co , "course registrations" as cr, "exam time" as et ,course as c \
+         where cr.student_id = $1 and cr.session_id = $2 and co.course_id = c.course_id\
+         and cr.offering_id = co.offering_id and co.exam_slot_id = et.exam_slot_id',
       [sid, session_id]
     );
-
+    //console.log(queryRes);
     exam_routine_list = [];
     for (const element of queryRes.rows) {
       var routine_obj = {};
       routine_obj["course_id"] = element["course_id"];
-      routine_obj["exam_date"] = element["exam_date"];
+
+      let date_ = "";
+      date_ = (date_ + element["exam_date"]).substring(4, 16);
+      routine_obj["exam_date"] = date_;
+
+      routine_obj["course_name"] = element["course_name"];
       routine_obj["start_time"] = element["start_time"];
       routine_obj["end_time"] = element["end_time"];
+
       exam_routine_list.push(routine_obj);
     }
 
