@@ -7,11 +7,12 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 
 const StudentInfoClassRoutine = () => {
-  const [classRoutine, setClassRoutine] = useState();
+  const [classRoutine, setClassRoutine] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +36,11 @@ const StudentInfoClassRoutine = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(classRoutine)} </p>
+              
+              {/* <p> {JSON.stringify(classRoutine)} </p> */}
+              
+              <Table />
+
             </div>
           </div>
         </div>

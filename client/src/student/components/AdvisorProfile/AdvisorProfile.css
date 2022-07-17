@@ -1,0 +1,46 @@
+.profile-container{
+    font-size: 15px;
+}
+
+.profile-card{
+    width: 350px;
+    flex: none !important;
+    text-align: center;
+}
+
+.profile-pic{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.profile-data{
+    margin: 20px 20px 20px 70px;
+}
+
+.item{
+    color: #394f68;
+    text-align: left;
+    padding-bottom: 10px;
+}
+
+.heading{
+    font-weight: normal;
+}
+
+.text{
+    font-weight: bolder;
+    block-size: fit-content;
+    width: max-content;
+}
+
+@media screen and (max-width: 850px){
+    .profile-container{
+        display: block;
+    }
+
+    .profile-card{
+        width: 80%;
+    }
+}

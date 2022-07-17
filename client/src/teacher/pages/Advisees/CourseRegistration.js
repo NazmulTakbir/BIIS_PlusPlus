@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -8,24 +8,7 @@ import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
 
-const studentID = require("../../../placeHolder");
-
-const DuesPending = () => {
-  const [duesPending, setDuesPending] = useState();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/student/dues/${studentID}/pendingdues`);
-        const jsonData = await response.json();
-        setDuesPending(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
-
+const CourseRegistration = () => {
   return (
     <React.Fragment>
       <div className="App">
@@ -35,7 +18,7 @@ const DuesPending = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(duesPending)} </p>
+              <h1>CourseRegistration</h1>
             </div>
           </div>
         </div>
@@ -44,4 +27,4 @@ const DuesPending = () => {
   );
 };
 
-export default DuesPending;
+export default CourseRegistration;
