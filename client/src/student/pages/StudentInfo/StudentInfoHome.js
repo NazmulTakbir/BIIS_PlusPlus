@@ -5,13 +5,14 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import Profile from "../../components/Profile/Profile";
 
 import "../../../shared/components/MainContainer.css";
 
 const studentID = require("../../../placeHolder");
 
 const StudentInfoHome = () => {
-  const [studentInfo, setStudentInfo] = useState();
+  const [studentInfo, setStudentInfo] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +36,7 @@ const StudentInfoHome = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(studentInfo)} </p>
+              <Profile ProfileData={studentInfo}/>
             </div>
           </div>
         </div>
