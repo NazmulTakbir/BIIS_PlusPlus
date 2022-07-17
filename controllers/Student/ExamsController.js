@@ -37,16 +37,26 @@ const getGrades = async (req, res, next) => {
       'select offering_id , grade_point from "result summary" where student_id=$1',
       [sid]
     );
+
+    course_wise_grade = [];
     for (const element of queryRes.rows){
       
       const offering_id = element["offering_id"];
       const achieved_grade_point = element["grade_point"]
       
       let queryRes_ = await pool.query(
-        'select c.credits from course as c , "course offering" as co where co.offering_id=$1 and co.course_id = c.course_id and c.level=$2 and c.term=$3',
+        'select c.credits , c.course_id , c.course_name from course as c , "course offering" as co where co.offering_id=$1 and co.course_id = c.course_id and c.level=$2 and c.term=$3',
         [offering_id , level , term]
       )
 
+      //to store specific coure's grade
+      course_grade = {};
+      course_grade["course_id"] = queryRes_.rows[0]["course_id"];
+      course_grade["course_name"] = queryRes_.rows[0]["course_name"];
+      course_grade["grade_point"] = achieved_grade_point;
+      course_wise_grade.push(course_grade);
+      
+      //finding total grade point in this term
       total_grade_point += queryRes_.rows[0]["credits"]*parseFloat(achieved_grade_point);
 
     }
@@ -58,7 +68,7 @@ const getGrades = async (req, res, next) => {
     console.log("total grade point for student_id " + sid + ":: " +total_grade_point);
     console.log("total credits in level " + level + " term " + term + ":: " + total_credits);
 
-    res.status(201).json({ message: "getGrades"  ,  gpa:gpa});
+    res.status(201).json({ message: "getGrades"  ,  gpa:gpa , course_wise_grade:course_wise_grade});
     
   } catch (err) {
     const error = new HttpError("Fetching Courses to Add Failed", 500);

@@ -2,6 +2,23 @@ const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
 
+
+//utils methos
+const get_dept_level_term = async (sid) => {
+  let queryRes = await pool.query(
+    'SELECT dept_id  , level , term from student where student_id = $1',
+    [sid]
+  );
+
+  var returnedObject = {};
+  returnedObject["dept_id"] = queryRes.rows[0]["dept_id"];
+  returnedObject["level"] = queryRes.rows[0]["level"];
+  returnedObject["term"] = queryRes.rows[0]["term"];
+  //console.log(returnedObject);
+  return returnedObject;
+}
+
+
 const getRegisteredCourses = async (req, res, next) => {
   try {
     let queryRes = await pool.query(
@@ -36,7 +53,39 @@ const getCoursesToAdd = async (req, res, next) => {
 
     // response should specify if it is first add request of the term. then it is basically normal
     // course registration
-    res.status(201).json({ message: "getCoursesToAdd" });
+    const sid = req.params.sid;
+    const dept_id  = (await get_dept_level_term(sid)).dept_id;
+    const level = (await get_dept_level_term(sid)).level;
+    const term = (await get_dept_level_term(sid)).term;
+
+    //console.log(dept_id , level , term , sid);
+    let queryRes = await pool.query(
+      ' \
+      select t1.course_id , t1.course_name , t1.credits from \
+      (select distinct c.course_id , c.course_name , c.credits \
+      from course as c , "course offering" as co \
+      where c.course_id = co.course_id and c.offered_to_dept_id = $1 \
+      and c.level = $2 and c.term = $3 and co.session_id = $4 \
+      ) as t1 ,\
+      (select distinct c.course_id , c.course_name , c.credits \
+        from course as c , "course offering" as co ,"registration request" as rr\
+        where c.course_id = co.course_id and c.offered_to_dept_id = $1 \
+        and c.level = $2 and c.term = $3 and co.session_id = $4 \
+        and rr.student_id = $5 and rr.offering_id = co.offering_id) as t2 \
+        where t1.course_id <> t2.course_id',
+        [dept_id , level , term , session_id , sid]
+    );
+    //console.log(queryRes);
+    course_list = []
+    for(const element of queryRes.rows){
+      course_obj = {};
+      course_obj["course_id"] = element["course_id"];
+      course_obj["course_name"] = element["course_name"];
+      course_obj["credits"] = element["credits"];
+      course_list.push(course_obj);
+    }
+    
+    res.status(201).json({ message: "getCoursesToAdd" , course_list:course_list});
   } catch (err) {
     const error = new HttpError("Fetching Courses to Add Failed", 500);
     return next(error);
@@ -46,7 +95,32 @@ const getCoursesToAdd = async (req, res, next) => {
 const getCoursesToDrop = async (req, res, next) => {
   try {
     // TODO: get courses added in this session
-    res.status(201).json({ message: "getCoursesToDrop" });
+    const sid = req.params.sid;
+    const dept_id  = (await get_dept_level_term(sid)).dept_id;
+    const level = (await get_dept_level_term(sid)).level;
+    const term = (await get_dept_level_term(sid)).term;
+    const type = "add";
+
+    let queryRes = await pool.query(
+      'select c.course_id , c.course_name , c.credits \
+      from \
+      (select count(offering_id) , offering_id from "registration request" \
+            where student_id = $1 \
+          group by offering_id) as tmp , "course offering" as co , course as c \
+          where tmp.count = 1 and tmp.offering_id = co.offering_id and co.course_id = c.course_id \
+          and c.level = $2 and c.term = $3 and c.offered_to_dept_id = $4 ',
+      [sid , level , term  , dept_id]
+    )
+    //console.log(queryRes.rows);
+    course_list = []
+    for(const element of queryRes.rows){
+      course_obj = {};
+      course_obj["course_id"] = element["course_id"];
+      course_obj["course_name"] = element["course_name"];
+      course_obj["credits"] = element["credits"];
+      course_list.push(course_obj);
+    }
+    res.status(201).json({ message: "getCoursesToDrop" , course_list:course_list});
   } catch (err) {
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);

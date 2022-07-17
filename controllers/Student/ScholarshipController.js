@@ -46,19 +46,17 @@ const postApplication = async (req, res, next) => {
   try {
     //retrieve student id and scholarship_type_id from URL
     const sid = req.params.sid;
-    const sc_type_id = req.params.scid;
-    //retrieve other info from req.body
-    const {scholarship_state , payment_date} = req.body;
+    const sc_id = req.params.scid;
     //create a new scholarship obj
     let queryRes = await pool.query(
-      'INSERT INTO scholarship  (scholarship_id, student_id, session_id, scholarship_state, scholarship_type_id, payment_date) \
-       VALUES($1, $2, $3, $4 , $5)',
-      [sid, session_id, scholarship_state, sc_type_id , payment_date]
+      'UPDATE scholarship SET scholarship_state = $1  \
+       where scholarship_id = $2',
+      ['awaiting_provost' , sc_id]
     );
-    console.log(queryRes);
-    res.status(201).json({ message: "Application for scholarship Successful" });
+    //console.log(queryRes);
+    res.status(201).json({ message: "scholarship state updated to awaiting_provost" });
   } catch (err) {
-    const error = new HttpError("Fetching Courses to Drop Failed", 500);
+    const error = new HttpError("scholarship state update Failed", 500);
     return next(error);
   }
 };

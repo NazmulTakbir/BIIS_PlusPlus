@@ -6,7 +6,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const StudentRoutes = require("./routes/StudentRoutes");
-// const TeacherRoutes = require("./routes/TeacherRoutes");
+const TeacherRoutes = require("./routes/TeacherRoutes");
 // const AdminRoutes = require("./routes/AdminRoutes");
 // const UnauthorizedRoutes = require("./routes/UnauthorizedRoutes");
 const HttpError = require("./models/HttpError");
@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/student", StudentRoutes);
-// app.use("/api/teacher", TeacherRoutes);
+app.use("/api/teacher", TeacherRoutes);
 // app.use("/api/admin", AdminRoutes);
 // app.use("/api/auth", UnauthorizedRoutes);
 
