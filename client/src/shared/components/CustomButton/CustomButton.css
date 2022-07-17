@@ -1,0 +1,12 @@
+.btn-custom{
+    padding: 5px 15px 5px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    text-transform: none;
+    transition: 0.4s;
+    font-weight: bolder;
+}
+
+.btn-custom:hover{
+    font-size: 15px;
+}

@@ -1,0 +1,37 @@
+.textbox-container{
+    margin: auto;
+}
+
+.textbox-custom{
+    margin: auto;
+    padding: 10px;
+    width: 400px;
+}
+
+.textbox-label{
+    text-align: left;
+    padding-left: 10px;
+    color: #b13137;
+    font-weight: bolder;
+    font-size: 14px;
+    padding-bottom: 5px;
+}
+
+.input-text-area{
+    font-size: 14px;
+    color: #394f68;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #c5c5c5;
+    transition: 0.4s;
+}
+
+.input-text-area:focus-visible{
+    outline: 1px solid #b13137;
+}
+
+@media screen and (max-width: 650px){
+    .input-text-area{
+        width: 95% !important;
+    }
+}
