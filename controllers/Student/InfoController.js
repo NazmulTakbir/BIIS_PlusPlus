@@ -14,7 +14,6 @@ const get_dept_hall = async (sid) => {
   var returnedObject = {};
   returnedObject["dept_name"] = queryRes.rows[0]["dept_name"];
   returnedObject["hall_name"] = queryRes.rows[0]["hall_name"];
-  //console.log(returnedObject);
   return returnedObject;
 }
 
@@ -27,14 +26,17 @@ const getHomeInfo = async (req, res, next) => {
     console.log(hall_name);
     
     let queryRes = await pool.query("SELECT * from student where student_id = $1", [req.params.sid]);
-    const studentInfo = queryRes.rows[0];
-    const dob = queryRes.rows[0]["date_of_birth"].substring(0,10);
+    var studentInfo = queryRes.rows[0];
+    
+    let date_of_birth= '';
+    date_of_birth= (date_of_birth+ queryRes.rows[0]["date_of_birth"]).substring(4 , 16);
+
+    studentInfo["date_of_birth"] = date_of_birth;
+    studentInfo["hall_name"] = hall_name;
+    studentInfo["dept_name"] = dept_name;
 
     res.json(
-      studentInfo , 
-      {hall_name:hall_name} , 
-      {dept_name:dept_name} ,
-      {date_of_birth:dob}
+      studentInfo 
       );
   } catch (err) {
     const error = new HttpError("Fetching Student Info Failed", 500);
