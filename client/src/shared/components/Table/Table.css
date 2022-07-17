@@ -8,6 +8,7 @@
   border-collapse: collapse;
   margin: auto;
   max-width: 600px;
+  width: 600px;
   padding:5px;
   animation: float 5s infinite;
 }
@@ -26,6 +27,7 @@ th {
 
 th:first-child {
   border-top-left-radius:3px;
+  width: 100px;
 }
  
 th:last-child {
@@ -74,11 +76,10 @@ tr:last-child td:last-child {
  
 td {
   background:#FFFFFF;
-  padding:20px;
+  padding:10px;
   text-align:left;
   vertical-align:middle;
-  font-weight:300;
-  font-size:16px;
+  font-size:14px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
 }
