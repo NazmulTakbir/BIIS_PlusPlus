@@ -20,13 +20,13 @@ const Profile = (props) => {
           </div>
 
           <div className="item">
-            <div className="heading">Department ID: </div>
-            <div className="text">{ProfileData.dept_id}</div>
+            <div className="heading">Department : </div>
+            <div className="text">{ProfileData.dept_name}</div>
           </div>
 
           <div className="item">
-            <div className="heading">Hall ID: </div>
-            <div className="text">{ProfileData.hall_id}</div>
+            <div className="heading">Hall : </div>
+            <div className="text">{ProfileData.hall_name}</div>
           </div>
 
           <div className="item">

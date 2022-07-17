@@ -13,8 +13,12 @@ const getPastSubmissions = async (req, res, next) => {
       comp["teacher_id"] = element["teacher_id"];
       comp["subject"] = element["subject"];
       comp["details"] = element["details"];
-      comp["submmission_date"] = element["submission_date"];
       comp["receiver_type"] = element["receiver_type"];
+
+      let date_ = "";
+      date_ = (date_ + element["submission_date"]).substring(4, 16);
+      comp["submmission_date"] = date_;
+
       complaint_list.push(comp);
     }
 
