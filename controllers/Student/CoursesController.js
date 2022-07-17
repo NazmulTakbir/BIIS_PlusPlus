@@ -104,12 +104,12 @@ const getCoursesToDrop = async (req, res, next) => {
     let queryRes = await pool.query(
       'select c.course_id , c.course_name , c.credits \
       from \
-      (select count(distinct offering_id) , offering_id from "registration request" \
-            where student_id = $1 and request_type =  $2 \
+      (select count(offering_id) , offering_id from "registration request" \
+            where student_id = $1 \
           group by offering_id) as tmp , "course offering" as co , course as c \
           where tmp.count = 1 and tmp.offering_id = co.offering_id and co.course_id = c.course_id \
-          and c.level = $3 and c.term = $4 and c.offered_to_dept_id = $5 ',
-      [sid , type , level , term  , dept_id]
+          and c.level = $2 and c.term = $3 and c.offered_to_dept_id = $4 ',
+      [sid , level , term  , dept_id]
     )
     //console.log(queryRes.rows);
     course_list = []
