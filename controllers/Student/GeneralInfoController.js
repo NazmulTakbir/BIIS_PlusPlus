@@ -31,21 +31,24 @@ const getHallInfo = async (req, res, next) => {
   try {
     const sid = req.params.sid;
     let queryRes = await pool.query(
-      "select h.hall_id , h.hall_name , h.supervisor_name , h.supervisor_phone , h.supervisor_email \
-      from hall as h , student as s \
-      where s.hall_id = h.hall_id and s.student_id = $1",
-      [sid]
+      "select hall_name , supervisor_name , supervisor_phone , supervisor_email \
+      from hall"
     );
-    var _row_ = queryRes.rows[0];
-    var hall_obj = {
-      hall_id: _row_["hall_id"],
-      hall_name: _row_["hall_name"],
-      supervisor_name: _row_["supervisor_name"],
-      supervisor_phone: _row_["supervisor_phone"],
-      supervisor_email: _row_["supervisor_email"],
-    };
 
-    res.status(201).json({ message: "getHallInfo", data: hall_obj });
+    let hallData = [];
+    for (let rowNo = 0; rowNo < queryRes.rowCount; rowNo++) {
+      var _row_ = queryRes.rows[rowNo];
+      var hall_obj = {
+        hall_id: _row_["hall_id"],
+        hall_name: _row_["hall_name"],
+        supervisor_name: _row_["supervisor_name"],
+        supervisor_phone: _row_["supervisor_phone"],
+        supervisor_email: _row_["supervisor_email"],
+      };
+      hallData.push(hall_obj);
+    }
+
+    res.status(201).json({ message: "getHallInfo", data: hallData });
   } catch (err) {
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
