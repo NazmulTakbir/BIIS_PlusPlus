@@ -5,30 +5,30 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 
-const CoursesAddDrop = () => {
-  const [coursesToAdd, setCoursesToAdd] = useState();
-  const [coursesToDrop, setCoursesToDrop] = useState();
+const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "STATUS"];
+
+const CoursesRegistered = () => {
+  const [tableData, setTableData] = useState(make2DArray(1, 4));
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response = await fetch(`/api/student/courses/${studentID}/coursestoadd`);
-        let jsonData = await response.json();
-        setCoursesToAdd(jsonData);
-
-        response = await fetch(`/api/student/courses/${studentID}/coursestodrop`);
-        jsonData = await response.json();
-        setCoursesToDrop(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+    fetchTableData(
+      `/api/student/courses/${studentID}/registeredcourses`,
+      4,
+      {
+        course_id: 0,
+        course_name: 1,
+        credits: 2,
+        reg_status: 3,
+      },
+      setTableData
+    );
   }, []);
 
   return (
@@ -40,8 +40,7 @@ const CoursesAddDrop = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(coursesToAdd)} </p>
-              <p> {JSON.stringify(coursesToDrop)} </p>
+              <Table columnLabels={columnLabels} dataMatrix={tableData} />
             </div>
           </div>
         </div>
@@ -50,4 +49,4 @@ const CoursesAddDrop = () => {
   );
 };
 
-export default CoursesAddDrop;
+export default CoursesRegistered;

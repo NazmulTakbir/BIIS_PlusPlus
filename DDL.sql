@@ -96,14 +96,18 @@ CREATE TABLE session
     "end" date
 );
 
-DROP TABLE IF EXISTS "course offering";
-CREATE TABLE "course offering"
-(
-    offering_id SERIAL PRIMARY KEY,
-    course_id text,
-    session_id text,
-    exam_slot_id integer
-);
+DROP view IF EXISTS "course registrations";
+CREATE VIEW "course registrations" AS
+SELECT t3.student_id, t3.offering_id, t3.reg_status, t4.session_id, t4.course_id FROM
+(	SELECT t1.student_id, t1.offering_id, reg_status FROM
+		(SELECT student_id, offering_id, MAX(reg_request_id) as reg_request_id
+		FROM "registration request" 
+		GROUP BY student_id, offering_id) as t1,
+		(SELECT reg_request_id, reg_status, request_type FROM "registration request") as t2
+	where t1.reg_request_id=t2.reg_request_id and reg_status='approved' and request_type='add') as t3,
+	
+	(SELECT offering_id, session_id, course_id FROM "course offering") as t4
+where t3.offering_id = t4.offering_id;
 
 DROP TABLE IF EXISTS prerequisite;
 CREATE TABLE prerequisite

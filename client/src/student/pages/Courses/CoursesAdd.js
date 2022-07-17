@@ -5,25 +5,29 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 
-const CoursesRegister = () => {
-  const [registeredcourses, setRegisteredcourses] = useState();
+const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "SELECT"];
+
+const CoursesAdd = () => {
+  const [tableData, setTableData] = useState(make2DArray(1, 4));
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/student/courses/${studentID}/registeredcourses`);
-        const jsonData = await response.json();
-        setRegisteredcourses(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+    fetchTableData(
+      `/api/student/courses/${studentID}/coursestoadd`,
+      4,
+      {
+        course_id: 0,
+        course_name: 1,
+        credits: 2,
+      },
+      setTableData
+    );
   }, []);
 
   return (
@@ -35,7 +39,7 @@ const CoursesRegister = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(registeredcourses)} </p>
+              <Table columnLabels={columnLabels} dataMatrix={tableData} />
             </div>
           </div>
         </div>
@@ -44,4 +48,4 @@ const CoursesRegister = () => {
   );
 };
 
-export default CoursesRegister;
+export default CoursesAdd;
