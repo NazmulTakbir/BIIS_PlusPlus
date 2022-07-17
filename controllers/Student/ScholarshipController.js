@@ -20,7 +20,10 @@ const getReceived = async (req, res, next) => {
       sc_obj["scholarship_id"] = element["scholarship_id"];
       sc_obj["scholarship_state"] = element["scholarship_state"];
       sc_obj["session_id"] = element["session_id"];
-      sc_obj["payment_date"] = element["payment_date"];
+
+      let date_ = "";
+      date_ = (date_ + element["payment_date"]).substring(4, 16);
+      sc_obj["payment_date"] = date_;
 
       scholarship_list.push(sc_obj);
     }

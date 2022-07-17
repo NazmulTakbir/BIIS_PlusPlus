@@ -35,14 +35,16 @@ const getGrades = async (req, res, next) => {
     const level = req.params.level;
     const term = req.params.term;
     // write query to get grades of student based on sid,level,term
-    let queryRes = await pool.query('select offering_id , grade_point from "result summary" where student_id=$1', [
-      sid,
-    ]);
+    let queryRes = await pool.query(
+      'select offering_id, grade_point, letter_grade from "result summary" where student_id=$1',
+      [sid]
+    );
 
     course_wise_grade = [];
     for (const element of queryRes.rows) {
       const offering_id = element["offering_id"];
       const achieved_grade_point = element["grade_point"];
+      const achieved_letter_grade = element["letter_grade"];
 
       let queryRes_ = await pool.query(
         'select c.credits , c.course_id , c.course_name from course as c , "course offering" as co where co.offering_id=$1 and co.course_id = c.course_id and c.level=$2 and c.term=$3',
@@ -53,7 +55,9 @@ const getGrades = async (req, res, next) => {
       course_grade = {};
       course_grade["course_id"] = queryRes_.rows[0]["course_id"];
       course_grade["course_name"] = queryRes_.rows[0]["course_name"];
+      course_grade["credits"] = queryRes_.rows[0]["credits"];
       course_grade["grade_point"] = achieved_grade_point;
+      course_grade["letter_grade"] = achieved_letter_grade;
       course_wise_grade.push(course_grade);
 
       //finding total grade point in this term
@@ -64,10 +68,10 @@ const getGrades = async (req, res, next) => {
     const total_credits = (await get_total_credit(sid, level, term)).total_credit;
     const gpa = total_grade_point / total_credits;
 
-    console.log("total grade point for student_id " + sid + ":: " + total_grade_point);
-    console.log("total credits in level " + level + " term " + term + ":: " + total_credits);
+    // console.log("total grade point for student_id " + sid + ":: " + total_grade_point);
+    // console.log("total credits in level " + level + " term " + term + ":: " + total_credits);
 
-    res.status(201).json({ message: "getGrades", gpa: gpa, course_wise_grade: course_wise_grade });
+    res.status(201).json({ message: "getGrades", gpa: gpa, data: course_wise_grade });
   } catch (err) {
     const error = new HttpError("Fetching Courses to Add Failed", 500);
     return next(error);
@@ -77,7 +81,7 @@ const getGrades = async (req, res, next) => {
 const getExamRoutine = async (req, res, next) => {
   try {
     const sid = req.params.sid;
-    //console.log(sid);
+
     let queryRes = await pool.query(
       'SELECT co.course_id , et.exam_date, et.start_time, et.end_time , c.course_name\
         from "course offering" as co , "course registrations" as cr, "exam time" as et ,course as c \
@@ -112,7 +116,7 @@ const getExamRoutine = async (req, res, next) => {
 const getSeatPlan = async (req, res, next) => {
   try {
     const sid = req.params.sid;
-    console.log(sid);
+
     let queryRes = await pool.query(
       "SELECT ssp.row_no , ssp.col_no , l.building , l.room_no \
       from student_seat_plan as ssp , location as l \
@@ -137,17 +141,22 @@ const getSeatPlan = async (req, res, next) => {
 const getGuidelines = async (req, res, next) => {
   try {
     let queryRes = await pool.query("SELECT * from exam_guidelines where session_id=$1", [session_id]);
-    //console.log(queryRes);
+
     exam_guidelines_list = [];
     for (const element of queryRes.rows) {
       var guideline_obj = {};
       guideline_obj["guideline_id"] = element["guideline_id"];
       guideline_obj["description"] = element["description"];
       guideline_obj["file_path"] = element["file_path"];
+
+      let date_ = "";
+      date_ = (date_ + element["upload_date"]).substring(4, 16);
+      guideline_obj["upload_date"] = date_;
+
       exam_guidelines_list.push(guideline_obj);
     }
 
-    res.status(201).json({ message: "getGuidelines", exam_guidelines_list: exam_guidelines_list });
+    res.status(201).json({ message: "getGuidelines", data: exam_guidelines_list });
   } catch (err) {
     const error = new HttpError("Fetching exam guidelines Failed", 500);
     return next(error);

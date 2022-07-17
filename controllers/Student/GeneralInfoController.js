@@ -5,7 +5,9 @@ const session_id = require("../../placeHolder");
 
 const getAcademicCalender = async (req, res, next) => {
   try {
-    let queryRes = await pool.query("select * from session_phase where session_id=$1", [session_id]);
+    let queryRes = await pool.query("select * from session_phase where session_id=$1 ORDER BY phase_number", [
+      session_id,
+    ]);
 
     phase_list = [];
 
@@ -13,8 +15,15 @@ const getAcademicCalender = async (req, res, next) => {
       var phase_obj = {};
       phase_obj["phase_number"] = element["phase_number"];
       phase_obj["description"] = element["description"];
-      phase_obj["start_date"] = element["start_date"];
-      phase_obj["end_date"] = element["end_date"];
+
+      let date_ = "";
+      date_ = (date_ + element["start_date"]).substring(4, 16);
+      phase_obj["start_date"] = date_;
+
+      date_ = "";
+      date_ = (date_ + element["end_date"]).substring(4, 16);
+      phase_obj["end_date"] = date_;
+
       phase_obj["no_of_weeks"] = element["no_of_weeks"];
 
       phase_list.push(phase_obj);
@@ -66,7 +75,10 @@ const getNotices = async (req, res, next) => {
       notice_obj["notice_id"] = element["notice_id"];
       notice_obj["description"] = element["description"];
       notice_obj["file_path"] = element["file_path"];
-      notice_obj["upload_date"] = element["upload_date"];
+
+      let date_ = "";
+      date_ = (date_ + element["upload_date"]).substring(4, 16);
+      notice_obj["upload_date"] = date_;
 
       notice_list.push(notice_obj);
     }

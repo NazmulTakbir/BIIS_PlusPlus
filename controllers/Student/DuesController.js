@@ -19,8 +19,15 @@ const getPendingDues = async (req, res, next) => {
       due_obj = {};
       due_obj["description"] = element["description"];
       due_obj["amount"] = element["amount"];
-      due_obj["deadline"] = element["deadline"];
-      due_obj["payment_date"] = element["payment_date"];
+
+      let date_ = "";
+      date_ = (date_ + element["deadline"]).substring(4, 16);
+      due_obj["deadline"] = date_;
+
+      date_ = "";
+      date_ = (date_ + element["payment_date"]).substring(4, 16);
+      due_obj["payment_date"] = date_;
+
       due_obj["dues_status"] = element["dues_status"];
       due_obj["specification"] = element["specification"];
 
@@ -51,8 +58,15 @@ const getPaidDues = async (req, res, next) => {
       due_obj = {};
       due_obj["description"] = element["description"];
       due_obj["amount"] = element["amount"];
-      due_obj["deadline"] = element["deadline"];
-      due_obj["payment_date"] = element["payment_date"];
+
+      let date_ = "";
+      date_ = (date_ + element["deadline"]).substring(4, 16);
+      due_obj["deadline"] = date_;
+
+      date_ = "";
+      date_ = (date_ + element["payment_date"]).substring(4, 16);
+      due_obj["payment_date"] = date_;
+
       due_obj["dues_status"] = element["dues_status"];
       due_obj["specification"] = element["specification"];
 
