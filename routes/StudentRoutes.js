@@ -30,7 +30,9 @@ StudentRoutes.get("/exam/:sid/routine", ExamsController.getExamRoutine);
 StudentRoutes.get("/exam/:sid/seatplan", ExamsController.getSeatPlan);
 StudentRoutes.get("/exam/:sid/guidelines", ExamsController.getGuidelines);
 
-StudentRoutes.get("/scholarship/:sid/getData", ScholarshipController.getData);
+StudentRoutes.get("/scholarship/:sid/received", ScholarshipController.getReceived);
+StudentRoutes.get("/scholarship/:sid/processing", ScholarshipController.getProcessing);
+StudentRoutes.get("/scholarship/:sid/available", ScholarshipController.getAvailable);
 StudentRoutes.get("/scholarship/:sid/download/:scid", ScholarshipController.getForm);
 StudentRoutes.post("/scholarship/:sid/apply/:scid", ScholarshipController.postApplication);
 

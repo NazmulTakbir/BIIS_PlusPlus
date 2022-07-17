@@ -5,25 +5,30 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 
+const columnLabels = ["TYPE", "SESSION", "AMOUNT", "PAYMENT DATE"];
+
 const ScholarshipReceived = () => {
-  const [received, setReceived] = useState();
+  const [tableData, setTableData] = useState(make2DArray(1, 4));
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/student/scholarship/${studentID}/getData`);
-        const jsonData = await response.json();
-        setReceived(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+    fetchTableData(
+      `/api/student/scholarship/${studentID}/received`,
+      4,
+      {
+        scholarship_name: 0,
+        session_id: 1,
+        amount: 2,
+        payment_date: 3,
+      },
+      setTableData
+    );
   }, []);
 
   return (
@@ -35,7 +40,7 @@ const ScholarshipReceived = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(received)} </p>
+              <Table columnLabels={columnLabels} dataMatrix={tableData} />
             </div>
           </div>
         </div>

@@ -1,45 +1,58 @@
 import React from "react";
-import "./Table.css"
+import "./Table.css";
 
-function Table() {
+const Table = (props) => {
+  const { columnLabels, dataMatrix } = props;
+
+  let buttonMatrix = props.buttonMatrix;
+  if (buttonMatrix === undefined) {
+    buttonMatrix = [];
+  }
+
   return (
     <div className="table-container">
-      
       <table className="table-custom">
         <thead>
           <tr>
-            <th className="text-left">Month</th>
-            <th className="text-left">Sales</th>
+            {columnLabels.map((val) => {
+              return (
+                <th className="text-left" key={val}>
+                  {val}
+                </th>
+              );
+            })}
           </tr>
         </thead>
-        
-        <tbody className="table-hover">
-          <tr>
-            <td className="text-left">January</td>
-            <td className="text-left">$ 50,000.00</td>
-          </tr>
-          <tr>
-            <td className="text-left">February</td>
-            <td className="text-left">$ 10,000.00</td>
-          </tr>
-          <tr>
-            <td className="text-left">March</td>
-            <td className="text-left">$ 85,000.00</td>
-          </tr>
-          <tr>
-            <td className="text-left">April</td>
-            <td className="text-left">$ 56,000.00</td>
-          </tr>
-          <tr>
-            <td className="text-left">May</td>
-            <td className="text-left">$ 98,000.00</td>
-          </tr>
 
+        <tbody className="table-hover">
+          {dataMatrix.map((row, rowNum) => {
+            return (
+              <tr className="text-left" key={rowNum}>
+                {row.map((cellValue, columnNo) => {
+                  return (
+                    <td className="text-left" key={columnNo}>
+                      {cellValue}
+                    </td>
+                  );
+                })}
+                {buttonMatrix.length > rowNum ? (
+                  <td className="text-left">
+                    {buttonMatrix[rowNum].map((buttomDetails, columnNo) => {
+                      return (
+                        <button style={{ backgroundColor: buttomDetails[1], color: buttomDetails[2] }} key={columnNo}>
+                          {buttomDetails[0]}
+                        </button>
+                      );
+                    })}
+                  </td>
+                ) : null}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-
     </div>
   );
-}
+};
 
 export default Table;
