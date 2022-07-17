@@ -1,11 +1,16 @@
 import { Route, Redirect, Switch } from "react-router-dom";
 
-import TeacherInfo from "../pages/TeacherInfo";
-import Courses from "../pages/Courses";
-import Advisees from "../pages/Advisees";
-import DepartmentalIssues from "../pages/DepartmentIssues";
-import HallIssues from "../pages/HallIssues";
-import FeedbackComplaint from "../pages/FeedbackComplaint";
+import TeacherInfo from "../pages/Info/TeacherInfo";
+
+import AddGrades from "../pages/Exam/AddGrades";
+import ViewGrades from "../pages/Exam/ViewGrades";
+import Scrutinize from "../pages/Exam/Scrutinize";
+
+import CourseRegistration from "../pages/Advisees/CourseRegistration";
+import FeedbackComplaint from "../pages/Advisees/FeedbackComplaint";
+
+import DepartmentalIssues from "../pages/Department Office/DepartmentIssues";
+import HallIssues from "../pages/Hall Office/HallIssues";
 
 const TeacherRoutes = () => {
   return (
@@ -16,21 +21,32 @@ const TeacherRoutes = () => {
       <Route path="/teacherinfo" exact>
         <TeacherInfo />
       </Route>
-      <Route path="/courses" exact>
-        <Courses />
+
+      <Route path="/exam/addgrades" exact>
+        <AddGrades />
       </Route>
-      <Route path="/advisees" exact>
-        <Advisees />
+      <Route path="/exam/viewgrades" exact>
+        <ViewGrades />
       </Route>
+      <Route path="/exam/scrutinize" exact>
+        <Scrutinize />
+      </Route>
+
+      <Route path="/advisees/courseregistration" exact>
+        <CourseRegistration />
+      </Route>
+      <Route path="/advisees/feedback" exact>
+        <FeedbackComplaint />
+      </Route>
+
       <Route path="/deptissues" exact>
         <DepartmentalIssues />
       </Route>
+
       <Route path="/hallissues" exact>
         <HallIssues />
       </Route>
-      <Route path="/feedbackcomplaint" exact>
-        <FeedbackComplaint />
-      </Route>
+
       <Redirect to="/teacherinfo" />
     </Switch>
   );

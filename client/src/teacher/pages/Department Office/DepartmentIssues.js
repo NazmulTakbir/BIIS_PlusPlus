@@ -1,11 +1,10 @@
 import React from "react";
 
-import Sidebar from "../../shared/components/Sidebar/Sidebar";
-import Header from "../../shared/components/Header/Header";
-import DatabaseTest from "../../shared/components/DatabaseTest";
-import { SidebarData } from "../components/SidebarData";
+import Sidebar from "../../../shared/components/Sidebar/Sidebar";
+import Header from "../../../shared/components/Header/Header";
+import { SidebarData } from "../../components/SidebarData";
 
-import "../../shared/components/MainContainer.css";
+import "../../../shared/components/MainContainer.css";
 
 const DepartmentIssues = () => {
   return (
@@ -17,7 +16,6 @@ const DepartmentIssues = () => {
           <div className="main_container">
             <div className="content">
               <h1>DepartmentIssues</h1>
-              <DatabaseTest />
             </div>
           </div>
         </div>

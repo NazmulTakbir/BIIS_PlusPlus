@@ -4,7 +4,6 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PeopleIcon from "@mui/icons-material/People";
 import BusinessIcon from "@mui/icons-material/Business";
 import HomeIcon from "@mui/icons-material/Home";
-import FeedbackIcon from "@mui/icons-material/Feedback";
 
 export const SidebarData = [
   {
@@ -13,14 +12,14 @@ export const SidebarData = [
     link: "/teacherinfo",
   },
   {
-    title: "Courses",
+    title: "Exam",
     icon: <LibraryBooksIcon />,
-    link: "/courses",
+    link: "/exam/addgrades",
   },
   {
     title: "Advisees",
     icon: <PeopleIcon />,
-    link: "/advisees",
+    link: "/advisees/courseregistration",
   },
   {
     title: "Hall Issues",
@@ -31,10 +30,5 @@ export const SidebarData = [
     title: "Department Issues",
     icon: <BusinessIcon />,
     link: "/deptissues",
-  },
-  {
-    title: "Feedback/Complain",
-    icon: <FeedbackIcon />,
-    link: "/feedbackcomplaint",
   },
 ];
