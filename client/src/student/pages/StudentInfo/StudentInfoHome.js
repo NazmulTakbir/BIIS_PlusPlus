@@ -36,7 +36,7 @@ const StudentInfoHome = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Profile ProfileData={studentInfo}/>
+              <Profile ProfileData={studentInfo} />
             </div>
           </div>
         </div>

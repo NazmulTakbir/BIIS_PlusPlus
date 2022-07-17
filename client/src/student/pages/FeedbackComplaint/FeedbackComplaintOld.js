@@ -5,25 +5,36 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { make2DArray, fetchTableData, fetchButtonMatrix } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 
-const FeedbackComplaintOld = () => {
-  const [feedbacks, setFeedbacks] = useState();
+const columnLabels = ["SUBJECT", "RECEIVER", "DATE", "DETAILS"];
+
+const ScholarshipReceived = () => {
+  const [tableData, setTableData] = useState(make2DArray(1, 3));
+  const [buttonMatrix, setButtonMatrix] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/student//feedbackcomplaint/${studentID}/pastsubmissions`);
-        const jsonData = await response.json();
-        setFeedbacks(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+    fetchTableData(
+      `/api/student/feedbackcomplaint/${studentID}/pastsubmissions`,
+      3,
+      {
+        subject: 0,
+        receiver_type: 1,
+        submmission_date: 2,
+      },
+      setTableData
+    );
+
+    fetchButtonMatrix(
+      `/api/student/feedbackcomplaint/${studentID}/pastsubmissions`,
+      [["View", "#DB6066", "white"]],
+      setButtonMatrix
+    );
   }, []);
 
   return (
@@ -35,7 +46,7 @@ const FeedbackComplaintOld = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(feedbacks)} </p>
+              <Table columnLabels={columnLabels} dataMatrix={tableData} buttonMatrix={buttonMatrix} />
             </div>
           </div>
         </div>
@@ -44,4 +55,4 @@ const FeedbackComplaintOld = () => {
   );
 };
 
-export default FeedbackComplaintOld;
+export default ScholarshipReceived;
