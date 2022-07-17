@@ -1,0 +1,26 @@
+.checkbox-container{
+    margin: auto;
+}
+
+.checkbox-custom{
+    margin: auto;
+    padding: 10px 10px 10px 35px;
+    color: #394f68;
+    text-align: left;
+}
+
+.checkbox-label{
+    color: #b13137;
+    font-weight: bolder;
+    font-size: 14px;
+    text-align: left;
+    padding-left: 10px;
+    display: inline;
+}
+
+@media screen and (max-width: 650px){
+    .checkbox-custom{
+        width: 95% !important;
+        text-align: center;
+    }
+}

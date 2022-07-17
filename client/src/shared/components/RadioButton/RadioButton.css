@@ -1,0 +1,24 @@
+.radio-btn-container{
+    margin: auto;
+}
+
+.radio-btn-custom{
+    margin: auto;
+    padding: 10px 10px 10px 25px;
+    color: #394f68;
+}
+
+.radio-btn-label{
+    color: #b13137;
+    font-weight: bolder;
+    font-size: 14px;
+    text-align: left;
+    padding-left: 10px;
+}
+
+
+@media screen and (max-width: 650px){
+    .radio-btn-custom{
+        width: 95% !important;
+    }
+}
