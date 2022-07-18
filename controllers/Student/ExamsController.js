@@ -1,32 +1,7 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
-
-//utils methos
-const get_total_credit = async (sid, level, term) => {
-  let total_credits = 0.0;
-  let queryRes = await pool.query(
-    'SELECT offering_id from "course registrations" where student_id = $1 and session_id = $2',
-    [sid, session_id]
-  );
-
-  for (const element of queryRes.rows) {
-    const offeringID = element["offering_id"];
-    queryRes = await pool.query('SELECT course_id from "course offering" where offering_id = $1', [offeringID]);
-    const courseID = queryRes.rows[0]["course_id"];
-
-    queryRes = await pool.query("SELECT credits from course where course_id = $1 and level=$2 and term=$3", [
-      courseID,
-      level,
-      term,
-    ]);
-    total_credits += queryRes.rows[0]["credits"];
-  }
-
-  var returnedObject = {};
-  returnedObject["total_credit"] = total_credits;
-  return returnedObject;
-};
+const { get_dept_level_term, get_total_credit } = require("./Util");
 
 const getGrades = async (req, res, next) => {
   try {
@@ -65,7 +40,7 @@ const getGrades = async (req, res, next) => {
     }
 
     //now divide by the total credit he has registered for
-    const total_credits = (await get_total_credit(sid, level, term)).total_credit;
+    const total_credits = (await get_total_credit(sid, level, term, session_id)).total_credit;
     const gpa = total_grade_point / total_credits;
 
     // console.log("total grade point for student_id " + sid + ":: " + total_grade_point);
@@ -73,7 +48,7 @@ const getGrades = async (req, res, next) => {
 
     res.status(201).json({ message: "getGrades", gpa: gpa, data: course_wise_grade });
   } catch (err) {
-    const error = new HttpError("Fetching Courses to Add Failed", 500);
+    const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }
 };
@@ -116,22 +91,26 @@ const getExamRoutine = async (req, res, next) => {
 const getSeatPlan = async (req, res, next) => {
   try {
     const sid = req.params.sid;
+    const { level, term } = await get_dept_level_term(sid);
 
     let queryRes = await pool.query(
-      "SELECT ssp.row_no , ssp.col_no , l.building , l.room_no \
-      from student_seat_plan as ssp , location as l \
-      where ssp.location_id = l.location_id and ssp.student_id = $1 and ssp.session_id = $2",
+      "select row_no, col_no, t2.student_id from student_seat_plan as t1, student as t2 where \
+      t1.student_id = t2.student_id and t2.level=$1 and t2.term=$2 and session_id=$4 \
+      and location_id=(select location_id from student_seat_plan where student_id=$3 \
+      and session_id=$4)",
+      [level, term, sid, session_id]
+    );
+    const seatingGrid = queryRes.rows;
+
+    queryRes = await pool.query(
+      "select building, room_no from location where location_id=(select location_id from \
+        student_seat_plan where student_id=$1 and session_id=$2)",
       [sid, session_id]
     );
-    //console.log(queryRes);
+    const building = queryRes.rows[0]["building"];
+    const room_no = queryRes.rows[0]["room_no"];
 
-    res.status(201).json({
-      message: "getSeatPlan",
-      row_no: queryRes.rows[0]["row_no"],
-      col_no: queryRes.rows[0]["col_no"],
-      building: queryRes.rows[0]["building"],
-      room_no: queryRes.rows[0]["room_no"],
-    });
+    res.status(201).json({ message: "getSeatPlan", data: seatingGrid, building: building, room_no: room_no });
   } catch (err) {
     const error = new HttpError("Fetching seat plan Failed", 500);
     return next(error);
