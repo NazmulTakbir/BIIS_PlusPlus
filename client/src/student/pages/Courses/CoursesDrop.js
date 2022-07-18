@@ -15,12 +15,12 @@ const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "SELECT"];
 
 const CoursesDropDrop = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 4));
+  const [tableData, setTableData] = useState(make2DArray(1, 3));
 
   useEffect(() => {
     fetchTableData(
       `/api/student/courses/${studentID}/coursestodrop`,
-      4,
+      3,
       {
         course_id: 0,
         course_name: 1,
@@ -40,7 +40,7 @@ const CoursesDropDrop = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} checkBox="true"/>
+              <Table columnLabels={columnLabels} dataMatrix={tableData} checkBox="true" />
             </div>
           </div>
         </div>

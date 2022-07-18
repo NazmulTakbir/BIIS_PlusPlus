@@ -18,6 +18,7 @@ import Stack from "@mui/material/Stack";
 const FeedbackComplaintNew = () => {
   const [subject, setSubject] = useState("");
   const [details, setDetails] = useState("");
+  const [receiver, setReceiver] = useState("");
 
   const history = useHistory();
 
@@ -26,6 +27,7 @@ const FeedbackComplaintNew = () => {
     try {
       console.log(subject);
       console.log(details);
+      console.log(receiver);
       history.push("/");
     } catch (err) {}
   };
@@ -63,7 +65,13 @@ const FeedbackComplaintNew = () => {
                   onChange={(e) => setDetails(e.target.value)}
                 />
 
-                <RadioButton label="Receiver" name="receiver" options={["Advisor", "Department Head"]} />
+                <RadioButton
+                  label="Receiver"
+                  name="receiver"
+                  options={["Advisor", "Department Head"]}
+                  value={receiver}
+                  onChange={(e) => setReceiver(e.target.value)}
+                />
 
                 <div
                   className="buttons-stack"
