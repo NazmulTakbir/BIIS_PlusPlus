@@ -3,8 +3,9 @@
 }
 
 .radio-btn-custom{
+    text-align: left;
     margin: auto;
-    padding: 10px 10px 10px 25px;
+    padding: 10px;
     color: #394f68;
 }
 

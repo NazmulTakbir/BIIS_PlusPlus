@@ -9,7 +9,7 @@
 .NavbarList {
   height: auto;
   padding: 0;
-  margin: auto;
+  margin: 10px;
   display: flex;
   width: fit-content;
 }

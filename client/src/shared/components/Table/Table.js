@@ -42,27 +42,32 @@ const Table = (props) => {
                     </td>
                   );
                 })}
-                
+
                 {buttonMatrix.length > rowNum ? (
                   <td className="text-left">
-                    {buttonMatrix[rowNum].map((buttomDetails, columnNo) => {
-                      return (
-                        <div
-                          className="text-block"
-                          style={{ margin: "auto", textAlign: "center" }}
-                        >
+                    <div
+                      className="text-block"
+                      style={{
+                        margin: "auto", 
+                        textAlign: "center",
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                        width: "90%",
+                      }}
+                    >
+                      {buttonMatrix[rowNum].map((buttomDetails, columnNo) => {
+                        return (
                           <CustomButton
                             label={buttomDetails[0]}
                             variant="contained"
                             color={buttomDetails[2]}
                             bcolor={buttomDetails[1]}
                           />
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </td>
                 ) : null}
-
 
                 {checkBox === "true" ? (
                   <td className="text-left">
@@ -74,8 +79,6 @@ const Table = (props) => {
                     </div>
                   </td>
                 ) : null}
-
-
               </tr>
             );
           })}
