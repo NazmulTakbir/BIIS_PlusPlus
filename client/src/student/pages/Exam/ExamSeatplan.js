@@ -26,7 +26,6 @@ const processSeatPlan = (rawData) => {
     if (col > maxColumn / 2) {
       col += 1;
     }
-    console.log(row, col);
     dataMatrix[row - 1][col - 1] = rawData[i]["student_id"];
   }
 
@@ -41,7 +40,7 @@ const ExamSeatPlan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student//exam/${studentID}/seatplan`);
+        const response = await fetch(`/api/student/exam/${studentID}/seatplan`);
         const jsonData = await response.json();
         setSeatplan(processSeatPlan(jsonData["data"]));
         setBuilding(jsonData["building"]);

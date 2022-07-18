@@ -32,17 +32,24 @@ const getPastSubmissions = async (req, res, next) => {
 const postNewSubmission = async (req, res, next) => {
   try {
     sid = req.params.sid;
-    console.log(req.body);
-    const { complaint_id, student_id, teacher_id, subject, details, submission_date } = req.body;
-    queryRes = await pool.query(
-      "INSERT INTO public.complaint (complaint_id, student_id, teacher_id, subject, details, submission_date) \
-      VALUES($1 , $2 , $3 , $4 , $5 , $6)",
-      [complaint_id, student_id, teacher_id, subject, details, submission_date]
-    );
 
-    res.status(201).json({ message: "postNewSubmission" });
+    const { subject, details, submission_date, receiver } = req.body;
+
+    if (receiver !== "Department Head" && receiver !== "Advisor") {
+      res.status(201).json({ message: "Unknown Receiver Type" });
+    } else {
+      let queryRes = await pool.query("select advisor_id from student where student_id=$1", [sid]);
+      const teacher_id = queryRes.rows[0]["advisor_id"];
+
+      queryRes = await pool.query(
+        "INSERT INTO public.complaint(student_id, teacher_id, subject, details, submission_date, \
+          receiver_type) VALUES ($1, $2, $3, $4, $5, $6)",
+        [sid, teacher_id, subject, details, submission_date, receiver]
+      );
+      res.status(201).json({ message: "postNewSubmission" });
+    }
   } catch (err) {
-    const error = new HttpError("Fetching Courses to Drop Failed", 500);
+    const error = new HttpError("Submitting Feedback Failed", 500);
     return next(error);
   }
 };

@@ -20,7 +20,6 @@ const ExamGuidelines = () => {
         const response = await fetch(`/api/student/exam/${studentID}/guidelines`);
         const jsonData = await response.json();
         setNotices(jsonData);
-        console.log(notices.data);
       } catch (err) {
         console.log(err);
       }

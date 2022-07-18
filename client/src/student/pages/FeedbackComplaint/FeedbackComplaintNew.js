@@ -13,7 +13,7 @@ import RadioButton from "../../../shared/components/RadioButton/RadioButton";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import Stack from "@mui/material/Stack";
 
-// const studentID = require("../../../placeHolder");
+const studentID = require("../../../placeHolder");
 
 const FeedbackComplaintNew = () => {
   const [subject, setSubject] = useState("");
@@ -25,9 +25,19 @@ const FeedbackComplaintNew = () => {
   const submissionHandler = async (event) => {
     event.preventDefault();
     try {
-      console.log(subject);
-      console.log(details);
-      console.log(receiver);
+      // const response = await fetch(`/api/student/feedbackcomplaint/${studentID}/newsubmission`, {
+      await fetch(`/api/student/feedbackcomplaint/${studentID}/newsubmission`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: subject,
+          details: details,
+          receiver: receiver,
+          submission_date: "18 JULY 2022",
+        }),
+      });
+      // const jsonData = await response.json();
+      // console.log(jsonData);
       history.push("/");
     } catch (err) {}
   };

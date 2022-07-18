@@ -42,15 +42,12 @@ const Table = (props) => {
                     </td>
                   );
                 })}
-                
+
                 {buttonMatrix.length > rowNum ? (
                   <td className="text-left">
                     {buttonMatrix[rowNum].map((buttomDetails, columnNo) => {
                       return (
-                        <div
-                          className="text-block"
-                          style={{ margin: "auto", textAlign: "center" }}
-                        >
+                        <div key={columnNo} className="text-block" style={{ margin: "auto", textAlign: "center" }}>
                           <CustomButton
                             label={buttomDetails[0]}
                             variant="contained"
@@ -63,19 +60,13 @@ const Table = (props) => {
                   </td>
                 ) : null}
 
-
                 {checkBox === "true" ? (
                   <td className="text-left">
-                    <div
-                      className="text-block"
-                      style={{ margin: "auto", textAlign: "center" }}
-                    >
+                    <div className="text-block" style={{ margin: "auto", textAlign: "center" }}>
                       <CheckboxSingle name="checkbox" width="max-content" />
                     </div>
                   </td>
                 ) : null}
-
-
               </tr>
             );
           })}
