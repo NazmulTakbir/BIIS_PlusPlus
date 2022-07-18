@@ -46,7 +46,7 @@ const FeedbackComplaintNew = () => {
                 resize="vertical"
                 name="feedback"
                 placeholder="Type your feedback here"
-                label="Subject"
+                label="Feedback"
               />
 
               <RadioButton label="Receiver" name="receiver" options={["Advisor", "Department Head"]} />

@@ -1,5 +1,6 @@
 import React from "react";
 import "./Table.css";
+import CustomButton from "../CustomButton/CustomButton"
 
 const Table = (props) => {
   const { columnLabels, dataMatrix } = props;
@@ -17,7 +18,7 @@ const Table = (props) => {
             {columnLabels.map((val) => {
               return (
                 <th className="text-left" key={val}>
-                  {val}
+                  <div className="text-block">{val}</div>
                 </th>
               );
             })}
@@ -31,7 +32,7 @@ const Table = (props) => {
                 {row.map((cellValue, columnNo) => {
                   return (
                     <td className="text-left" key={columnNo}>
-                      {cellValue}
+                      <div className="text-block">{cellValue}</div>
                     </td>
                   );
                 })}
@@ -39,9 +40,14 @@ const Table = (props) => {
                   <td className="text-left">
                     {buttonMatrix[rowNum].map((buttomDetails, columnNo) => {
                       return (
-                        <button style={{ backgroundColor: buttomDetails[1], color: buttomDetails[2] }} key={columnNo}>
-                          {buttomDetails[0]}
-                        </button>
+                        <div className="text-block" style={{ margin: "auto", textAlign: "center"}}>
+                          <CustomButton
+                            label={buttomDetails[0]}
+                            variant="contained"
+                            color={buttomDetails[2]}
+                            bcolor={buttomDetails[1]}
+                          />
+                        </div>
                       );
                     })}
                   </td>

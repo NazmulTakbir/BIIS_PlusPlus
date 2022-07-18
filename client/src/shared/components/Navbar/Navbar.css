@@ -15,7 +15,7 @@
 }
 
 .NavbarList .tab {
-  width: 150px;
+  width: max-content;
   text-align: center;
   height: 50px;
   font-size: 16px;
