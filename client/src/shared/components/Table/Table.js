@@ -1,6 +1,7 @@
 import React from "react";
 import "./Table.css";
-import CustomButton from "../CustomButton/CustomButton"
+import CustomButton from "../CustomButton/CustomButton";
+import CheckboxSingle from "../CheckboxSingle/CheckboxSingle";
 
 const Table = (props) => {
   const { columnLabels, dataMatrix } = props;
@@ -8,6 +9,11 @@ const Table = (props) => {
   let buttonMatrix = props.buttonMatrix;
   if (buttonMatrix === undefined) {
     buttonMatrix = [];
+  }
+
+  let checkBox = props.checkBox;
+  if (checkBox === undefined) {
+    checkBox = "";
   }
 
   return (
@@ -36,11 +42,15 @@ const Table = (props) => {
                     </td>
                   );
                 })}
+                
                 {buttonMatrix.length > rowNum ? (
                   <td className="text-left">
                     {buttonMatrix[rowNum].map((buttomDetails, columnNo) => {
                       return (
-                        <div className="text-block" style={{ margin: "auto", textAlign: "center"}}>
+                        <div
+                          className="text-block"
+                          style={{ margin: "auto", textAlign: "center" }}
+                        >
                           <CustomButton
                             label={buttomDetails[0]}
                             variant="contained"
@@ -52,6 +62,20 @@ const Table = (props) => {
                     })}
                   </td>
                 ) : null}
+
+
+                {checkBox === "true" ? (
+                  <td className="text-left">
+                    <div
+                      className="text-block"
+                      style={{ margin: "auto", textAlign: "center" }}
+                    >
+                      <CheckboxSingle name="checkbox" width="max-content" />
+                    </div>
+                  </td>
+                ) : null}
+
+
               </tr>
             );
           })}
