@@ -9,13 +9,13 @@
 .NavbarList {
   height: auto;
   padding: 0;
-  margin: auto;
+  margin: 10px;
   display: flex;
   width: fit-content;
 }
 
 .NavbarList .tab {
-  width: 150px;
+  width: max-content;
   text-align: center;
   height: 50px;
   font-size: 16px;

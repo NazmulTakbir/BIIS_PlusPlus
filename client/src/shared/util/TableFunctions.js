@@ -24,11 +24,19 @@ function generateTableData(rawData, columns, columnMap) {
   return dataMatrix;
 }
 
-const fetchTableData = async (api_route, columns, columnMap, setTableData) => {
+const fetchTableData = async (api_route, columns, columnMap, setTableData, setExtraData = null) => {
   try {
     const response = await fetch(api_route);
     const jsonData = await response.json();
     setTableData(generateTableData(jsonData["data"], columns, columnMap));
+
+    if (!(setExtraData === undefined || setExtraData === null)) {
+      let returnData = {};
+      for (var key in jsonData) {
+        if ((key != "data") & (key != "message")) returnData[key] = jsonData[key];
+      }
+      setExtraData(returnData);
+    }
   } catch (err) {
     console.log(err);
   }

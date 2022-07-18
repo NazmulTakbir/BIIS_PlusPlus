@@ -3,8 +3,8 @@
 }
 
 .checkbox-custom{
-    margin: auto;
-    padding: 10px 10px 10px 35px;
+    margin: 0;
+    padding: 0;
     color: #394f68;
     text-align: left;
 }
@@ -16,6 +16,10 @@
     text-align: left;
     padding-left: 10px;
     display: inline;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root{
+    padding: 3px !important;
 }
 
 @media screen and (max-width: 650px){

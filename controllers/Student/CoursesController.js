@@ -2,18 +2,7 @@ const { query } = require("express");
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
-
-//utils methos
-const get_dept_level_term = async (sid) => {
-  let queryRes = await pool.query("SELECT dept_id, level, term from student where student_id = $1", [sid]);
-
-  var returnedObject = {};
-  returnedObject["dept_id"] = queryRes.rows[0]["dept_id"];
-  returnedObject["level"] = queryRes.rows[0]["level"];
-  returnedObject["term"] = queryRes.rows[0]["term"];
-
-  return returnedObject;
-};
+const { get_dept_level_term } = require("./Util");
 
 const getRegisteredCourses = async (req, res, next) => {
   try {

@@ -6,6 +6,7 @@ const CustomButton = (props) => {
   return (
     <div className="btn-container">
       <Button
+        type={props.type}
         className="btn-custom"
         variant={props.variant}
         style={{ color: props.color, backgroundColor: props.bcolor }}

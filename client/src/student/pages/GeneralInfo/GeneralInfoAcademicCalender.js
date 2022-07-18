@@ -5,25 +5,30 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 
+const columnLabels = ["ACTIVITY", "FROM", "TO", "WEEKS"];
+
 const GeneralInfoAcademicCalender = () => {
-  const [calender, setCalender] = useState();
+  const [tableData, setTableData] = useState(make2DArray(1, 4));
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/student//generalinfo/${studentID}/academiccalender`);
-        const jsonData = await response.json();
-        setCalender(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+    fetchTableData(
+      `/api/student/generalinfo/${studentID}/academiccalender`,
+      4,
+      {
+        description: 0,
+        start_date: 1,
+        end_date: 2,
+        no_of_weeks: 3,
+      },
+      setTableData
+    );
   }, []);
 
   return (
@@ -35,7 +40,7 @@ const GeneralInfoAcademicCalender = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p> {JSON.stringify(calender)} </p>
+              <Table columnLabels={columnLabels} dataMatrix={tableData} />
             </div>
           </div>
         </div>

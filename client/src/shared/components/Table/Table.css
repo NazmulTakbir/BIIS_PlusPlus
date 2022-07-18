@@ -1,81 +1,81 @@
-.table-container{
-    margin-top: 20px;
+.table-container {
+  margin-top: 20px;
 }
 
 .table-custom {
   background: white;
-  border-radius:3px;
+  border-radius: 3px;
   border-collapse: collapse;
   margin: auto;
   width: 80%;
-  padding:5px;
+  padding: 5px;
   animation: float 5s infinite;
 }
- 
+
 th {
-  color:#D5DDE5;;
-  background:#760006;
+  color: #d5dde5;
+  background: #760006;
   border-right: 1px solid #e7e7e7;
-  font-size:15px;
+  font-size: 15px;
   font-weight: 100;
-  padding:10px;
-  text-align:left;
+  padding: 10px;
+  text-align: left;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  vertical-align:middle;
+  vertical-align: middle;
 }
 
 th:first-child {
-  border-top-left-radius:3px;
+  border-top-left-radius: 3px;
   width: 100px;
 }
- 
+
 th:last-child {
-  border-top-right-radius:3px;
-  border-right:none;
+  border-top-right-radius: 3px;
+  border-right: none;
 }
-  
+
 tr {
-  border-top: 1px solid #C1C3D1;
-  border-bottom: 1px solid #C1C3D1;
-  color:#666B85;
-  font-size:13px;
-  font-weight:normal;
-  text-align: center !important;  
+  border-top: 1px solid #c1c3d1;
+  border-bottom: 1px solid #c1c3d1;
+  color: #666b85;
+  font-size: 13px;
+  font-weight: normal;
+  text-align: center !important;
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
- 
+
 tr:hover td {
-  background:#4E5066;
-  color:#FFFFFF;
+  background: #4e5066;
+  color: #ffffff;
   border-top: 1px solid #22262e;
 }
- 
+
 tr:first-child {
-  border-top:none;
+  border-top: none;
 }
 
 tr:last-child {
-  border-bottom:none;
+  border-bottom: none;
 }
- 
+
 tr:nth-child(odd) td {
-  background:#EBEBEB;
+  background: #ebebeb;
 }
- 
+
 tr:nth-child(odd):hover td {
-  background:#4E5066;
+  background: #4e5066;
 }
 
 tr:last-child td:first-child {
-  border-bottom-left-radius:3px;
+  border-bottom-left-radius: 3px;
 }
- 
+
 tr:last-child td:last-child {
-  border-bottom-right-radius:3px;
+  border-bottom-right-radius: 3px;
 }
- 
+
 td {
-  background: #FFFFFF;
+  background: #ffffff;
   margin: 5px;
   padding: 8px;
   width: fit-content;
@@ -83,9 +83,13 @@ td {
   vertical-align: middle;
   font-size: 13px;
   text-shadow: -1px -1px 1px rgb(0 0 0 / 10%);
-  border-right: 1px solid #C1C3D1;
+  border-right: 1px solid #c1c3d1;
 }
 
 td:last-child {
   border-right: 0px;
+}
+
+.text-block {
+  width: max-content;
 }

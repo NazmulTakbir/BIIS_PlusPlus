@@ -1,9 +1,14 @@
+.btn-container{
+    margin-bottom: 8px;
+}
+
 .btn-custom{
-    padding: 5px 15px 5px 15px;
-    font-size: 14px;
-    border-radius: 8px;
+    padding: 5px 10px 5px 10px !important;
+    margin: auto;
+    font-size: 12px !important;
+    border-radius: 5px !important;
     text-transform: none;
-    transition: 0.4s;
+    transition: 0.4s !important;
     font-weight: bolder;
 }
 
