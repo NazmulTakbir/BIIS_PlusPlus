@@ -39,7 +39,7 @@ const CoursesAdd = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} />
+              <Table columnLabels={columnLabels} dataMatrix={tableData} checkBox="true"/>
             </div>
           </div>
         </div>

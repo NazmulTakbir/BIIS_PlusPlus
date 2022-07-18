@@ -62,10 +62,21 @@ const ExamSeatPlan = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <p>
-                {" "}
-                {building} {roomNo}{" "}
-              </p>
+              <div
+                className="room-no"
+                style={{
+                  fontWeight: "bolder",
+                  color: "rgb(105 122 141)",
+                  width: "max-content",
+                  border: "1px solid",
+                  margin: "auto",
+                  padding: "10px",
+                  fontSize: "14px",
+                  borderRadius: "8px",
+                }}
+              >
+                Exam Room: {building} {roomNo}{" "}
+              </div>
               <div className="table-container">
                 <table className="table-custom">
                   <tbody className="table-hover">
@@ -74,7 +85,14 @@ const ExamSeatPlan = () => {
                         <tr className="text-left" key={rowNum}>
                           {row.map((cellValue, columnNo) => {
                             return (
-                              <td className="text-left" key={columnNo}>
+                              <td
+                                className="text-left"
+                                key={columnNo}
+                                style={{
+                                  backgroundColor: studentID === cellValue ? "#f5d2d2" : "",
+                                  color: studentID === cellValue ? "rgb(151 0 0)" : "",
+                                }}
+                              >
                                 {cellValue}
                               </td>
                             );
