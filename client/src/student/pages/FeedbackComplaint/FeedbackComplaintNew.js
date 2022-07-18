@@ -52,7 +52,7 @@ const FeedbackComplaintNew = () => {
             <div className="content">
               <Navbar NavbarData={NavbarData} />
 
-              <form onSubmit={submissionHandler}>
+              <form onSubmit={submissionHandler} style={{width: "350px", margin: "auto"}}>
                 <Textbox
                   height="40px"
                   width="450px"
