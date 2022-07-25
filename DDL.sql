@@ -329,3 +329,9 @@ CREATE TABLE "dues type"
     description text,
     amount text
 );
+
+CREATE OR REPLACE VIEW "academic profile" AS 
+select student_id, session_id, course_id, course_name, credits, grade_point, letter_grade,
+level, term
+from "result summary" as r natural join "course offering" as co natural join course as c
+where result_status='published';

@@ -105,12 +105,7 @@ const getCoursesToDrop = async (req, res, next) => {
 
 const postAddRequest = async (req, res, next) => {
   try {
-    placeHolder = {
-      addID: 1,
-    };
-
-    // const { addID } = req.body;
-    const { addID } = placeHolder;
+    const { addID } = req.body;
 
     let queryRes = await pool.query('select * from "registration request" where offering_id = $1 and student_id = $2', [
       addID,
@@ -134,12 +129,7 @@ const postAddRequest = async (req, res, next) => {
 
 const postDropRequest = async (req, res, next) => {
   try {
-    placeHolder = {
-      dropID: 1,
-    };
-
-    // const { dropID } = req.body;
-    const { dropID } = placeHolder;
+    const { dropID } = req.body;
 
     let queryRes = await pool.query('select * from "registration request" where offering_id = $1 and student_id = $2', [
       dropID,

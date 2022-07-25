@@ -33,7 +33,7 @@ const fetchTableData = async (api_route, columns, columnMap, setTableData, setEx
     if (!(setExtraData === undefined || setExtraData === null)) {
       let returnData = {};
       for (var key in jsonData) {
-        if ((key != "data") & (key != "message")) returnData[key] = jsonData[key];
+        if (key !== "data") returnData[key] = jsonData[key];
       }
       setExtraData(returnData);
     }
