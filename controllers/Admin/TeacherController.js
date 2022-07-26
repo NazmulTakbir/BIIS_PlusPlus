@@ -4,9 +4,15 @@ const session_id = require("../../placeHolder");
 
 const essentialAttributes = [];
 
-const allAttributes = [];
+const allAttributes = ["teacher_id", "dept_id", "name", "room_no", "office_phone", "cell_phone", "email", "link"];
 
-const createTeacher = async (data) => {};
+const createTeacher = async (data) => {
+  await pool.query(
+    "INSERT INTO public.teacher(teacher_id, dept_id, name, room_no, office_phone, cell_phone, email, link) \
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+    data
+  );
+};
 
 const postAddTeacher = async (req, res, next) => {
   try {

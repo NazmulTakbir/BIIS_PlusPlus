@@ -1,12 +1,15 @@
+const { query } = require("express");
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
 
 const essentialAttributes = [];
 
-const allAttributes = [];
+const allAttributes = ["description", "file_path", "upload_date"];
 
-const createNotice = async (data) => {};
+const createNotice = async (data) => {
+  await pool.query("INSERT INTO public.notice(description, file_path, upload_date) VALUES ($1, $2, $3)", data);
+};
 
 const postAddNotice = async (req, res, next) => {
   try {

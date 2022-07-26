@@ -4,9 +4,15 @@ const session_id = require("../../placeHolder");
 
 const essentialAttributes = [];
 
-const allAttributes = [];
+const allAttributes = ["course_id", "session_id", "exam_slot_id"];
 
-const createCourseOffering = async (data) => {};
+const createCourseOffering = async (data) => {
+  await pool.query(
+    'INSERT INTO public."course offering"(offering_id, course_id, session_id, exam_slot_id) \
+     VALUES ($1, $2, $3, $4)',
+    data
+  );
+};
 
 const postAddCourseOffering = async (req, res, next) => {
   try {

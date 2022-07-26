@@ -24,4 +24,6 @@ AdminRoutes.post("/offering/add", CourseOfferingController.postAddCourseOffering
 
 AdminRoutes.post("/courseteacher/add", CourseTeacherController.postAddCourseTeacher);
 
+AdminRoutes.post("/notice/add", NoticeController.postAddNotice);
+
 module.exports = AdminRoutes;

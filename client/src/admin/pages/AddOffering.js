@@ -39,7 +39,7 @@ const AddStudents = () => {
         skipEmptyLines: true,
         complete: async function (results, file) {
           console.log();
-          await fetch(`/api/admin/teacher/add`, {
+          await fetch(`/api/admin/offering/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -47,7 +47,7 @@ const AddStudents = () => {
             }),
           });
           setFile("");
-          setMessage("Teachers Added Successfully");
+          setMessage("Course Offerings Added Successfully");
           fileRef.current.value = null;
         },
       });

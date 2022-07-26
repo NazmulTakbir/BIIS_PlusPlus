@@ -2,9 +2,7 @@ import React from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PeopleIcon from "@mui/icons-material/People";
-import BusinessIcon from "@mui/icons-material/Business";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import FeedbackIcon from "@mui/icons-material/Feedback";
 
 export const SidebarData = [
   {
