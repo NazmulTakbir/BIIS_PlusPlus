@@ -3,6 +3,33 @@ const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
 const { get_dept_level_term, get_total_credit } = require("./Util");
 
+
+const get_completed_level_term = async (sid) => {
+  let queryRes = await pool.query(" \
+      select level , term from student where student_id = $1 \
+  " , [sid])
+  const curr_level = queryRes.rows[0]["level"];
+  const curr_term = queryRes.rows[0]["term"]; 
+  
+  for(var level = 1 ; level<=curr_level ; level++){
+    var term = 1;
+
+  }
+  queryRes = await pool.query(
+    "SELECT s.level , s.term from student as s , course as c , 'course offering' as co \
+    'result summary' as rs \
+    where s.sid = $1 and rs.student_id = $1 and rs.offering_id = co.offering_id and \
+    co.course_id = c.course_id 
+     ",
+    [sid]
+  );
+
+  var returnedObject = {};
+  returnedObject["dept_name"] = queryRes.rows[0]["dept_name"];
+  returnedObject["hall_name"] = queryRes.rows[0]["hall_name"];
+  return returnedObject;
+};
+
 const getGrades = async (req, res, next) => {
   try {
     let total_grade_point = 0.0;
@@ -26,7 +53,7 @@ const getGrades = async (req, res, next) => {
         [offering_id, level, term]
       );
 
-      //to store specific coure's grade
+      //to store specific course's grade
       course_grade = {};
       course_grade["course_id"] = queryRes_.rows[0]["course_id"];
       course_grade["course_name"] = queryRes_.rows[0]["course_name"];
