@@ -26,7 +26,7 @@ const App = () => {
   }, []);
 
   let routes;
-  let userType = "admin";
+  let userType = "student";
   if (token || true) {
     if (userType === "student") routes = <StudentRoutes />;
     else if (userType === "teacher") routes = <TeacherRoutes />;
