@@ -11,10 +11,36 @@ import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 const studentID = require("../../../placeHolder");
-
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "GRADE", "GRADE POINT"];
+
+const textStyle = {
+  fontWeight: "bolder",
+  width: "max-content",
+  border: "1px solid grey",
+  margin: "30px 50px auto 10px",
+  padding: "10px",
+  fontSize: "14px",
+  borderRadius: "8px",
+  textAlign: "left",
+  background: "indianred",
+  color: "white",
+}
+
+const boxStyle = {
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '1px solid #bdbdbd',
+  boxShadow: 1,
+  p: 4,
+  padding: "15px 32px 15px 32px",
+  textAlign: "left",
+  width: "80%",
+  margin: "auto",
+};
 
 const ExamGrades = () => {
   const [tableData, setTableData] = useState(make2DArray(1, 5));
@@ -87,25 +113,23 @@ const ExamGrades = () => {
               {noneSelected ? null : (
                 <div>
                   <Table columnLabels={columnLabels} dataMatrix={tableData} />
-                  <div
-                    className="gpa-text"
-                    style={{
-                      fontWeight: "bolder",
-                      color: "rgb(105 122 141)",
-                      width: "max-content",
-                      border: "1px solid",
-                      margin: "30px auto auto auto",
-                      padding: "10px",
-                      fontSize: "14px",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    GPA for Term: {String(extraData.gpa).substring(0, 4)}
+                  
+                  <div className="gpa-container" style={{margin: "50px"}}>
+                    <Box className="modal-box" sx={boxStyle} >
+                      <Typography id="modal-modal-title" variant="h6" component="h6" sx={{fontWeight: "bold", fontSize: "1rem"}}>
+                        GPA for Term: {String(extraData.gpa).substring(0, 4)}
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: "15px" }}>
+                        <div>Registered Credit Hours in this Term: {extraData.registeredCredits}</div>
+                        <div>Credit Hours Earned in this Term: {extraData.earnedCredits}</div>
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: "15px", color: "#b70009", fontWeight: "bolder" }}>
+                        <div>Total Credit Hours: {extraData.totalCreditsEarned}</div>
+                        <div>CGPA: {extraData.cgpa}</div>
+                      </Typography>                                 
+                    </Box>
                   </div>
-                  <p>Registered Credit Hours in this Term: {extraData.registeredCredits}</p>
-                  <p>Credit Hours Earned in this Term: {extraData.earnedCredits}</p>
-                  <p>Total Credit Hours: {extraData.totalCreditsEarned}</p>
-                  <p>CGPA: {extraData.cgpa}</p>
+
                 </div>
               )}
             </div>
