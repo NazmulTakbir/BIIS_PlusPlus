@@ -2,6 +2,7 @@ import React from "react";
 import "./Table.css";
 import CustomButton from "../CustomButton/CustomButton";
 import CheckboxSingle from "../CheckboxSingle/CheckboxSingle";
+import CustomModal from "../../../shared/components/CustomModal/CustomModal";
 
 const Table = (props) => {
   const { columnLabels, dataMatrix } = props;
@@ -14,6 +15,11 @@ const Table = (props) => {
   let checkBox = props.checkBox;
   if (checkBox === undefined) {
     checkBox = "";
+  }
+
+  let modal = props.modal;
+  if (modal === undefined) {
+    modal = "";
   }
 
   return (
@@ -77,6 +83,15 @@ const Table = (props) => {
                     </div>
                   </td>
                 ) : null}
+
+                {modal === "true" ? (
+                  <td className="text-left"  style={{ margin: "0", padding: "5px" }}>
+                    <div className="text-block" style={{ margin: "auto", padding: "5px" }}>
+                      <CustomModal buttonText="View" label="Subject" text="Hello, World!"/>
+                    </div>                    
+                  </td>
+                ) : null}
+
               </tr>
             );
           })}

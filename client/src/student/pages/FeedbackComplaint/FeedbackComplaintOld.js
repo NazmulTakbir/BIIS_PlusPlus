@@ -11,7 +11,6 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
-
 const columnLabels = ["SUBJECT", "RECEIVER", "DATE", "DETAILS"];
 
 const ScholarshipReceived = () => {
@@ -46,7 +45,7 @@ const ScholarshipReceived = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} buttonMatrix={buttonMatrix} />
+              <Table columnLabels={columnLabels} dataMatrix={tableData} modal="true"/>            
             </div>
           </div>
         </div>
