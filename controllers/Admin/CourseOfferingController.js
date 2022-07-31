@@ -21,7 +21,11 @@ const postAddCourseOffering = async (req, res, next) => {
       let data = [];
       for (let columnNo = 0; columnNo < allAttributes.length; columnNo++) {
         if (allAttributes[columnNo] in allData[rowNo]) {
-          data.push(allData[rowNo][allAttributes[columnNo]]);
+          if (allData[rowNo][allAttributes[columnNo]] === "") {
+            data.push(null);
+          } else {
+            data.push(allData[rowNo][allAttributes[columnNo]]);
+          }
         } else {
           data.push(null);
         }
