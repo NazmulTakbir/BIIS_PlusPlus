@@ -39,8 +39,8 @@ export const SidebarData = [
     link: "/dues/pending",
   },
   {
-    title: "Feedback/Complain",
+    title: "Feedback",
     icon: <FeedbackIcon />,
-    link: "/feedbackcomplaint/new",
+    link: "/feedback/new",
   },
 ];

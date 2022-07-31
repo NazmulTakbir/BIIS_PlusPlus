@@ -7,33 +7,31 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "GRADE", "GRADE POINT"];
 
-const textStyle = {
-  fontWeight: "bolder",
-  width: "max-content",
-  border: "1px solid grey",
-  margin: "30px 50px auto 10px",
-  padding: "10px",
-  fontSize: "14px",
-  borderRadius: "8px",
-  textAlign: "left",
-  background: "indianred",
-  color: "white",
-}
+// const textStyle = {
+//   fontWeight: "bolder",
+//   width: "max-content",
+//   border: "1px solid grey",
+//   margin: "30px 50px auto 10px",
+//   padding: "10px",
+//   fontSize: "14px",
+//   borderRadius: "8px",
+//   textAlign: "left",
+//   background: "indianred",
+//   color: "white",
+// };
 
 const boxStyle = {
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '1px solid #bdbdbd',
+  bgcolor: "background.paper",
+  border: "1px solid #bdbdbd",
   boxShadow: 1,
   p: 4,
   padding: "15px 32px 15px 32px",
@@ -42,8 +40,36 @@ const boxStyle = {
   margin: "auto",
 };
 
+const fetchTableData = async (api_route, setTableData, setExtraData) => {
+  try {
+    const response = await fetch(api_route);
+    const jsonData = await response.json();
+    const resultData = jsonData["data"];
+    let tableData = [];
+    for (let i = 0; i < resultData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: resultData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["course_name"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["credits"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["letter_grade"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["grade_point"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+    setExtraData({
+      gpa: jsonData["gpa"],
+      cgpa: jsonData["cgpa"],
+      registeredCredits: jsonData["registeredCredits"],
+      earnedCredits: jsonData["earnedCredits"],
+      totalCreditsEarned: jsonData["totalCreditsEarned"],
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const ExamGrades = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 5));
+  const [tableData, setTableData] = useState([]);
   const [extraData, setExtraData] = useState({});
   const [dropDownText, setDropDownText] = useState("Select Level/Term");
   const [dropDownOptions, setDropDownOptions] = useState([]);
@@ -68,19 +94,7 @@ const ExamGrades = () => {
 
     setDropDownText("Level " + level + "  Term " + term);
 
-    await fetchTableData(
-      `/api/student/exam/${studentID}/grades/${level}/${term}`,
-      5,
-      {
-        course_id: 0,
-        course_name: 1,
-        credits: 2,
-        letter_grade: 3,
-        grade_point: 4,
-      },
-      setTableData,
-      setExtraData
-    );
+    fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData);
     setNoneSelected(false);
   };
 
@@ -112,24 +126,31 @@ const ExamGrades = () => {
 
               {noneSelected ? null : (
                 <div>
-                  <Table columnLabels={columnLabels} dataMatrix={tableData} />
-                  
-                  <div className="gpa-container" style={{margin: "50px"}}>
-                    <Box className="modal-box" sx={boxStyle} >
-                      <Typography id="modal-modal-title" variant="h6" component="h6" sx={{fontWeight: "bold", fontSize: "1rem"}}>
+                  <Table columnLabels={columnLabels} tableData={tableData} />
+
+                  <div className="gpa-container" style={{ margin: "50px" }}>
+                    <Box className="modal-box" sx={boxStyle}>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h6"
+                        sx={{ fontWeight: "bold", fontSize: "1rem" }}
+                      >
                         GPA for Term: {String(extraData.gpa).substring(0, 4)}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: "15px" }}>
                         <div>Registered Credit Hours in this Term: {extraData.registeredCredits}</div>
                         <div>Credit Hours Earned in this Term: {extraData.earnedCredits}</div>
                       </Typography>
-                      <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: "15px", color: "#b70009", fontWeight: "bolder" }}>
+                      <Typography
+                        id="modal-modal-description"
+                        sx={{ mt: 2, fontSize: "15px", color: "#b70009", fontWeight: "bolder" }}
+                      >
                         <div>Total Credit Hours: {extraData.totalCreditsEarned}</div>
                         <div>CGPA: {extraData.cgpa}</div>
-                      </Typography>                                 
+                      </Typography>
                     </Box>
                   </div>
-
                 </div>
               )}
             </div>

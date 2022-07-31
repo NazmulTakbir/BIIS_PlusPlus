@@ -24,8 +24,8 @@ import ScholarshipAvailable from "../pages/Scholarship/ScholarshipAvailable";
 import ScholarshipProcessing from "../pages/Scholarship/ScholarshipProcessing";
 import ScholarshipReceived from "../pages/Scholarship/ScholarshipReceived";
 
-import FeedbackComplaintNew from "../pages/FeedbackComplaint/FeedbackComplaintNew";
-import FeedbackComplaintOld from "../pages/FeedbackComplaint/FeedbackComplaintOld";
+import FeedbackNew from "../pages/FeedbackComplaint/FeedbackNew";
+import FeedbackOld from "../pages/FeedbackComplaint/FeedbackOld";
 
 const StudentRoutes = () => {
   return (
@@ -94,11 +94,11 @@ const StudentRoutes = () => {
         <ScholarshipProcessing />
       </Route>
 
-      <Route path="/feedbackcomplaint/new" exact>
-        <FeedbackComplaintNew />
+      <Route path="/feedback/new" exact>
+        <FeedbackNew />
       </Route>
-      <Route path="/feedbackcomplaint/old" exact>
-        <FeedbackComplaintOld />
+      <Route path="/feedback/old" exact>
+        <FeedbackOld />
       </Route>
 
       <Redirect to="/studentinfo/home" />

@@ -15,7 +15,7 @@ import Stack from "@mui/material/Stack";
 
 const studentID = require("../../../placeHolder");
 
-const FeedbackComplaintNew = () => {
+const FeedbackNew = () => {
   const [subject, setSubject] = useState("");
   const [details, setDetails] = useState("");
   const [receiver, setReceiver] = useState("");
@@ -52,7 +52,7 @@ const FeedbackComplaintNew = () => {
             <div className="content">
               <Navbar NavbarData={NavbarData} />
 
-              <form onSubmit={submissionHandler} style={{width: "350px", margin: "auto"}}>
+              <form onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
                 <Textbox
                   height="40px"
                   width="450px"
@@ -114,4 +114,4 @@ const FeedbackComplaintNew = () => {
   );
 };
 
-export default FeedbackComplaintNew;
+export default FeedbackNew;

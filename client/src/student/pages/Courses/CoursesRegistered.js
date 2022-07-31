@@ -5,30 +5,37 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
-
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "STATUS"];
 
+const fetchTableData = async (api_route, setTableData) => {
+  try {
+    const response = await fetch(api_route);
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["reg_status"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const CoursesRegistered = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 4));
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(
-      `/api/student/courses/${studentID}/registeredcourses`,
-      4,
-      {
-        course_id: 0,
-        course_name: 1,
-        credits: 2,
-        reg_status: 3,
-      },
-      setTableData
-    );
+    fetchTableData(`/api/student/courses/${studentID}/registeredcourses`, setTableData);
   }, []);
 
   return (
@@ -40,7 +47,7 @@ const CoursesRegistered = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>

@@ -5,30 +5,37 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
-
 const columnLabels = ["ACTIVITY", "FROM", "TO", "WEEKS"];
 
+const fetchTableData = async (api_route, setTableData) => {
+  try {
+    const response = await fetch(api_route);
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["description"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["start_date"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["end_date"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["no_of_weeks"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const GeneralInfoAcademicCalender = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 4));
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(
-      `/api/student/generalinfo/${studentID}/academiccalender`,
-      4,
-      {
-        description: 0,
-        start_date: 1,
-        end_date: 2,
-        no_of_weeks: 3,
-      },
-      setTableData
-    );
+    fetchTableData(`/api/student/generalinfo/${studentID}/academiccalender`, setTableData);
   }, []);
 
   return (
@@ -40,7 +47,7 @@ const GeneralInfoAcademicCalender = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>

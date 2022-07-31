@@ -1,26 +1,27 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./Table.css";
-import CustomButton from "../CustomButton/CustomButton";
-import CheckboxSingle from "../CheckboxSingle/CheckboxSingle";
-import CustomModal from "../../../shared/components/CustomModal/CustomModal";
+import SimpleModal from "./SimpleModal";
+import PlainText from "./PlainText";
+import Buttons from "./Buttons";
+import CheckBox from "./CheckBox";
 
 const Table = (props) => {
-  const { columnLabels, dataMatrix } = props;
+  const { columnLabels, tableData } = props;
 
-  let buttonMatrix = props.buttonMatrix;
-  if (buttonMatrix === undefined) {
-    buttonMatrix = [];
-  }
-
-  let checkBox = props.checkBox;
-  if (checkBox === undefined) {
-    checkBox = "";
-  }
-
-  let modal = props.modal;
-  if (modal === undefined) {
-    modal = "";
-  }
+  const renderCell = (cellData) => {
+    switch (cellData.type) {
+      case "PlainText":
+        return <PlainText data={cellData.data} />;
+      case "SimpleModal":
+        return <SimpleModal data={cellData.data} />;
+      case "Buttons":
+        return <Buttons data={cellData.data} />;
+      case "CheckBox":
+        return <CheckBox data={cellData.data} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="table-container">
@@ -38,60 +39,12 @@ const Table = (props) => {
         </thead>
 
         <tbody className="table-hover">
-          {dataMatrix.map((row, rowNum) => {
+          {tableData.map((row, rowNum) => {
             return (
               <tr className="text-left" key={rowNum}>
-                {row.map((cellValue, columnNo) => {
-                  return (
-                    <td className="text-left" key={columnNo}>
-                      <div className="text-block">{cellValue}</div>
-                    </td>
-                  );
+                {row.map((cellData, columnNo) => {
+                  return <Fragment key={columnNo}>{renderCell(cellData)}</Fragment>;
                 })}
-
-                {buttonMatrix.length > rowNum ? (
-                  <td className="text-left">
-                    <div
-                      className="text-block"
-                      style={{
-                        margin: "auto",
-                        textAlign: "center",
-                        display: "flex",
-                        justifyContent: "space-evenly",
-                        width: "90%",
-                      }}
-                    >
-                      {buttonMatrix[rowNum].map((buttomDetails, columnNo) => {
-                        return (
-                          <CustomButton
-                            key={columnNo}
-                            label={buttomDetails[0]}
-                            variant="contained"
-                            color={buttomDetails[2]}
-                            bcolor={buttomDetails[1]}
-                          />
-                        );
-                      })}
-                    </div>
-                  </td>
-                ) : null}
-
-                {checkBox === "true" ? (
-                  <td className="text-left">
-                    <div className="text-block" style={{ margin: "auto", textAlign: "center" }}>
-                      <CheckboxSingle name="checkbox" width="max-content" />
-                    </div>
-                  </td>
-                ) : null}
-
-                {modal === "true" ? (
-                  <td className="text-left"  style={{ margin: "0", padding: "5px" }}>
-                    <div className="text-block" style={{ margin: "auto", padding: "5px" }}>
-                      <CustomModal buttonText="View" label="Subject" text="Hello, World!"/>
-                    </div>                    
-                  </td>
-                ) : null}
-
               </tr>
             );
           })}
