@@ -5,30 +5,37 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
-
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "SELECT"];
 
-const CoursesDropDrop = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 3));
+const fetchTableData = async (api_route, setTableData) => {
+  try {
+    const response = await fetch(api_route);
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
+      row.push({ type: "CheckBox", data: { id: jsonData[i]["course_id"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const CoursesDrop = () => {
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(
-      `/api/student/courses/${studentID}/coursestodrop`,
-      3,
-      {
-        course_id: 0,
-        course_name: 1,
-        credits: 2,
-        end_time: 4,
-      },
-      setTableData
-    );
+    fetchTableData(`/api/student/courses/${studentID}/coursestodrop`, setTableData);
   }, []);
 
   return (
@@ -40,7 +47,7 @@ const CoursesDropDrop = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} checkBox="true" />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>
@@ -49,4 +56,4 @@ const CoursesDropDrop = () => {
   );
 };
 
-export default CoursesDropDrop;
+export default CoursesDrop;

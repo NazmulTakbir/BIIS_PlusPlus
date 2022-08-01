@@ -2,7 +2,6 @@ import React from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PeopleIcon from "@mui/icons-material/People";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 export const SidebarData = [
   {
@@ -24,10 +23,5 @@ export const SidebarData = [
     title: "Add Teachers",
     icon: <PeopleIcon />,
     link: "/addteachers",
-  },
-  {
-    title: "Assign Course Teachers",
-    icon: <AssignmentIndIcon />,
-    link: "/assigncourseteachers",
   },
 ];

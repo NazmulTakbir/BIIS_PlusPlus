@@ -17,7 +17,7 @@ const getPastSubmissions = async (req, res, next) => {
 
       let date_ = "";
       date_ = (date_ + element["submission_date"]).substring(4, 16);
-      comp["submmission_date"] = date_;
+      comp["submission_date"] = date_;
 
       complaint_list.push(comp);
     }

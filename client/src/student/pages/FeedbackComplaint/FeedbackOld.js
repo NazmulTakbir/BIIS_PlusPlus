@@ -10,7 +10,7 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
-const columnLabels = ["HALL NAME", "SUPERVISOR NAME", "MOBILE NUMBER", "EMAIL ADDRESS"];
+const columnLabels = ["SUBJECT", "RECEIVER", "DATE", "DETAILS"];
 
 const fetchTableData = async (api_route, setTableData) => {
   try {
@@ -19,10 +19,17 @@ const fetchTableData = async (api_route, setTableData) => {
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
-      row.push({ type: "PlainText", data: { value: jsonData[i]["hall_name"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["supervisor_name"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["supervisor_phone"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["supervisor_email"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["subject"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["receiver_type"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["submission_date"] } });
+      row.push({
+        type: "SimpleModal",
+        data: {
+          buttonText: "View",
+          header: jsonData[i]["subject"],
+          body: jsonData[i]["details"],
+        },
+      });
       tableData.push(row);
     }
     setTableData(tableData);
@@ -31,11 +38,11 @@ const fetchTableData = async (api_route, setTableData) => {
   }
 };
 
-const GeneralInfoHallSupervisor = () => {
+const FeedbackOld = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student/generalinfo/${studentID}/hallinfo`, setTableData);
+    fetchTableData(`/api/student/feedbackcomplaint/${studentID}/pastsubmissions`, setTableData);
   }, []);
 
   return (
@@ -47,7 +54,7 @@ const GeneralInfoHallSupervisor = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} tableData={tableData} />
+              <Table columnLabels={columnLabels} tableData={tableData} modal="true" />
             </div>
           </div>
         </div>
@@ -56,4 +63,4 @@ const GeneralInfoHallSupervisor = () => {
   );
 };
 
-export default GeneralInfoHallSupervisor;
+export default FeedbackOld;

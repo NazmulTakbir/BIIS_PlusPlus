@@ -59,7 +59,7 @@ const getClassRoutine = async (req, res, next) => {
       );
       courseTimings[courseID] = queryRes.rows;
     }
-    res.json(courseTimings);
+    res.json({ message: "getClassRoutine", data: courseTimings });
   } catch (err) {
     const error = new HttpError("Fetching Student Routine Info Failed", 500);
     return next(error);

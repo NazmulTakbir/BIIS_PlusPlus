@@ -1,0 +1,361 @@
+student_id,name,email,hall_id,dept_id,advisor_id,mobile_no,bank_acc_no,present_address,contact_person_address,date_of_birth,nid_no,level,term
+1705001,Sig.ra Gemma Gozzano,fiorenzo06@example.net,1,5,10001,0734969777,9627084899,"Piazza Raffaello, 75
+89823, Mongiana (VV)","Canale Puccio, 969
+73030, Surano (LE)",1999-05-18,5019097201,1,2
+1705002,Isabella Dovara,npulci@example.net,4,5,10001,0974170318,8550287671,"Contrada Sophia, 94 Piano 1
+26042, Cingia De' Botti (CR)","Canale Morlacchi, 558 Appartamento 84
+00182, Roma (RM)",1999-07-06,5065577571,1,2
+1705003,Raimondo Sanudo,ninettabottigliero@example.net,1,5,10001,051736377,9979278707,"Borgo Calbo, 33 Appartamento 80
+26814, Livraga (LO)","Canale Ansaldo, 32 Piano 8
+17017, Cosseria (SV)",1997-05-05,5706803471,1,2
+1705004,Massimiliano Trevisan,iannellinino@example.net,3,5,10001,+39 0363335266,9505846591,"Borgo Fausto, 21
+63093, Agelli (AP)","Stretto Micheletto, 9 Piano 7
+88044, Marcellinara (CZ)",1997-02-18,9281087574,1,2
+1705005,Graziella Calbo,fredonibali@example.net,4,5,10001,381379120,2744819765,"Via Stefania, 40 Appartamento 89
+86034, Guglionesi (CB)","Borgo Majewski, 97 Piano 1
+48034, Fusignano (RA)",1997-12-05,9980018867,1,2
+1705006,Paoletta Costanzi,morena48@example.net,1,5,10001,+39 36394803856,3794296122,"Viale Antonio, 93
+58045, Stazione Di Monte Antico (GR)","Strada Giuliana, 2
+25058, Sulzano (BS)",1998-04-02,8174118776,1,2
+1705007,Dott. Osvaldo Petrucci,cappellinina@example.com,3,5,10001,+39 3820683507,1345017519,"Vicolo Lazzaro, 75
+33031, Variano (UD)","Vicolo Ivan, 25
+90144, Palermo (PA)",1998-10-13,8920379344,1,2
+1705008,Benvenuto Chigi,marcotartaglia@example.net,7,5,10001,05864400365,1626075616,"Strada Camillo, 611 Appartamento 37
+00135, La Giustiniana (RM)","Contrada Schiaparelli, 7
+45030, Occhiobello (RO)",1999-07-12,7576663223,1,2
+1705009,Coluccio Malatesta,gian16@example.net,1,5,10001,093423818,6428455873,"Contrada Raffaellino, 582
+22072, Cermenate (CO)","Piazza Roncalli, 97 Appartamento 1
+23851, Galbiate (LC)",1999-05-30,9125960395,1,2
+1705010,Donato Scamarcio,gasperigiacinto@example.net,4,5,10001,+39 091934651,7904036650,"Contrada Raimondo, 69 Piano 6
+44039, Final Di Rero (FE)","Strada Gullotta, 4
+91015, Sperone Di Custonaci (TP)",1999-05-27,3121460263,1,2
+1705011,Etta Basso,giuseppinacannizzaro@example.com,1,5,10001,+39 093219568,2485462777,"Canale Morrocco, 388 Appartamento 38
+89868, Daffina' (VV)","Via Chigi, 93
+64046, Leognano (TE)",1999-11-25,5018429305,1,2
+1705012,Annalisa Zabarella,persicobarbara@example.net,1,5,10001,+39 0125992484,8279165333,"Borgo Tonia, 20 Piano 7
+46013, Canneto Sull'Oglio (MN)","Strada Tonia, 483
+26822, Brembio (LO)",1998-05-29,8510445270,1,2
+1705013,Melina Lancisi,giacintonitti@example.net,5,5,10001,+39 04343266132,1602725671,"Incrocio Staglieno, 58 Appartamento 72
+41042, Fiorano Modenese (MO)","Stretto Giacobbe, 14
+28832, Belgirate (VB)",1998-07-25,3444745649,1,2
+1705014,Riccardo Natta-Disdero,pragamario@example.org,7,5,10001,35109600304,1999099580,"Canale Loredana, 47 Piano 4
+88021, San Floro (CZ)","Incrocio Antonello, 17 Piano 1
+28802, Mergozzo (VB)",1998-11-28,9546659561,1,2
+1705015,Sig. Gaspare Treccani,nigglidaniele@example.org,7,5,10001,+39 3770885023,8451026260,"Incrocio Mariana, 86 Appartamento 65
+05029, San Gemini (TR)","Borgo Palladio, 9
+80027, Frattamaggiore (NA)",1998-11-29,7202726768,1,2
+1705016,Carmelo Bandello,olopresti@example.net,5,5,10001,01920525045,6550810648,"Incrocio Matteotti, 60
+74025, Marina Di Ginosa (TA)","Stretto Melissa, 35 Piano 1
+98073, Mistretta (ME)",1997-11-16,1431897291,1,2
+1705017,Margherita Basso,verdimelissa@example.org,2,5,10001,03656336493,1098411507,"Canale Donato, 9
+43055, Casale (PR)","Strada Orlando, 837 Appartamento 9
+31047, Negrisia (TV)",1998-12-23,3308552515,1,2
+1705018,Tiziano Tornatore-Giannelli,toselligemma@example.org,7,5,10001,0431663723,1269861105,"Contrada Coluccio, 6
+28078, Romagnano Sesia (NO)","Canale Greco, 577 Appartamento 25
+31012, Cappella Maggiore (TV)",1998-08-04,2102224318,1,2
+1705019,Niccolò Bersani,fceci@example.com,6,5,10001,+39 3713844881,3892092148,"Strada Ramona, 929
+20836, Fornaci (MB)","Contrada Martucci, 51
+73047, Monteroni Di Lecce (LE)",1999-02-14,4633354364,1,2
+1705020,Antonella Binaghi,elisacappelli@example.com,4,5,10001,+39 33482939954,2448532138,"Contrada Fanucci, 53
+84050, Magliano Vetere (SA)","Piazza Puccio, 397
+40041, Gaggio Montano (BO)",1999-10-03,5956458889,1,2
+1705021,Sig. Lamberto Porzio,hsabbatini@example.com,4,5,10001,+39 0735134658,7266075825,"Vicolo Veltroni, 67 Piano 8
+50053, Osteria Bianca (FI)","Stretto Salvatore, 490 Piano 7
+33017, Tarcento (UD)",1999-05-21,1643583075,1,2
+1705022,Bettina Tomaselli,eugeniaiadanza@example.com,3,5,10001,04323863958,7943801197,"Stretto Sibilia, 223 Piano 4
+25019, Colombare Di Sirmione (BS)","Canale Giorgio, 36 Appartamento 5
+73032, Castiglione (LE)",1997-03-18,1063823862,1,2
+1705023,Alderano Bellò,torquatocanova@example.org,3,5,10001,+39 088375617,4636266410,"Canale Stefanelli, 37
+41027, Roccapelago (MO)","Strada Fulvio, 163
+20814, Valera (MB)",1998-04-29,4044087027,1,2
+1705024,Antonella Valguarnera,trupianogiuliano@example.net,3,5,10001,0165627504,4350760844,"Rotonda Castioni, 339 Appartamento 84
+26042, Cingia De' Botti (CR)","Canale Smirnoff, 614
+63073, Offida (AP)",1998-09-25,9371146663,1,2
+1705025,Sig. Giulio Benedetti,michelesanti@example.org,1,5,10001,+39 0812711818,7009863951,"Rotonda Beppe, 1 Appartamento 62
+21015, Lonate Pozzolo (VA)","Piazza Vincentio, 5
+75018, Stigliano (MT)",1998-10-14,8660421783,1,2
+1705026,Etta Gravina,staglienogiorgio@example.net,3,5,10001,+39 0994453883,3950650415,"Contrada Cesare, 1 Piano 3
+66023, Francavilla Al Mare (CH)","Stretto Oreste, 73 Appartamento 2
+26049, Stagno Lombardo (CR)",1997-02-27,8306634805,1,2
+1705027,Sig. Cirillo Monte,mbrugnaro@example.org,5,5,10001,+39 34784627318,3086168605,"Vicolo Carli, 48
+11017, Morgex (AO)","Borgo Conti, 56 Appartamento 77
+17019, Alpicella (SV)",1997-04-03,2023275135,1,2
+1705028,Mario Nonis,rapisardirosaria@example.org,4,5,10001,37795100946,1065242731,"Piazza Pezzali, 965
+64032, Santa Margherita Di Atri (TE)","Vicolo Murialdo, 42
+20028, San Vittore Olona (MI)",1998-11-09,4010273436,1,2
+1705029,Milo Carli,aldomonicelli@example.net,3,5,10001,0481821728,4037717889,"Incrocio Rizzoli, 73 Appartamento 45
+86092, Cantalupo Nel Sannio (IS)","Stretto Angelina, 50 Appartamento 6
+89044, Moschetta (RC)",1997-07-29,5472633323,1,2
+1705030,Daniele Soprano,wcorbo@example.com,2,5,10001,057709540,1223723292,"Canale Ceci, 6 Appartamento 5
+19016, Monterosso Al Mare (SP)","Stretto Liguori, 97 Piano 1
+75027, San Giorgio Lucano (MT)",1998-06-06,9268161445,1,2
+1705031,Benvenuto Ramazzotti,mmonaco@example.net,3,5,10002,3464064153,1875943657,"Via Sorrentino, 54
+09123, Cagliari (CA)","Canale Rossana, 87
+56010, San Giovanni Alla Vena (PI)",1998-06-24,1676161546,1,2
+1705032,Claudio Pucci,wtron@example.net,3,5,10002,+39 33476037504,9773746945,"Canale Salgari, 797 Piano 3
+22035, Canzo (CO)","Canale Pedrazzini, 75 Appartamento 86
+00024, Castel Madama (RM)",1999-11-12,5040622205,1,2
+1705033,Nina Mozart,xzoppetto@example.com,5,5,10002,+39 0735443637,7194011530,"Vicolo Virginia, 2 Piano 5
+18020, Aurigo (IM)","Viale Antonetti, 7
+43056, San Polo (PR)",1999-05-11,7184001015,1,2
+1705034,Danilo Lupo,dparmitano@example.com,6,5,10002,+39 057800839,1820136327,"Vicolo Spallanzani, 42
+86047, Santa Croce Di Magliano (CB)","Borgo Malenchini, 33
+01030, Calcata Nuova (VT)",1999-01-09,4957738960,1,2
+1705035,Elmo Inzaghi-Giannelli,pontierika@example.net,4,5,10002,+39 3807925181,6687890149,"Incrocio Benito, 99
+42023, Cadelbosco Di Sopra (RE)","Stretto Prati, 88 Piano 3
+73100, Torre Chianca (LE)",1997-01-26,6530655875,1,2
+1705036,Rolando Stradivari,fedele29@example.com,4,5,10002,+39 09314338947,3796264597,"Incrocio Saragat, 3 Appartamento 35
+14041, Agliano (AT)","Strada Enrico, 63
+25054, Marone (BS)",1998-05-21,7329197993,1,2
+1705037,Gianluigi Troisi-Babbo,horlando@example.net,3,5,10002,092238738,3242073024,"Viale Rastelli, 54 Piano 4
+90013, Castelbuono (PA)","Via Orlando, 90 Piano 7
+22020, Pare' (CO)",1997-01-15,4184207322,1,2
+1705038,Francesca Volterra,bburcardo@example.net,3,5,10002,385687036,4607270274,"Stretto Zito, 8 Piano 8
+24065, Lovere (BG)","Vicolo Galeati, 82 Piano 8
+87032, Amantea Marina (CS)",1997-08-07,8059174550,1,2
+1705039,Sig.ra Gianna Callegaro,cadornapellegrino@example.net,6,5,10002,34377979860,7918921854,"Vicolo Borrani, 24 Piano 7
+19038, Marinella Di Sarzana (SP)","Viale Toninelli, 99
+20053, Rodano (MI)",1997-08-11,6929488555,1,2
+1705040,Ludovica Trillini,pininfarinaalfio@example.org,7,5,10002,0342895052,7506792374,"Piazza Faranda, 796 Piano 5
+80063, Piano Di Sorrento (NA)","Vicolo Gremese, 34
+16015, Orero (GE)",1999-05-17,7109834077,1,2
+1705041,Pierpaolo Martinelli,livia94@example.org,3,5,10002,+39 07736305715,3464977919,"Vicolo Cirillo, 20 Piano 8
+95012, Mitogio (CT)","Strada Manunta, 793 Appartamento 0
+14018, Roatto (AT)",1997-06-16,3297671122,1,2
+1705042,Cristina Federici,michelangelomazzanti@example.com,6,5,10002,0183227080,3243966375,"Strada Ricciotti, 79 Piano 3
+61011, Case Badioli (PU)","Rotonda Arnaldo, 81
+20054, Segrate (MI)",1997-09-22,5603916753,1,2
+1705043,Piergiuseppe Boccaccio-Monti,lisa47@example.org,7,5,10002,08125376119,7820471044,"Viale Ottavio, 76 Piano 6
+70129, Loseto (BA)","Strada Morucci, 8 Piano 2
+95036, Randazzo (CT)",1998-04-23,7969704784,1,2
+1705044,Cassandra Pedrazzini,ferrettiliberto@example.org,2,5,10002,03426138657,9871988592,"Piazza Danilo, 72 Appartamento 4
+89012, Delianuova (RC)","Viale Acerbi, 35 Piano 6
+16030, Sant'Anna (GE)",1997-08-11,3289426258,1,2
+1705045,Giancarlo Barcella-Nievo,jzola@example.org,6,5,10002,+39 08842990615,5362900302,"Stretto Valentina, 9 Piano 5
+21047, Saronno (VA)","Vicolo Serena, 8
+80019, Qualiano (NA)",1999-05-14,6097480398,1,2
+1705046,Elena Ajello-Campano,lucio51@example.org,5,5,10002,+39 0574241030,4169451900,"Rotonda Vincentio, 699
+38045, Seregnano (TN)","Rotonda Venancio, 46 Piano 1
+26011, Casalbuttano (CR)",1997-07-05,5974284393,1,2
+1705047,Nicoletta Antonello-Pedroni,concettaleopardi@example.net,4,5,10002,+39 05773109136,6952820569,"Canale Tamburi, 296 Appartamento 4
+98137, Santo Stefano Di Briga (ME)","Viale Donatello, 56
+20815, Cogliate (MB)",1997-03-16,8659364570,1,2
+1705048,Sig. Giancarlo Casadei,pnievo@example.org,4,5,10002,+39 3474915290,6211572596,"Canale Emma, 926 Appartamento 89
+05018, Morrano Nuovo (TR)","Viale Giulio, 748
+33098, San Lorenzo (PN)",1997-12-15,7834085138,1,2
+1705049,Pierluigi Rossi,pduodo@example.org,6,5,10002,+39 346620416,6333240243,"Stretto Borzomì, 75 Piano 9
+95013, Fiumefreddo Di Sicilia (CT)","Vicolo Fioravanti, 728 Piano 0
+89058, Scilla (RC)",1998-02-08,3835424472,1,2
+1705050,Dott. Giulietta Rizzo,camillo96@example.org,6,5,10002,+39 39341264996,4249197426,"Rotonda Donatella, 39 Piano 1
+40131, Bologna (BO)","Contrada Satta, 27 Piano 0
+44049, Vigarano Mainarda (FE)",1999-03-27,4787174794,1,2
+1705051,Sig. Giampiero Vitturi,gottiettore@example.com,4,5,10002,+39 0773909431,7570399790,"Borgo Flaiano, 51 Piano 4
+23875, Osnago (LC)","Contrada Iannucci, 63 Piano 1
+67047, Rocca Di Cambio (AQ)",1998-03-12,2711712357,1,2
+1705052,Silvio Badoglio,bernardo63@example.net,4,5,10002,080670572,8704608253,"Vicolo Morena, 8 Appartamento 6
+37013, Boi (VR)","Incrocio Franzese, 5
+95013, Fiumefreddo Di Sicilia (CT)",1999-06-17,7498919884,1,2
+1705053,Dott. Filippa Micheletti,giacobbe00@example.org,4,5,10002,+39 366631897,8970271921,"Strada Marta, 664 Appartamento 37
+87023, Cirella (CS)","Viale Mauro, 218 Piano 9
+25065, Pieve (BS)",1997-05-08,2196889073,1,2
+1705054,Marisa Falier,giannettileopoldo@example.com,4,5,10002,0363043715,6663776683,"Strada Rosina, 729 Piano 8
+61100, Villa Ceccolini (PU)","Canale Ferraris, 50 Piano 7
+56046, Riparbella (PI)",1997-03-17,2485954596,1,2
+1705055,Flavio Filippelli,ilariamorgagni@example.com,1,5,10002,+39 03054956215,6352598568,"Stretto Fiamma, 19
+32033, Arina (BL)","Strada Palmisano, 21 Piano 7
+26825, Basiasco (LO)",1998-11-16,5327029970,1,2
+1705056,Calogero Necci,benito89@example.net,2,5,10002,+39 01849867667,3622745929,"Borgo Matilda, 14
+20156, Milano (MI)","Stretto Sabatino, 27
+65022, Bussi Sul Tirino (PE)",1998-03-24,6516412324,1,2
+1705057,Calogero Botta,cesarottisergius@example.org,7,5,10002,+39 3730815687,6114276668,"Incrocio Germano, 92
+51021, Le Regine (PT)","Incrocio Emanuelli, 66 Piano 2
+07036, Sennori (SS)",1998-03-31,3428255779,1,2
+1705058,Fernanda Solimena,victoria86@example.com,7,5,10002,+39 03713626946,3070329985,"Canale Angeli, 485 Appartamento 91
+63071, Rotella (AP)","Strada Leopardi, 4
+31050, Premaor (TV)",1998-06-08,2895342842,1,2
+1705059,Serena Acerbi,loredanavendetti@example.net,4,5,10002,+39 044595404,5226628811,"Canale Piergiorgio, 423
+22019, Tremezzo (CO)","Incrocio Atenulf, 89 Piano 2
+95014, Giarre (CT)",1999-04-18,9146887868,1,2
+1705060,Arnaldo Malatesta,jfermi@example.net,3,5,10002,+39 09317876743,9647029456,"Rotonda Calbo, 398 Appartamento 9
+00071, Pomezia (RM)","Canale Gucci, 31 Appartamento 6
+21054, Bergoro (VA)",1999-02-23,9497504951,1,2
+1705061,Sig. Lazzaro Vecellio,zcorradi@example.net,2,5,10003,+39 3713920043,7837719670,"Piazza Sermonti, 925 Piano 5
+23892, Bulciago (LC)","Stretto Zola, 0 Appartamento 9
+14025, Chiusano D'Asti (AT)",1999-01-30,9655937174,1,2
+1705062,Venancio Bramante,massimilianofornaciari@example.org,6,5,10003,+39 096237078,4714483707,"Piazza Temistocle, 90 Piano 8
+73047, Monteroni Di Lecce (LE)","Borgo Raimondo, 957
+50028, Sambuca (FI)",1997-03-07,8748098876,1,2
+1705063,Lisa Sinisi,napoleoneromiti@example.com,4,5,10003,0341516506,7226784075,"Via Fantozzi, 84
+57122, Livorno (LI)","Strada Gaiatto, 5 Appartamento 5
+72015, Selva (BR)",1997-08-05,4099384592,1,2
+1705064,Maria Togliatti,campanolodovico@example.net,6,5,10003,03450073822,8187640881,"Rotonda Concetta, 22 Piano 3
+96016, Lentini (SR)","Piazza Ermes, 7 Piano 8
+23014, Andalo Valtellino (SO)",1997-03-31,8035699185,1,2
+1705065,Gianluca Cesarotti,nargan@example.net,4,5,10003,379284403,1232320014,"Strada Isabella, 6 Appartamento 4
+22034, Brunate (CO)","Canale Evangelista, 794 Appartamento 16
+92021, Caldare (AG)",1997-12-22,5185307459,1,2
+1705066,Guglielmo Bombieri-Tornatore,simonesalieri@example.com,3,5,10003,+39 0732046272,5921021574,"Via Alfonsi, 954 Piano 5
+65100, Pescara (PE)","Stretto Ravaglioli, 285
+00013, Mentana (RM)",1998-09-27,2702974269,1,2
+1705067,Dott. Ninetta Petrucci,zgagliano@example.com,5,5,10003,+39 0183407999,7411124003,"Rotonda Baccio, 2 Appartamento 45
+64042, Villa Petto (TE)","Contrada Milo, 49 Appartamento 6
+21014, Laveno Mombello (VA)",1997-09-19,7201613009,1,2
+1705068,Ottone Vespucci,claudio75@example.com,7,5,10003,078958039,3258387496,"Borgo Giorgio, 66
+43022, Monticelli Terme (PR)","Vicolo Marisa, 5 Appartamento 6
+28061, Biandrate (NO)",1999-04-11,3467763681,1,2
+1705069,Giulia Bonino,sobrerogiovanni@example.net,4,5,10003,+39 381967440,2016856724,"Vicolo Ubaldo, 97
+41016, Rovereto Sulla Secchia (MO)","Strada Renzo, 4 Piano 5
+89041, Caulonia (RC)",1997-04-21,5061830811,1,2
+1705070,Sig. Nanni Versace,marinettimario@example.net,5,5,10003,3515750547,7150721300,"Stretto Maria, 1
+09126, Cala Mosca (CA)","Incrocio Bruno, 40 Appartamento 81
+36055, Nove (VI)",1999-03-08,6781691922,1,2
+1705071,Fiorenzo Vasari-Ginese,isatolentino@example.com,5,5,10003,+39 3732532200,1039608606,"Viale Cavalcanti, 125
+88044, Marcellinara (CZ)","Stretto Rembrandt, 13
+44124, Ferrara (FE)",1999-10-18,8723839037,1,2
+1705072,Sig.ra Fortunata Inzaghi,mcampanella@example.com,6,5,10003,+39 01651340971,7471180738,"Contrada Boito, 95
+18018, Arma Di Taggia (IM)","Viale Simone, 774
+15052, Casalnoceto (AL)",1997-09-27,1596302146,1,2
+1705073,Dott. Pasqual Bartoli,fagianifilippo@example.org,2,5,10003,3349894088,5078483521,"Strada Vezzali, 89
+18027, Chiusanico (IM)","Via Torlonia, 32
+23838, Vendrogno (LC)",1999-07-28,7149241641,1,2
+1705074,Rosalia Ceci,argentogemma@example.net,6,5,10003,+39 042947840,4786982479,"Viale Puccio, 27
+20006, Pregnana Milanese (MI)","Canale Bottaro, 20 Piano 0
+25124, Brescia (BS)",1997-02-21,2681426796,1,2
+1705075,Martina Caracciolo,lamborghiniettore@example.com,1,5,10003,36291919673,8102236393,"Incrocio Federico, 21
+44049, Vigarano Pieve (FE)","Incrocio Fantozzi, 57
+88833, Cerenzia (KR)",1997-11-20,9252683931,1,2
+1705076,Antonina Squarcione,scadutoamanda@example.net,3,5,10003,+39 0453867578,5196905798,"Incrocio Sinisi, 425 Piano 4
+28833, Brovello Carpugnino (VB)","Canale Amadeo, 9
+24024, Gandino (BG)",1999-05-18,5460814900,1,2
+1705077,Beatrice Cerutti,jboiardo@example.net,5,5,10003,+39 092100989,6681137583,"Strada Crispi, 77
+63834, Massa Fermana (FM)","Borgo Iolanda, 31 Piano 4
+71038, Pietramontecorvino (FG)",1998-02-24,4956763386,1,2
+1705078,Dott. Raffaellino Eco,vmunari@example.org,2,5,10003,037663513,2923729382,"Contrada Eva, 15
+06073, Corciano (PG)","Canale Lollobrigida, 7
+85013, Genzano Di Lucania (PZ)",1997-10-29,7131458857,1,2
+1705079,Franco Mastroianni,grazianopertini@example.org,7,5,10003,093233968,6306891146,"Viale Ludovico, 93 Piano 4
+08016, Borore (NU)","Stretto Conte, 23
+89815, Francavilla Angitola (VV)",1999-04-22,9764218837,1,2
+1705080,Lando Puglisi,giannoneoreste@example.net,1,5,10003,3483140294,6539310142,"Strada Guarino, 0 Piano 1
+25088, Toscolano Maderno (BS)","Vicolo Beppe, 86
+32040, Presenaio (BL)",1999-09-12,8605543464,1,2
+1705081,Raimondo Malpighi,alderanobellocchio@example.org,2,5,10003,+39 089234158,4083149689,"Incrocio Ronaldo, 546
+56011, Montemagno (PI)","Viale Priscilla, 623
+02011, Accumoli (RI)",1998-08-25,8757320407,1,2
+1705082,Pierpaolo Zola,marina44@example.org,1,5,10003,05843228564,7675820506,"Via Achille, 16
+31028, Tezze (TV)","Viale Elisa, 26
+95041, Santo Pietro (CT)",1998-06-19,6981295045,1,2
+1705083,Napoleone Ferragni,melissa01@example.net,3,5,10003,351953543,1422977651,"Rotonda Pomponio, 5 Appartamento 7
+43049, Pessola (PR)","Piazza Romano, 57
+23857, Valgreghentino (LC)",1997-07-13,4107942405,1,2
+1705084,Federica Panzera,kpetrucelli@example.net,3,5,10003,032168643,6627617014,"Canale Mattia, 847 Piano 3
+04024, Gaeta (LT)","Borgo Raimondo, 22 Appartamento 36
+02033, Monteleone Sabino (RI)",1998-11-24,6087770156,1,2
+1705085,Marissa Papafava-Vigliotti,erranimariano@example.org,6,5,10003,01004521889,1540667656,"Strada Simone, 80
+20059, Casarile (MI)","Borgo Treves, 4 Piano 1
+43048, Varano Marchesi (PR)",1999-07-03,9850833949,1,2
+1705086,Dott. Ubaldo Manunta,juvarapaola@example.com,2,5,10003,351384111,2014826870,"Piazza Siffredi, 74 Appartamento 6
+56017, Pappiana (PI)","Stretto Silvio, 14
+90139, Palermo (PA)",1997-05-30,1947522501,1,2
+1705087,Sig.ra Fabrizia Greco,pierpaolovidoni@example.org,6,5,10003,+39 0934580761,5516636966,"Stretto Martina, 3
+35136, Padova (PD)","Piazza Torquato, 39 Appartamento 2
+62025, Fiuminata (MC)",1998-07-23,4155709749,1,2
+1705088,Luciana Lombardo,dborzomi@example.net,4,5,10003,03631588646,8753439103,"Via Luciano, 30 Appartamento 6
+13833, Portula (BI)","Canale Armellini, 2
+98122, Messina (ME)",1998-03-15,5301212422,1,2
+1705089,Riccardo Paruta-Volta,lara04@example.org,5,5,10003,+39 37572528342,9148891026,"Piazza Mercadante, 125
+85050, Savoia Di Lucania (PZ)","Rotonda Fabrizi, 929 Piano 4
+24015, San Giovanni Bianco (BG)",1999-07-19,9347974522,1,2
+1705090,Eleanora Conte,dmajorana@example.net,5,5,10003,+39 077326504,1748486178,"Rotonda Dino, 218
+64041, Colledoro (TE)","Piazza Marini, 53 Piano 7
+00054, Ara Nova (RM)",1999-12-19,3444605855,1,2
+1705091,Marissa Balla,tullio58@example.net,4,5,10004,+39 0564157416,6792584080,"Borgo Scarpa, 21 Appartamento 7
+00039, Zagarolo (RM)","Canale Benvenuto, 251
+42046, Brugneto (RE)",1998-10-26,4074174889,1,2
+1705092,Torquato Manacorda,ivan98@example.net,2,5,10004,343418211,5498783330,"Contrada Badoglio, 3
+45010, Braglia (RO)","Rotonda Fo, 13
+25100, Brescia (BS)",1997-04-30,8485438182,1,2
+1705093,Dott. Livia Cattaneo,gianfranco01@example.com,5,5,10004,+39 052163704,5102188939,"Contrada Filogamo, 28 Piano 5
+12041, Isola (CN)","Vicolo Vincenza, 4 Appartamento 79
+74100, Paolo Vi (TA)",1997-11-13,9124936783,1,2
+1705094,Sig. Giuliano Gozzi,tizianavalguarnera@example.net,5,5,10004,+39 38139120153,9331143048,"Strada Ezio, 5 Piano 4
+11014, Saint Oyen (AO)","Strada Scarpetta, 9 Appartamento 1
+16048, Rezzoaglio (GE)",1997-11-08,5033211184,1,2
+1705095,Pasqual Mercantini,fcurci@example.org,5,5,10004,0774395730,5981512165,"Vicolo Rossi, 43 Piano 2
+85016, Pietragalla (PZ)","Strada Marina, 93 Piano 8
+02023, Sant'Ippolito (RI)",1997-04-05,4941296969,1,2
+1705096,Gaspare Dulbecco-Luria,piermariaabatantuono@example.com,5,5,10004,+39 0314075160,7871986263,"Vicolo Filogamo, 7 Piano 1
+13872, Borriana (BI)","Contrada Catenazzi, 47 Piano 7
+90027, Petralia Sottana (PA)",1998-05-29,8835458108,1,2
+1705097,Claudia Pozzecco,geronimogalilei@example.com,5,5,10004,+39 0358460532,3266583157,"Borgo Loretta, 2
+88835, Roccabernarda (KR)","Stretto Zabarella, 8 Piano 3
+32032, Feltre (BL)",1998-06-12,5008324433,1,2
+1705098,Stefano Veneziano-Spadafora,cassandra52@example.com,5,5,10004,36678517055,9209495841,"Borgo Angelo, 90 Piano 0
+24066, Pedrengo (BG)","Stretto Binaghi, 34
+28859, Trontano (VB)",1997-05-06,1743233830,1,2
+1705099,Amanda Curci,dgentilini@example.org,5,5,10004,+39 096115992,3998693197,"Vicolo Sabatini, 35 Appartamento 7
+36040, Vo' (VI)","Via Rembrandt, 598 Piano 2
+84135, Fratte (SA)",1999-01-02,1744644402,1,2
+1705100,Pasquale Sagese-Speri,ernestobinaghi@example.net,1,5,10004,+39 05645987121,7313248389,"Piazza Fabia, 867 Piano 0
+31012, Cappella Maggiore (TV)","Piazza Rizzoli, 2
+01030, Carbognano (VT)",1999-06-05,7227362970,1,2
+1705101,Antonia Gasperi,rothrosina@example.net,6,5,10004,+39 353366846,2854886363,"Strada Papetti, 531
+53023, Castiglione D'Orcia (SI)","Stretto Adelmo, 13
+82034, San Lupo (BN)",1997-05-10,1181680959,1,2
+1705102,Sig. Santino Sauro,vespagianfranco@example.org,3,5,10004,0825513052,9708194548,"Canale Udinese, 666 Appartamento 47
+16149, Genova (GE)","Piazza Griselda, 2
+24010, Ornica (BG)",1999-07-21,2253665991,1,2
+1705103,Pietro Zeffirelli,zeffirelliarturo@example.net,6,5,10004,0375243087,4356329673,"Borgo Gianfranco, 13 Piano 8
+24066, Pedrengo (BG)","Vicolo Durante, 177 Appartamento 97
+07049, Usini (SS)",1998-09-03,4352420870,1,2
+1705104,Carmelo Paolucci,venanciomaglio@example.com,4,5,10004,3684143570,3115563315,"Rotonda Amedeo, 3 Piano 0
+86086, Poggio Sannita (IS)","Via Saffi, 756
+20147, Milano (MI)",1997-08-13,4776921950,1,2
+1705105,Griselda Bertoni,orlandodomenico@example.net,5,5,10004,01228389095,7760256392,"Stretto Raurica, 720
+35029, Pontelongo (PD)","Vicolo Ravaglioli, 38 Piano 5
+74013, Ginosa (TA)",1997-06-12,1952975163,1,2
+1705106,Giustino Falcone,fiorinofusani@example.net,2,5,10004,+39 0522170978,5650747403,"Borgo Stefania, 213
+27059, Zavattarello (PV)","Contrada Cortese, 282 Appartamento 93
+64040, Cortino (TE)",1997-09-08,8264448801,1,2
+1705107,Gelsomina Savorgnan-Abbagnale,ruffinistefano@example.net,7,5,10004,+39 0584591276,1992437973,"Incrocio Palladio, 180
+37013, Boi (VR)","Rotonda Orsini, 90 Appartamento 1
+87066, Longobucco (CS)",1999-05-09,9421892130,1,2
+1705108,Benvenuto Zacco,bodonitullio@example.com,3,5,10004,+39 0426376184,5102504335,"Stretto Luigi, 4 Appartamento 51
+38026, Ossana (TN)","Stretto Jacuzzi, 17 Piano 7
+62014, Colbuccaro (MC)",1999-06-10,5954999590,1,2
+1705109,Pomponio Pincherle-Cagnin,gcollina@example.net,5,5,10004,373866997,4826710189,"Vicolo Pizzamano, 628
+26034, Piadena (CR)","Contrada Cavalcanti, 348
+15030, Conzano (AL)",1997-08-31,4313835889,1,2
+1705110,Ricciotti Frescobaldi,utamburi@example.net,7,5,10004,+39 3518626031,2170812293,"Borgo Sandi, 670 Appartamento 27
+28053, Castelletto Sopra Ticino (NO)","Strada Morellato, 6 Piano 6
+25048, Cortenedolo (BS)",1999-05-30,8960945459,1,2
+1705111,Nedda Gioberti,tonino00@example.net,5,5,10004,0789196591,7458376750,"Strada Coardi, 25
+67025, Ofena (AQ)","Stretto Parini, 6
+92025, Casteltermini (AG)",1997-04-28,1626673382,1,2
+1705112,Elvira Viviani-Dandolo,michelettigino@example.net,7,5,10004,053669499,1035148198,"Strada Livia, 98 Appartamento 4
+67032, Pescasseroli (AQ)","Piazza Fantini, 96 Piano 4
+86022, Limosano (CB)",1999-06-18,4944365281,1,2
+1705113,Natalia Ferretti,cristoforettigiacomo@example.com,6,5,10004,083597414,5079599940,"Borgo Sansoni, 8 Appartamento 9
+54023, Ponticello (MS)","Borgo Gasperi, 86 Appartamento 3
+23897, Vigano' (LC)",1999-03-17,2125854467,1,2
+1705114,Francesca Gotti,antonellomilena@example.com,6,5,10004,+39 03924637073,8058878806,"Viale Tullio, 495
+74123, Taranto (TA)","Contrada Farina, 285
+12087, Serra (CN)",1998-04-14,4015102080,1,2
+1705115,Maura Cerquiglini,salvi86@example.net,6,5,10004,0461426616,8314127880,"Strada Bertolucci, 526
+91012, Buseto Palizzolo (TP)","Vicolo Cesare, 2
+36029, Valstagna (VI)",1999-08-20,6177349368,1,2
+1705116,Santino Donati-Altera,gianni41@example.net,2,5,10004,+39 3410587429,8268874128,"Incrocio Porcellato, 0
+51019, Ponte Buggianese (PT)","Incrocio Sinisi, 425
+89124, Eremo (RC)",1999-08-12,2172809115,1,2
+1705117,Dott. Martina Ferrucci,gmonteverdi@example.com,1,5,10004,3854022158,8123033102,"Strada Vittorio, 16
+32036, Mas (BL)","Viale Piergiuseppe, 24
+28813, Bee (VB)",1998-12-08,5809384147,1,2
+1705118,Delfino Ferragni,amedeoagostini@example.net,6,5,10004,+39 03241843950,3961071576,"Rotonda Nanni, 957
+80070, Bacoli (NA)","Contrada Marta, 90 Appartamento 78
+94015, Piazza Armerina (EN)",1999-04-10,5215218387,1,2
+1705119,Galasso Franceschi,gianna77@example.com,4,5,10004,+39 09335338701,3569633081,"Via Venancio, 2
+09033, Decimomannu (CA)","Vicolo Bonaventura, 297 Piano 0
+46020, Pegognaga (MN)",1998-09-02,7725484157,1,2
+1705120,Gianmarco Vigorelli,vincenzodoria@example.org,6,5,10004,34375858181,3290317496,"Borgo Ginese, 773
+89026, San Ferdinando (RC)","Piazza Gonzaga, 1
+38034, Lisignago (TN)",1998-06-06,6902098320,1,2

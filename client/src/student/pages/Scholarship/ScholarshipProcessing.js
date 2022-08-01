@@ -5,30 +5,37 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
-
 const columnLabels = ["TYPE", "SESSION", "AMOUNT", "STATUS"];
 
+const fetchTableData = async (api_route, setTableData) => {
+  try {
+    const response = await fetch(api_route);
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["amount"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_state"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const ScholarshipProcessing = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 4));
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(
-      `/api/student/scholarship/${studentID}/processing`,
-      4,
-      {
-        scholarship_name: 0,
-        session_id: 1,
-        amount: 2,
-        scholarship_state: 3,
-      },
-      setTableData
-    );
+    fetchTableData(`/api/student/scholarship/${studentID}/processing`, setTableData);
   }, []);
 
   return (
@@ -40,7 +47,7 @@ const ScholarshipProcessing = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>

@@ -5,39 +5,45 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { make2DArray, fetchTableData, fetchButtonMatrix } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
-
 const columnLabels = ["TYPE", "SESSION", "AMOUNT", "ACTION"];
 
+const fetchTableData = async (api_route, setTableData) => {
+  try {
+    const response = await fetch(api_route);
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["amount"] } });
+      row.push({
+        type: "Buttons",
+        data: {
+          buttonList: [
+            { buttonText: "Apply", textColor: "white", backColor: "#697A8D" },
+            { buttonText: "Download", textColor: "white", backColor: "#DB6066" },
+          ],
+        },
+      });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const ScholarshipAvailable = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 3));
-  const [buttonMatrix, setButtonMatrix] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(
-      `/api/student/scholarship/${studentID}/available`,
-      3,
-      {
-        scholarship_name: 0,
-        session_id: 1,
-        amount: 2,
-      },
-      setTableData
-    );
-
-    fetchButtonMatrix(
-      `/api/student/scholarship/${studentID}/available`,
-      [
-        ["Apply", "#697A8D", "white"],
-        ["Download", "#DB6066", "white"],
-      ],
-      setButtonMatrix
-    );
+    fetchTableData(`/api/student/scholarship/${studentID}/available`, setTableData);
   }, []);
 
   return (
@@ -49,7 +55,7 @@ const ScholarshipAvailable = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} buttonMatrix={buttonMatrix} />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>

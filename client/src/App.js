@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import StudentRoutes from "./student/routes/StudentRoutes";
-import TeacherRoutes from "./teacher/routes/TeacherRoutes";
+// import TeacherRoutes from "./teacher/routes/TeacherRoutes";
 import AdminRoutes from "./admin/routes/AdminRoutes";
 import UnauthenticatedRoutes from "./shared/routes/UnauthenticatedRoutes";
 
@@ -26,10 +26,9 @@ const App = () => {
   }, []);
 
   let routes;
-  let userType = "student";
+  let userType = "admin";
   if (token || true) {
     if (userType === "student") routes = <StudentRoutes />;
-    else if (userType === "teacher") routes = <TeacherRoutes />;
     else if (userType === "admin") routes = <AdminRoutes />;
     else routes = <UnauthenticatedRoutes />;
   } else {

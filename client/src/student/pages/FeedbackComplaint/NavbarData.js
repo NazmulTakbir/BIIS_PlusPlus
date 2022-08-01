@@ -1,10 +1,10 @@
 export const NavbarData = [
   {
-    title: "New",
-    link: "/feedbackcomplaint/new",
+    title: "Write Feedback",
+    link: "/feedback/new",
   },
   {
-    title: "Old",
-    link: "/feedbackcomplaint/old",
+    title: "Previous Feedbacks",
+    link: "/feedback/old",
   },
 ];

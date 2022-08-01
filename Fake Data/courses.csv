@@ -1,0 +1,9 @@
+course_id,course_name,offered_by_dept_id,offered_to_dept_id,level,term,credits
+CSE 103,Discrete Mathematics,5,5,1,2,3
+CSE 107,Object Oriented Programming Language,5,5,1,2,3
+CSE 108,Object Oriented Programming Language Sessional,5,5,1,2,1.5
+CHEM 113,Chemistry ,22,5,1,2,3
+CHEM 114,Inorganic Quantitative Analysis,22,5,1,2,1.5
+HUM 172,Developing English Skills Sessional,20,5,1,2,1.5
+HUM 183,English,20,5,1,2,3
+MATH 147,"ODE, PDE and Vector Calculus",21,5,1,2,4
