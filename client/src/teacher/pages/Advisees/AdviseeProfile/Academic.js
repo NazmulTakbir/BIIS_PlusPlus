@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Navbar from "../../../../shared/components/Navbar/Navbar";
+import "./Advisee.css"
 
 const AdviseeAcademic = () => {
   let { studentID } = useParams();
@@ -27,9 +28,14 @@ const AdviseeAcademic = () => {
         <div className="wrapper">
           <div className="main_container">
             <div className="content">
-              <h1>Profile of {studentID}</h1>
+              
+              <div className="profile-id-container">
+                <div className="profiler-id">Profile of {studentID}</div>
+              </div>
+
               <Navbar NavbarData={NavbarData} />
               <h1>Academic Profile</h1>
+
             </div>
           </div>
         </div>
