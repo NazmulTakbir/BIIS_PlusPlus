@@ -27,6 +27,8 @@ AdminRoutes.get("/course/samplefile", CourseController.getSampleFile);
 
 AdminRoutes.post("/offering/add", CourseOfferingController.postAddCourseOffering);
 AdminRoutes.get("/offering/samplefile", CourseOfferingController.getSampleFile);
+AdminRoutes.get("/offering/getunofferedcourses", CourseOfferingController.getunofferedcourses);
+//AdminRoutes.get("/offering/getunofferedcourses/admin_dept_id", CourseOfferingController.getunofferedcourses);
 
 AdminRoutes.post("/courseteacher/add", CourseTeacherController.postAddCourseTeacher);
 AdminRoutes.get("/courseteacher/samplefile", CourseTeacherController.getSampleFile);

@@ -58,5 +58,28 @@ const getSampleFile = async (req, res, next) => {
   }
 };
 
+const getunofferedcourses = async (req, res, next) => {
+  try {
+    data = [];
+    const offered_to_dept_id = 5;//extract it from req.body later
+    let queryRes = await pool.query(
+      'select course_id from public."course" where \
+       offered_to_dept_id = $1 and \
+       course_id not in (select course_id from public."course offering")',[offered_to_dept_id]
+    );
+
+    for (let i = 0; i < queryRes.rows.length; i++) {
+      data.push(queryRes.rows[i].course_id);
+    }
+    console.log(data);
+    res.json({ message: "getunofferedcourses successful", data: data });
+
+  } catch (err) {
+    const error = new HttpError("getunofferedcourses failed", 500);
+    return next(error);
+  }
+};
+
 exports.getSampleFile = getSampleFile;
+exports.getunofferedcourses = getunofferedcourses;
 exports.postAddCourseOffering = postAddCourseOffering;
