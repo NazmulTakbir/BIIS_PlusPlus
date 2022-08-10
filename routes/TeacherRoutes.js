@@ -23,7 +23,10 @@ TeacherRoutes.get("/exam/:tid/addgrades/courses", AddGradesController.getCourses
 TeacherRoutes.get("/exam/:tid/viewgrades/courses", ViewGradesController.getCourses);
 TeacherRoutes.get("/exam/:tid/scrutinize/courses", ScrutinizeController.getCourses);
 
-TeacherRoutes.get("/advisees/:tid/registrationrequests", AdviseeCourseRegistrationController.getRegistrationRequests);
+TeacherRoutes.get(
+  "/advisees/:tid/registrationrequests/:sid",
+  AdviseeCourseRegistrationController.getRegistrationRequests
+);
 TeacherRoutes.get(
   "/advisees/:tid/registrationsummary",
   AdviseeCourseRegistrationController.getRegistrationRequestSummary

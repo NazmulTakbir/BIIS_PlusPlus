@@ -11,7 +11,7 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const teacherID = require("../../../placeHolder2");
-const columnLabels = ["REQUEST TYPE", "STUDENT ID", "COURSE COUNT", "REQUEST DATE", "ACTION"];
+const columnLabels = ["STUDENT ID", "REQUEST TYPE", "COURSE COUNT", "REQUEST DATE", "ACTION"];
 
 const fetchTableData = async (api_route, setTableData) => {
   try {
@@ -20,8 +20,8 @@ const fetchTableData = async (api_route, setTableData) => {
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["req_count"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
       row.push({
