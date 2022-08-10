@@ -1,6 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 const essentialAttributes = [];
 
@@ -31,6 +31,7 @@ const postAddCourseOffering = async (req, res, next) => {
         }
       }
       await createCourseOffering(data);
+      console.log("adding " + data);
     }
 
     res.status(201).json({ message: "postAddCourseOffering successful" });
@@ -71,7 +72,7 @@ const getunofferedcourses = async (req, res, next) => {
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i].course_id);
     }
-    console.log(data);
+    
     res.json({ message: "getunofferedcourses successful", data: data });
 
   } catch (err) {
@@ -80,6 +81,31 @@ const getunofferedcourses = async (req, res, next) => {
   }
 };
 
+const getexamslots = async (req, res, next) => {
+  try {
+    //finding current session
+    const currentSession = await getCurrentSession();
+    //console.log(currentSession_);
+
+    data = [];
+    let queryRes = await pool.query(
+      'select exam_slot_id from public."exam time" where \
+       session_id = $1 \
+       ',[currentSession]
+    );
+ 
+    for (let i = 0; i < queryRes.rows.length; i++) {
+      data.push(queryRes.rows[i].exam_slot_id);
+    }
+    res.json({ message: "getunofferedcourses successful", data: data });
+
+  } catch (err) {
+    const error = new HttpError("getexamslots failed", 500);
+    return next(error);
+  }
+};
+
 exports.getSampleFile = getSampleFile;
 exports.getunofferedcourses = getunofferedcourses;
 exports.postAddCourseOffering = postAddCourseOffering;
+exports.getexamslots = getexamslots;

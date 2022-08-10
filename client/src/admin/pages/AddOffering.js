@@ -12,6 +12,8 @@ import "../../shared/components/MainContainer.css";
 const allowedExtensions = ["csv"];
 
 const AddOfferings = () => {
+  const [currentSession , setCurrentSession] = useState("");
+
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
@@ -19,21 +21,26 @@ const AddOfferings = () => {
   const [dropDownTextCourseID, setdropDownTextCourseID] = useState("Select Course ID");
   const [dropDownOptionsCourseID, setdropDownOptionsCourseID] = useState([]);
 
-  //set usestate variable for dropdownTextSession
-  const [dropDownTextSession, setdropDownTextSession] = useState("Select Session");
-  const [dropDownOptionsSession, setdropDownOptionsSession] = useState([]);
+  const [dropDownTextExamSlotID, setdropDownTextExamSlotID] = useState("Select Exam Slot ID");
+  const [dropDownOptionsExamSlotID, setdropDownOptionsExamSlotID] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //courseID dropdown
-        const response = await fetch(`/api/admin/offering/getunofferedcourses`);
-        const jsonData = await response.json();
-        setdropDownOptionsCourseID(jsonData["data"]);
+        //finding current session
+        const session_response = await fetch(`/api/shared/session/getcurrent`);
+        const session_data = await session_response.json();
+        setCurrentSession(session_data["data"]["session_id"]);
 
-        //session dropdown
-        const session_data = ["JAN 2022" , "JULY 2022"];
-        setdropDownOptionsSession(session_data);
+        //courseID dropdown
+        const course_id_response = await fetch(`/api/admin/offering/getunofferedcourses`);
+        const course_id_jsonData = await course_id_response.json();
+        setdropDownOptionsCourseID(course_id_jsonData["data"]);
+
+        //Exam slot id dropdown
+        const exam_slot_id_response = await fetch(`/api/admin/offering/getexamslots`);
+        const exam_slot_id_jsonData = await exam_slot_id_response.json();
+        setdropDownOptionsExamSlotID(exam_slot_id_jsonData["data"]);
 
       } catch (err) {
         console.log(err);
@@ -43,22 +50,35 @@ const AddOfferings = () => {
   }, []);
 
   const dropDownSelectCourseID = async (value) => {
-    setdropDownTextCourseID("Course ID: " + value);
+    setdropDownTextCourseID(value);
+  };
 
-    //fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData);
-    //setNoneSelected(false);
+  const dropDownSelectExamSlotID = async (value) => {
+    setdropDownTextExamSlotID(value);
   };
 
 
-  const dropDownSelectSession = async (value) => {
-    setdropDownTextSession("Session: " + value);
+  const addCourseOffering = async (course_id , exam_slot_id , session_id) => {
+    let data=[]
+    const obj = {
+      "course_id": course_id,
+      "exam_slot_id": exam_slot_id,
+      "session_id": session_id
+    }
 
-    //fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData);
-    //setNoneSelected(false);
-  };
+    data.push(obj);
 
+    await fetch(`/api/admin/offering/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+           data : data
+          }),
+    });
 
+    alert("Course Offering Add Successful");
 
+  }
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/offering/samplefile");
@@ -121,12 +141,12 @@ const AddOfferings = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-
+              <h3>{currentSession}</h3>
               <p>{error}</p>
               <input ref={fileRef} onChange={handleFileChange} id="csvInput" name="file" type="File" />
               <button onClick={handleFileSubmit}>Submit</button>
               <button onClick={downloadSampleCSV}>Download Sample CSV</button>
-            
+              
               <Dropdown>
                 <Dropdown.Toggle variant="danger" id="dropdown-basic">
                   {dropDownTextCourseID}
@@ -145,19 +165,29 @@ const AddOfferings = () => {
 
               <Dropdown>
                 <Dropdown.Toggle variant="danger" id="dropdown-basic">
-                  {dropDownTextSession}
+                  {dropDownTextExamSlotID}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {dropDownOptionsSession.map((option, optionNo) => {
+                  {dropDownOptionsExamSlotID.map((option, optionNo) => {
                     return (
-                      <Dropdown.Item key={optionNo} onClick={() => dropDownSelectSession(option)}>
-                        Session: {option}
+                      <Dropdown.Item key={optionNo} onClick={() => dropDownSelectExamSlotID(option)}>
+                        Exam SLot ID: {option}
                       </Dropdown.Item>
                     );
                   })}
                 </Dropdown.Menu>
               </Dropdown>
+
+              <input type="submit" value="Add Course Offering"
+               onClick = {(e) => {
+                console.log("inside");
+                addCourseOffering(dropDownTextCourseID, dropDownTextExamSlotID, currentSession);
+                setdropDownTextCourseID("Select Course ID");
+                setdropDownTextExamSlotID("Select Exam Slot ID");  
+                //reload window
+                window.location.reload();
+               }} />
 
             </div>
           </div>
