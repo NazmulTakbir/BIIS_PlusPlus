@@ -20,6 +20,7 @@ StudentRoutes.get("/studentinfo/:sid/classroutine", InfoController.getClassRouti
 StudentRoutes.get("/studentinfo/:sid/advisor", InfoController.getAdvisorInfo);
 
 StudentRoutes.get("/courses/:sid/registeredcourses", CoursesController.getRegisteredCourses);
+StudentRoutes.get("/courses/:sid/pending", CoursesController.getPendingRequests);
 StudentRoutes.get("/courses/:sid/coursestoadd", CoursesController.getCoursesToAdd);
 StudentRoutes.get("/courses/:sid/coursestodrop", CoursesController.getCoursesToDrop);
 StudentRoutes.post("/courses/:sid/addRequest", CoursesController.postAddRequest);

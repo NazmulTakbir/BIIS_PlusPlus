@@ -54,8 +54,20 @@ const CoursesAdd = () => {
 
   const submissionHandler = async () => {
     try {
-      console.log(coursesToAdd);
-      // window.location.pathname = "/courses/drop";
+      if (coursesToAdd.length === 0) {
+        alert("Please select at least one course to add");
+      } else {
+        const response = await fetch(`/api/student/courses/${studentID}/addRequest`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            offeringIDs: coursesToAdd,
+            submission_date: new Date(),
+          }),
+        });
+        console.log(response.json);
+        window.location.pathname = "/courses/registered";
+      }
     } catch (err) {}
   };
 

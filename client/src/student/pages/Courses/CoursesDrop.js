@@ -13,6 +13,16 @@ import CustomButton from "./../../../shared/components/CustomButton/CustomButton
 const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "SELECT"];
 
+const coursesToDrop = [];
+
+const checkBoxCallBack = (id, actionType) => {
+  if (actionType === "check") {
+    coursesToDrop.push(id);
+  } else if (actionType === "uncheck") {
+    coursesToDrop.splice(coursesToDrop.indexOf(id), 1);
+  }
+};
+
 const CoursesDrop = () => {
   const [tableData, setTableData] = useState([]);
   const [sessionData, setSessionData] = useState({});
@@ -36,7 +46,7 @@ const CoursesDrop = () => {
           row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
           row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
           row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
-          row.push({ type: "CheckBox", data: { id: jsonData[i]["course_id"] } });
+          row.push({ type: "CheckBox", data: { id: jsonData[i]["offering_id"], callback: checkBoxCallBack } });
           tableData.push(row);
         }
         setTableData(tableData);
@@ -56,12 +66,38 @@ const CoursesDrop = () => {
         return (
           <React.Fragment>
             <h3>SESSION: {sessionData.session_id}</h3>
+            <CustomButton
+              label="Submit Drop Request"
+              variant="contained"
+              color="white"
+              bcolor="red"
+              onClickFunction={submissionHandler}
+              onClickArguments={[]}
+            />
             <Table columnLabels={columnLabels} tableData={tableData} />;<CustomButton>Submit Request</CustomButton>
           </React.Fragment>
         );
       default:
         return null;
     }
+  };
+
+  const submissionHandler = async () => {
+    try {
+      if (coursesToDrop.length === 0) {
+        alert("Please select at least one course to drop");
+      } else {
+        const response = await fetch(`/api/student/courses/${studentID}/dropRequest`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            offeringIDs: coursesToDrop,
+            submission_date: new Date(),
+          }),
+        });
+        window.location.pathname = "/courses/registered";
+      }
+    } catch (err) {}
   };
 
   return (

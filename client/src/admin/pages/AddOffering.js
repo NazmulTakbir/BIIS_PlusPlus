@@ -9,7 +9,7 @@ import "../../shared/components/MainContainer.css";
 
 const allowedExtensions = ["csv"];
 
-const AddStudents = () => {
+const AddOffering = () => {
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
@@ -87,4 +87,4 @@ const AddStudents = () => {
   );
 };
 
-export default AddStudents;
+export default AddOffering;

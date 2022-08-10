@@ -12,12 +12,12 @@ import Table from "../../../shared/components/Table/Table";
 const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "STATUS"];
 
-const CoursesRegistered = () => {
+const CoursesPending = () => {
   const [tableData, setTableData] = useState([]);
   const [sessionData, setSessionData] = useState({});
 
   useEffect(() => {
-    fetchTableData(`/api/student/courses/${studentID}/registeredcourses`, setTableData);
+    fetchTableData(`/api/student/courses/${studentID}/pending`, setTableData);
   }, []);
 
   const fetchTableData = async (api_route, setTableData) => {
@@ -76,4 +76,4 @@ const CoursesRegistered = () => {
   );
 };
 
-export default CoursesRegistered;
+export default CoursesPending;

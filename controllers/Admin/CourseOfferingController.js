@@ -1,6 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 const essentialAttributes = [];
 

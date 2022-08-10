@@ -8,9 +8,10 @@ import Scrutinize from "../pages/Exam/Scrutinize";
 
 import CourseRegistration from "../pages/Advisees/CourseRegistration";
 import Feedback from "../pages/Advisees/Feedback";
-import AdviseeInfo from "../pages/Advisees/AdviseeInfo";
-import AdviseeAcademic from "../pages/Advisees/AdviseeAcademic";
-import AdviseeRegistration from "../pages/Advisees/AdviseeRegistration";
+import AdviseeInfo from "../pages/Advisees/AdviseeProfile/Info";
+import AdviseeAcademic from "../pages/Advisees/AdviseeProfile/Academic";
+import AdviseeRegistration from "../pages/Advisees/AdviseeProfile/Registration";
+import AdviseeList from "../pages/Advisees/AdviseeList";
 
 import DepartmentalIssues from "../pages/Department Office/DepartmentIssues";
 import HallIssues from "../pages/Hall Office/HallIssues";
@@ -37,6 +38,9 @@ const TeacherRoutes = () => {
 
       <Route path="/advisees/courseregistration" exact>
         <CourseRegistration />
+      </Route>
+      <Route path="/advisees/all" exact>
+        <AdviseeList />
       </Route>
       <Route path="/advisees/feedback" exact>
         <Feedback />

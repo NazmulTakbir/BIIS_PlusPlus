@@ -7,6 +7,7 @@ import StudentInfoAdvisor from "../pages/StudentInfo/StudentInfoAdvisor";
 import CoursesRegistered from "../pages/Courses/CoursesRegistered";
 import CoursesAdd from "../pages/Courses/CoursesAdd";
 import CoursesDrop from "../pages/Courses/CoursesDrop";
+import CoursesPending from "../pages/Courses/CoursesPending";
 
 import DuesPending from "../pages/Dues/DuesPending";
 import DuesPaid from "../pages/Dues/DuesPaid";
@@ -46,6 +47,9 @@ const StudentRoutes = () => {
 
       <Route path="/courses/registered" exact>
         <CoursesRegistered />
+      </Route>
+      <Route path="/courses/pending" exact>
+        <CoursesPending />
       </Route>
       <Route path="/courses/add" exact>
         <CoursesAdd />

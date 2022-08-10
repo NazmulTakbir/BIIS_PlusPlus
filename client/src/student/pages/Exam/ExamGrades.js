@@ -16,19 +16,6 @@ import Typography from "@mui/material/Typography";
 const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "GRADE", "GRADE POINT"];
 
-// const textStyle = {
-//   fontWeight: "bolder",
-//   width: "max-content",
-//   border: "1px solid grey",
-//   margin: "30px 50px auto 10px",
-//   padding: "10px",
-//   fontSize: "14px",
-//   borderRadius: "8px",
-//   textAlign: "left",
-//   background: "indianred",
-//   color: "white",
-// };
-
 const boxStyle = {
   bgcolor: "background.paper",
   border: "1px solid #bdbdbd",

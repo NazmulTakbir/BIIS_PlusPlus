@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Navbar from "../../../shared/components/Navbar/Navbar";
+import Navbar from "../../../../shared/components/Navbar/Navbar";
 
 const AdviseeAcademic = () => {
   let { studentID } = useParams();

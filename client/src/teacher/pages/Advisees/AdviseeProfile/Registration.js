@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import Navbar from "../../../shared/components/Navbar/Navbar";
+import Navbar from "../../../../shared/components/Navbar/Navbar";
 
-const AdviseeInfo = () => {
+const AdviseeRegistration = () => {
   let { studentID } = useParams();
 
   const NavbarData = [
@@ -29,7 +29,7 @@ const AdviseeInfo = () => {
             <div className="content">
               <h1>Profile of {studentID}</h1>
               <Navbar NavbarData={NavbarData} />
-              <h1>Info</h1>
+              <h1>Registration</h1>
             </div>
           </div>
         </div>
@@ -38,4 +38,4 @@ const AdviseeInfo = () => {
   );
 };
 
-export default AdviseeInfo;
+export default AdviseeRegistration;
