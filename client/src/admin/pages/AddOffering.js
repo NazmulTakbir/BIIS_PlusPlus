@@ -1,6 +1,5 @@
-
 import Papa from "papaparse";
-import React, { useEffect, useState , useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
@@ -12,7 +11,7 @@ import "../../shared/components/MainContainer.css";
 const allowedExtensions = ["csv"];
 
 const AddOfferings = () => {
-  const [currentSession , setCurrentSession] = useState("");
+  const [currentSession, setCurrentSession] = useState("");
 
   const fileRef = useRef();
   const [error, setMessage] = useState("");
@@ -41,7 +40,6 @@ const AddOfferings = () => {
         const exam_slot_id_response = await fetch(`/api/admin/offering/getexamslots`);
         const exam_slot_id_jsonData = await exam_slot_id_response.json();
         setdropDownOptionsExamSlotID(exam_slot_id_jsonData["data"]);
-
       } catch (err) {
         console.log(err);
       }
@@ -57,28 +55,26 @@ const AddOfferings = () => {
     setdropDownTextExamSlotID(value);
   };
 
-
-  const addCourseOffering = async (course_id , exam_slot_id , session_id) => {
-    let data=[]
+  const addCourseOffering = async (course_id, exam_slot_id, session_id) => {
+    let data = [];
     const obj = {
-      "course_id": course_id,
-      "exam_slot_id": exam_slot_id,
-      "session_id": session_id
-    }
+      course_id: course_id,
+      exam_slot_id: exam_slot_id,
+      session_id: session_id,
+    };
 
     data.push(obj);
 
     await fetch(`/api/admin/offering/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-           data : data
-          }),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        data: data,
+      }),
     });
 
     alert("Course Offering Add Successful");
-
-  }
+  };
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/offering/samplefile");
@@ -146,7 +142,7 @@ const AddOfferings = () => {
               <input ref={fileRef} onChange={handleFileChange} id="csvInput" name="file" type="File" />
               <button onClick={handleFileSubmit}>Submit</button>
               <button onClick={downloadSampleCSV}>Download Sample CSV</button>
-              
+
               <Dropdown>
                 <Dropdown.Toggle variant="danger" id="dropdown-basic">
                   {dropDownTextCourseID}
@@ -179,16 +175,18 @@ const AddOfferings = () => {
                 </Dropdown.Menu>
               </Dropdown>
 
-              <input type="submit" value="Add Course Offering"
-               onClick = {(e) => {
-                console.log("inside");
-                addCourseOffering(dropDownTextCourseID, dropDownTextExamSlotID, currentSession);
-                setdropDownTextCourseID("Select Course ID");
-                setdropDownTextExamSlotID("Select Exam Slot ID");  
-                //reload window
-                window.location.reload();
-               }} />
-
+              <input
+                type="submit"
+                value="Add Course Offering"
+                onClick={(e) => {
+                  console.log("inside");
+                  addCourseOffering(dropDownTextCourseID, dropDownTextExamSlotID, currentSession);
+                  setdropDownTextCourseID("Select Course ID");
+                  setdropDownTextExamSlotID("Select Exam Slot ID");
+                  //reload window
+                  window.location.reload();
+                }}
+              />
             </div>
           </div>
         </div>
