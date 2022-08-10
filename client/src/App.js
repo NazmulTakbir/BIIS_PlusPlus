@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import StudentRoutes from "./student/routes/StudentRoutes";
@@ -8,17 +8,26 @@ import UnauthenticatedRoutes from "./shared/routes/UnauthenticatedRoutes";
 
 import "./App.css";
 
-// import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/AuthContext";
 
 const App = () => {
-  const [token, setToken] = useState(false);
+  const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(false);
+  const [userType, setUserType] = useState(false);
 
-  const login = useCallback((uid, token) => {
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (storedData && storedData.token) {
+      login(storedData.userID, storedData.userType, storedData.token);
+    }
+  }, []);
+
+  const login = useCallback((uid, uType, token) => {
     setToken(token);
     setUserId(uid);
-  }, []); // second argument empty implies function will be initiated only once
+    setUserType(uType);
+    localStorage.setItem("userData", JSON.stringify({ userID: uid, userType: uType, token: token }));
+  }, []);
 
   const logout = useCallback(() => {
     setToken(null);
@@ -26,15 +35,18 @@ const App = () => {
   }, []);
 
   let routes;
-
-  let userType = "teacher";
-  if (token || true) {
-    if (userType === "student") routes = <StudentRoutes />;
-    else if (userType === "admin") routes = <AdminRoutes />;
-    else if (userType === "teacher") routes = <TeacherRoutes />;
-    else routes = <UnauthenticatedRoutes />;
-  } else {
-    routes = <UnauthenticatedRoutes />;
+  if (token !== null) {
+    if (token) {
+      if (userType === "student") {
+        routes = <StudentRoutes />;
+      } else if (userType === "teacher") {
+        routes = <TeacherRoutes />;
+      } else if (userType === "office admin" || userType === "hall admin" || userType === "department admin") {
+        routes = <AdminRoutes />;
+      }
+    } else {
+      routes = <UnauthenticatedRoutes />;
+    }
   }
 
   return (

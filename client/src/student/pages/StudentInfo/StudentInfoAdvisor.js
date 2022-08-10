@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -8,16 +8,20 @@ import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
 import AdvisorProfile from "../../components/AdvisorProfile/AdvisorProfile";
+import { AuthContext } from "../../../shared/context/AuthContext";
 
 const studentID = require("../../../placeHolder");
 
 const StudentInfoAdvisor = () => {
+  const auth = useContext(AuthContext);
   const [advisorInfo, setAdvisorInfo] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/studentinfo/${studentID}/advisor`);
+        const response = await fetch(`/api/student/studentinfo/${studentID}/advisor`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const jsonData = await response.json();
         setAdvisorInfo(jsonData);
       } catch (err) {

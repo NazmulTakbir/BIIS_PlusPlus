@@ -10,7 +10,7 @@ const StudentRoutes = require("./routes/StudentRoutes");
 const TeacherRoutes = require("./routes/TeacherRoutes");
 const AdminRoutes = require("./routes/AdminRoutes");
 const SharedRoutes = require("./routes/SharedRoutes");
-// const UnauthorizedRoutes = require("./routes/UnauthorizedRoutes");
+const UnauthenticatedRoutes = require("./routes/UnauthenticatedRoutes");
 const HttpError = require("./models/HttpError");
 
 const app = express();
@@ -30,7 +30,7 @@ app.use("/api/student", StudentRoutes);
 app.use("/api/teacher", TeacherRoutes);
 app.use("/api/admin", AdminRoutes);
 app.use("/api/shared", SharedRoutes);
-// app.use("/api/auth", UnauthorizedRoutes);
+app.use("/api/auth", UnauthenticatedRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
