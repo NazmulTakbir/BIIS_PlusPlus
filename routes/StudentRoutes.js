@@ -7,7 +7,7 @@ const ExamsController = require("../controllers/Student/ExamsController");
 const ScholarshipController = require("../controllers/Student/ScholarshipController");
 const GeneralInfoController = require("../controllers/Student/GeneralInfoController");
 const DuesController = require("../controllers/Student/DuesController");
-const FeedbackComplaintController = require("../controllers/Student/FeedbackComplaintController");
+const FeedbackController = require("../controllers/Student/FeedbackController");
 
 // const CheckAuth = require("../middleware/CheckAuth");
 
@@ -44,7 +44,7 @@ StudentRoutes.get("/generalinfo/:sid/notices", GeneralInfoController.getNotices)
 StudentRoutes.get("/dues/:sid/pendingdues", DuesController.getPendingDues);
 StudentRoutes.get("/dues/:sid/paiddues", DuesController.getPaidDues);
 
-StudentRoutes.get("/feedbackcomplaint/:sid/pastsubmissions", FeedbackComplaintController.getPastSubmissions);
-StudentRoutes.post("/feedbackcomplaint/:sid/newsubmission", FeedbackComplaintController.postNewSubmission);
+StudentRoutes.get("/feedback/:sid/pastsubmissions", FeedbackController.getPastSubmissions);
+StudentRoutes.post("/feedback/:sid/newsubmission", FeedbackController.postNewSubmission);
 
 module.exports = StudentRoutes;

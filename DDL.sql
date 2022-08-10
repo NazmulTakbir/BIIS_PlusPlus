@@ -259,10 +259,10 @@ CREATE TABLE "scholarship type"
     amount integer
 );
     
-DROP TABLE IF EXISTS complaint;
-CREATE TABLE complaint
+DROP TABLE IF EXISTS feedback;
+CREATE TABLE feedback
 (
-    complaint_id SERIAL PRIMARY KEY,
+    feedback_id SERIAL PRIMARY KEY,
     student_id integer,
     teacher_id integer,
     subject text,

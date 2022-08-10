@@ -1,11 +1,12 @@
 const { query } = require("express");
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 const { get_dept_level_term } = require("./Util");
 
 const getRegisteredCourses = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     let queryRes = await pool.query('SELECT * FROM "course registrations" where student_id = $1 and session_id = $2', [
       req.params.sid,
       session_id,
@@ -33,6 +34,7 @@ const getRegisteredCourses = async (req, res, next) => {
 
 const getCoursesToAdd = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     const sid = req.params.sid;
     const { dept_id, level, term } = await get_dept_level_term(sid);
 
@@ -69,6 +71,7 @@ const getCoursesToAdd = async (req, res, next) => {
 
 const getCoursesToDrop = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     const sid = req.params.sid;
     const { dept_id, level, term } = await get_dept_level_term(sid);
 
@@ -116,8 +119,8 @@ const postAddRequest = async (req, res, next) => {
       res.status(201).json({ message: "Cannot Add. Course Previously Requested", id: addID });
     } else {
       await pool.query(
-        'INSERT INTO "registration request" (student_id, offering_id, request_type, reg_status) VALUES($1, $2, $3, $4)',
-        [req.params.sid, addID, "add", "awaiting_advisor"]
+        'INSERT INTO "registration request" (student_id, offering_id, request_type, reg_status, request_date) VALUES($1, $2, $3, $4, $5)',
+        [req.params.sid, addID, "add", "awaiting_advisor", new Date()]
       );
       res.status(201).json({ message: "Placed Add Request", id: addID });
     }
@@ -140,8 +143,8 @@ const postDropRequest = async (req, res, next) => {
       res.status(201).json({ message: "Cannot Drop. Course Offering Not Requested Previously", id: dropID });
     } else if (queryRes.rowCount == 1) {
       await pool.query(
-        'INSERT INTO "registration request" (student_id, offering_id, request_type, reg_status) VALUES($1, $2, $3, $4)',
-        [req.params.sid, dropID, "drop", "awaiting_advisor"]
+        'INSERT INTO "registration request" (student_id, offering_id, request_type, reg_status, request_date) VALUES($1, $2, $3, $4, $5)',
+        [req.params.sid, dropID, "drop", "awaiting_advisor", new Date()]
       );
       res.status(201).json({ message: "Placed Drop Request", id: dropID });
     } else if (queryRes.rowCount == 2) {

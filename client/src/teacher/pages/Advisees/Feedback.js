@@ -5,13 +5,12 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { openInNewTab } from "../../../shared/util/OpenNewTab";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const teacherID = require("../../../placeHolder2");
-const columnLabels = ["REQUEST TYPE", "STUDENT ID", "COURSE TITLE", "REQUEST DATE", "ACTION"];
+const columnLabels = ["SUBJECT", "STUDENT ID", "STUDENT NAME", "DATE", "DETAILS"];
 
 const fetchTableData = async (api_route, setTableData) => {
   try {
@@ -20,22 +19,16 @@ const fetchTableData = async (api_route, setTableData) => {
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["subject"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["student_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["submission_date"] } });
       row.push({
-        type: "Buttons",
+        type: "SimpleModal",
         data: {
-          buttonList: [
-            {
-              buttonText: "View Details",
-              textColor: "white",
-              backColor: "#697A8D",
-              onClickFunction: openInNewTab,
-              onClickArguments: ["/advisees/profile/registration/" + jsonData[i]["student_id"]],
-            },
-          ],
+          buttonText: "View",
+          header: jsonData[i]["subject"],
+          body: jsonData[i]["details"],
         },
       });
       tableData.push(row);
@@ -46,11 +39,11 @@ const fetchTableData = async (api_route, setTableData) => {
   }
 };
 
-const CourseRegistration = () => {
+const Feedback = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${teacherID}/registrationrequests`, setTableData);
+    fetchTableData(`/api/teacher/advisees/${teacherID}/feedbacks`, setTableData);
   }, []);
 
   return (
@@ -71,4 +64,4 @@ const CourseRegistration = () => {
   );
 };
 
-export default CourseRegistration;
+export default Feedback;

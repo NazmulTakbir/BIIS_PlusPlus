@@ -65,4 +65,23 @@ const postAddStudent = async (req, res, next) => {
   }
 };
 
+const getSampleFile = async (req, res, next) => {
+  try {
+    data = "";
+    for (let i = 0; i < allAttributes.length; i++) {
+      if (i === allAttributes.length - 1) {
+        data += allAttributes[i];
+      } else {
+        data += allAttributes[i] + ",";
+      }
+    }
+
+    res.json({ message: "getSampleFile successful", data: data });
+  } catch (err) {
+    const error = new HttpError("getSampleFile failed", 500);
+    return next(error);
+  }
+};
+
+exports.getSampleFile = getSampleFile;
 exports.postAddStudent = postAddStudent;

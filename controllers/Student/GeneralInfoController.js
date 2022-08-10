@@ -1,10 +1,11 @@
 const { deepOrange } = require("@mui/material/colors");
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 const getAcademicCalender = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     let queryRes = await pool.query("select * from session_phase where session_id=$1 ORDER BY phase_number", [
       session_id,
     ]);

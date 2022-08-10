@@ -42,7 +42,7 @@ const FeedbackOld = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student/feedbackcomplaint/${studentID}/pastsubmissions`, setTableData);
+    fetchTableData(`/api/student/feedback/${studentID}/pastsubmissions`, setTableData);
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
 const { get_dept_level_term } = require("./Util");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 const getAvailableResults = async (req, res, next) => {
   try {
@@ -27,7 +27,6 @@ const getAvailableResults = async (req, res, next) => {
 
 const getGrades = async (req, res, next) => {
   try {
-    let total_grade_point = 0.0;
     const sid = req.params.sid;
     const level = req.params.level;
     const term = req.params.term;
@@ -88,6 +87,7 @@ const getGrades = async (req, res, next) => {
 const getExamRoutine = async (req, res, next) => {
   try {
     const sid = req.params.sid;
+    const session_id = await getCurrentSession();
 
     let queryRes = await pool.query(
       'SELECT co.course_id , et.exam_date, et.start_time, et.end_time , c.course_name\
@@ -122,6 +122,7 @@ const getExamRoutine = async (req, res, next) => {
 
 const getSeatPlan = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     const sid = req.params.sid;
     const { level, term } = await get_dept_level_term(sid);
 
@@ -151,6 +152,8 @@ const getSeatPlan = async (req, res, next) => {
 
 const getGuidelines = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
+
     let queryRes = await pool.query("SELECT * from exam_guidelines where session_id=$1", [session_id]);
 
     exam_guidelines_list = [];

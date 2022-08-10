@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -20,25 +19,30 @@ const FeedbackNew = () => {
   const [details, setDetails] = useState("");
   const [receiver, setReceiver] = useState("");
 
-  const history = useHistory();
-
   const submissionHandler = async (event) => {
     event.preventDefault();
     try {
-      // const response = await fetch(`/api/student/feedbackcomplaint/${studentID}/newsubmission`, {
-      await fetch(`/api/student/feedbackcomplaint/${studentID}/newsubmission`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          subject: subject,
-          details: details,
-          receiver: receiver,
-          submission_date: "18 JULY 2022",
-        }),
-      });
-      // const jsonData = await response.json();
-      // console.log(jsonData);
-      history.push("/");
+      if (subject === "") {
+        alert("Enter Subject");
+      } else if (details === "") {
+        alert("Enter Details");
+      } else if (receiver === "") {
+        alert("Enter Receiver");
+      } else {
+        await fetch(`/api/student/feedback/${studentID}/newsubmission`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            subject: subject,
+            details: details,
+            receiver: receiver,
+            submission_date: new Date(),
+          }),
+        });
+        setSubject("");
+        setDetails("");
+        alert("Submission Successful");
+      }
     } catch (err) {}
   };
 
