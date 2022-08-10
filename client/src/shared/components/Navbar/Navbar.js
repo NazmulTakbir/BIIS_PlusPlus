@@ -2,6 +2,7 @@ import React from "react";
 import "./Navbar.css";
 
 const Navbar = (props) => {
+  console.log(window.location.pathname);
   const { NavbarData } = props;
   return (
     <div className="Navbar" id="navbar">

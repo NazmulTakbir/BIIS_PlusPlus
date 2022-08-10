@@ -20,7 +20,11 @@ const postAddCourseTeacher = async (req, res, next) => {
       let data = [];
       for (let columnNo = 0; columnNo < allAttributes.length; columnNo++) {
         if (allAttributes[columnNo] in allData[rowNo]) {
-          data.push(allData[rowNo][allAttributes[columnNo]]);
+          if (allData[rowNo][allAttributes[columnNo]] === "") {
+            data.push(null);
+          } else {
+            data.push(allData[rowNo][allAttributes[columnNo]]);
+          }
         } else {
           data.push(null);
         }
@@ -35,4 +39,23 @@ const postAddCourseTeacher = async (req, res, next) => {
   }
 };
 
+const getSampleFile = async (req, res, next) => {
+  try {
+    data = "";
+    for (let i = 0; i < allAttributes.length; i++) {
+      if (i === allAttributes.length - 1) {
+        data += allAttributes[i];
+      } else {
+        data += allAttributes[i] + ",";
+      }
+    }
+
+    res.json({ message: "getSampleFile successful", data: data });
+  } catch (err) {
+    const error = new HttpError("getSampleFile failed", 500);
+    return next(error);
+  }
+};
+
+exports.getSampleFile = getSampleFile;
 exports.postAddCourseTeacher = postAddCourseTeacher;

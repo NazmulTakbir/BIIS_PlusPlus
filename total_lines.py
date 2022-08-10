@@ -1,6 +1,6 @@
 import os
 
-known_extensions = ['.py', '.cpp', '.h', '.sh', '.go', '.js', '.cc', '.c', '.java', '.html', '.css', '.scala', '.hpp', '.sql']
+known_extensions = ['csv', '.py', '.cpp', '.h', '.sh', '.go', '.js', '.cc', '.c', '.java', '.html', '.css', '.scala', '.hpp', '.sql']
 known_extensions.sort()
 
 file_count = {}

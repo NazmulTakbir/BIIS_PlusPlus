@@ -22,14 +22,36 @@ const createCourse = async (data) => {
   );
 };
 
+const getSampleFile = async (req, res, next) => {
+  try {
+    data = "";
+    for (let i = 0; i < allAttributes.length; i++) {
+      if (i === allAttributes.length - 1) {
+        data += allAttributes[i];
+      } else {
+        data += allAttributes[i] + ",";
+      }
+    }
+
+    res.json({ message: "getSampleFile successful", data: data });
+  } catch (err) {
+    const error = new HttpError("getSampleFile failed", 500);
+    return next(error);
+  }
+};
+
 const postAddCourse = async (req, res, next) => {
   try {
-    allData = req.body.data;
+    const allData = req.body.data;
     for (let rowNo = 0; rowNo < allData.length; rowNo++) {
       let data = [];
       for (let columnNo = 0; columnNo < allAttributes.length; columnNo++) {
         if (allAttributes[columnNo] in allData[rowNo]) {
-          data.push(allData[rowNo][allAttributes[columnNo]]);
+          if (allData[rowNo][allAttributes[columnNo]] === "") {
+            data.push(null);
+          } else {
+            data.push(allData[rowNo][allAttributes[columnNo]]);
+          }
         } else {
           data.push(null);
         }
@@ -45,3 +67,4 @@ const postAddCourse = async (req, res, next) => {
 };
 
 exports.postAddCourse = postAddCourse;
+exports.getSampleFile = getSampleFile;

@@ -1,17 +1,20 @@
-const { query } = require("express");
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
 
 const essentialAttributes = [];
 
-const allAttributes = ["description", "file_path", "upload_date"];
+const allAttributes = ["student_id", "dues_type_id", "deadline", "dues_status", "payment_date", "specification"];
 
-const createNotice = async (data) => {
-  await pool.query("INSERT INTO public.notice(description, file_path, upload_date) VALUES ($1, $2, $3)", data);
+const createDue = async (data) => {
+  await pool.query(
+    "INSERT INTO public.dues(student_id, dues_type_id, deadline, dues_status, payment_date, specification) \
+    VALUES ($1, $2, $3, $4, $5, $6);",
+    data
+  );
 };
 
-const postAddNotice = async (req, res, next) => {
+const postAddDues = async (req, res, next) => {
   try {
     allData = req.body.data;
     for (let rowNo = 0; rowNo < allData.length; rowNo++) {
@@ -27,12 +30,12 @@ const postAddNotice = async (req, res, next) => {
           data.push(null);
         }
       }
-      await createNotice(data);
+      await createDue(data);
     }
 
-    res.status(201).json({ message: "postAddNotice successful" });
+    res.status(201).json({ message: "postAddDues successful" });
   } catch (err) {
-    const error = new HttpError("postAddNotice failed", 500);
+    const error = new HttpError("postAddDues failed", 500);
     return next(error);
   }
 };
@@ -56,4 +59,4 @@ const getSampleFile = async (req, res, next) => {
 };
 
 exports.getSampleFile = getSampleFile;
-exports.postAddNotice = postAddNotice;
+exports.postAddDues = postAddDues;

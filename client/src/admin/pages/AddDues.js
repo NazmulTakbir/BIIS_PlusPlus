@@ -9,19 +9,19 @@ import "../../shared/components/MainContainer.css";
 
 const allowedExtensions = ["csv"];
 
-const AddStudents = () => {
+const AddDues = () => {
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
   const downloadSampleCSV = async (e) => {
-    const response = await fetch("/api/admin/offering/samplefile");
+    const response = await fetch("/api/admin/dues/samplefile");
     const fileData = (await response.json())["data"];
 
     const blob = new Blob([fileData], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = "offerings.csv";
+    link.download = "dues.csv";
     link.href = url;
     link.click();
   };
@@ -51,7 +51,7 @@ const AddStudents = () => {
         skipEmptyLines: true,
         complete: async function (results, file) {
           console.log();
-          await fetch(`/api/admin/offering/add`, {
+          await fetch(`/api/admin/dues/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -59,7 +59,7 @@ const AddStudents = () => {
             }),
           });
           setFile("");
-          setMessage("Course Offerings Added Successfully");
+          setMessage("Dues Added Successfully");
           fileRef.current.value = null;
         },
       });
@@ -87,4 +87,4 @@ const AddStudents = () => {
   );
 };
 
-export default AddStudents;
+export default AddDues;

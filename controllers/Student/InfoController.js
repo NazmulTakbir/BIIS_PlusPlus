@@ -1,6 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 //util
 const get_dept_hall = async (sid) => {
@@ -42,6 +42,7 @@ const getHomeInfo = async (req, res, next) => {
 
 const getClassRoutine = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     let queryRes = await pool.query(
       'SELECT offering_id from "course registrations" where student_id = $1 and session_id = $2',
       [req.params.sid, session_id]

@@ -14,6 +14,18 @@ const AddStudents = () => {
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
+  const downloadSampleCSV = async (e) => {
+    const response = await fetch("/api/admin/courseteacher/samplefile");
+    const fileData = (await response.json())["data"];
+
+    const blob = new Blob([fileData], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "courseteachers.csv";
+    link.href = url;
+    link.click();
+  };
+
   const handleFileChange = async (e) => {
     setMessage("");
     if (e.target.files.length) {
@@ -66,6 +78,7 @@ const AddStudents = () => {
               <p>{error}</p>
               <input ref={fileRef} onChange={handleFileChange} id="csvInput" name="file" type="File" />
               <button onClick={handleFileSubmit}>Submit</button>
+              <button onClick={downloadSampleCSV}>Download Sample CSV</button>
             </div>
           </div>
         </div>

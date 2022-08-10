@@ -23,6 +23,8 @@ const Buttons = (props) => {
               variant="contained"
               color={button.textColor}
               bcolor={button.backColor}
+              onClickFunction={button.onClickFunction}
+              onClickArguments={button.onClickArguments}
             />
           );
         })}

@@ -24,8 +24,8 @@ import ScholarshipAvailable from "../pages/Scholarship/ScholarshipAvailable";
 import ScholarshipProcessing from "../pages/Scholarship/ScholarshipProcessing";
 import ScholarshipReceived from "../pages/Scholarship/ScholarshipReceived";
 
-import FeedbackNew from "../pages/FeedbackComplaint/FeedbackNew";
-import FeedbackOld from "../pages/FeedbackComplaint/FeedbackOld";
+import FeedbackNew from "../pages/Feedback/FeedbackNew";
+import FeedbackOld from "../pages/Feedback/FeedbackOld";
 
 const StudentRoutes = () => {
   return (

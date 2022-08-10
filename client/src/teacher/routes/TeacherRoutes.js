@@ -7,7 +7,10 @@ import ViewGrades from "../pages/Exam/ViewGrades";
 import Scrutinize from "../pages/Exam/Scrutinize";
 
 import CourseRegistration from "../pages/Advisees/CourseRegistration";
-import FeedbackComplaint from "../pages/Advisees/FeedbackComplaint";
+import Feedback from "../pages/Advisees/Feedback";
+import AdviseeInfo from "../pages/Advisees/AdviseeInfo";
+import AdviseeAcademic from "../pages/Advisees/AdviseeAcademic";
+import AdviseeRegistration from "../pages/Advisees/AdviseeRegistration";
 
 import DepartmentalIssues from "../pages/Department Office/DepartmentIssues";
 import HallIssues from "../pages/Hall Office/HallIssues";
@@ -36,7 +39,16 @@ const TeacherRoutes = () => {
         <CourseRegistration />
       </Route>
       <Route path="/advisees/feedback" exact>
-        <FeedbackComplaint />
+        <Feedback />
+      </Route>
+      <Route path="/advisees/profile/info/:studentID" exact>
+        <AdviseeInfo />
+      </Route>
+      <Route path="/advisees/profile/academic/:studentID" exact>
+        <AdviseeAcademic />
+      </Route>
+      <Route path="/advisees/profile/registration/:studentID" exact>
+        <AdviseeRegistration />
       </Route>
 
       <Route path="/deptissues" exact>
