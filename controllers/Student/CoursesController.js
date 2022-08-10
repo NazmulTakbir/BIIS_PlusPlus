@@ -4,6 +4,17 @@ const HttpError = require("../../models/HttpError");
 const { getCurrentSession } = require("../../util/CurrentSession");
 const { get_dept_level_term } = require("./Util");
 
+const getRegistrationPhase = async () => {
+  try {
+    const session_id = await getCurrentSession();
+    const queryRes = await pool.query('select registration_phase from "session" where session_id = $1', [session_id]);
+    return queryRes.rows[0]["registration_phase"];
+  } catch (err) {
+    const error = new HttpError("Fetching Registration Phase Failed", 500);
+    return next(error);
+  }
+};
+
 const getRegisteredCourses = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
@@ -34,35 +45,40 @@ const getRegisteredCourses = async (req, res, next) => {
 
 const getCoursesToAdd = async (req, res, next) => {
   try {
-    const session_id = await getCurrentSession();
-    const sid = req.params.sid;
-    const { dept_id, level, term } = await get_dept_level_term(sid);
+    const registrationPhase = await getRegistrationPhase();
+    if (registrationPhase === "open") {
+      const session_id = await getCurrentSession();
+      const sid = req.params.sid;
+      const { dept_id, level, term } = await get_dept_level_term(sid);
 
-    let queryRes = await pool.query(
-      'select t1.course_id, t1.course_name, t1.credits, t2.offering_id from (select course_id, \
+      let queryRes = await pool.query(
+        'select t1.course_id, t1.course_name, t1.credits, t2.offering_id from (select course_id, \
         course_name, credits from course where offered_to_dept_id=$1 and level=$2 and term=$3) as t1, \
       (select offering_id, course_id, session_id from "course offering") as t2 where \
       t1.course_id = t2.course_id and session_id=$4',
-      [dept_id, level, term, session_id]
-    );
-    const coursesOffered = queryRes.rows;
-
-    coursesToAdd = [];
-    for (let i = 0; i < coursesOffered.length; i++) {
-      queryRes = await pool.query(
-        'select offering_id from "registration request" where student_id = $1 and offering_id=$2',
-        [sid, coursesOffered[i]["offering_id"]]
+        [dept_id, level, term, session_id]
       );
-      if (queryRes.rowCount == 0) {
-        coursesToAdd.push({
-          course_id: coursesOffered[i]["course_id"],
-          course_name: coursesOffered[i]["course_name"],
-          credits: coursesOffered[i]["credits"],
-        });
-      }
-    }
+      const coursesOffered = queryRes.rows;
 
-    res.status(201).json({ message: "getCoursesToAdd", data: coursesToAdd });
+      coursesToAdd = [];
+      for (let i = 0; i < coursesOffered.length; i++) {
+        queryRes = await pool.query(
+          'select offering_id from "registration request" where student_id = $1 and offering_id=$2',
+          [sid, coursesOffered[i]["offering_id"]]
+        );
+        if (queryRes.rowCount == 0) {
+          coursesToAdd.push({
+            course_id: coursesOffered[i]["course_id"],
+            course_name: coursesOffered[i]["course_name"],
+            credits: coursesOffered[i]["credits"],
+          });
+        }
+      }
+
+      res.status(201).json({ message: "getCoursesToAdd", data: coursesToAdd });
+    } else {
+      res.status(201).json({ message: registrationPhase });
+    }
   } catch (err) {
     const error = new HttpError("Fetching Courses to Add Failed", 500);
     return next(error);
@@ -71,35 +87,40 @@ const getCoursesToAdd = async (req, res, next) => {
 
 const getCoursesToDrop = async (req, res, next) => {
   try {
-    const session_id = await getCurrentSession();
-    const sid = req.params.sid;
-    const { dept_id, level, term } = await get_dept_level_term(sid);
+    const registrationPhase = await getRegistrationPhase();
+    if (registrationPhase === "open") {
+      const session_id = await getCurrentSession();
+      const sid = req.params.sid;
+      const { dept_id, level, term } = await get_dept_level_term(sid);
 
-    let queryRes = await pool.query(
-      'select t1.course_id, t1.course_name, t1.credits, t2.offering_id from (select course_id, \
+      let queryRes = await pool.query(
+        'select t1.course_id, t1.course_name, t1.credits, t2.offering_id from (select course_id, \
         course_name, credits from course where offered_to_dept_id=$1 and level=$2 and term=$3) as t1, \
       (select offering_id, course_id, session_id from "course offering") as t2 where \
       t1.course_id = t2.course_id and session_id=$4',
-      [dept_id, level, term, session_id]
-    );
-    const coursesOffered = queryRes.rows;
-
-    coursesToDrop = [];
-    for (let i = 0; i < coursesOffered.length; i++) {
-      queryRes = await pool.query(
-        'select offering_id from "registration request" where student_id = $1 and offering_id=$2',
-        [sid, coursesOffered[i]["offering_id"]]
+        [dept_id, level, term, session_id]
       );
-      if (queryRes.rowCount == 1) {
-        coursesToDrop.push({
-          course_id: coursesOffered[i]["course_id"],
-          course_name: coursesOffered[i]["course_name"],
-          credits: coursesOffered[i]["credits"],
-        });
-      }
-    }
+      const coursesOffered = queryRes.rows;
 
-    res.status(201).json({ message: "getCoursesToDrop", data: coursesToDrop });
+      coursesToDrop = [];
+      for (let i = 0; i < coursesOffered.length; i++) {
+        queryRes = await pool.query(
+          'select offering_id from "registration request" where student_id = $1 and offering_id=$2',
+          [sid, coursesOffered[i]["offering_id"]]
+        );
+        if (queryRes.rowCount == 1) {
+          coursesToDrop.push({
+            course_id: coursesOffered[i]["course_id"],
+            course_name: coursesOffered[i]["course_name"],
+            credits: coursesOffered[i]["credits"],
+          });
+        }
+      }
+
+      res.status(201).json({ message: "getCoursesToDrop", data: coursesToDrop });
+    } else {
+      res.status(201).json({ message: registrationPhase });
+    }
   } catch (err) {
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);

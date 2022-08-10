@@ -24,6 +24,7 @@ const getAvailableResults = async (req, res, next) => {
   }
 };
 
+
 const getGrades = async (req, res, next) => {
   try {
     const sid = req.params.sid;

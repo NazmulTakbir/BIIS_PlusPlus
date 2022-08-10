@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import Papa from "papaparse";
-import DatePicker from "react-date-picker";
+import DatePicker from "react-datepicker";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
