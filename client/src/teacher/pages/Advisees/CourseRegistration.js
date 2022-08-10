@@ -11,7 +11,7 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const teacherID = require("../../../placeHolder2");
-const columnLabels = ["REQUEST TYPE", "STUDENT ID", "COURSE TITLE", "REQUEST DATE", "ACTION"];
+const columnLabels = ["REQUEST TYPE", "STUDENT ID", "COURSE COUNT", "REQUEST DATE", "ACTION"];
 
 const fetchTableData = async (api_route, setTableData) => {
   try {
@@ -22,7 +22,7 @@ const fetchTableData = async (api_route, setTableData) => {
       let row = [];
       row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["req_count"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
       row.push({
         type: "Buttons",
@@ -50,7 +50,7 @@ const CourseRegistration = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${teacherID}/registrationrequests`, setTableData);
+    fetchTableData(`/api/teacher/advisees/${teacherID}/registrationsummary`, setTableData);
   }, []);
 
   return (

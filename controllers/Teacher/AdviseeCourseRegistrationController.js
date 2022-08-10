@@ -8,14 +8,14 @@ const getRegistrationRequests = async (req, res, next) => {
     let queryRes = await pool.query(
       'select reg_request_id, request_type, student_id, course_id, request_date  from \
       "registration request" natural join student natural join "course offering" \
-      where reg_status=\'awaiting_advisor\' and advisor_id = $1;',
+      where reg_status=\'awaiting_advisor\' and advisor_id = $1 order by reg_request_id;',
       [tid]
     );
     reg_requests = [];
     for (const element of queryRes.rows) {
       comp = {};
       comp["reg_request_id"] = element["reg_request_id"];
-      comp["request_type"] = element["request_type"];
+      comp["request_type"] = element["request_type"].toUpperCase();
       comp["student_id"] = element["student_id"];
       comp["course_id"] = element["course_id"];
 
@@ -33,4 +33,31 @@ const getRegistrationRequests = async (req, res, next) => {
   }
 };
 
+const getRegistrationRequestSummary = async (req, res, next) => {
+  try {
+    const tid = req.params.tid;
+    let queryRes = await pool.query(
+      'select request_type, student_id, request_date, COUNT(*) as req_count \
+      from (select * from "registration request" natural join student natural join \
+      "course offering" where reg_status=\'awaiting_advisor\' and advisor_id = $1) \
+      as t1 group by student_id, request_type, request_date order by request_date asc;',
+      [tid]
+    );
+
+    data = queryRes.rows;
+    for (let i = 0; i < data.length; i++) {
+      let date_ = "";
+      date_ = (date_ + data[i]["request_date"]).substring(4, 16);
+      data[i]["request_date"] = date_;
+      data[i]["request_type"] = data[i]["request_type"].toUpperCase();
+    }
+
+    res.json({ message: "getRegistrationRequestSummary", data: data });
+  } catch (err) {
+    const error = new HttpError("Fetching Registration Summary Failed", 500);
+    return next(error);
+  }
+};
+
 exports.getRegistrationRequests = getRegistrationRequests;
+exports.getRegistrationRequestSummary = getRegistrationRequestSummary;

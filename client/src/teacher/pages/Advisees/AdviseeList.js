@@ -11,7 +11,7 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const teacherID = require("../../../placeHolder2");
-const columnLabels = ["REQUEST TYPE", "STUDENT ID", "COURSE TITLE", "REQUEST DATE", "ACTION"];
+const columnLabels = ["STUDENT ID", "NAME", "LEVEL", "TERM", "DETAILS"];
 
 const fetchTableData = async (api_route, setTableData) => {
   try {
@@ -20,10 +20,10 @@ const fetchTableData = async (api_route, setTableData) => {
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["level"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["term"] } });
       row.push({
         type: "Buttons",
         data: {
@@ -33,7 +33,7 @@ const fetchTableData = async (api_route, setTableData) => {
               textColor: "white",
               backColor: "#697A8D",
               onClickFunction: openInNewTab,
-              onClickArguments: ["/advisees/profile/registration/" + jsonData[i]["student_id"]],
+              onClickArguments: ["/advisees/profile/info/" + jsonData[i]["student_id"]],
             },
           ],
         },
@@ -50,7 +50,7 @@ const AdviseeList = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${teacherID}/registrationrequests`, setTableData);
+    fetchTableData(`/api/teacher/adviseelist/${teacherID}`, setTableData);
   }, []);
 
   return (

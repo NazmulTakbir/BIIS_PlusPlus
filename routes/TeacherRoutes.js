@@ -17,12 +17,17 @@ const TeacherRoutes = express.Router();
 // TeacherRoutes.use(checkAuth);
 
 TeacherRoutes.get("/teacherinfo/:tid", InfoController.getInfo);
+TeacherRoutes.get("/adviseelist/:tid", InfoController.getAllAdvisee);
 
 TeacherRoutes.get("/exam/:tid/addgrades/courses", AddGradesController.getCourses);
 TeacherRoutes.get("/exam/:tid/viewgrades/courses", ViewGradesController.getCourses);
 TeacherRoutes.get("/exam/:tid/scrutinize/courses", ScrutinizeController.getCourses);
 
 TeacherRoutes.get("/advisees/:tid/registrationrequests", AdviseeCourseRegistrationController.getRegistrationRequests);
+TeacherRoutes.get(
+  "/advisees/:tid/registrationsummary",
+  AdviseeCourseRegistrationController.getRegistrationRequestSummary
+);
 TeacherRoutes.get("/advisees/:tid/feedbacks", AdviseeFeedbackController.getFeedbacks);
 
 TeacherRoutes.get("/hallprovost/:tid/scholarshiprequests", HallProvostController.getScholarshipRequests);

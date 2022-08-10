@@ -11,4 +11,20 @@ const getInfo = async (req, res, next) => {
   }
 };
 
+const getAllAdvisee = async (req, res, next) => {
+  try {
+    const queryRes = await pool.query(
+      "select student_id, s.name, level, term from teacher as t, student as s where teacher_id=$1 \
+                      and advisor_id=teacher_id;",
+      [req.params.tid]
+    );
+
+    res.json({ message: "getInfo", data: queryRes.rows });
+  } catch (err) {
+    const error = new HttpError("Fetching All Advisees Failed", 500);
+    return next(error);
+  }
+};
+
 exports.getInfo = getInfo;
+exports.getAllAdvisee = getAllAdvisee;
