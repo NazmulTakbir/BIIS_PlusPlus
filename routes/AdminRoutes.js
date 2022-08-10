@@ -2,6 +2,7 @@ const express = require("express");
 // const { check } = require("express-validator");
 
 const StudentController = require("../controllers/Admin/StudentController");
+const DepartmentsController = require("../controllers/Admin/DepartmentsController")
 const TeacherController = require("../controllers/Admin/TeacherController");
 const CourseController = require("../controllers/Admin/CourseController");
 const CourseOfferingController = require("../controllers/Admin/CourseOfferingController");
@@ -15,7 +16,7 @@ const AcademicCalenderController = require("../controllers/Admin/AcademicCalende
 const AdminRoutes = express.Router();
 
 // AdminRoutes.use(checkAuth);
-
+AdminRoutes.get("/departments/get", DepartmentsController.getDepartmentsList);
 AdminRoutes.post("/student/add", StudentController.postAddStudent);
 AdminRoutes.get("/student/samplefile", StudentController.getSampleFile);
 
@@ -27,6 +28,9 @@ AdminRoutes.get("/course/samplefile", CourseController.getSampleFile);
 
 AdminRoutes.post("/offering/add", CourseOfferingController.postAddCourseOffering);
 AdminRoutes.get("/offering/samplefile", CourseOfferingController.getSampleFile);
+AdminRoutes.get("/offering/getunofferedcourses", CourseOfferingController.getunofferedcourses);
+//AdminRoutes.get("/offering/getunofferedcourses/admin_dept_id", CourseOfferingController.getunofferedcourses);
+AdminRoutes.get("/offering/getexamslots", CourseOfferingController.getexamslots);
 
 AdminRoutes.post("/courseteacher/add", CourseTeacherController.postAddCourseTeacher);
 AdminRoutes.get("/courseteacher/samplefile", CourseTeacherController.getSampleFile);

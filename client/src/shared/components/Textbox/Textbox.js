@@ -5,7 +5,7 @@ import "./Textbox.css";
 const Textbox = (props) => {
   return (
     <div className="textbox-container">
-      <div className="textbox-custom">
+      <div className="textbox-custom" style={{padding: props.padding, width: props.width}}>
         <div className="textbox-label">{props.label}</div>
 
         <TextareaAutosize
@@ -16,6 +16,7 @@ const Textbox = (props) => {
             width: props.width,
             height: props.height,
             resize: props.resize,
+            fontSize: props.fontSize,
           }}
           value={props.value}
           onChange={props.onChange}
