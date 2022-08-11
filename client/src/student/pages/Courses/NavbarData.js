@@ -4,6 +4,10 @@ export const NavbarData = [
     link: "/courses/registered",
   },
   {
+    title: "Pending Requests",
+    link: "/courses/pending",
+  },
+  {
     title: "Add Course",
     link: "/courses/add",
   },

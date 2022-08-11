@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -7,22 +7,23 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import { openInNewTab } from "../../../shared/util/OpenNewTab";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const teacherID = require("../../../placeHolder2");
-const columnLabels = ["REQUEST TYPE", "STUDENT ID", "COURSE TITLE", "REQUEST DATE", "ACTION"];
+const columnLabels = ["STUDENT ID", "REQUEST TYPE", "COURSE COUNT", "REQUEST DATE", "ACTION"];
 
-const fetchTableData = async (api_route, setTableData) => {
+const fetchTableData = async (api_route, setTableData, auth) => {
   try {
-    const response = await fetch(api_route);
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
     const jsonData = (await response.json())["data"];
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["req_count"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
       row.push({
         type: "Buttons",
@@ -47,11 +48,12 @@ const fetchTableData = async (api_route, setTableData) => {
 };
 
 const CourseRegistration = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${teacherID}/registrationrequests`, setTableData);
-  }, []);
+    fetchTableData(`/api/teacher/advisees/${teacherID}/registrationsummary`, setTableData, auth);
+  }, [auth]);
 
   return (
     <React.Fragment>

@@ -10,6 +10,4 @@ const getCurrentSession = async () => {
   return queryRes.rows[0]["session_id"];
 };
 
-
-
 exports.getCurrentSession = getCurrentSession;

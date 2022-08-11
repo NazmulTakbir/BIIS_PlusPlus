@@ -55,14 +55,18 @@ CREATE TABLE course
 DROP TABLE IF EXISTS "department admin";
 CREATE TABLE "department admin"
 (
-    dept_admin_id SERIAL PRIMARY KEY,
-    dept_id integer
+    dept_admin_id int GENERATED ALWAYS AS IDENTITY (START WITH 300000),
+    dept_id integer,
+	name text, 
+	password text
 );
 
 DROP TABLE IF EXISTS "office admin";
 CREATE TABLE "office admin"
 (
-    office_admin_id SERIAL PRIMARY KEY
+    office_admin_id int GENERATED ALWAYS AS IDENTITY (START WITH 400000),
+	name text, 
+	password text
 );
 
 DROP TABLE IF EXISTS "comptroller admin";
@@ -74,8 +78,10 @@ CREATE TABLE "comptroller admin"
 DROP TABLE IF EXISTS "hall admin";
 CREATE TABLE "hall admin"
 (
-    hall_admin_id SERIAL PRIMARY KEY,
-    hall_id integer
+    hall_admin_id int GENERATED ALWAYS AS IDENTITY (START WITH 200000),
+    hall_id integer,
+	name text, 
+	password text
 );
 
 DROP TABLE IF EXISTS "hall supervisor";

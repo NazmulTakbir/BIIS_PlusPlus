@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 import StudentRoutes from "./student/routes/StudentRoutes";
 import TeacherRoutes from "./teacher/routes/TeacherRoutes";
@@ -8,33 +9,57 @@ import UnauthenticatedRoutes from "./shared/routes/UnauthenticatedRoutes";
 
 import "./App.css";
 
-// import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/AuthContext";
 
 const App = () => {
-  const [token, setToken] = useState(false);
-  const [userId, setUserId] = useState(false);
+  const [token, setToken] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [userType, setUserType] = useState(null);
 
-  const login = useCallback((uid, token) => {
+  const login = useCallback((uid, uType, token) => {
     setToken(token);
     setUserId(uid);
-  }, []); // second argument empty implies function will be initiated only once
-
-  const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
+    setUserType(uType);
+    localStorage.setItem("userData", JSON.stringify({ userID: uid, userType: uType, token: token }));
   }, []);
 
-  let routes;
+  const logout = useCallback(() => {
+    setToken(false);
+    setUserId(false);
+    setUserType(false);
+    localStorage.removeItem("userData");
+  }, []);
 
-  let userType = "admin";
-  if (token || true) {
-    if (userType === "student") routes = <StudentRoutes />;
-    else if (userType === "admin") routes = <AdminRoutes />;
-    else if (userType === "teacher") routes = <TeacherRoutes />;
-    else routes = <UnauthenticatedRoutes />;
-  } else {
-    routes = <UnauthenticatedRoutes />;
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (storedData && storedData.token) {
+      let decodedToken = jwt_decode(storedData.token);
+      let currentDate = new Date();
+
+      if (decodedToken.exp * 1000 < currentDate.getTime()) {
+        logout();
+      } else {
+        login(storedData.userID, storedData.userType, storedData.token);
+      }
+    } else {
+      logout();
+    }
+  }, [login, logout]);
+
+  let routes;
+  if (token !== null) {
+    if (token) {
+      //userType="department admin"
+      if (userType === "student") {
+        routes = <StudentRoutes />;
+      } else if (userType === "teacher") {
+        routes = <TeacherRoutes />;
+      } else if (userType === "office admin" || userType === "hall admin" || userType === "department admin") {
+        routes = <AdminRoutes />;
+      }
+    } else {
+      routes = <TeacherRoutes />;
+    }
   }
 
   return (

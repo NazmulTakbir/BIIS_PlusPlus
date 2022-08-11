@@ -1,20 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 
 import Dropdown from "react-bootstrap/Dropdown";
+import Navbar from "../../../../shared/components/Navbar/Navbar";
+import "./Advisee.css";
 
-import Sidebar from "../../../shared/components/Sidebar/Sidebar";
-import Navbar from "../../../shared/components/Navbar/Navbar";
-import Header from "../../../shared/components/Header/Header";
-import { SidebarData } from "../../components/SidebarData";
-import { NavbarData } from "./NavbarData";
-
-import { AuthContext } from "../../../shared/context/AuthContext";
-import "../../../shared/components/MainContainer.css";
-import Table from "../../../shared/components/Table/Table";
+import { AuthContext } from "../../../../shared/context/AuthContext";
+import "../../../../shared/components/MainContainer.css";
+import Table from "../../../../shared/components/Table/Table";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "GRADE", "GRADE POINT"];
 
 const boxStyle = {
@@ -28,7 +24,35 @@ const boxStyle = {
   margin: "auto",
 };
 
-const ExamGrades = () => {
+const fetchTableData = async (api_route, setTableData, setExtraData, auth) => {
+  try {
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
+    const jsonData = await response.json();
+    const resultData = jsonData["data"];
+    let tableData = [];
+    for (let i = 0; i < resultData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: resultData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["course_name"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["credits"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["letter_grade"] } });
+      row.push({ type: "PlainText", data: { value: resultData[i]["grade_point"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+    setExtraData({
+      gpa: jsonData["gpa"],
+      cgpa: jsonData["cgpa"],
+      registeredCredits: jsonData["registeredCredits"],
+      earnedCredits: jsonData["earnedCredits"],
+      totalCreditsEarned: jsonData["totalCreditsEarned"],
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const AdviseeAcademic = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
   const [extraData, setExtraData] = useState({});
@@ -36,35 +60,22 @@ const ExamGrades = () => {
   const [dropDownOptions, setDropDownOptions] = useState([]);
   const [noneSelected, setNoneSelected] = useState(true);
 
-  const fetchTableData = async (api_route, setTableData, setExtraData) => {
-    try {
-      const response = await fetch(api_route, {
-        headers: { Authorization: "Bearer " + auth.token },
-      });
-      const jsonData = await response.json();
-      const resultData = jsonData["data"];
-      let tableData = [];
-      for (let i = 0; i < resultData.length; i++) {
-        let row = [];
-        row.push({ type: "PlainText", data: { value: resultData[i]["course_id"] } });
-        row.push({ type: "PlainText", data: { value: resultData[i]["course_name"] } });
-        row.push({ type: "PlainText", data: { value: resultData[i]["credits"] } });
-        row.push({ type: "PlainText", data: { value: resultData[i]["letter_grade"] } });
-        row.push({ type: "PlainText", data: { value: resultData[i]["grade_point"] } });
-        tableData.push(row);
-      }
-      setTableData(tableData);
-      setExtraData({
-        gpa: jsonData["gpa"],
-        cgpa: jsonData["cgpa"],
-        registeredCredits: jsonData["registeredCredits"],
-        earnedCredits: jsonData["earnedCredits"],
-        totalCreditsEarned: jsonData["totalCreditsEarned"],
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  let { studentID } = useParams();
+
+  const NavbarData = [
+    {
+      title: "Student Info",
+      link: "/advisees/profile/info/" + studentID,
+    },
+    {
+      title: "Academic Profile",
+      link: "/advisees/profile/academic/" + studentID,
+    },
+    {
+      title: "Course Registration",
+      link: "/advisees/profile/registration/" + studentID,
+    },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +90,7 @@ const ExamGrades = () => {
       }
     };
     fetchData();
-  }, [auth]);
+  }, [studentID, auth]);
 
   const dropDownSelect = async (value) => {
     const level = parseInt(value[0]);
@@ -87,18 +98,20 @@ const ExamGrades = () => {
 
     setDropDownText("Level " + level + "  Term " + term);
 
-    fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData);
+    fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData, auth);
     setNoneSelected(false);
   };
 
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
         <div className="wrapper">
-          <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
+              <div className="profile-id-container">
+                <div className="profiler-id">Profile of {studentID}</div>
+              </div>
+
               <Navbar NavbarData={NavbarData} />
 
               <Dropdown>
@@ -154,4 +167,4 @@ const ExamGrades = () => {
   );
 };
 
-export default ExamGrades;
+export default AdviseeAcademic;

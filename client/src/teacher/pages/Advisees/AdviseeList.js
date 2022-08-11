@@ -5,27 +5,40 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { openInNewTab } from "../../../shared/util/OpenNewTab";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const studentID = require("../../../placeHolder");
-const columnLabels = ["TYPE", "AMOUNT", "SPECIFICATION", "DEADLINE"];
+const teacherID = require("../../../placeHolder2");
+const columnLabels = ["STUDENT ID", "NAME", "LEVEL", "TERM", "DETAILS"];
 
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
-    const response = await fetch(api_route, {
-      headers: { Authorization: "Bearer " + auth.token },
-    });
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
     const jsonData = (await response.json())["data"];
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
-      row.push({ type: "PlainText", data: { value: jsonData[i]["description"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["amount"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["specification"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["deadline"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["level"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["term"] } });
+      row.push({
+        type: "Buttons",
+        data: {
+          buttonList: [
+            {
+              buttonText: "View Details",
+              textColor: "white",
+              backColor: "#697A8D",
+              onClickFunction: openInNewTab,
+              onClickArguments: ["/advisees/profile/info/" + jsonData[i]["student_id"]],
+            },
+          ],
+        },
+      });
       tableData.push(row);
     }
     setTableData(tableData);
@@ -34,12 +47,12 @@ const fetchTableData = async (api_route, setTableData, auth) => {
   }
 };
 
-const DuesPaid = () => {
+const AdviseeList = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student/dues/${studentID}/pendingdues`, setTableData, auth);
+    fetchTableData(`/api/teacher/adviseelist/${teacherID}`, setTableData, auth);
   }, [auth]);
 
   return (
@@ -51,7 +64,7 @@ const DuesPaid = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} tableData={tableData} />
+              <Table columnLabels={columnLabels} tableData={tableData} modal="true" />
             </div>
           </div>
         </div>
@@ -60,4 +73,4 @@ const DuesPaid = () => {
   );
 };
 
-export default DuesPaid;
+export default AdviseeList;

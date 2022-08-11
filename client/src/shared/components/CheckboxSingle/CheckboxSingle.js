@@ -7,9 +7,9 @@ const CheckboxSingle = (props) => {
 
   const handleOnChange = (event) => {
     if (event.target.checked) {
-      callback(id, "add");
+      callback(id, "check");
     } else {
-      callback(id, "remove");
+      callback(id, "uncheck");
     }
   };
 

@@ -1,5 +1,4 @@
 const express = require("express");
-// const { check } = require("express-validator");
 
 const InfoController = require("../controllers/Student/InfoController");
 const CoursesController = require("../controllers/Student/CoursesController");
@@ -9,17 +8,18 @@ const GeneralInfoController = require("../controllers/Student/GeneralInfoControl
 const DuesController = require("../controllers/Student/DuesController");
 const FeedbackController = require("../controllers/Student/FeedbackController");
 
-// const CheckAuth = require("../middleware/CheckAuth");
+const verifyStudent = require("../controllers/Authentication/VerifyStudent");
 
 const StudentRoutes = express.Router();
 
-// StudentRoutes.use(checkAuth);
+StudentRoutes.use(verifyStudent);
 
 StudentRoutes.get("/studentinfo/:sid/home", InfoController.getHomeInfo);
 StudentRoutes.get("/studentinfo/:sid/classroutine", InfoController.getClassRoutine);
 StudentRoutes.get("/studentinfo/:sid/advisor", InfoController.getAdvisorInfo);
 
 StudentRoutes.get("/courses/:sid/registeredcourses", CoursesController.getRegisteredCourses);
+StudentRoutes.get("/courses/:sid/pending", CoursesController.getPendingRequests);
 StudentRoutes.get("/courses/:sid/coursestoadd", CoursesController.getCoursesToAdd);
 StudentRoutes.get("/courses/:sid/coursestodrop", CoursesController.getCoursesToDrop);
 StudentRoutes.post("/courses/:sid/addRequest", CoursesController.postAddRequest);

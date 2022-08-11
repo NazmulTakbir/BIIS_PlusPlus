@@ -10,9 +10,8 @@ import "../../shared/components/MainContainer.css";
 
 const allowedExtensions = ["csv"];
 
-const AddOfferings = () => {
+const AddOffering = () => {
   const [currentSession, setCurrentSession] = useState("");
-
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
@@ -195,4 +194,4 @@ const AddOfferings = () => {
   );
 };
 
-export default AddOfferings;
+export default AddOffering;

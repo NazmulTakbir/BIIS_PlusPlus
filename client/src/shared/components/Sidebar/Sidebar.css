@@ -49,10 +49,14 @@
     flex: 75%;
 }
 
-@media screen and (max-width: 850px){
+@media screen and (max-width: 1040px){
     .Sidebar{
         display: none;
         margin: auto;
         width: 90%;
+    }
+
+    .SidebarList{
+        margin: 60px auto 10px auto;
     }
 }

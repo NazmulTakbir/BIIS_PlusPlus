@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -6,15 +6,16 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const teacherID = require("../../../placeHolder2");
 const columnLabels = ["SUBJECT", "STUDENT ID", "STUDENT NAME", "DATE", "DETAILS"];
 
-const fetchTableData = async (api_route, setTableData) => {
+const fetchTableData = async (api_route, setTableData, auth) => {
   try {
-    const response = await fetch(api_route);
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
     const jsonData = (await response.json())["data"];
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
@@ -40,11 +41,12 @@ const fetchTableData = async (api_route, setTableData) => {
 };
 
 const Feedback = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${teacherID}/feedbacks`, setTableData);
-  }, []);
+    fetchTableData(`/api/teacher/advisees/${teacherID}/feedbacks`, setTableData, auth);
+  }, [auth]);
 
   return (
     <React.Fragment>

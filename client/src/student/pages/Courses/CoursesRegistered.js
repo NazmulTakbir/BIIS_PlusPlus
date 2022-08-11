@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -6,50 +6,61 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "STATUS"];
 
+const fetchTableData = async (api_route, setTableData, setSessionData, auth) => {
+  try {
+    let response = await fetch(`/api/shared/session/getcurrent`, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    let jsonData = (await response.json())["data"];
+    setSessionData(jsonData);
+
+    if (jsonData["registration_phase"] === "open" || jsonData["registration_phase"] === "closed") {
+      const response = await fetch(api_route, {
+        headers: { Authorization: "Bearer " + auth.token },
+      });
+      const jsonData = (await response.json())["data"];
+      let tableData = [];
+      for (let i = 0; i < jsonData.length; i++) {
+        let row = [];
+        row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+        row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
+        row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
+        row.push({ type: "PlainText", data: { value: jsonData[i]["reg_status"] } });
+        tableData.push(row);
+      }
+      setTableData(tableData);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const CoursesRegistered = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
   const [sessionData, setSessionData] = useState({});
 
   useEffect(() => {
-    fetchTableData(`/api/student/courses/${studentID}/registeredcourses`, setTableData);
-  }, []);
-
-  const fetchTableData = async (api_route, setTableData) => {
-    try {
-      let response = await fetch(`/api/shared/session/getcurrent`);
-      let jsonData = (await response.json())["data"];
-      setSessionData(jsonData);
-
-      if (jsonData["registration_phase"] === "open" || jsonData["registration_phase"] === "closed") {
-        const response = await fetch(api_route);
-        const jsonData = (await response.json())["data"];
-        let tableData = [];
-        for (let i = 0; i < jsonData.length; i++) {
-          let row = [];
-          row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
-          row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
-          row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
-          row.push({ type: "PlainText", data: { value: jsonData[i]["reg_status"] } });
-          tableData.push(row);
-        }
-        setTableData(tableData);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    fetchTableData(`/api/student/courses/${studentID}/registeredcourses`, setTableData, setSessionData, auth);
+  }, [auth]);
 
   const renderPage = () => {
     if (tableData.length === 0) {
       return <h3>You Have Not Placed Any Registration Request For Session {sessionData.session_id}</h3>;
     } else {
-      return <Table columnLabels={columnLabels} tableData={tableData} />;
+      return (
+        <React.Fragment>
+          <h3>SESSION: {sessionData.session_id}</h3>
+          <Table columnLabels={columnLabels} tableData={tableData} />
+        </React.Fragment>
+      );
     }
   };
 

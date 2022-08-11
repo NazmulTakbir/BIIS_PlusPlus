@@ -8,19 +8,18 @@ import { SidebarData } from "../components/SidebarData";
 import "../../shared/components/MainContainer.css";
 import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const allowedExtensions = ["csv"];
 const level_list = ["1", "2", "3", "4"];
 const term_list = ["1", "2"];
 const credit_list = ["0.75", "1", "1.5", "2", "3", "4", "6"];
 
-const AddStudents = () => {
+const AddCourses = () => {
   const fileRef = useRef();
-  const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
   const [course_id, set_course_id] = useState("");
@@ -45,13 +44,24 @@ const AddStudents = () => {
     fetchData();
   }, []);
 
+  const downloadSampleCSV = async (e) => {
+    const response = await fetch("/api/admin/course/samplefile");
+    const fileData = (await response.json())["data"];
+
+    const blob = new Blob([fileData], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "courses.csv";
+    link.href = url;
+    link.click();
+  };
+
   const handleFileChange = async (e) => {
-    setMessage("");
     if (e.target.files.length) {
       const inputFile = e.target.files[0];
       const fileExtension = inputFile?.type.split("/")[1];
       if (!allowedExtensions.includes(fileExtension)) {
-        setMessage("Please input a csv file!");
+        alert("Please input a csv file!");
         return;
       }
       setFile(inputFile);
@@ -59,7 +69,10 @@ const AddStudents = () => {
   };
 
   const handleFileSubmit = async () => {
-    if (!file) return setMessage("Enter a valid file");
+    if (!file) {
+      alert("Enter a valid file");
+      return;
+    }
 
     const reader = new FileReader();
 
@@ -78,7 +91,7 @@ const AddStudents = () => {
             }),
           });
           setFile("");
-          setMessage("Courses Added Successfully");
+          alert("Courses Added Successfully");
           fileRef.current.value = null;
         },
       });
@@ -88,15 +101,17 @@ const AddStudents = () => {
 
   const submissionHandler = async (e) => {
     try {
-      let data = [{
-        course_id: course_id,
-        course_name: course_name,
-        offered_by_dept_id: offered_by_dept_id,
-        offered_to_dept_id: offered_to_dept_id,
-        level: level,
-        term: term,
-        credits: credits
-      }]
+      let data = [
+        {
+          course_id: course_id,
+          course_name: course_name,
+          offered_by_dept_id: offered_by_dept_id,
+          offered_to_dept_id: offered_to_dept_id,
+          level: level,
+          term: term,
+          credits: credits,
+        },
+      ];
 
       await fetch(`/api/admin/course/add`, {
         method: "POST",
@@ -107,7 +122,7 @@ const AddStudents = () => {
       });
     } catch (err) {}
   };
-  
+
   return (
     <React.Fragment>
       <div className="App">
@@ -116,52 +131,75 @@ const AddStudents = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-
-              <div className="sections-header" style={{width: "350px", margin: "auto"}}>
-                <div className="sections-heading" 
+              <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
+                <div
+                  className="sections-heading"
                   style={{
                     textAlign: "left",
                     padding: "25px 0px 5px 0px",
                     fontWeight: "bolder",
                     fontSize: "17px",
                     color: "#b13137",
-                }}>
-                  Add by uploading a CSV File:</div>
+                  }}
+                >
+                  Add by uploading a CSV File:
+                </div>
               </div>
-              
-              <div className="file-input_container" style={{width: "350px", margin: "auto"}}>
-                <input 
+
+              <div className="file-input_container" style={{ width: "350px", margin: "auto" }}>
+                <input
                   style={{
                     background: "#faebd7a3",
                     borderRadius: "5px",
                     padding: "7px",
                     margin: "10px",
                   }}
-                  ref={fileRef} onChange={handleFileChange} id="csvInput" name="file" type="File" 
-                />                
-                <CustomButton 
-                    type="submit" label="Submit" 
-                    variant="contained" color="#ffffff" 
-                    bcolor="#b13137" margin="20px"
-                    padding="10px"
-                    fontSize="17px !important"
-                    onClickFunction={handleFileSubmit}
+                  ref={fileRef}
+                  onChange={handleFileChange}
+                  id="csvInput"
+                  name="file"
+                  type="File"
+                />
+                <CustomButton
+                  type="submit"
+                  label="Submit"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={handleFileSubmit}
+                />
+                <CustomButton
+                  type="submit"
+                  label="Download Sample CSV"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={downloadSampleCSV}
                 />
               </div>
 
-              <div className="sections-header" style={{width: "350px", margin: "auto"}}>
-                <div className="sections-heading" 
+              <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
+                <div
+                  className="sections-heading"
                   style={{
                     textAlign: "left",
                     padding: "25px 0px 5px 0px",
                     fontWeight: "bolder",
                     fontSize: "17px",
                     color: "#b13137",
-                }}>
-                  Add an Entry Manually:</div>
+                  }}
+                >
+                  Add an Entry Manually:
+                </div>
               </div>
 
-              <div className="admin-form-container" style={{paddingTop: "10px"}}>
+              <div className="admin-form-container" style={{ paddingTop: "10px" }}>
                 <form onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
                   <Textbox
                     width="350px"
@@ -187,13 +225,14 @@ const AddStudents = () => {
                     label="Course Name:"
                     value={course_name}
                     onChange={(e) => set_course_name(e.target.value)}
-                  />                  
+                  />
 
-                  <FormControl fullWidth style={{marginTop: "25px"}}>
+                  <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Offered by Department</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
-                      id="offered_by_dept_id" name="offered_by_dept_id"
+                      id="offered_by_dept_id"
+                      name="offered_by_dept_id"
                       value={offered_by_dept_id}
                       label="Offered by Department"
                     >
@@ -201,11 +240,12 @@ const AddStudents = () => {
                     </Select>
                   </FormControl>
 
-                  <FormControl fullWidth style={{marginTop: "25px"}}>
+                  <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Offered to Department</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
-                      id="offered_to_dept_id" name="offered_to_dept_id"
+                      id="offered_to_dept_id"
+                      name="offered_to_dept_id"
                       value={offered_to_dept_id}
                       label="Offered to Department"
                       onChange={(e) => set_offered_to_dept_id(e.target.value)}
@@ -213,76 +253,86 @@ const AddStudents = () => {
                       {offered_to_list
                       .map((val, key) => {
                         return (
-                          <MenuItem key={key} value={val.dept_id}>{val.dept_name}</MenuItem>
+                          <MenuItem key={key} value={val.dept_id}>
+                            {val.dept_name}
+                          </MenuItem>
                         );
                       })}
                     </Select>
                   </FormControl>
 
-                  <FormControl fullWidth style={{marginTop: "25px"}}>
+                  <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Select Level</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
-                      id="level" name="level"
+                      id="level"
+                      name="level"
                       value={level}
                       label="Select Level"
                       onChange={(e) => set_level(e.target.value)}
                     >
                       {level_list.map((val, key) => {
                         return (
-                          <MenuItem key={key} value={val}>{val}</MenuItem>
+                          <MenuItem key={key} value={val}>
+                            {val}
+                          </MenuItem>
                         );
                       })}
                     </Select>
-                  </FormControl> 
+                  </FormControl>
 
-                  <FormControl fullWidth style={{marginTop: "25px"}}>
+                  <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Select Term</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
-                      id="term" name="term"
+                      id="term"
+                      name="term"
                       value={term}
                       label="Select Term"
                       onChange={(e) => set_term(e.target.value)}
                     >
                       {term_list.map((val, key) => {
                         return (
-                          <MenuItem key={key} value={val}>{val}</MenuItem>
+                          <MenuItem key={key} value={val}>
+                            {val}
+                          </MenuItem>
                         );
                       })}
                     </Select>
                   </FormControl>
 
-
-                  <FormControl fullWidth style={{marginTop: "25px"}}>
+                  <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Credit Hours of this Course</InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
-                      id="credits" name="credits"
+                      id="credits"
+                      name="credits"
                       value={credits}
                       label="Credit Hours of this Course"
                       onChange={(e) => set_credits(e.target.value)}
                     >
                       {credit_list.map((val, key) => {
                         return (
-                          <MenuItem key={key} value={val}>{val}</MenuItem>
+                          <MenuItem key={key} value={val}>
+                            {val}
+                          </MenuItem>
                         );
                       })}
                     </Select>
                   </FormControl>
 
-                  <CustomButton 
-                    type="submit" label="Submit" 
-                    variant="contained" color="#ffffff" 
-                    bcolor="#b13137" margin="40px"
+                  <CustomButton
+                    type="submit"
+                    label="Submit"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#b13137"
+                    margin="40px"
                     padding="10px"
                     fontSize="17px !important"
                   />
-
-
                 </form>
               </div>
-
             </div>
           </div>
         </div>
@@ -291,4 +341,4 @@ const AddStudents = () => {
   );
 };
 
-export default AddStudents;
+export default AddCourses;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -9,6 +9,7 @@ import { make2DArray } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
+import { AuthContext } from "../../../shared/context/AuthContext";
 
 const studentID = require("../../../placeHolder");
 const columnLabels = ["DAY", "8AM", "9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM"];
@@ -54,9 +55,9 @@ const generateRoutineTable = (rawData) => {
   return dataMatrix;
 };
 
-const fetchTableData = async (api_route, setTableData) => {
+const fetchTableData = async (api_route, setTableData, auth) => {
   try {
-    const response = await fetch(api_route);
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
     const jsonData = (await response.json())["data"];
     const routineData = generateRoutineTable(jsonData);
     let tableData = [];
@@ -74,11 +75,12 @@ const fetchTableData = async (api_route, setTableData) => {
 };
 
 const StudentInfoClassRoutine = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student/studentinfo/${studentID}/classroutine`, setTableData);
-  }, []);
+    fetchTableData(`/api/student/studentinfo/${studentID}/classroutine`, setTableData, auth);
+  }, [auth]);
 
   return (
     <React.Fragment>
