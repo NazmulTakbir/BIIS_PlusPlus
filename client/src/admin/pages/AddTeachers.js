@@ -34,12 +34,16 @@ const AddTeachers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await fetch(`/api/admin/departments/get`);
+        let response = await fetch(`/api/admin/departments/get`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         let jsonData = await response.json();
         setDepartmentList(jsonData.data);
 
         //get next teacher id
-        response = await fetch(`/api/admin/teacher/getnextid`);
+        response = await fetch(`/api/admin/teacher/getnextid`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         jsonData = await response.json();
         setTeacher_id(jsonData.nextid);
       } catch (err) {
@@ -123,7 +127,7 @@ const AddTeachers = () => {
       ];
       await fetch(`/api/admin/teacher/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" , Authorization: "Bearer " + auth.token},
         body: JSON.stringify({
           data: data,
         }),
