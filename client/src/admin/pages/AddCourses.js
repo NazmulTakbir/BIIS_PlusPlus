@@ -210,7 +210,8 @@ const AddStudents = () => {
                       label="Offered to Department"
                       onChange={(e) => set_offered_to_dept_id(e.target.value)}
                     >
-                      {offered_to_list.map((val, key) => {
+                      {offered_to_list
+                      .map((val, key) => {
                         return (
                           <MenuItem key={key} value={val.dept_id}>{val.dept_name}</MenuItem>
                         );

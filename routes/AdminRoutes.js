@@ -17,11 +17,18 @@ const AdminRoutes = express.Router();
 
 // AdminRoutes.use(checkAuth);
 AdminRoutes.get("/departments/get", DepartmentsController.getDepartmentsList);
+AdminRoutes.get("/departments/getTeacher/:admin_dept_id", DepartmentsController.getTeachersList);
+
+//AdminRoutes.get("/departments/getdeptid/:dept_name", DepartmentsController.get_dept_id);
+
+
 AdminRoutes.post("/student/add", StudentController.postAddStudent);
 AdminRoutes.get("/student/samplefile", StudentController.getSampleFile);
+AdminRoutes.get("/student/getStudentsOfDept/:dept_id", StudentController.getStudentsOfDept);
 
 AdminRoutes.post("/teacher/add", TeacherController.postAddTeacher);
 AdminRoutes.get("/teacher/samplefile", TeacherController.getSampleFile);
+AdminRoutes.get("/teacher/getnextid", TeacherController.getnextid);
 
 AdminRoutes.post("/course/add", CourseController.postAddCourse);
 AdminRoutes.get("/course/samplefile", CourseController.getSampleFile);
@@ -31,6 +38,7 @@ AdminRoutes.get("/offering/samplefile", CourseOfferingController.getSampleFile);
 AdminRoutes.get("/offering/getunofferedcourses", CourseOfferingController.getunofferedcourses);
 //AdminRoutes.get("/offering/getunofferedcourses/admin_dept_id", CourseOfferingController.getunofferedcourses);
 AdminRoutes.get("/offering/getexamslots", CourseOfferingController.getexamslots);
+AdminRoutes.get("/offering/getOffering_admin_dept/:admin_dept_id", CourseOfferingController.getOffering_admin_dept);
 
 AdminRoutes.post("/courseteacher/add", CourseTeacherController.postAddCourseTeacher);
 AdminRoutes.get("/courseteacher/samplefile", CourseTeacherController.getSampleFile);
@@ -40,6 +48,7 @@ AdminRoutes.get("/notice/samplefile", NoticeController.getSampleFile);
 
 AdminRoutes.post("/dues/add", DuesController.postAddDues);
 AdminRoutes.get("/dues/samplefile", DuesController.getSampleFile);
+AdminRoutes.get("/dues/getDuesTypes", DuesController.getDuesTypes);
 
 AdminRoutes.post("/academiccalender/add", AcademicCalenderController.addCalender);
 AdminRoutes.get("/academiccalender/samplefile", AcademicCalenderController.getSampleFile);

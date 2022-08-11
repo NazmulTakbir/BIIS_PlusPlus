@@ -83,5 +83,21 @@ const getSampleFile = async (req, res, next) => {
   }
 };
 
+//create getStudentsOfDept async function
+const getStudentsOfDept = async (req, res, next) => {
+  try {
+    const { dept_id } = req.params;
+    const result = await pool.query(
+      "SELECT student_id, name FROM public.student WHERE dept_id = $1",
+      [dept_id]
+    );
+    res.json({ message: "getStudentsOfDept successful", data: result.rows });
+  } catch (err) {
+    const error = new HttpError("getStudentsOfDept failed", 500);
+    return next(error);
+  }
+}
+
+exports.getStudentsOfDept = getStudentsOfDept;
 exports.getSampleFile = getSampleFile;
 exports.postAddStudent = postAddStudent;
