@@ -3,20 +3,35 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 
 function toggleSideBar() {
+  console.log("toggleSideBar");
   const nav_ul = document.getElementById("sidebar");
-  if (nav_ul.style.display === "none"){
+
+  //initially not set to anything
+  if(nav_ul.style.display === ""){
     nav_ul.style.display = "block";
-  }else nav_ul.style.display = "none";
+  }
+
+  //set to block if it is currently none
+  else if (nav_ul.style.display === "none"){
+    console.log("show");
+    nav_ul.style.display = "block";
+  }
+  
+  //set to none if it is currently block
+  else {
+    console.log("hide");
+    nav_ul.style.display = "none";
+  }
 }
 
 
 const Brand = (props) => {
   return (
-    <div className="brand">
-      <div className="brand_container">
+    <div className={props.brand_class}>
+      <div className={props.brand_container_class}>
         {props.no_menu === "true" ? null : (
           <div id="hamburger_btn" onClick={toggleSideBar}>
-            <MenuIcon />
+            <div className="hamburger_btn_container"><MenuIcon /></div>
           </div>
         )}
         <img
@@ -24,7 +39,7 @@ const Brand = (props) => {
           alt="logo"
           src="https://upload.wikimedia.org/wikipedia/en/thumb/d/da/BUET_LOGO.svg/1200px-BUET_LOGO.svg.png"
         />
-        <p className="brand_name">BIIS</p>
+        <p className={props.brand_name_class}>BIIS</p>
       </div>
     </div>
   );

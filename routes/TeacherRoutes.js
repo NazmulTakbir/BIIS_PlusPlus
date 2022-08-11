@@ -8,6 +8,7 @@ const AdviseeCourseRegistrationController = require("../controllers/Teacher/Advi
 const AdviseeFeedbackController = require("../controllers/Teacher/AdviseeFeedbackController");
 const HallProvostController = require("../controllers/Teacher/HallProvostController");
 const DepartmentHeadController = require("../controllers/Teacher/DepartmentHeadController");
+const AdviseeInfoController = require("../controllers/Teacher/AdviseeInfoController");
 
 const verifyTeacher = require("../controllers/Authentication/VerifyTeacher");
 
@@ -15,28 +16,22 @@ const TeacherRoutes = express.Router();
 
 TeacherRoutes.use(verifyTeacher);
 
-TeacherRoutes.get("/teacherinfo/:tid", InfoController.getInfo);
-TeacherRoutes.get("/adviseelist/:tid", InfoController.getAllAdvisee);
-TeacherRoutes.get("/adviseeinfo/:tid/:sid", InfoController.getAdviseeInfo);
-TeacherRoutes.get("/advisee/:tid/:sid/getAvailableResults", InfoController.getAvailableResults);
-TeacherRoutes.get("/advisee/:tid/:sid/getGrades/:level/:term", InfoController.getGrades);
+TeacherRoutes.get("/teacherinfo", InfoController.getInfo);
+TeacherRoutes.get("/adviseelist", InfoController.getAllAdvisee);
+TeacherRoutes.get("/adviseeinfo/:sid", AdviseeInfoController.getAdviseeInfo);
+TeacherRoutes.get("/advisee/:sid/getAvailableResults", AdviseeInfoController.getAvailableResults);
+TeacherRoutes.get("/advisee/:sid/getGrades/:level/:term", AdviseeInfoController.getGrades);
 
-TeacherRoutes.get("/exam/:tid/addgrades/courses", AddGradesController.getCourses);
-TeacherRoutes.get("/exam/:tid/viewgrades/courses", ViewGradesController.getCourses);
-TeacherRoutes.get("/exam/:tid/scrutinize/courses", ScrutinizeController.getCourses);
+TeacherRoutes.get("/exam/addgrades/courses", AddGradesController.getCourses);
+TeacherRoutes.get("/exam/viewgrades/courses", ViewGradesController.getCourses);
+TeacherRoutes.get("/exam/scrutinize/courses", ScrutinizeController.getCourses);
 
-TeacherRoutes.get(
-  "/advisees/:tid/registrationrequests/:sid",
-  AdviseeCourseRegistrationController.getRegistrationRequests
-);
-TeacherRoutes.get(
-  "/advisees/:tid/registrationsummary",
-  AdviseeCourseRegistrationController.getRegistrationRequestSummary
-);
-TeacherRoutes.get("/advisees/:tid/feedbacks", AdviseeFeedbackController.getFeedbacks);
+TeacherRoutes.get("/advisees/registrationrequests/:sid", AdviseeCourseRegistrationController.getRegistrationRequests);
+TeacherRoutes.get("/advisees/registrationsummary", AdviseeCourseRegistrationController.getRegistrationRequestSummary);
+TeacherRoutes.get("/advisees/feedbacks", AdviseeFeedbackController.getFeedbacks);
 
-TeacherRoutes.get("/hallprovost/:tid/scholarshiprequests", HallProvostController.getScholarshipRequests);
+TeacherRoutes.get("/hallprovost/scholarshiprequests", HallProvostController.getScholarshipRequests);
 
-TeacherRoutes.get("/departmenthead/:tid/feedbacks", DepartmentHeadController.getFeedbacks);
+TeacherRoutes.get("/departmenthead/feedbacks", DepartmentHeadController.getFeedbacks);
 
 module.exports = TeacherRoutes;

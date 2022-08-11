@@ -66,12 +66,7 @@ const AdviseeRegistration = () => {
   ];
 
   useEffect(() => {
-    fetchTableData(
-      `/api/teacher/advisees/${auth.userId}/registrationrequests/${studentID}`,
-      setAddTableData,
-      setDropTableData,
-      auth
-    );
+    fetchTableData(`/api/teacher/advisees/registrationrequests/${studentID}`, setAddTableData, setDropTableData, auth);
   }, [studentID, auth]);
 
   const handleAddAll = async () => {

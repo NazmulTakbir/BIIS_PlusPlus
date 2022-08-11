@@ -44,7 +44,7 @@ const Feedback = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${auth.userId}/feedbacks`, setTableData, auth);
+    fetchTableData(`/api/teacher/advisees/feedbacks`, setTableData, auth);
   }, [auth]);
 
   return (

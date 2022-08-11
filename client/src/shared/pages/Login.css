@@ -46,14 +46,26 @@
 }
 
 
-.brand {
+.login-brand {
     padding-left: 5px;
     display: flex;
     justify-content: flex-start;
+    margin: auto;
+    background-color: #ffffff;
+    width: 100%;
 }
 
-.brand_name {
+.login-brand_container{
+    display: flex;
+       
+}
+
+.login-brand_name {
+    flex: 60%;
+    margin: auto;
+    color: #394f68;
     font-size: 23px;
+    font-family: sans-serif;
 }
 
 .login-text{

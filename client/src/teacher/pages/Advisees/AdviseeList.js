@@ -51,7 +51,7 @@ const AdviseeList = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/adviseelist/${auth.userId}`, setTableData, auth);
+    fetchTableData(`/api/teacher/adviseelist`, setTableData, auth);
   }, [auth]);
 
   return (

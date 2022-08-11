@@ -51,7 +51,7 @@ const CourseRegistration = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${auth.userId}/registrationsummary`, setTableData, auth);
+    fetchTableData(`/api/teacher/advisees/registrationsummary`, setTableData, auth);
   }, [auth]);
 
   return (

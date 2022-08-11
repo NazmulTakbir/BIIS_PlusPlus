@@ -58,6 +58,19 @@ const getSampleFile = async (req, res, next) => {
   }
 };
 
-exports.getSampleFile = getSampleFile;
+const getnextid = async (req, res, next) => {
+  try {
+    let queryRes = await pool.query(" select MAX(teacher_id) from public.teacher");
+    let nextid = queryRes.rows[0].max + 1;
 
+    res.json({ message: "getnextid successful", nextid : nextid });
+  } catch (err) {
+    const error = new HttpError("getnextid failed", 500);
+    return next(error);
+  }
+};
+
+
+exports.getSampleFile = getSampleFile;
+exports.getnextid = getnextid;
 exports.postAddTeacher = postAddTeacher;

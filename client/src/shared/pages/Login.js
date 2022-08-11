@@ -29,37 +29,41 @@ const Login = () => {
       <div className="App">
         <div className="login-content">
           <div className="form-container">
-            
             <form className="login-form">
-
-              <Brand no_menu="true"/>
+              
+              <Brand
+                no_menu="true"
+                brand_class="login-brand"
+                brand_container_class="login-brand_container"
+                brand_name_class="login-brand_name"
+              />
 
               <div className="login-text-container">
                 <div className="login-text">Login to your Account</div>
               </div>
 
-              <BasicTextField 
-                id="email" 
-                label="Username" 
-                type="email"
+              <BasicTextField
+                id="email"
+                label="Username"
+                type="text"
                 className="username"
                 value={userID}
                 required="false"
-                variant="outlined" 
+                variant="outlined"
                 onChange={(e) => setUserID(e.target.value)}
               />
 
-              <BasicTextField 
-                id="password" 
-                label="Password" 
+              <BasicTextField
+                id="password"
+                label="Password"
                 className="password"
                 type="password"
                 value={password}
                 required="true"
                 variant="outlined"
                 onChange={(e) => setPassword(e.target.value)}
-              />                
-              
+              />
+
               <CustomButton
                 type="submit"
                 label="Login"
@@ -72,7 +76,6 @@ const Login = () => {
                 onClickFunction={attemptLogin}
               />
             </form>
-
           </div>
         </div>
       </div>

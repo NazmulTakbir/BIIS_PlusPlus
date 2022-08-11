@@ -14,7 +14,7 @@ const AdviseeInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/teacher/adviseeinfo/${auth.userId}/${studentID}`, {
+        const response = await fetch(`/api/teacher/adviseeinfo/${studentID}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const jsonData = await response.json();
