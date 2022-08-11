@@ -1,5 +1,4 @@
 const express = require("express");
-// const { check } = require("express-validator");
 
 const InfoController = require("../controllers/Student/InfoController");
 const CoursesController = require("../controllers/Student/CoursesController");
@@ -9,11 +8,11 @@ const GeneralInfoController = require("../controllers/Student/GeneralInfoControl
 const DuesController = require("../controllers/Student/DuesController");
 const FeedbackController = require("../controllers/Student/FeedbackController");
 
-const verifyLogin = require("../controllers/Authentication/VerifyLoginMiddleware");
+const verifyStudent = require("../controllers/Authentication/VerifyStudent");
 
 const StudentRoutes = express.Router();
 
-StudentRoutes.use(verifyLogin);
+StudentRoutes.use(verifyStudent);
 
 StudentRoutes.get("/studentinfo/:sid/home", InfoController.getHomeInfo);
 StudentRoutes.get("/studentinfo/:sid/classroutine", InfoController.getClassRoutine);

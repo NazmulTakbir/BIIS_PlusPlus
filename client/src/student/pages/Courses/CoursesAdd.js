@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -6,6 +6,7 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "./../../../shared/components/CustomButton/CustomButton";
@@ -23,34 +24,39 @@ const checkBoxCallBack = (id, actionType) => {
   }
 };
 
+const fetchTableData = async (api_route, setTableData, setSessionData, auth) => {
+  try {
+    let response = await fetch(`/api/shared/session/getcurrent`, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    let jsonData = (await response.json())["data"];
+    setSessionData(jsonData);
+
+    if (jsonData["registration_phase"] === "open") {
+      const response = await fetch(api_route, {
+        headers: { Authorization: "Bearer " + auth.token },
+      });
+      const jsonData = (await response.json())["data"];
+      let tableData = [];
+      for (let i = 0; i < jsonData.length; i++) {
+        let row = [];
+        row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+        row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
+        row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
+        row.push({ type: "CheckBox", data: { id: jsonData[i]["offering_id"], callback: checkBoxCallBack } });
+        tableData.push(row);
+      }
+      setTableData(tableData);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const CoursesAdd = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
   const [sessionData, setSessionData] = useState({});
-
-  const fetchTableData = async (api_route, setTableData) => {
-    try {
-      let response = await fetch(`/api/shared/session/getcurrent`);
-      let jsonData = (await response.json())["data"];
-      setSessionData(jsonData);
-
-      if (jsonData["registration_phase"] === "open") {
-        const response = await fetch(api_route);
-        const jsonData = (await response.json())["data"];
-        let tableData = [];
-        for (let i = 0; i < jsonData.length; i++) {
-          let row = [];
-          row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
-          row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
-          row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
-          row.push({ type: "CheckBox", data: { id: jsonData[i]["offering_id"], callback: checkBoxCallBack } });
-          tableData.push(row);
-        }
-        setTableData(tableData);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const submissionHandler = async () => {
     try {
@@ -59,21 +65,21 @@ const CoursesAdd = () => {
       } else {
         const response = await fetch(`/api/student/courses/${studentID}/addRequest`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify({
             offeringIDs: coursesToAdd,
             submission_date: new Date(),
           }),
         });
         console.log(response.json);
-        window.location.pathname = "/courses/registered";
+        window.location.pathname = "/courses/pending";
       }
     } catch (err) {}
   };
 
   useEffect(() => {
-    fetchTableData(`/api/student/courses/${studentID}/coursestoadd`, setTableData);
-  }, []);
+    fetchTableData(`/api/student/courses/${studentID}/coursestoadd`, setTableData, setSessionData, auth);
+  }, [auth]);
 
   const renderPage = () => {
     switch (sessionData.registration_phase) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -6,6 +6,7 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Textbox from "../../../shared/components/Textbox/Textbox";
 import RadioButton from "../../../shared/components/RadioButton/RadioButton";
@@ -15,6 +16,7 @@ import Stack from "@mui/material/Stack";
 const studentID = require("../../../placeHolder");
 
 const FeedbackNew = () => {
+  const auth = useContext(AuthContext);
   const [subject, setSubject] = useState("");
   const [details, setDetails] = useState("");
   const [receiver, setReceiver] = useState("");
@@ -31,7 +33,7 @@ const FeedbackNew = () => {
       } else {
         await fetch(`/api/student/feedback/${studentID}/newsubmission`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify({
             subject: subject,
             details: details,

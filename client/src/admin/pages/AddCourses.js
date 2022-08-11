@@ -20,7 +20,6 @@ const credit_list = ["0.75", "1", "1.5", "2", "3", "4", "6"];
 
 const AddCourses = () => {
   const fileRef = useRef();
-  const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
   const [course_id, set_course_id] = useState("");
@@ -58,12 +57,11 @@ const AddCourses = () => {
   };
 
   const handleFileChange = async (e) => {
-    setMessage("");
     if (e.target.files.length) {
       const inputFile = e.target.files[0];
       const fileExtension = inputFile?.type.split("/")[1];
       if (!allowedExtensions.includes(fileExtension)) {
-        setMessage("Please input a csv file!");
+        alert("Please input a csv file!");
         return;
       }
       setFile(inputFile);
@@ -71,7 +69,10 @@ const AddCourses = () => {
   };
 
   const handleFileSubmit = async () => {
-    if (!file) return setMessage("Enter a valid file");
+    if (!file) {
+      alert("Enter a valid file");
+      return;
+    }
 
     const reader = new FileReader();
 
@@ -90,7 +91,7 @@ const AddCourses = () => {
             }),
           });
           setFile("");
-          setMessage("Courses Added Successfully");
+          alert("Courses Added Successfully");
           fileRef.current.value = null;
         },
       });

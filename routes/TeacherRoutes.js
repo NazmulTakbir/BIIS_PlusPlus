@@ -18,6 +18,7 @@ const TeacherRoutes = express.Router();
 
 TeacherRoutes.get("/teacherinfo/:tid", InfoController.getInfo);
 TeacherRoutes.get("/adviseelist/:tid", InfoController.getAllAdvisee);
+TeacherRoutes.get("/adviseeinfo/:tid/:sid", InfoController.getAdviseeInfo);
 
 TeacherRoutes.get("/exam/:tid/addgrades/courses", AddGradesController.getCourses);
 TeacherRoutes.get("/exam/:tid/viewgrades/courses", ViewGradesController.getCourses);

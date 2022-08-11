@@ -12,6 +12,7 @@ const AdminRoutes = require("./routes/AdminRoutes");
 const SharedRoutes = require("./routes/SharedRoutes");
 const UnauthenticatedRoutes = require("./routes/UnauthenticatedRoutes");
 const HttpError = require("./models/HttpError");
+const verifyLogin = require("./controllers/Authentication/VerifyLoginMiddleware");
 
 const app = express();
 
@@ -26,11 +27,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/auth", UnauthenticatedRoutes);
+
+app.use(verifyLogin);
+
 app.use("/api/student", StudentRoutes);
 app.use("/api/teacher", TeacherRoutes);
 app.use("/api/admin", AdminRoutes);
 app.use("/api/shared", SharedRoutes);
-app.use("/api/auth", UnauthenticatedRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);

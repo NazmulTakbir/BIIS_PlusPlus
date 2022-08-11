@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Dropdown from "react-bootstrap/Dropdown";
 
@@ -8,6 +8,7 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 import Box from "@mui/material/Box";
@@ -27,45 +28,50 @@ const boxStyle = {
   margin: "auto",
 };
 
-const fetchTableData = async (api_route, setTableData, setExtraData) => {
-  try {
-    const response = await fetch(api_route);
-    const jsonData = await response.json();
-    const resultData = jsonData["data"];
-    let tableData = [];
-    for (let i = 0; i < resultData.length; i++) {
-      let row = [];
-      row.push({ type: "PlainText", data: { value: resultData[i]["course_id"] } });
-      row.push({ type: "PlainText", data: { value: resultData[i]["course_name"] } });
-      row.push({ type: "PlainText", data: { value: resultData[i]["credits"] } });
-      row.push({ type: "PlainText", data: { value: resultData[i]["letter_grade"] } });
-      row.push({ type: "PlainText", data: { value: resultData[i]["grade_point"] } });
-      tableData.push(row);
-    }
-    setTableData(tableData);
-    setExtraData({
-      gpa: jsonData["gpa"],
-      cgpa: jsonData["cgpa"],
-      registeredCredits: jsonData["registeredCredits"],
-      earnedCredits: jsonData["earnedCredits"],
-      totalCreditsEarned: jsonData["totalCreditsEarned"],
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const ExamGrades = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
   const [extraData, setExtraData] = useState({});
   const [dropDownText, setDropDownText] = useState("Select Level/Term");
   const [dropDownOptions, setDropDownOptions] = useState([]);
   const [noneSelected, setNoneSelected] = useState(true);
 
+  const fetchTableData = async (api_route, setTableData, setExtraData) => {
+    try {
+      const response = await fetch(api_route, {
+        headers: { Authorization: "Bearer " + auth.token },
+      });
+      const jsonData = await response.json();
+      const resultData = jsonData["data"];
+      let tableData = [];
+      for (let i = 0; i < resultData.length; i++) {
+        let row = [];
+        row.push({ type: "PlainText", data: { value: resultData[i]["course_id"] } });
+        row.push({ type: "PlainText", data: { value: resultData[i]["course_name"] } });
+        row.push({ type: "PlainText", data: { value: resultData[i]["credits"] } });
+        row.push({ type: "PlainText", data: { value: resultData[i]["letter_grade"] } });
+        row.push({ type: "PlainText", data: { value: resultData[i]["grade_point"] } });
+        tableData.push(row);
+      }
+      setTableData(tableData);
+      setExtraData({
+        gpa: jsonData["gpa"],
+        cgpa: jsonData["cgpa"],
+        registeredCredits: jsonData["registeredCredits"],
+        earnedCredits: jsonData["earnedCredits"],
+        totalCreditsEarned: jsonData["totalCreditsEarned"],
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/exam/${studentID}/getAvailableResults`);
+        const response = await fetch(`/api/student/exam/${studentID}/getAvailableResults`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const jsonData = await response.json();
         setDropDownOptions(jsonData["data"]);
       } catch (err) {
@@ -73,7 +79,7 @@ const ExamGrades = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   const dropDownSelect = async (value) => {
     const level = parseInt(value[0]);

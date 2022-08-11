@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -7,17 +7,21 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import DownloadIcon from "@mui/icons-material/Download";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
 const studentID = require("../../../placeHolder");
 
 const ExamGuidelines = () => {
+  const auth = useContext(AuthContext);
   const [notices, setNotices] = useState({ data: [""] });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/exam/${studentID}/guidelines`);
+        const response = await fetch(`/api/student/exam/${studentID}/guidelines`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const jsonData = await response.json();
         setNotices(jsonData);
       } catch (err) {
@@ -25,7 +29,7 @@ const ExamGuidelines = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   return (
     <React.Fragment>

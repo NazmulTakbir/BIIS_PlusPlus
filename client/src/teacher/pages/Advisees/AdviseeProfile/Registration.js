@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 
+import { AuthContext } from "../../../../shared/context/AuthContext";
 import Navbar from "../../../../shared/components/Navbar/Navbar";
 import Table from "../../../../shared/components/Table/Table";
 import "./Advisee.css";
@@ -9,9 +10,11 @@ import CustomButton from "../../../../shared/components/CustomButton/CustomButto
 const teacherID = require("../../../../placeHolder2");
 const columnLabels = ["STUDENT ID", "COURSE ID", "REQUEST DATE", "ACTION"];
 
-const fetchTableData = async (api_route, setAddTableData, setDropTableData) => {
+const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth) => {
   try {
-    const response = await fetch(api_route);
+    const response = await fetch(api_route, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
     const jsonData = (await response.json())["data"];
     let addTableData = [];
     let dropTableData = [];
@@ -43,6 +46,7 @@ const fetchTableData = async (api_route, setAddTableData, setDropTableData) => {
 };
 
 const AdviseeRegistration = () => {
+  const auth = useContext(AuthContext);
   const [addTableData, setAddTableData] = useState([]);
   const [dropTableData, setDropTableData] = useState([]);
   let { studentID } = useParams();
@@ -66,9 +70,10 @@ const AdviseeRegistration = () => {
     fetchTableData(
       `/api/teacher/advisees/${teacherID}/registrationrequests/${studentID}`,
       setAddTableData,
-      setDropTableData
+      setDropTableData,
+      auth
     );
-  }, [studentID]);
+  }, [studentID, auth]);
 
   const handleAddAll = async () => {
     console.log("here");

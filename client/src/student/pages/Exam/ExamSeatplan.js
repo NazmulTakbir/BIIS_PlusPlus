@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -7,6 +7,7 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import { make2DArray } from "../../../shared/util/TableFunctions";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
 const studentID = require("../../../placeHolder");
@@ -33,6 +34,7 @@ const processSeatPlan = (rawData) => {
 };
 
 const ExamSeatPlan = () => {
+  const auth = useContext(AuthContext);
   const [seatplan, setSeatplan] = useState([]);
   const [building, setBuilding] = useState("");
   const [roomNo, setRoomNo] = useState("");
@@ -40,7 +42,9 @@ const ExamSeatPlan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/exam/${studentID}/seatplan`);
+        const response = await fetch(`/api/student/exam/${studentID}/seatplan`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const jsonData = await response.json();
         setSeatplan(processSeatPlan(jsonData["data"]));
         setBuilding(jsonData["building"]);
@@ -50,7 +54,7 @@ const ExamSeatPlan = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   return (
     <React.Fragment>
