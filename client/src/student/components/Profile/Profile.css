@@ -57,7 +57,7 @@
     width: max-content;
 }
 
-@media screen and (max-width: 850px){
+@media screen and (max-width: 1040px){
     .profile-container{
         display: block;
     }

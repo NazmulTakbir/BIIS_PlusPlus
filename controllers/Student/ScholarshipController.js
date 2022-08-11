@@ -9,7 +9,7 @@ const getReceived = async (req, res, next) => {
       from scholarship as s , \"scholarship type\" as st \
       where s.scholarship_type_id = st.scholarship_type_id and s.student_id = $1 and \
       s.scholarship_state='paid'",
-      [req.params.sid]
+      [req.userData.id]
     );
 
     scholarship_list = [];
@@ -42,7 +42,7 @@ const getProcessing = async (req, res, next) => {
       from scholarship as s , \"scholarship type\" as st \
       where s.scholarship_type_id = st.scholarship_type_id and s.student_id = $1 and \
       (s.scholarship_state='awaiting_provost' or s.scholarship_state='awaiting_head' or s.scholarship_state='awaiting_comptroller')",
-      [req.params.sid]
+      [req.userData.id]
     );
 
     scholarship_list = [];
@@ -72,7 +72,7 @@ const getAvailable = async (req, res, next) => {
       from scholarship as s , \"scholarship type\" as st \
       where s.scholarship_type_id = st.scholarship_type_id and s.student_id = $1 and \
       s.scholarship_state='awaiting_application'",
-      [req.params.sid]
+      [req.userData.id]
     );
 
     scholarship_list = [];
@@ -108,7 +108,7 @@ const getForm = async (req, res, next) => {
 const postApplication = async (req, res, next) => {
   try {
     //retrieve student id and scholarship_type_id from URL
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const sc_id = req.params.scid;
     //create a new scholarship obj
     let queryRes = await pool.query(

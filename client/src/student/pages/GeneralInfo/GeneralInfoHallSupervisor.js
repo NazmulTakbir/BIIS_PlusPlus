@@ -1,35 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { make2DArray, fetchTableData } from "../../../shared/util/TableFunctions";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const studentID = require("../../../placeHolder");
-
 const columnLabels = ["HALL NAME", "SUPERVISOR NAME", "MOBILE NUMBER", "EMAIL ADDRESS"];
 
+const fetchTableData = async (api_route, setTableData, auth) => {
+  try {
+    const response = await fetch(api_route, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["hall_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["supervisor_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["supervisor_phone"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["supervisor_email"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const GeneralInfoHallSupervisor = () => {
-  const [tableData, setTableData] = useState(make2DArray(1, 4));
+  const auth = useContext(AuthContext);
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(
-      `/api/student/generalinfo/${studentID}/hallinfo`,
-      4,
-      {
-        hall_name: 0,
-        supervisor_name: 1,
-        supervisor_phone: 2,
-        supervisor_email: 3,
-      },
-      setTableData
-    );
-  }, []);
+    fetchTableData(`/api/student/generalinfo/hallinfo`, setTableData, auth);
+  }, [auth]);
 
   return (
     <React.Fragment>
@@ -40,7 +50,7 @@ const GeneralInfoHallSupervisor = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={tableData} />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>

@@ -1,15 +1,14 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
 
 const getPendingDues = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const stat = "Not Paid";
     let queryRes = await pool.query(
       'select dt.description , dt.amount , d.deadline , d.payment_date , d.dues_status, d.specification \
       from dues as d , "dues type" as dt \
-      where d.dues_type_id = dt."dues type id" and d.dues_status = $2 and d.student_id = $1  ',
+      where d.dues_type_id = dt."dues_type_id" and d.dues_status = $2 and d.student_id = $1  ',
       [sid, stat]
     );
 
@@ -34,7 +33,7 @@ const getPendingDues = async (req, res, next) => {
       pending_dues_list.push(due_obj);
     }
 
-    res.status(201).json({ message: "getPendingDues", pending_dues_list: pending_dues_list });
+    res.status(201).json({ message: "getPendingDues", data: pending_dues_list });
   } catch (err) {
     const error = new HttpError("Fetching pending dues Failed", 500);
     return next(error);
@@ -43,12 +42,12 @@ const getPendingDues = async (req, res, next) => {
 
 const getPaidDues = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const stat = "Paid";
     let queryRes = await pool.query(
       'select dt.description , dt.amount , d.deadline , d.payment_date , d.dues_status, d.specification \
       from dues as d , "dues type" as dt \
-      where d.dues_type_id = dt."dues type id" and d.dues_status = $2 and d.student_id = $1  ',
+      where d.dues_type_id = dt."dues_type_id" and d.dues_status = $2 and d.student_id = $1  ',
       [sid, stat]
     );
 
@@ -72,7 +71,7 @@ const getPaidDues = async (req, res, next) => {
 
       dues_list.push(due_obj);
     }
-    res.status(201).json({ message: "getPaidDues", dues_list: dues_list });
+    res.status(201).json({ message: "getPaidDues", data: dues_list });
   } catch (err) {
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);

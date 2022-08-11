@@ -8,7 +8,7 @@ import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
 
-const FeedbackComplaint = () => {
+const AllCourses = () => {
   return (
     <React.Fragment>
       <div className="App">
@@ -18,7 +18,7 @@ const FeedbackComplaint = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <h1>FeedbackComplaint</h1>
+              <h1>AllCourses</h1>
             </div>
           </div>
         </div>
@@ -27,4 +27,4 @@ const FeedbackComplaint = () => {
   );
 };
 
-export default FeedbackComplaint;
+export default AllCourses;

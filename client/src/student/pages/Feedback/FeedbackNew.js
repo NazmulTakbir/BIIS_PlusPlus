@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -7,28 +6,43 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Textbox from "../../../shared/components/Textbox/Textbox";
 import RadioButton from "../../../shared/components/RadioButton/RadioButton";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import Stack from "@mui/material/Stack";
 
-// const studentID = require("../../../placeHolder");
-
-const FeedbackComplaintNew = () => {
+const FeedbackNew = () => {
+  const auth = useContext(AuthContext);
   const [subject, setSubject] = useState("");
   const [details, setDetails] = useState("");
   const [receiver, setReceiver] = useState("");
 
-  const history = useHistory();
-
   const submissionHandler = async (event) => {
     event.preventDefault();
     try {
-      console.log(subject);
-      console.log(details);
-      console.log(receiver);
-      history.push("/");
+      if (subject === "") {
+        alert("Enter Subject");
+      } else if (details === "") {
+        alert("Enter Details");
+      } else if (receiver === "") {
+        alert("Enter Receiver");
+      } else {
+        await fetch(`/api/student/feedback/newsubmission`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+          body: JSON.stringify({
+            subject: subject,
+            details: details,
+            receiver: receiver,
+            submission_date: new Date(),
+          }),
+        });
+        setSubject("");
+        setDetails("");
+        alert("Submission Successful");
+      }
     } catch (err) {}
   };
 
@@ -42,7 +56,7 @@ const FeedbackComplaintNew = () => {
             <div className="content">
               <Navbar NavbarData={NavbarData} />
 
-              <form onSubmit={submissionHandler} style={{width: "350px", margin: "auto"}}>
+              <form onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
                 <Textbox
                   height="40px"
                   width="450px"
@@ -104,4 +118,4 @@ const FeedbackComplaintNew = () => {
   );
 };
 
-export default FeedbackComplaintNew;
+export default FeedbackNew;

@@ -1,0 +1,4 @@
+student_id,dues_type_id,deadline,dues_status,payment_date,specification
+1705103,1,31 May 2022,Paid,1 May 2022,Session JAN 2022
+1705103,2,31 January 2022,Paid,10 January 2022,Year 2022
+1705103,1,30 November 2022,Not Paid,,Session JULY 2022

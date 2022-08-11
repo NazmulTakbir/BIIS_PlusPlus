@@ -1,52 +1,82 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
-const { get_dept_level_term, get_total_credit } = require("./Util");
+const { get_dept_level_term } = require("./Util");
+const { getCurrentSession } = require("../../util/CurrentSession");
+
+const getAvailableResults = async (req, res, next) => {
+  try {
+    const sid = req.userData.id;
+
+    let query = await pool.query(
+      'select distinct(level, term) from "result summary" as r natural join "course offering" as co natural join \
+      course as c where student_id=$1 and result_status=\'published\';',
+      [sid]
+    );
+    data = [];
+    for (const element of query.rows) {
+      data.push(element["row"][1] + "," + element["row"][3]);
+    }
+
+    res.status(201).json({ message: "getGrades", data: data });
+  } catch (err) {
+    const error = new HttpError("Fetching Grades Failed", 500);
+    return next(error);
+  }
+};
 
 const getGrades = async (req, res, next) => {
   try {
-    let total_grade_point = 0.0;
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const level = req.params.level;
     const term = req.params.term;
-    // write query to get grades of student based on sid,level,term
+
     let queryRes = await pool.query(
-      'select offering_id, grade_point, letter_grade from "result summary" where student_id=$1',
-      [sid]
+      'select course_id, course_name, credits, grade_point, letter_grade from "academic profile" \
+      where student_id=$1 and level=$2 and term=$3;',
+      [sid, level, term]
     );
+    const data = queryRes.rows;
 
-    course_wise_grade = [];
-    for (const element of queryRes.rows) {
-      const offering_id = element["offering_id"];
-      const achieved_grade_point = element["grade_point"];
-      const achieved_letter_grade = element["letter_grade"];
+    let gpa = 0.0;
+    let registered_credit = 0.0;
+    let earned_credit = 0.0;
+    let graded_credit = 0.0;
 
-      let queryRes_ = await pool.query(
-        'select c.credits , c.course_id , c.course_name from course as c , "course offering" as co where co.offering_id=$1 and co.course_id = c.course_id and c.level=$2 and c.term=$3',
-        [offering_id, level, term]
-      );
-
-      //to store specific coure's grade
-      course_grade = {};
-      course_grade["course_id"] = queryRes_.rows[0]["course_id"];
-      course_grade["course_name"] = queryRes_.rows[0]["course_name"];
-      course_grade["credits"] = queryRes_.rows[0]["credits"];
-      course_grade["grade_point"] = achieved_grade_point;
-      course_grade["letter_grade"] = achieved_letter_grade;
-      course_wise_grade.push(course_grade);
-
-      //finding total grade point in this term
-      total_grade_point += queryRes_.rows[0]["credits"] * parseFloat(achieved_grade_point);
+    for (const element of data) {
+      if (element["letter_grade"] !== "F") {
+        if (element["letter_grade"] !== "S") {
+          gpa += element.grade_point * element.credits;
+          graded_credit += element.credits;
+        }
+        earned_credit += element.credits;
+      }
+      registered_credit += element.credits;
     }
+    gpa = gpa / graded_credit;
 
-    //now divide by the total credit he has registered for
-    const total_credits = (await get_total_credit(sid, level, term, session_id)).total_credit;
-    const gpa = total_grade_point / total_credits;
+    queryRes = await pool.query(
+      "select sum(credits*grade_point)/sum(credits) as cgpa from \"academic profile\" where letter_grade<>'F' \
+      and letter_grade<>'S' and student_id=$1 and (level<$2 or (level=$2 and term<=$3))",
+      [sid, level, term]
+    );
+    const cgpa = queryRes.rows[0]["cgpa"];
 
-    // console.log("total grade point for student_id " + sid + ":: " + total_grade_point);
-    // console.log("total credits in level " + level + " term " + term + ":: " + total_credits);
+    queryRes = await pool.query(
+      "select sum(credits) as total_credits from \"academic profile\" \
+      where letter_grade<>'F' and student_id=$1 and (level<$2 or (level=$2 and term<=$3))",
+      [sid, level, term]
+    );
+    const total_credits = queryRes.rows[0]["total_credits"];
 
-    res.status(201).json({ message: "getGrades", gpa: gpa, data: course_wise_grade });
+    res.status(201).json({
+      message: "getGrades",
+      data: data,
+      gpa: gpa,
+      registeredCredits: registered_credit,
+      earnedCredits: earned_credit,
+      totalCreditsEarned: total_credits,
+      cgpa: cgpa,
+    });
   } catch (err) {
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
@@ -55,7 +85,8 @@ const getGrades = async (req, res, next) => {
 
 const getExamRoutine = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
+    const session_id = await getCurrentSession();
 
     let queryRes = await pool.query(
 
@@ -93,7 +124,8 @@ const getExamRoutine = async (req, res, next) => {
 
 const getSeatPlan = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const session_id = await getCurrentSession();
+    const sid = req.userData.id;
     const { level, term } = await get_dept_level_term(sid);
 
     let queryRes = await pool.query(
@@ -122,6 +154,8 @@ const getSeatPlan = async (req, res, next) => {
 
 const getGuidelines = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
+
     let queryRes = await pool.query("SELECT * from exam_guidelines where session_id=$1", [session_id]);
 
     exam_guidelines_list = [];
@@ -149,3 +183,4 @@ exports.getGrades = getGrades;
 exports.getExamRoutine = getExamRoutine;
 exports.getSeatPlan = getSeatPlan;
 exports.getGuidelines = getGuidelines;
+exports.getAvailableResults = getAvailableResults;

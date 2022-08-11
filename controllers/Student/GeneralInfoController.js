@@ -1,10 +1,11 @@
 const { deepOrange } = require("@mui/material/colors");
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 const getAcademicCalender = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     let queryRes = await pool.query("select * from session_phase where session_id=$1 ORDER BY phase_number", [
       session_id,
     ]);
@@ -38,7 +39,7 @@ const getAcademicCalender = async (req, res, next) => {
 
 const getHallInfo = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     let queryRes = await pool.query(
       "select hall_name , supervisor_name , supervisor_phone , supervisor_email \
       from hall"

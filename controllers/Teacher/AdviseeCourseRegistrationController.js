@@ -4,11 +4,54 @@ const session_id = require("../../placeHolder");
 
 const getRegistrationRequests = async (req, res, next) => {
   try {
-    res.json({ message: "getRegistrationRequests" });
+    const tid = req.params.tid;
+    const sid = req.params.sid;
+    let queryRes = await pool.query(
+      'select request_type, student_id, course_id, request_date  from \
+      "registration request" natural join student natural join "course offering" \
+      where reg_status=\'awaiting_advisor\' and advisor_id = $1 and student_id=$2 order by reg_request_id;',
+      [tid, sid]
+    );
+    data = queryRes.rows;
+    for (let i = 0; i < data.length; i++) {
+      let date_ = "";
+      date_ = (date_ + data[i]["request_date"]).substring(4, 16);
+      data[i]["request_date"] = date_;
+      data[i]["request_type"] = data[i]["request_type"].toUpperCase();
+    }
+
+    res.json({ message: "getRegistrationRequests", data: data });
   } catch (err) {
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
 };
 
+const getRegistrationRequestSummary = async (req, res, next) => {
+  try {
+    const tid = req.params.tid;
+    let queryRes = await pool.query(
+      'select request_type, student_id, request_date, COUNT(*) as req_count \
+      from (select * from "registration request" natural join student natural join \
+      "course offering" where reg_status=\'awaiting_advisor\' and advisor_id = $1) \
+      as t1 group by student_id, request_type, request_date order by request_date asc;',
+      [tid]
+    );
+
+    data = queryRes.rows;
+    for (let i = 0; i < data.length; i++) {
+      let date_ = "";
+      date_ = (date_ + data[i]["request_date"]).substring(4, 16);
+      data[i]["request_date"] = date_;
+      data[i]["request_type"] = data[i]["request_type"].toUpperCase();
+    }
+
+    res.json({ message: "getRegistrationRequestSummary", data: data });
+  } catch (err) {
+    const error = new HttpError("Fetching Registration Summary Failed", 500);
+    return next(error);
+  }
+};
+
 exports.getRegistrationRequests = getRegistrationRequests;
+exports.getRegistrationRequestSummary = getRegistrationRequestSummary;

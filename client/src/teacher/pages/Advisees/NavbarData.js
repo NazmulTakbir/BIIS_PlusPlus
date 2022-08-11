@@ -1,10 +1,14 @@
 export const NavbarData = [
   {
-    title: "Course Registration",
+    title: "All Advisees",
+    link: "/advisees/all",
+  },
+  {
+    title: "Course Registration Requests",
     link: "/advisees/courseregistration",
   },
   {
-    title: "Feedback",
+    title: "Feedbacks",
     link: "/advisees/feedback",
   },
 ];

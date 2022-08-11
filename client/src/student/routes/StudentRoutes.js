@@ -7,6 +7,7 @@ import StudentInfoAdvisor from "../pages/StudentInfo/StudentInfoAdvisor";
 import CoursesRegistered from "../pages/Courses/CoursesRegistered";
 import CoursesAdd from "../pages/Courses/CoursesAdd";
 import CoursesDrop from "../pages/Courses/CoursesDrop";
+import CoursesPending from "../pages/Courses/CoursesPending";
 
 import DuesPending from "../pages/Dues/DuesPending";
 import DuesPaid from "../pages/Dues/DuesPaid";
@@ -24,8 +25,8 @@ import ScholarshipAvailable from "../pages/Scholarship/ScholarshipAvailable";
 import ScholarshipProcessing from "../pages/Scholarship/ScholarshipProcessing";
 import ScholarshipReceived from "../pages/Scholarship/ScholarshipReceived";
 
-import FeedbackComplaintNew from "../pages/FeedbackComplaint/FeedbackComplaintNew";
-import FeedbackComplaintOld from "../pages/FeedbackComplaint/FeedbackComplaintOld";
+import FeedbackNew from "../pages/Feedback/FeedbackNew";
+import FeedbackOld from "../pages/Feedback/FeedbackOld";
 
 const StudentRoutes = () => {
   return (
@@ -46,6 +47,9 @@ const StudentRoutes = () => {
 
       <Route path="/courses/registered" exact>
         <CoursesRegistered />
+      </Route>
+      <Route path="/courses/pending" exact>
+        <CoursesPending />
       </Route>
       <Route path="/courses/add" exact>
         <CoursesAdd />
@@ -94,11 +98,11 @@ const StudentRoutes = () => {
         <ScholarshipProcessing />
       </Route>
 
-      <Route path="/feedbackcomplaint/new" exact>
-        <FeedbackComplaintNew />
+      <Route path="/feedback/new" exact>
+        <FeedbackNew />
       </Route>
-      <Route path="/feedbackcomplaint/old" exact>
-        <FeedbackComplaintOld />
+      <Route path="/feedback/old" exact>
+        <FeedbackOld />
       </Route>
 
       <Redirect to="/studentinfo/home" />

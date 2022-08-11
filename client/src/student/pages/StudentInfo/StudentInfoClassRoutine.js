@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -9,8 +9,7 @@ import { make2DArray } from "../../../shared/util/TableFunctions";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
-
-const studentID = require("../../../placeHolder");
+import { AuthContext } from "../../../shared/context/AuthContext";
 
 const columnLabels = ["DAY", "8AM", "9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM"];
 
@@ -55,21 +54,32 @@ const generateRoutineTable = (rawData) => {
   return dataMatrix;
 };
 
+const fetchTableData = async (api_route, setTableData, auth) => {
+  try {
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
+    const jsonData = (await response.json())["data"];
+    const routineData = generateRoutineTable(jsonData);
+    let tableData = [];
+    for (let i = 0; i < routineData.length; i++) {
+      let row = [];
+      for (let j = 0; j < routineData[i].length; j++) {
+        row.push({ type: "PlainText", data: { value: routineData[i][j] } });
+      }
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const StudentInfoClassRoutine = () => {
-  const [classRoutine, setClassRoutine] = useState(make2DArray(5, 10));
+  const auth = useContext(AuthContext);
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/student/studentinfo/${studentID}/classroutine`);
-        const jsonData = await response.json();
-        setClassRoutine(generateRoutineTable(jsonData));
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
+    fetchTableData(`/api/student/studentinfo/classroutine`, setTableData, auth);
+  }, [auth]);
 
   return (
     <React.Fragment>
@@ -80,7 +90,7 @@ const StudentInfoClassRoutine = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} dataMatrix={classRoutine} />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>

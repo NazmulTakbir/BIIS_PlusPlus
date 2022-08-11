@@ -12,14 +12,14 @@ export const SidebarData = [
     link: "/teacherinfo",
   },
   {
-    title: "Exam",
+    title: "Courses",
     icon: <LibraryBooksIcon />,
-    link: "/exam/addgrades",
+    link: "/courses/all",
   },
   {
     title: "Advisees",
     icon: <PeopleIcon />,
-    link: "/advisees/courseregistration",
+    link: "/advisees/all",
   },
   {
     title: "Hall Issues",

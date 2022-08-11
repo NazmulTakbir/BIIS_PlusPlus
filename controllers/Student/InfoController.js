@@ -1,6 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 //util
 const get_dept_hall = async (sid) => {
@@ -19,11 +19,11 @@ const get_dept_hall = async (sid) => {
 
 const getHomeInfo = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const dept_name = (await get_dept_hall(sid)).dept_name;
     const hall_name = (await get_dept_hall(sid)).hall_name;
 
-    let queryRes = await pool.query("SELECT * from student where student_id = $1", [req.params.sid]);
+    let queryRes = await pool.query("SELECT * from student where student_id = $1", [req.userData.id]);
     var studentInfo = queryRes.rows[0];
 
     let date_of_birth = "";
@@ -42,9 +42,10 @@ const getHomeInfo = async (req, res, next) => {
 
 const getClassRoutine = async (req, res, next) => {
   try {
+    const session_id = await getCurrentSession();
     let queryRes = await pool.query(
       'SELECT offering_id from "course registrations" where student_id = $1 and session_id = $2',
-      [req.params.sid, session_id]
+      [req.userData.id, session_id]
     );
 
     let courseTimings = {};
@@ -59,7 +60,7 @@ const getClassRoutine = async (req, res, next) => {
       );
       courseTimings[courseID] = queryRes.rows;
     }
-    res.json(courseTimings);
+    res.json({ message: "getClassRoutine", data: courseTimings });
   } catch (err) {
     const error = new HttpError("Fetching Student Routine Info Failed", 500);
     return next(error);
@@ -68,7 +69,7 @@ const getClassRoutine = async (req, res, next) => {
 
 const getAdvisorInfo = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const dept_name = (await get_dept_hall(sid)).dept_name;
     let queryRes = await pool.query("SELECT advisor_id from student where student_id = $1", [sid]);
     const advisorID = queryRes.rows[0]["advisor_id"];

@@ -1,12 +1,12 @@
 import React from "react";
 
-import Sidebar from "../../../shared/components/Sidebar/Sidebar";
-import Navbar from "../../../shared/components/Navbar/Navbar";
-import Header from "../../../shared/components/Header/Header";
-import { SidebarData } from "../../components/SidebarData";
-import { NavbarData } from "./NavbarData";
+import Sidebar from "../../../../shared/components/Sidebar/Sidebar";
+import Navbar from "../../../../shared/components/Navbar/Navbar";
+import Header from "../../../../shared/components/Header/Header";
+import { SidebarData } from "../../../components/SidebarData";
+import { NavbarData } from "../NavbarData";
 
-import "../../../shared/components/MainContainer.css";
+import "../../../../shared/components/MainContainer.css";
 
 const Scrutinize = () => {
   return (

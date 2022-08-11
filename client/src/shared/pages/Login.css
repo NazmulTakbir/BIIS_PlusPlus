@@ -1,0 +1,107 @@
+.login-content{
+    margin: auto;
+    text-align: center;
+}
+
+.form-container{
+    margin: auto;
+    width: 400px;
+    height: 550px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 1px solid;
+    box-shadow: 0px 4px 21px 0px rgba(169,169,169,0.55);
+    -webkit-box-shadow: 0px 4px 21px 0px rgba(169,169,169,0.55);
+    -moz-box-shadow: 0px 4px 21px 0px rgba(169,169,169,0.55);
+}
+
+.login-form{
+    margin: 50px 20px 50px 20px;
+    padding: 20px;
+}
+
+.username, .password{
+    margin: 20px 5px 20px 5px !important;
+    width: 95%;
+    border-radius: 10px;
+    font-size: 16px !important;
+}
+
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+    font-family: inherit;
+    font-size: 0.9rem;    
+}
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+    font-size: 16px !important;
+    padding: 14px 10px !important;
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #b13137 !important; 
+}
+
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: #b13137 !important;
+}
+
+
+.login-brand {
+    padding-left: 5px;
+    display: flex;
+    justify-content: flex-start;
+    margin: auto;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.login-brand_container{
+    display: flex;
+       
+}
+
+.login-brand_name {
+    flex: 60%;
+    margin: auto;
+    color: #394f68;
+    font-size: 23px;
+    font-family: sans-serif;
+}
+
+.login-text{
+    display: flex;
+    justify-content: flex-start;
+    padding: 5px 0 5px 0;
+    color: #b13137;
+    font-weight: bolder;
+    font-size: 14px;
+    width: fit-content;
+    margin: 50px 0px 0px 15px;
+}
+
+.btn-custom{
+    color: rgb(255, 255, 255);
+    background-color: rgb(177, 49, 55);
+    margin: 24px;
+    border-radius: 6px !important;
+    width: 90px;
+    padding: 7px 10px !important;
+}
+
+
+@media screen and (max-width: 450px){
+    .form-container{
+      width: 95%;
+      height: 100vh;
+    }
+
+    .login-form{
+        margin: 0px 20px 20px 20px;
+        padding: 20px;
+    }
+}
+
+
+
+
+  
