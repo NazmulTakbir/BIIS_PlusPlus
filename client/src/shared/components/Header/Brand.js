@@ -3,10 +3,25 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 
 function toggleSideBar() {
+  console.log("toggleSideBar");
   const nav_ul = document.getElementById("sidebar");
-  if (nav_ul.style.display === "none"){
+
+  //initially not set to anything
+  if(nav_ul.style.display === ""){
     nav_ul.style.display = "block";
-  }else nav_ul.style.display = "none";
+  }
+
+  //set to block if it is currently none
+  else if (nav_ul.style.display === "none"){
+    console.log("show");
+    nav_ul.style.display = "block";
+  }
+  
+  //set to none if it is currently block
+  else {
+    console.log("hide");
+    nav_ul.style.display = "none";
+  }
 }
 
 
