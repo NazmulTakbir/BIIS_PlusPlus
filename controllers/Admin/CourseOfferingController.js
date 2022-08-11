@@ -105,18 +105,18 @@ const getexamslots = async (req, res, next) => {
   }
 };
 
-//create getOffering_admin_dept async function
+
 const getOffering_admin_dept = async (req, res, next) => {
   try {
-    const offered_to_dept_id = parseInt(req.params.admin_dept_id);
+    const offered_by_dept_id = parseInt(req.params.admin_dept_id);
     const currentSession = await getCurrentSession();
     //console.log(offered_to_dept_id);
     data = [];
     let queryRes = await pool.query(
       'select c.course_name , co.offering_id from public."course" as c , public."course offering" as co where \
-       c.offered_to_dept_id = $1 and \
+       c.offered_by_dept_id = $1 and \
        c.course_id = co.course_id \
-       and co.session_id = $2',[offered_to_dept_id,currentSession]
+       and co.session_id = $2',[offered_by_dept_id,currentSession]
     );
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i]);

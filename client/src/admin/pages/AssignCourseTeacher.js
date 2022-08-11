@@ -32,11 +32,15 @@ const AddCourseTeachers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await fetch(`/api/admin/departments/getTeacher/${admin_dept_id}`);
+        let response = await fetch(`/api/admin/departments/getTeacher/${admin_dept_id}` , {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         let jsonData = await response.json();
         setTeacher_list(jsonData.data);
 
-        response = await fetch(`/api/admin/offering/getOffering_admin_dept/${admin_dept_id}`);
+        response = await fetch(`/api/admin/offering/getOffering_admin_dept/${admin_dept_id}`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         jsonData = await response.json();
         setOffering_list(jsonData.data);
       } catch (err) {
@@ -115,7 +119,7 @@ const AddCourseTeachers = () => {
       ];
       await fetch(`/api/admin/courseteacher/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" , Authorization: "Bearer " + auth.token},
         body: JSON.stringify({
           data: data,
         }),

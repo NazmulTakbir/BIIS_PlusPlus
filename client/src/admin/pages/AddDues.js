@@ -35,11 +35,15 @@ const AddDues = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await fetch(`/api/admin//dues/getDuesTypes`);
+        let response = await fetch(`/api/admin//dues/getDuesTypes`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         let jsonData = await response.json();
         setDues_type_list(jsonData.data);
 
-        response = await fetch(`/api/admin/student/getStudentsOfDept/${admin_dept_id}`);
+        response = await fetch(`/api/admin/student/getStudentsOfDept/${admin_dept_id}`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         jsonData = await response.json();
         setStudents_list(jsonData.data);
       } catch (err) {
@@ -120,7 +124,7 @@ const AddDues = () => {
       ];
       await fetch(`/api/admin/dues/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" , Authorization: "Bearer " + auth.token },
         body: JSON.stringify({
           data: data,
         }),
