@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
@@ -6,18 +6,20 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
+import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const studentID = require("../../../placeHolder");
 const columnLabels = ["TYPE", "SESSION", "AMOUNT", "PAYMENT DATE"];
 
-const fetchTableData = async (api_route, setTableData) => {
+const fetchTableData = async (api_route, setTableData, auth) => {
   try {
-    const response = await fetch(api_route);
+    const response = await fetch(api_route, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
     const jsonData = (await response.json())["data"];
     let tableData = [];
-    console.log(jsonData);
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
       row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
@@ -33,11 +35,12 @@ const fetchTableData = async (api_route, setTableData) => {
 };
 
 const ScholarshipReceived = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student/scholarship/${studentID}/received`, setTableData);
-  }, []);
+    fetchTableData(`/api/student/scholarship/${studentID}/received`, setTableData, auth);
+  }, [auth]);
 
   return (
     <React.Fragment>

@@ -32,7 +32,7 @@ const getHomeInfo = async (req, res, next) => {
     studentInfo["date_of_birth"] = date_of_birth;
     studentInfo["hall_name"] = hall_name;
     studentInfo["dept_name"] = dept_name;
-
+    console.log(studentInfo);
     res.json(studentInfo);
   } catch (err) {
     const error = new HttpError("Fetching Student Info Failed", 500);

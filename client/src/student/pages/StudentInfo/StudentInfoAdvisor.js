@@ -29,7 +29,7 @@ const StudentInfoAdvisor = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   return (
     <React.Fragment>

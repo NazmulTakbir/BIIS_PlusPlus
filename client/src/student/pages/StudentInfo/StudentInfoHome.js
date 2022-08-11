@@ -30,7 +30,7 @@ const StudentInfoHome = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   return (
     <React.Fragment>

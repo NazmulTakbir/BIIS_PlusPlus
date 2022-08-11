@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import Navbar from "../../../../shared/components/Navbar/Navbar";
 import "./Advisee.css";
 
+import { AuthContext } from "../../../../shared/context/AuthContext";
 import "../../../../shared/components/MainContainer.css";
 import Table from "../../../../shared/components/Table/Table";
 import Box from "@mui/material/Box";
@@ -23,9 +24,9 @@ const boxStyle = {
   margin: "auto",
 };
 
-const fetchTableData = async (api_route, setTableData, setExtraData) => {
+const fetchTableData = async (api_route, setTableData, setExtraData, auth) => {
   try {
-    const response = await fetch(api_route);
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
     const jsonData = await response.json();
     const resultData = jsonData["data"];
     let tableData = [];
@@ -52,6 +53,7 @@ const fetchTableData = async (api_route, setTableData, setExtraData) => {
 };
 
 const AdviseeAcademic = () => {
+  const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
   const [extraData, setExtraData] = useState({});
   const [dropDownText, setDropDownText] = useState("Select Level/Term");
@@ -78,7 +80,9 @@ const AdviseeAcademic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/exam/${studentID}/getAvailableResults`);
+        const response = await fetch(`/api/student/exam/${studentID}/getAvailableResults`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const jsonData = await response.json();
         setDropDownOptions(jsonData["data"]);
       } catch (err) {
@@ -86,7 +90,7 @@ const AdviseeAcademic = () => {
       }
     };
     fetchData();
-  }, [studentID]);
+  }, [studentID, auth]);
 
   const dropDownSelect = async (value) => {
     const level = parseInt(value[0]);
@@ -94,7 +98,7 @@ const AdviseeAcademic = () => {
 
     setDropDownText("Level " + level + "  Term " + term);
 
-    fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData);
+    fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData, auth);
     setNoneSelected(false);
   };
 

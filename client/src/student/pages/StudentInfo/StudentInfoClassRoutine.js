@@ -55,32 +55,32 @@ const generateRoutineTable = (rawData) => {
   return dataMatrix;
 };
 
+const fetchTableData = async (api_route, setTableData, auth) => {
+  try {
+    const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
+    const jsonData = (await response.json())["data"];
+    const routineData = generateRoutineTable(jsonData);
+    let tableData = [];
+    for (let i = 0; i < routineData.length; i++) {
+      let row = [];
+      for (let j = 0; j < routineData[i].length; j++) {
+        row.push({ type: "PlainText", data: { value: routineData[i][j] } });
+      }
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const StudentInfoClassRoutine = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
-  const fetchTableData = async (api_route, setTableData) => {
-    try {
-      const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
-      const jsonData = (await response.json())["data"];
-      const routineData = generateRoutineTable(jsonData);
-      let tableData = [];
-      for (let i = 0; i < routineData.length; i++) {
-        let row = [];
-        for (let j = 0; j < routineData[i].length; j++) {
-          row.push({ type: "PlainText", data: { value: routineData[i][j] } });
-        }
-        tableData.push(row);
-      }
-      setTableData(tableData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
-    fetchTableData(`/api/student/studentinfo/${studentID}/classroutine`, setTableData);
-  }, []);
+    fetchTableData(`/api/student/studentinfo/${studentID}/classroutine`, setTableData, auth);
+  }, [auth]);
 
   return (
     <React.Fragment>
