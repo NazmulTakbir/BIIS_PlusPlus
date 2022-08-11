@@ -49,7 +49,6 @@ const App = () => {
   let routes;
   if (token !== null) {
     if (token) {
-      //userType="department admin"
       if (userType === "student") {
         routes = <StudentRoutes />;
       } else if (userType === "teacher") {

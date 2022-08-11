@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
 
+import Textbox from "../components/Textbox/Textbox";
 import CustomButton from "./../components/CustomButton/CustomButton";
 import { AuthContext } from "../context/AuthContext";
-import BasicTextField from "@mui/material/TextField";
-import Brand from "../components/Header/Brand";
-import "./Login.css";
 
 const Login = () => {
   const auth = useContext(AuthContext);
@@ -12,7 +10,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const attemptLogin = async (e) => {
-    e.preventDefault();
     const response = await fetch(`/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -28,54 +25,45 @@ const Login = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <div className="login-content">
-          <div className="form-container">
-            <form className="login-form">
-              <Brand
-                no_menu="true"
-                brand_class="login-brand"
-                brand_container_class="login-brand_container"
-                brand_name_class="login-brand_name"
-              />
-
-              <div className="login-text-container">
-                <div className="login-text">Login to your Account</div>
-              </div>
-
-              <BasicTextField
-                id="email"
-                label="Username"
-                type="text"
-                className="username"
+        <div className="wrapper">
+          <div className="main_container">
+            <div className="content">
+              <Textbox
+                width="350px"
+                height="46px"
+                resize="none"
+                name="course_id"
+                padding="0px"
+                fontSize="17px"
+                placeholder=""
+                label="User ID:"
                 value={userID}
-                required="false"
-                variant="outlined"
                 onChange={(e) => setUserID(e.target.value)}
               />
-
-              <BasicTextField
-                id="password"
-                label="Password"
-                className="password"
-                type="password"
+              <Textbox
+                width="350px"
+                height="46px"
+                resize="none"
+                name="course_id"
+                padding="0px"
+                fontSize="17px"
+                placeholder=""
+                label="Password:"
                 value={password}
-                required="true"
-                variant="outlined"
                 onChange={(e) => setPassword(e.target.value)}
               />
-
               <CustomButton
                 type="submit"
                 label="Login"
                 variant="contained"
                 color="#ffffff"
                 bcolor="#b13137"
-                margin="24px"
+                margin="40px"
                 padding="10px"
                 fontSize="17px !important"
                 onClickFunction={attemptLogin}
               />
-            </form>
+            </div>
           </div>
         </div>
       </div>
