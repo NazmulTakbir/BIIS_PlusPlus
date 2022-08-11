@@ -11,9 +11,9 @@ import "./App.css";
 import { AuthContext } from "./shared/context/AuthContext";
 
 const App = () => {
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(false);
-  const [userType, setUserType] = useState(false);
+  const [token, setToken] = useState("a");
+  const [userId, setUserId] = useState("1705103");
+  const [userType, setUserType] = useState("student");
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
@@ -30,7 +30,7 @@ const App = () => {
   }, []);
 
   const logout = useCallback(() => {
-    setToken(null);
+    setToken("a");
     setUserId(null);
   }, []);
 
@@ -38,7 +38,7 @@ const App = () => {
   if (token !== null) {
     if (token) {
       if (userType === "student") {
-        routes = <StudentRoutes />;
+        routes = <UnauthenticatedRoutes />;
       } else if (userType === "teacher") {
         routes = <TeacherRoutes />;
       } else if (userType === "office admin" || userType === "hall admin" || userType === "department admin") {
