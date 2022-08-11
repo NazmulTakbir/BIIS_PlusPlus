@@ -58,7 +58,7 @@ const App = () => {
         routes = <AdminRoutes />;
       }
     } else {
-      routes = <TeacherRoutes />;
+      routes = <UnauthenticatedRoutes />;
     }
   }
 
