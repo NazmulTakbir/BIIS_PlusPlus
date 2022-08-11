@@ -9,6 +9,7 @@ const AdviseeCourseRegistrationController = require("../controllers/Teacher/Advi
 const AdviseeFeedbackController = require("../controllers/Teacher/AdviseeFeedbackController");
 const HallProvostController = require("../controllers/Teacher/HallProvostController");
 const DepartmentHeadController = require("../controllers/Teacher/DepartmentHeadController");
+const ExamsController = require("../controllers/Teacher/ExamsController");
 
 // const CheckAuth = require("../middleware/CheckAuth");
 
@@ -23,6 +24,8 @@ TeacherRoutes.get("/adviseeinfo/:tid/:sid", InfoController.getAdviseeInfo);
 TeacherRoutes.get("/exam/:tid/addgrades/courses", AddGradesController.getCourses);
 TeacherRoutes.get("/exam/:tid/viewgrades/courses", ViewGradesController.getCourses);
 TeacherRoutes.get("/exam/:tid/scrutinize/courses", ScrutinizeController.getCourses);
+TeacherRoutes.get("/exam/:sid/getAvailableResults", ExamsController.getAvailableResults);
+TeacherRoutes.get("/exam/:sid/grades/:level/:term", ExamsController.getGrades);
 
 TeacherRoutes.get(
   "/advisees/:tid/registrationrequests/:sid",
