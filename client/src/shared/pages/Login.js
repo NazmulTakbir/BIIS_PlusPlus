@@ -12,7 +12,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const attemptLogin = async (e) => {
-    e.preventDefault();
     const response = await fetch(`/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,7 +29,7 @@ const Login = () => {
       <div className="App">
         <div className="login-content">
           <div className="form-container">
-            <form className="login-form">
+            <div className="login-form">
               <Brand
                 no_menu="true"
                 brand_class="login-brand"
@@ -48,7 +47,7 @@ const Login = () => {
                 type="text"
                 className="username"
                 value={userID}
-                required="false"
+                required={true}
                 variant="outlined"
                 onChange={(e) => setUserID(e.target.value)}
               />
@@ -59,7 +58,7 @@ const Login = () => {
                 className="password"
                 type="password"
                 value={password}
-                required="true"
+                required={true}
                 variant="outlined"
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -75,7 +74,7 @@ const Login = () => {
                 fontSize="17px !important"
                 onClickFunction={attemptLogin}
               />
-            </form>
+            </div>
           </div>
         </div>
       </div>

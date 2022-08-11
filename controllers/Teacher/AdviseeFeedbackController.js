@@ -4,7 +4,7 @@ const session_id = require("../../placeHolder");
 
 const getFeedbacks = async (req, res, next) => {
   try {
-    const tid = req.params.tid;
+    const tid = req.userData.id;
     let queryRes = await pool.query(
       "select f.feedback_id, s.student_id, s.name as student_name, f.subject, \
        f.submission_date, f.details from feedback as f natural join \

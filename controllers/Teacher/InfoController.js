@@ -15,7 +15,7 @@ const getAllAdvisee = async (req, res, next) => {
     const queryRes = await pool.query(
       "select student_id, s.name, level, term from teacher as t, student as s where teacher_id=$1 \
                       and advisor_id=teacher_id order by student_id;",
-      [req.params.tid]
+      [req.userData.id]
     );
 
     res.json({ message: "getInfo", data: queryRes.rows });

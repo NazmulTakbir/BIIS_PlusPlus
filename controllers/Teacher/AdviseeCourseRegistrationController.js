@@ -4,7 +4,7 @@ const session_id = require("../../placeHolder");
 
 const getRegistrationRequests = async (req, res, next) => {
   try {
-    const tid = req.params.tid;
+    const tid = req.userData.id;
     const sid = req.params.sid;
     let queryRes = await pool.query(
       'select request_type, student_id, course_id, request_date  from \
@@ -29,7 +29,7 @@ const getRegistrationRequests = async (req, res, next) => {
 
 const getRegistrationRequestSummary = async (req, res, next) => {
   try {
-    const tid = req.params.tid;
+    const tid = req.userData.id;
     let queryRes = await pool.query(
       'select request_type, student_id, request_date, COUNT(*) as req_count \
       from (select * from "registration request" natural join student natural join \
