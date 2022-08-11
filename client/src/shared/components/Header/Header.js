@@ -9,7 +9,7 @@ function Header() {
     /*THE TOP BAR*/
     <div className="header">
       {/*THE LOGO AND BIIS*/}
-      <Brand />
+      <Brand brand_class="brand" brand_container_class="brand_container" brand_name_class="brand_name"/>
 
       {/*SEARCH BAR FUNCTIONALITY CODE:
             https://dev.to/salehmubashar/search-bar-in-react-js-545l

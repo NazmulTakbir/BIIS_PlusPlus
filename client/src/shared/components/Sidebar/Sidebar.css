@@ -55,4 +55,8 @@
         margin: auto;
         width: 90%;
     }
+
+    .SidebarList{
+        margin: 60px auto 10px auto;
+    }
 }
