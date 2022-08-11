@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import Papa from "papaparse";
+import DatePicker from "react-datepicker";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import DatePicker from "react-datepicker";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -15,6 +15,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+import "react-datepicker/dist/react-datepicker.css";
+
 const allowedExtensions = ["csv"];
 
 const AddDues = () => {
@@ -22,10 +24,9 @@ const AddDues = () => {
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
-  //create a state variable for dues_type_id , student_id
   const [dues_type_id, setDues_type_id] = useState(0);
   const [student_id, setStudent_id] = useState(0);
-  const [deadline, setDeadline] = useState(new Date());
+  const [deadline, setDeadline] = useState(null);
   const [specification, setSpecification] = useState("");
   const [students_list, setStudents_list] = useState([]);
   const [dues_type_list, setDues_type_list] = useState([]);
@@ -35,12 +36,12 @@ const AddDues = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await fetch(`/api/admin//dues/getDuesTypes`, {
+        let response = await fetch(`/api/admin/dues/getDuesTypes`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         let jsonData = await response.json();
         setDues_type_list(jsonData.data);
-
+        console.log(jsonData.data);
         response = await fetch(`/api/admin/student/getStudentsOfDept/${admin_dept_id}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
@@ -51,7 +52,7 @@ const AddDues = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/dues/samplefile", {
@@ -124,7 +125,7 @@ const AddDues = () => {
       ];
       await fetch(`/api/admin/dues/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" , Authorization: "Bearer " + auth.token },
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
         body: JSON.stringify({
           data: data,
         }),
@@ -248,7 +249,7 @@ const AddDues = () => {
                     </Select>
                   </FormControl>
 
-                  <DatePicker label="Deadline" onChange={setDeadline} value={deadline} />
+                  <DatePicker selected={deadline} onChange={(date) => setDeadline(date)} />
 
                   <Textbox
                     width="350px"

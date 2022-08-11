@@ -32,7 +32,7 @@ const AddCourseTeachers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await fetch(`/api/admin/departments/getTeacher/${admin_dept_id}` , {
+        let response = await fetch(`/api/admin/departments/getTeacher/${admin_dept_id}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         let jsonData = await response.json();
@@ -48,7 +48,7 @@ const AddCourseTeachers = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/courseteacher/samplefile", {
@@ -119,7 +119,7 @@ const AddCourseTeachers = () => {
       ];
       await fetch(`/api/admin/courseteacher/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" , Authorization: "Bearer " + auth.token},
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
         body: JSON.stringify({
           data: data,
         }),
