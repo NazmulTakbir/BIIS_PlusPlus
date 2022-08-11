@@ -8,7 +8,7 @@ import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
 
-const AddGrades = () => {
+const AllCourses = () => {
   return (
     <React.Fragment>
       <div className="App">
@@ -18,7 +18,7 @@ const AddGrades = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <h1>AddGrades</h1>
+              <h1>AllCourses</h1>
             </div>
           </div>
         </div>
@@ -27,4 +27,4 @@ const AddGrades = () => {
   );
 };
 
-export default AddGrades;
+export default AllCourses;

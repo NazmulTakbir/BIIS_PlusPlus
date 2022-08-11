@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import Papa from "papaparse";
 import DatePicker from "react-datepicker";
 
@@ -8,11 +8,13 @@ import { SidebarData } from "../components/SidebarData";
 import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
 
+import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
 
 const allowedExtensions = ["csv"];
 
 const UploadAcademicCalender = () => {
+  const auth = useContext(AuthContext);
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
@@ -21,7 +23,9 @@ const UploadAcademicCalender = () => {
   const [endDate, setEndDate] = useState(null);
 
   const downloadSampleCSV = async (e) => {
-    const response = await fetch("/api/admin/academiccalender/samplefile");
+    const response = await fetch("/api/admin/academiccalender/samplefile", {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
     const fileData = (await response.json())["data"];
 
     const blob = new Blob([fileData], { type: "text/plain" });
@@ -72,7 +76,7 @@ const UploadAcademicCalender = () => {
           console.log();
           await fetch(`/api/admin/academiccalender/add`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
             body: JSON.stringify({
               data: results.data,
               startDate: startDate,

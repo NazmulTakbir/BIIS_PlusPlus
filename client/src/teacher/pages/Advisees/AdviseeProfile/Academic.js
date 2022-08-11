@@ -80,7 +80,7 @@ const AdviseeAcademic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/exam/${studentID}/getAvailableResults`, {
+        const response = await fetch(`/api/teacher/advisee/${auth.userId}/${studentID}/getAvailableResults`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const jsonData = await response.json();
@@ -98,7 +98,12 @@ const AdviseeAcademic = () => {
 
     setDropDownText("Level " + level + "  Term " + term);
 
-    fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData, auth);
+    fetchTableData(
+      `/api/teacher/advisee/${auth.userId}/${studentID}/getGrades/${level}/${term}`,
+      setTableData,
+      setExtraData,
+      auth
+    );
     setNoneSelected(false);
   };
 

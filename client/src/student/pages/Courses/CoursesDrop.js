@@ -11,7 +11,6 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "./../../../shared/components/CustomButton/CustomButton";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "SELECT"];
 
 const coursesToDrop = [];
@@ -59,7 +58,7 @@ const CoursesDrop = () => {
   const [sessionData, setSessionData] = useState({});
 
   useEffect(() => {
-    fetchTableData(`/api/student/courses/${studentID}/coursestodrop`, setTableData, setSessionData, auth);
+    fetchTableData(`/api/student/courses/coursestodrop`, setTableData, setSessionData, auth);
   }, [auth]);
 
   const renderPage = () => {
@@ -93,7 +92,7 @@ const CoursesDrop = () => {
       if (coursesToDrop.length === 0) {
         alert("Please select at least one course to drop");
       } else {
-        await fetch(`/api/student/courses/${studentID}/dropRequest`, {
+        await fetch(`/api/student/courses/dropRequest`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify({

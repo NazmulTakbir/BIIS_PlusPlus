@@ -2,7 +2,7 @@ const express = require("express");
 // const { check } = require("express-validator");
 
 const StudentController = require("../controllers/Admin/StudentController");
-const DepartmentsController = require("../controllers/Admin/DepartmentsController")
+const DepartmentsController = require("../controllers/Admin/DepartmentsController");
 const TeacherController = require("../controllers/Admin/TeacherController");
 const CourseController = require("../controllers/Admin/CourseController");
 const CourseOfferingController = require("../controllers/Admin/CourseOfferingController");
@@ -11,11 +11,12 @@ const NoticeController = require("../controllers/Admin/NoticeController");
 const DuesController = require("../controllers/Admin/DuesController");
 const AcademicCalenderController = require("../controllers/Admin/AcademicCalenderController");
 
-// const CheckAuth = require("../middleware/CheckAuth");
+const verifyAdmin = require("../controllers/Authentication/VerifyAdmin");
 
 const AdminRoutes = express.Router();
 
-// AdminRoutes.use(checkAuth);
+AdminRoutes.use(verifyAdmin);
+
 AdminRoutes.get("/departments/get", DepartmentsController.getDepartmentsList);
 AdminRoutes.post("/student/add", StudentController.postAddStudent);
 AdminRoutes.get("/student/samplefile", StudentController.getSampleFile);

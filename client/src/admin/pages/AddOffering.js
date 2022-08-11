@@ -1,16 +1,18 @@
 import Papa from "papaparse";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
 
+import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
 
 const allowedExtensions = ["csv"];
 
 const AddOffering = () => {
+  const auth = useContext(AuthContext);
   const [currentSession, setCurrentSession] = useState("");
   const fileRef = useRef();
   const [error, setMessage] = useState("");
@@ -26,17 +28,23 @@ const AddOffering = () => {
     const fetchData = async () => {
       try {
         //finding current session
-        const session_response = await fetch(`/api/shared/session/getcurrent`);
+        const session_response = await fetch(`/api/shared/session/getcurrent`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const session_data = await session_response.json();
         setCurrentSession(session_data["data"]["session_id"]);
 
         //courseID dropdown
-        const course_id_response = await fetch(`/api/admin/offering/getunofferedcourses`);
+        const course_id_response = await fetch(`/api/admin/offering/getunofferedcourses`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const course_id_jsonData = await course_id_response.json();
         setdropDownOptionsCourseID(course_id_jsonData["data"]);
 
         //Exam slot id dropdown
-        const exam_slot_id_response = await fetch(`/api/admin/offering/getexamslots`);
+        const exam_slot_id_response = await fetch(`/api/admin/offering/getexamslots`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const exam_slot_id_jsonData = await exam_slot_id_response.json();
         setdropDownOptionsExamSlotID(exam_slot_id_jsonData["data"]);
       } catch (err) {
@@ -44,7 +52,7 @@ const AddOffering = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   const dropDownSelectCourseID = async (value) => {
     setdropDownTextCourseID(value);
@@ -66,7 +74,7 @@ const AddOffering = () => {
 
     await fetch(`/api/admin/offering/add`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
       body: JSON.stringify({
         data: data,
       }),
@@ -76,7 +84,9 @@ const AddOffering = () => {
   };
 
   const downloadSampleCSV = async (e) => {
-    const response = await fetch("/api/admin/offering/samplefile");
+    const response = await fetch("/api/admin/offering/samplefile", {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
     const fileData = (await response.json())["data"];
 
     const blob = new Blob([fileData], { type: "text/plain" });
@@ -114,7 +124,7 @@ const AddOffering = () => {
           console.log();
           await fetch(`/api/admin/offering/add`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
             body: JSON.stringify({
               data: results.data,
             }),

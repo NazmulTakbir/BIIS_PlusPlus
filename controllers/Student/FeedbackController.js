@@ -4,7 +4,7 @@ const session_id = require("../../placeHolder");
 
 const getPastSubmissions = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     let queryRes = await pool.query("select * from feedback where student_id = $1 ", [sid]);
     feedback_list = [];
     for (const element of queryRes.rows) {
@@ -31,7 +31,7 @@ const getPastSubmissions = async (req, res, next) => {
 
 const postNewSubmission = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
 
     const { subject, details, submission_date, receiver } = req.body;
 

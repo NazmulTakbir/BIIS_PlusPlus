@@ -18,7 +18,7 @@ const getRegisteredCourses = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
     let queryRes = await pool.query('SELECT * FROM "course registrations" where student_id = $1 and session_id = $2', [
-      req.params.sid,
+      req.userData.id,
       session_id,
     ]);
 
@@ -49,7 +49,7 @@ const getPendingRequests = async (req, res, next) => {
       'select request_type, reg_status, request_date, course_id, course_name, credits from "registration request" as t1 \
       natural join "course offering" as t2 natural join course  where student_id=$1 and session_id=$2 \
       and reg_status<>\'approved\' order by reg_request_id',
-      [req.params.sid, session_id]
+      [req.userData.id, session_id]
     );
 
     data = queryRes.rows;
@@ -101,7 +101,7 @@ const getCoursesToAdd = async (req, res, next) => {
   try {
     const registrationPhase = await getRegistrationPhase();
     if (registrationPhase === "open") {
-      const coursesToAdd = await getCoursesToAddUtil(req.params.sid);
+      const coursesToAdd = await getCoursesToAddUtil(req.userData.id);
       res.status(201).json({ message: "getCoursesToAdd", data: coursesToAdd });
     } else {
       res.status(201).json({ message: registrationPhase });
@@ -147,7 +147,7 @@ const getCoursesToDrop = async (req, res, next) => {
   try {
     const registrationPhase = await getRegistrationPhase();
     if (registrationPhase === "open") {
-      const coursesToDrop = await getCoursesToDropUtil(req.params.sid);
+      const coursesToDrop = await getCoursesToDropUtil(req.userData.id);
       res.status(201).json({ message: "getCoursesToDrop", data: coursesToDrop });
     } else {
       res.status(201).json({ message: registrationPhase });
@@ -162,7 +162,7 @@ const postAddRequest = async (req, res, next) => {
   try {
     const registrationPhase = await getRegistrationPhase();
     if (registrationPhase === "open") {
-      const availableCourses = await getCoursesToAddUtil(req.params.sid);
+      const availableCourses = await getCoursesToAddUtil(req.userData.id);
       let availableOfferingIDs = [];
       for (let i = 0; i < availableCourses.length; i++) {
         availableOfferingIDs.push(availableCourses[i]["offering_id"]);
@@ -176,7 +176,7 @@ const postAddRequest = async (req, res, next) => {
         if (availableOfferingIDs.includes(offeringID)) {
           await pool.query(
             'INSERT INTO "registration request" (student_id, offering_id, request_type, reg_status, request_date) VALUES($1, $2, $3, $4, $5)',
-            [req.params.sid, offeringID, "add", "awaiting_advisor", new Date()]
+            [req.userData.id, offeringID, "add", "awaiting_advisor", new Date()]
           );
           response.push({ message: "Placed Add Request", id: offeringID });
         } else {
@@ -197,7 +197,7 @@ const postDropRequest = async (req, res, next) => {
   try {
     const registrationPhase = await getRegistrationPhase();
     if (registrationPhase === "open") {
-      const dropableCourses = await getCoursesToDropUtil(req.params.sid);
+      const dropableCourses = await getCoursesToDropUtil(req.userData.id);
       let dropableOfferingIDs = [];
       for (let i = 0; i < dropableCourses.length; i++) {
         dropableOfferingIDs.push(dropableCourses[i]["offering_id"]);
@@ -210,7 +210,7 @@ const postDropRequest = async (req, res, next) => {
         if (dropableOfferingIDs.includes(offeringID)) {
           await pool.query(
             'INSERT INTO "registration request" (student_id, offering_id, request_type, reg_status, request_date) VALUES($1, $2, $3, $4, $5)',
-            [req.params.sid, offeringID, "drop", "awaiting_advisor", new Date()]
+            [req.userData.id, offeringID, "drop", "awaiting_advisor", new Date()]
           );
           response.push({ message: "Placed Drop Request", id: offeringID });
         } else {

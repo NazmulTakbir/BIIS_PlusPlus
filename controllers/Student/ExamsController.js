@@ -5,7 +5,7 @@ const { getCurrentSession } = require("../../util/CurrentSession");
 
 const getAvailableResults = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
 
     let query = await pool.query(
       'select distinct(level, term) from "result summary" as r natural join "course offering" as co natural join \
@@ -24,10 +24,9 @@ const getAvailableResults = async (req, res, next) => {
   }
 };
 
-
 const getGrades = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const level = req.params.level;
     const term = req.params.term;
 
@@ -86,7 +85,7 @@ const getGrades = async (req, res, next) => {
 
 const getExamRoutine = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const session_id = await getCurrentSession();
 
     let queryRes = await pool.query(
@@ -123,7 +122,7 @@ const getExamRoutine = async (req, res, next) => {
 const getSeatPlan = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const { level, term } = await get_dept_level_term(sid);
 
     let queryRes = await pool.query(

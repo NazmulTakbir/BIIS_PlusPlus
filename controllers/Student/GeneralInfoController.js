@@ -39,7 +39,7 @@ const getAcademicCalender = async (req, res, next) => {
 
 const getHallInfo = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     let queryRes = await pool.query(
       "select hall_name , supervisor_name , supervisor_phone , supervisor_email \
       from hall"

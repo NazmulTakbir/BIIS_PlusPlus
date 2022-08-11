@@ -10,7 +10,6 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["TYPE", "SESSION", "AMOUNT", "STATUS"];
 
 const fetchTableData = async (api_route, setTableData, auth) => {
@@ -39,7 +38,7 @@ const ScholarshipProcessing = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student/scholarship/${studentID}/processing`, setTableData, auth);
+    fetchTableData(`/api/student/scholarship/processing`, setTableData, auth);
   }, [auth]);
 
   return (

@@ -13,8 +13,6 @@ import RadioButton from "../../../shared/components/RadioButton/RadioButton";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import Stack from "@mui/material/Stack";
 
-const studentID = require("../../../placeHolder");
-
 const FeedbackNew = () => {
   const auth = useContext(AuthContext);
   const [subject, setSubject] = useState("");
@@ -31,7 +29,7 @@ const FeedbackNew = () => {
       } else if (receiver === "") {
         alert("Enter Receiver");
       } else {
-        await fetch(`/api/student/feedback/${studentID}/newsubmission`, {
+        await fetch(`/api/student/feedback/newsubmission`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify({

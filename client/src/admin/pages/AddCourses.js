@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import Papa from "papaparse";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
 
+import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
 import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
@@ -19,12 +20,13 @@ const term_list = ["1", "2"];
 const credit_list = ["0.75", "1", "1.5", "2", "3", "4", "6"];
 
 const AddCourses = () => {
+  const auth = useContext(AuthContext);
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
   const [course_id, set_course_id] = useState("");
   const [course_name, set_course_name] = useState("");
-  const [offered_by_dept_id, set_offered_by_dept_id] = useState("5"); //cse id
+  const [offered_by_dept_id] = useState("5");
   const [offered_to_list, set_offered_to_list] = useState([]);
   const [offered_to_dept_id, set_offered_to_dept_id] = useState("Select a department");
   const [level, set_level] = useState("");
@@ -34,7 +36,9 @@ const AddCourses = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/admin/departments/get`);
+        const response = await fetch(`/api/admin/departments/get`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
         const jsonData = await response.json();
         set_offered_to_list(jsonData.data);
       } catch (err) {
@@ -42,10 +46,12 @@ const AddCourses = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   const downloadSampleCSV = async (e) => {
-    const response = await fetch("/api/admin/course/samplefile");
+    const response = await fetch("/api/admin/course/samplefile", {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
     const fileData = (await response.json())["data"];
 
     const blob = new Blob([fileData], { type: "text/plain" });
@@ -85,7 +91,7 @@ const AddCourses = () => {
           console.log();
           await fetch(`/api/admin/course/add`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
             body: JSON.stringify({
               data: results.data,
             }),
@@ -115,7 +121,7 @@ const AddCourses = () => {
 
       await fetch(`/api/admin/course/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
         body: JSON.stringify({
           data: data,
         }),

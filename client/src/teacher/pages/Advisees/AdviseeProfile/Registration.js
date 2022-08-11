@@ -7,7 +7,6 @@ import Table from "../../../../shared/components/Table/Table";
 import "./Advisee.css";
 import CustomButton from "../../../../shared/components/CustomButton/CustomButton";
 
-const teacherID = require("../../../../placeHolder2");
 const columnLabels = ["STUDENT ID", "COURSE ID", "REQUEST DATE", "ACTION"];
 
 const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth) => {
@@ -68,7 +67,7 @@ const AdviseeRegistration = () => {
 
   useEffect(() => {
     fetchTableData(
-      `/api/teacher/advisees/${teacherID}/registrationrequests/${studentID}`,
+      `/api/teacher/advisees/${auth.userId}/registrationrequests/${studentID}`,
       setAddTableData,
       setDropTableData,
       auth

@@ -1,21 +1,25 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import Papa from "papaparse";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
 
+import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
 
 const allowedExtensions = ["csv"];
 
 const AddStudents = () => {
+  const auth = useContext(AuthContext);
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
   const downloadSampleCSV = async (e) => {
-    const response = await fetch("/api/admin/student/samplefile");
+    const response = await fetch("/api/admin/student/samplefile", {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
     const fileData = (await response.json())["data"];
 
     const blob = new Blob([fileData], { type: "text/plain" });
@@ -53,7 +57,7 @@ const AddStudents = () => {
           console.log();
           await fetch(`/api/admin/student/add`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
             body: JSON.stringify({
               data: results.data,
             }),

@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const pool = require("../../db");
 
 const main = async () => {
@@ -12,7 +11,6 @@ const main = async () => {
     ]);
   }
   console.log("done 1");
-
   queryRes = await pool.query("select teacher_id from teacher");
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);
@@ -22,7 +20,6 @@ const main = async () => {
     ]);
   }
   console.log("done 2");
-
   queryRes = await pool.query('select dept_admin_id from "department admin"');
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);
@@ -32,7 +29,6 @@ const main = async () => {
     ]);
   }
   console.log("done 3");
-
   queryRes = await pool.query('select hall_admin_id from "hall admin"');
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);
@@ -42,7 +38,6 @@ const main = async () => {
     ]);
   }
   console.log("done 4");
-
   queryRes = await pool.query('select office_admin_id from "office admin"');
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);

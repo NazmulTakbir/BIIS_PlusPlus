@@ -11,7 +11,6 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 import { AuthContext } from "../../../shared/context/AuthContext";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["DAY", "8AM", "9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM"];
 
 const generateRoutineTable = (rawData) => {
@@ -79,7 +78,7 @@ const StudentInfoClassRoutine = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student/studentinfo/${studentID}/classroutine`, setTableData, auth);
+    fetchTableData(`/api/student/studentinfo/classroutine`, setTableData, auth);
   }, [auth]);
 
   return (

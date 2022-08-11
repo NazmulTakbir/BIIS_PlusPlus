@@ -2,9 +2,10 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import TeacherInfo from "../pages/Info/TeacherInfo";
 
-import AddGrades from "../pages/Exam/AddGrades";
-import ViewGrades from "../pages/Exam/ViewGrades";
-import Scrutinize from "../pages/Exam/Scrutinize";
+import AllCourses from "../pages/Courses/AllCourses";
+import AddGrades from "../pages/Courses/CourseDetail/AddGrades";
+import ViewGrades from "../pages/Courses/CourseDetail/ViewGrades";
+import Scrutinize from "../pages/Courses/CourseDetail/Scrutinize";
 
 import CourseRegistration from "../pages/Advisees/CourseRegistration";
 import Feedback from "../pages/Advisees/Feedback";
@@ -26,13 +27,16 @@ const TeacherRoutes = () => {
         <TeacherInfo />
       </Route>
 
-      <Route path="/exam/addgrades" exact>
+      <Route path="/courses/all" exact>
+        <AllCourses />
+      </Route>
+      <Route path="/courses/addgrades" exact>
         <AddGrades />
       </Route>
-      <Route path="/exam/viewgrades" exact>
+      <Route path="/courses/viewgrades" exact>
         <ViewGrades />
       </Route>
-      <Route path="/exam/scrutinize" exact>
+      <Route path="/courses/scrutinize" exact>
         <Scrutinize />
       </Route>
 

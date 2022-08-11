@@ -11,7 +11,6 @@ import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "./../../../shared/components/CustomButton/CustomButton";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "SELECT"];
 
 const coursesToAdd = [];
@@ -63,7 +62,7 @@ const CoursesAdd = () => {
       if (coursesToAdd.length === 0) {
         alert("Please select at least one course to add");
       } else {
-        const response = await fetch(`/api/student/courses/${studentID}/addRequest`, {
+        const response = await fetch(`/api/student/courses/addRequest`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify({
@@ -78,7 +77,7 @@ const CoursesAdd = () => {
   };
 
   useEffect(() => {
-    fetchTableData(`/api/student/courses/${studentID}/coursestoadd`, setTableData, setSessionData, auth);
+    fetchTableData(`/api/student/courses/coursestoadd`, setTableData, setSessionData, auth);
   }, [auth]);
 
   const renderPage = () => {

@@ -10,7 +10,6 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "DATE", "START", "END"];
 
 const fetchTableData = async (api_route, setTableData, auth) => {
@@ -40,7 +39,7 @@ const ExamRoutine = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/student//exam/${studentID}/routine`, setTableData, auth);
+    fetchTableData(`/api/student//exam/routine`, setTableData, auth);
   }, [auth]);
 
   return (

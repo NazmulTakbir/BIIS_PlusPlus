@@ -1,5 +1,4 @@
 const express = require("express");
-// const { check } = require("express-validator");
 
 const InfoController = require("../controllers/Teacher/InfoController");
 const AddGradesController = require("../controllers/Teacher/AddGradesController");
@@ -10,15 +9,17 @@ const AdviseeFeedbackController = require("../controllers/Teacher/AdviseeFeedbac
 const HallProvostController = require("../controllers/Teacher/HallProvostController");
 const DepartmentHeadController = require("../controllers/Teacher/DepartmentHeadController");
 
-// const CheckAuth = require("../middleware/CheckAuth");
+const verifyTeacher = require("../controllers/Authentication/VerifyTeacher");
 
 const TeacherRoutes = express.Router();
 
-// TeacherRoutes.use(checkAuth);
+TeacherRoutes.use(verifyTeacher);
 
 TeacherRoutes.get("/teacherinfo/:tid", InfoController.getInfo);
 TeacherRoutes.get("/adviseelist/:tid", InfoController.getAllAdvisee);
 TeacherRoutes.get("/adviseeinfo/:tid/:sid", InfoController.getAdviseeInfo);
+TeacherRoutes.get("/advisee/:tid/:sid/getAvailableResults", InfoController.getAvailableResults);
+TeacherRoutes.get("/advisee/:tid/:sid/getGrades/:level/:term", InfoController.getGrades);
 
 TeacherRoutes.get("/exam/:tid/addgrades/courses", AddGradesController.getCourses);
 TeacherRoutes.get("/exam/:tid/viewgrades/courses", ViewGradesController.getCourses);

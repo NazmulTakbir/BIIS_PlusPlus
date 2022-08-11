@@ -10,7 +10,6 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "STATUS"];
 
 const fetchTableData = async (api_route, setTableData, setSessionData, auth) => {
@@ -48,7 +47,7 @@ const CoursesPending = () => {
   const [sessionData, setSessionData] = useState({});
 
   useEffect(() => {
-    fetchTableData(`/api/student/courses/${studentID}/pending`, setTableData, setSessionData, auth);
+    fetchTableData(`/api/student/courses/pending`, setTableData, setSessionData, auth);
   }, [auth]);
 
   const renderPage = () => {

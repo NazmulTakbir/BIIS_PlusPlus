@@ -10,8 +10,6 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
-const studentID = require("../../../placeHolder");
-
 const GeneralInfoNotice = () => {
   const auth = useContext(AuthContext);
   const [notices, setNotices] = useState({ data: [""] });
@@ -19,7 +17,7 @@ const GeneralInfoNotice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/generalinfo/${studentID}/notices`, {
+        const response = await fetch(`/api/student/generalinfo/notices`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const jsonData = await response.json();

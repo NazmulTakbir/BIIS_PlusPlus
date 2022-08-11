@@ -10,8 +10,6 @@ import Profile from "../../components/Profile/Profile";
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
-const studentID = require("../../../placeHolder");
-
 const StudentInfoHome = () => {
   const auth = useContext(AuthContext);
   const [studentInfo, setStudentInfo] = useState("");
@@ -19,7 +17,7 @@ const StudentInfoHome = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/studentinfo/${studentID}/home`, {
+        const response = await fetch(`/api/student/studentinfo/home`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
 

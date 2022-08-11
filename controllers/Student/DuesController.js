@@ -4,7 +4,7 @@ const session_id = require("../../placeHolder");
 
 const getPendingDues = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const stat = "Not Paid";
     let queryRes = await pool.query(
       'select dt.description , dt.amount , d.deadline , d.payment_date , d.dues_status, d.specification \
@@ -43,7 +43,7 @@ const getPendingDues = async (req, res, next) => {
 
 const getPaidDues = async (req, res, next) => {
   try {
-    const sid = req.params.sid;
+    const sid = req.userData.id;
     const stat = "Paid";
     let queryRes = await pool.query(
       'select dt.description , dt.amount , d.deadline , d.payment_date , d.dues_status, d.specification \

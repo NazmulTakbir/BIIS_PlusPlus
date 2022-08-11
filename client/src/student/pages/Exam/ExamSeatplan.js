@@ -10,8 +10,6 @@ import { make2DArray } from "../../../shared/util/TableFunctions";
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
-const studentID = require("../../../placeHolder");
-
 const processSeatPlan = (rawData) => {
   let maxRow = 0;
   let maxColumn = 0;
@@ -42,7 +40,7 @@ const ExamSeatPlan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/exam/${studentID}/seatplan`, {
+        const response = await fetch(`/api/student/exam/seatplan`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const jsonData = await response.json();
@@ -92,8 +90,8 @@ const ExamSeatPlan = () => {
                                 className="text-left"
                                 key={columnNo}
                                 style={{
-                                  backgroundColor: studentID === cellValue ? "#f5d2d2" : "",
-                                  color: studentID === cellValue ? "rgb(151 0 0)" : "",
+                                  backgroundColor: String(auth.userId) === String(cellValue) ? "#f5d2d2" : "",
+                                  color: String(auth.userId) === String(cellValue) ? "rgb(151 0 0)" : "",
                                 }}
                               >
                                 {cellValue}

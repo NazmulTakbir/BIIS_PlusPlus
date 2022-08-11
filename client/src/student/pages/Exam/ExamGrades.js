@@ -14,7 +14,6 @@ import Table from "../../../shared/components/Table/Table";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-const studentID = require("../../../placeHolder");
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "GRADE", "GRADE POINT"];
 
 const boxStyle = {
@@ -69,7 +68,7 @@ const ExamGrades = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/student/exam/${studentID}/getAvailableResults`, {
+        const response = await fetch(`/api/student/exam/getAvailableResults`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const jsonData = await response.json();
@@ -87,7 +86,7 @@ const ExamGrades = () => {
 
     setDropDownText("Level " + level + "  Term " + term);
 
-    fetchTableData(`/api/student/exam/${studentID}/grades/${level}/${term}`, setTableData, setExtraData);
+    fetchTableData(`/api/student/exam/grades/${level}/${term}`, setTableData, setExtraData);
     setNoneSelected(false);
   };
 

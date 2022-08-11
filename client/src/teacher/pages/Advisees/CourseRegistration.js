@@ -11,7 +11,6 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const teacherID = require("../../../placeHolder2");
 const columnLabels = ["STUDENT ID", "REQUEST TYPE", "COURSE COUNT", "REQUEST DATE", "ACTION"];
 
 const fetchTableData = async (api_route, setTableData, auth) => {
@@ -52,7 +51,7 @@ const CourseRegistration = () => {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/advisees/${teacherID}/registrationsummary`, setTableData, auth);
+    fetchTableData(`/api/teacher/advisees/${auth.userId}/registrationsummary`, setTableData, auth);
   }, [auth]);
 
   return (
