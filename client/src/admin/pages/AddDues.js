@@ -4,7 +4,9 @@ import Papa from "papaparse";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import DatePicker from "react-datepicker";
+//import DatePicker from "react-datepicker";
+import DatePicker from 'react-custom-date-picker';
+
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -139,6 +141,10 @@ const AddDues = () => {
     } catch (err) {}
   };
 
+  const handleDateChange = (date) => {
+    setDeadline({ date });
+  }
+
   return (
     <React.Fragment>
       <div className="App">
@@ -248,8 +254,13 @@ const AddDues = () => {
                     </Select>
                   </FormControl>
 
-                  <DatePicker label="Deadline" onChange={setDeadline} value={deadline} />
-
+                  <DatePicker
+                    date={deadline}
+                    handleDateChange={setDeadline}
+                  />
+                    
+                    
+                  
                   <Textbox
                     width="350px"
                     height="46px"
