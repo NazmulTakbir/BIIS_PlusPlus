@@ -21,6 +21,7 @@ const Buttons = (props) => {
               key={buttonNo}
               label={button.buttonText}
               variant="contained"
+              width="fit-content"
               color={button.textColor}
               bcolor={button.backColor}
               onClickFunction={button.onClickFunction}

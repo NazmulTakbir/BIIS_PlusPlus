@@ -7,7 +7,7 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
-import AdvisorProfile from "../../components/AdvisorProfile/AdvisorProfile";
+import AdvisorProfile from "../../../shared/components/TeacherProfile/TeacherProfile";
 import { AuthContext } from "../../../shared/context/AuthContext";
 
 const StudentInfoAdvisor = () => {

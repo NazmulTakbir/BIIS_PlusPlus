@@ -16,6 +16,7 @@ const CustomButton = (props) => {
             margin: props.margin,
             padding: props.padding,
             fontSize: props.fontSize,
+            width: props.width,
           }}
         >
           {props.label}
@@ -33,6 +34,7 @@ const CustomButton = (props) => {
             margin: props.margin,
             padding: props.padding,
             fontSize: props.fontSize,
+            width: props.width,
           }}
           onClick={() => props.onClickFunction(props.onClickArguments)}
         >

@@ -56,7 +56,11 @@ const CoursesPending = () => {
     } else {
       return (
         <React.Fragment>
-          <h3>SESSION: {sessionData.session_id}</h3>
+          <div className="session-header" style={{margin: "auto", textAlign: "center"}}>
+            <div className="session-text" style={{marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137"}}>
+              SESSION: {sessionData.session_id}
+            </div>
+          </div>
           <Table columnLabels={columnLabels} tableData={tableData} />
         </React.Fragment>
       );

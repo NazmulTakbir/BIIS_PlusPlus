@@ -89,16 +89,34 @@ const CoursesAdd = () => {
       case "open":
         return (
           <React.Fragment>
-            <h3>SESSION: {sessionData.session_id}</h3>
+            <div
+              className="session-header"
+              style={{ margin: "auto", textAlign: "center" }}
+            >
+              <div
+                className="session-text"
+                style={{
+                  marginTop: "20px",
+                  fontSize: "17px",
+                  fontWeight: "bolder",
+                  color: "#b13137",
+                }}
+              >
+                SESSION: {sessionData.session_id}
+              </div>
+            </div>
+
+
+            <Table columnLabels={columnLabels} tableData={tableData} />;
             <CustomButton
               label="Submit Add Request"
               variant="contained"
               color="white"
-              bcolor="red"
+              bcolor="#b13137"
+              width="150px"
               onClickFunction={submissionHandler}
               onClickArguments={[]}
             />
-            <Table columnLabels={columnLabels} tableData={tableData} />;
           </React.Fragment>
         );
       default:

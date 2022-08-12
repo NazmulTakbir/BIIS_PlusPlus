@@ -6,6 +6,7 @@ import Navbar from "../../../../shared/components/Navbar/Navbar";
 import Table from "../../../../shared/components/Table/Table";
 import "./Advisee.css";
 import CustomButton from "../../../../shared/components/CustomButton/CustomButton";
+import Stack from "@mui/material/Stack";
 
 const columnLabels = ["STUDENT ID", "COURSE ID", "REQUEST DATE", "ACTION"];
 
@@ -86,55 +87,86 @@ const AdviseeRegistration = () => {
               <Navbar NavbarData={NavbarData} />
               <h3>Add Course Requests</h3>
               <Table columnLabels={columnLabels} tableData={addTableData} />
-              <CustomButton
-                type="submit"
-                label="Approve All Add Course Requests"
-                variant="contained"
-                color="#ffffff"
-                bcolor="#697A8D"
-                margin="20px"
-                padding="10px"
-                fontSize="17px !important"
-                onClickFunction={handleAddAll}
-              />
-              <CustomButton
-                type="submit"
-                label="Reject All Add Course Requests"
-                variant="contained"
-                color="#ffffff"
-                bcolor="#DB6066"
-                margin="20px"
-                padding="10px"
-                fontSize="17px !important"
-                onClickFunction={handleAddAll}
-              />
+
+              <Stack
+                spacing={2}
+                direction="row"
+                style={{
+                  margin: "auto",
+                  width: "350px",
+                  padding: "10px",
+                  textAlign: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <CustomButton
+                  width="150px"
+                  type="submit"
+                  label="Approve All Add Course Requests"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#697A8D"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={handleAddAll}
+                />
+                <CustomButton
+                  width="150px"
+                  type="submit"
+                  label="Reject All Add Course Requests"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#DB6066"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={handleAddAll}
+                />
+              </Stack>
+
               <br />
               <br />
               <br />
               <h3>Drop Course Requests</h3>
               <Table columnLabels={columnLabels} tableData={dropTableData} />
-              <CustomButton
-                type="submit"
-                label="Approve All Drop Course Requests"
-                variant="contained"
-                color="#ffffff"
-                bcolor="#697A8D"
-                margin="20px"
-                padding="10px"
-                fontSize="17px !important"
-                onClickFunction={handleAddAll}
-              />
-              <CustomButton
-                type="submit"
-                label="Reject All Add Course Requests"
-                variant="contained"
-                color="#ffffff"
-                bcolor="#DB6066"
-                margin="20px"
-                padding="10px"
-                fontSize="17px !important"
-                onClickFunction={handleAddAll}
-              />
+
+              <Stack
+                spacing={2}
+                direction="row"
+                style={{
+                  margin: "auto",
+                  width: "350px",
+                  padding: "10px",
+                  textAlign: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <CustomButton
+                  type="submit"
+                  width="150px"
+                  label="Approve All Drop Course Requests"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#697A8D"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={handleAddAll}
+                />
+                <CustomButton
+                  type="submit"
+                  width="150px"
+                  label="Reject All Drop Course Requests"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#DB6066"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={handleAddAll}
+                />
+              </Stack>
             </div>
           </div>
         </div>

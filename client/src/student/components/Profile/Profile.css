@@ -17,9 +17,10 @@
 
 .contact-info{
     border-radius: 10px;
-    border:1px solid #cdcdcd;
-    padding: 15px;
+    border: 1px solid #cdcdcd;
+    padding: 20px;
     margin-right: 15px;
+    margin-bottom: 20px;
     font-size: 14px;
 }
 
