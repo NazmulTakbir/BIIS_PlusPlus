@@ -10,6 +10,7 @@ import CustomButton from "../../shared/components/CustomButton/CustomButton";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 const allowedExtensions = ["csv"];
 
@@ -118,12 +119,12 @@ const UploadAcademicCalender = () => {
                 />
                 <div>
                   <h6> Start Date </h6>
-                  <DatePicker label="start date" onChange={setStartDate} value={startDate} />
+                  <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
                 </div>
                 <br />
                 <div>
                   <h6> End Date </h6>
-                  <DatePicker onChange={setEndDate} value={endDate} />
+                  <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
                 </div>
                 <br />
                 <div>

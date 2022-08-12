@@ -51,7 +51,7 @@ const AddTeachers = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/teacher/samplefile", {
@@ -127,7 +127,7 @@ const AddTeachers = () => {
       ];
       await fetch(`/api/admin/teacher/add`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" , Authorization: "Bearer " + auth.token},
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
         body: JSON.stringify({
           data: data,
         }),
