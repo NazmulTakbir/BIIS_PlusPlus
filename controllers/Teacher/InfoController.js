@@ -3,7 +3,14 @@ const HttpError = require("../../models/HttpError");
 
 const getInfo = async (req, res, next) => {
   try {
-    res.json({ message: "getInfo" });
+    let queryRes = await pool.query("SELECT * from teacher where teacher_id = $1", [req.userData.id]);
+    var teacherInfo = queryRes.rows[0];
+
+    queryRes = await pool.query("SELECT * from department where dept_id = $1", [teacherInfo["dept_id"]]);
+    teacherInfo["dept_name"] = queryRes.rows[0]["dept_name"];
+
+    res.json(teacherInfo);
+    console.log(teacherInfo);
   } catch (err) {
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);

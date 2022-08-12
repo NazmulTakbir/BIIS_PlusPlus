@@ -1,8 +1,8 @@
 import React from "react";
-import "./AdvisorProfile.css";
-import CustomButton from "../../../shared/components/CustomButton/CustomButton";
+import "./TeacherProfile.css";
+import CustomButton from "../CustomButton/CustomButton";
 
-const AdvisorProfile = (props) => {
+const TeacherProfile = (props) => {
   const { ProfileData } = props;
   return (
     <div className="profile-container">
@@ -24,7 +24,7 @@ const AdvisorProfile = (props) => {
                 href={ProfileData.link}
                 style={{ textDecoration: "none", transition: "0.4s" }}
               >
-                <CustomButton label="Visit Faculty Page" variant="contained" color="#ffffff" bcolor="#b13137" />
+                <CustomButton width="150px" label="Visit Faculty Page" variant="contained" color="#ffffff" bcolor="#b13137" />
               </a>
             </div>
           </div>
@@ -54,4 +54,4 @@ const AdvisorProfile = (props) => {
   );
 };
 
-export default AdvisorProfile;
+export default TeacherProfile;
