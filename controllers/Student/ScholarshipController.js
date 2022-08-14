@@ -107,9 +107,9 @@ const getForm = async (req, res, next) => {
 
 const postApplication = async (req, res, next) => {
   try {
-    //retrieve student id and scholarship_type_id from URL
-    const sid = req.userData.id;
+    //retrieve scholarship_type_id from URL
     const sc_id = req.params.scid;
+
     //create a new scholarship obj
     let queryRes = await pool.query(
       "UPDATE scholarship SET scholarship_state = $1  \

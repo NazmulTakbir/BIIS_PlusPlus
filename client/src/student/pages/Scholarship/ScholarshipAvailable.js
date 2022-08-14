@@ -12,6 +12,24 @@ import Table from "../../../shared/components/Table/Table";
 
 const columnLabels = ["TYPE", "SESSION", "AMOUNT", "ACTION"];
 
+const applyScholarship = async (args) => {
+  if (window.confirm("Apply for this Scholarship?")) {
+    const auth = args[1];
+    console.log(args);
+    try {
+        await fetch(`/api/student/scholarship/apply/${args[0]}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        });
+        alert("Application Sent Successfully!");
+    } catch (err) {
+      console.log(err);
+    }    
+  } else {
+    return false;
+  }
+};
+
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
     const response = await fetch(api_route, {
@@ -28,8 +46,14 @@ const fetchTableData = async (api_route, setTableData, auth) => {
         type: "Buttons",
         data: {
           buttonList: [
-            { buttonText: "Apply", textColor: "white", backColor: "#697A8D" },
-            { buttonText: "Download", textColor: "white", backColor: "#DB6066" },
+            { 
+              buttonText: "Apply", textColor: "white", backColor: "#697A8D",
+              onClickFunction: applyScholarship,
+              onClickArguments: [jsonData[i]["scholarship_id"], auth],
+            },
+            { 
+              buttonText: "Download", textColor: "white", backColor: "#DB6066"
+            },
           ],
         },
       });
@@ -47,7 +71,7 @@ const ScholarshipAvailable = () => {
 
   useEffect(() => {
     fetchTableData(`/api/student/scholarship/available`, setTableData, auth);
-  }, [auth]);
+  }, [auth, tableData]);
 
   return (
     <React.Fragment>
