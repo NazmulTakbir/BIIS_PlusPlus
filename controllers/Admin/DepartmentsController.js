@@ -42,5 +42,32 @@ const getTeachersList = async (req, res, next) => {
     }
 }
 
+
+const getSessionList = async (req, res, next) => {
+  try {
+    let queryRes = await pool.query("select session_id from session");
+    const sessionList = queryRes.rows;
+
+    res.json({ message: "getInfo", data: sessionList });
+  } catch (err) {
+    const error = new HttpError("Fetching Session Data Failed", 500);
+    return next(error);
+  }
+}
+
+const getScholarshipTypeList = async (req, res, next) => {
+  try {
+    let queryRes = await pool.query(`select * from "scholarship type" `);
+    const scholarship_type_list = queryRes.rows;
+
+    res.json({ message: "getInfo", data: scholarship_type_list });
+  } catch (err) {
+    const error = new HttpError("Fetching Session Data Failed", 500);
+    return next(error);
+  }
+}
+
+exports.getSessionList = getSessionList;
 exports.getTeachersList = getTeachersList;
+exports.getScholarshipTypeList = getScholarshipTypeList;
 exports.getDepartmentsList = getDepartmentsList;
