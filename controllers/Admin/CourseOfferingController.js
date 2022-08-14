@@ -62,19 +62,21 @@ const getSampleFile = async (req, res, next) => {
 const getunofferedcourses = async (req, res, next) => {
   try {
     data = [];
-    const offered_to_dept_id = 5;//extract it from req.body later
-    let queryRes = await pool.query(
+    let queryRes = await pool.query('select dept_id from "department admin" where dept_admin_id=$1', [req.userData.id]);
+    const offered_by_dept_id = queryRes.rows[0].dept_id;
+
+    queryRes = await pool.query(
       'select course_id from public."course" where \
-       offered_to_dept_id = $1 and \
-       course_id not in (select course_id from public."course offering")',[offered_to_dept_id]
+      offered_by_dept_id = $1 and \
+       course_id not in (select course_id from public."course offering")',
+      [offered_by_dept_id]
     );
 
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i].course_id);
     }
-    
-    res.json({ message: "getunofferedcourses successful", data: data });
 
+    res.json({ message: "getunofferedcourses successful", data: data });
   } catch (err) {
     const error = new HttpError("getunofferedcourses failed", 500);
     return next(error);
@@ -91,32 +93,38 @@ const getexamslots = async (req, res, next) => {
     let queryRes = await pool.query(
       'select exam_slot_id from public."exam time" where \
        session_id = $1 \
-       ',[currentSession]
+       ',
+      [currentSession]
     );
- 
+
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i].exam_slot_id);
     }
     res.json({ message: "getunofferedcourses successful", data: data });
-
   } catch (err) {
     const error = new HttpError("getexamslots failed", 500);
     return next(error);
   }
 };
 
-
 const getOffering_admin_dept = async (req, res, next) => {
   try {
-    const offered_by_dept_id = parseInt(req.params.admin_dept_id);
+    let queryRes = await pool.query(
+      `select dept_id, dept_name from "department admin" natural join department where dept_admin_id=$1`,
+      [req.userData.id]
+    );
+    const offered_by_dept_id = queryRes.rows[0]["dept_id"];
+
     const currentSession = await getCurrentSession();
+
     //console.log(offered_to_dept_id);
     data = [];
-    let queryRes = await pool.query(
+    queryRes = await pool.query(
       'select c.course_name , co.offering_id from public."course" as c , public."course offering" as co where \
        c.offered_by_dept_id = $1 and \
        c.course_id = co.course_id \
-       and co.session_id = $2',[offered_by_dept_id,currentSession]
+       and co.session_id = $2',
+      [offered_by_dept_id, currentSession]
     );
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i]);
@@ -128,7 +136,7 @@ const getOffering_admin_dept = async (req, res, next) => {
     const error = new HttpError("getOffering_admin_dept failed", 500);
     return next(error);
   }
-}
+};
 
 exports.getOffering_admin_dept = getOffering_admin_dept;
 exports.getSampleFile = getSampleFile;

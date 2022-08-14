@@ -26,7 +26,8 @@ const AddCourses = () => {
 
   const [course_id, set_course_id] = useState("");
   const [course_name, set_course_name] = useState("");
-  const [offered_by_dept_id] = useState("5");
+  const [offered_by_dept_id, setOffered_by_dept_id] = useState("");
+  const [offered_by_dept_name, setOffered_by_dept_name] = useState("");
   const [offered_to_list, set_offered_to_list] = useState([]);
   const [offered_to_dept_id, set_offered_to_dept_id] = useState("Select a department");
   const [level, set_level] = useState("");
@@ -36,10 +37,17 @@ const AddCourses = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/admin/departments/get`, {
+        let response = await fetch(`/api/admin/departments/self`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
-        const jsonData = await response.json();
+        let jsonData = (await response.json())["data"];
+        setOffered_by_dept_id(jsonData.dept_id);
+        setOffered_by_dept_name(jsonData.dept_name);
+
+        response = await fetch(`/api/admin/departments/get`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
+        jsonData = await response.json();
         set_offered_to_list(jsonData.data);
       } catch (err) {
         console.log(err);
@@ -242,7 +250,7 @@ const AddCourses = () => {
                       value={offered_by_dept_id}
                       label="Offered by Department"
                     >
-                      <MenuItem value={offered_by_dept_id}>Computer Science and Engineering</MenuItem>
+                      <MenuItem value={offered_by_dept_id}>{offered_by_dept_name}</MenuItem>
                     </Select>
                   </FormControl>
 
@@ -256,8 +264,7 @@ const AddCourses = () => {
                       label="Offered to Department"
                       onChange={(e) => set_offered_to_dept_id(e.target.value)}
                     >
-                      {offered_to_list
-                      .map((val, key) => {
+                      {offered_to_list.map((val, key) => {
                         return (
                           <MenuItem key={key} value={val.dept_id}>
                             {val.dept_name}
