@@ -48,4 +48,3 @@ const TeacherInfo = () => {
 };
 
 export default TeacherInfo;
-

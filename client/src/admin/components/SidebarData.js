@@ -7,6 +7,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CastForEducationIcon from "@mui/icons-material/CastForEducation";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import BookIcon from '@mui/icons-material/Book';
 
 export const SidebarData = [
   {
@@ -44,6 +45,11 @@ export const SidebarData = [
     icon: <AttachMoneyIcon />,
     link: "/adddues",
   },
+  {
+    title: "Add Scholarship",
+    icon: <BookIcon />,
+    link: "/addscholarship",
+  },  
   {
     title: "Upload Academic Calender",
     icon: <CalendarMonthIcon />,

@@ -7,7 +7,7 @@ const getRegistrationRequests = async (req, res, next) => {
     const tid = req.userData.id;
     const sid = req.params.sid;
     let queryRes = await pool.query(
-      'select request_type, student_id, course_id, request_date  from \
+      'select reg_request_id, request_type, student_id, course_id, request_date  from \
       "registration request" natural join student natural join "course offering" \
       where reg_status=\'awaiting_advisor\' and advisor_id = $1 and student_id=$2 order by reg_request_id;',
       [tid, sid]
@@ -53,5 +53,37 @@ const getRegistrationRequestSummary = async (req, res, next) => {
   }
 };
 
+const postApproveRegistrationRequests = async (req, res, next) => {
+  try {
+    const { requestIDs } = req.body;
+    for (let i = 0; i < requestIDs.length; i++) {
+      await pool.query("update \"registration request\" set reg_status='awaiting_head' where reg_request_id=$1;", [
+        requestIDs[i],
+      ]);
+    }
+    res.json({ message: "postApproveRegistrationRequests" });
+  } catch (err) {
+    const error = new HttpError("postApproveRegistrationRequests Failed", 500);
+    return next(error);
+  }
+};
+
+const postRejectRegistrationRequests = async (req, res, next) => {
+  try {
+    const { requestIDs } = req.body;
+    for (let i = 0; i < requestIDs.length; i++) {
+      await pool.query("update \"registration request\" set reg_status='rejected_advisor' where reg_request_id=$1;", [
+        requestIDs[i],
+      ]);
+    }
+    res.json({ message: "postRejectRegistrationRequests" });
+  } catch (err) {
+    const error = new HttpError("postRejectRegistrationRequests Failed", 500);
+    return next(error);
+  }
+};
+
 exports.getRegistrationRequests = getRegistrationRequests;
 exports.getRegistrationRequestSummary = getRegistrationRequestSummary;
+exports.postApproveRegistrationRequests = postApproveRegistrationRequests;
+exports.postRejectRegistrationRequests = postRejectRegistrationRequests;

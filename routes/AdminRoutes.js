@@ -10,6 +10,7 @@ const CourseTeacherController = require("../controllers/Admin/CourseTeacherContr
 const NoticeController = require("../controllers/Admin/NoticeController");
 const DuesController = require("../controllers/Admin/DuesController");
 const AcademicCalenderController = require("../controllers/Admin/AcademicCalenderController");
+const ScholarshipController = require("../controllers/Admin/ScholarshipController");
 
 const verifyAdmin = require("../controllers/Authentication/VerifyAdmin");
 
@@ -22,6 +23,11 @@ AdminRoutes.get("/departments/getTeacher/:admin_dept_id", DepartmentsController.
 
 //AdminRoutes.get("/departments/getdeptid/:dept_name", DepartmentsController.get_dept_id);
 
+AdminRoutes.get("/sessionlist/get", DepartmentsController.getSessionList);
+AdminRoutes.get("/scholarshiptypelist/get", DepartmentsController.getScholarshipTypeList);
+
+AdminRoutes.post("/scholarship/add", ScholarshipController.postAddScholarship);
+AdminRoutes.get("/scholarship/samplefile", ScholarshipController.getSampleFile);
 
 AdminRoutes.post("/student/add", StudentController.postAddStudent);
 AdminRoutes.get("/student/samplefile", StudentController.getSampleFile);

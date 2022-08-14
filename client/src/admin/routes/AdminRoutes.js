@@ -7,6 +7,7 @@ import AddStudents from "../pages/AddStudents";
 import AssignCourseTeacher from "../pages/AssignCourseTeacher";
 import AddTeachers from "./../pages/AddTeachers";
 import AddDues from "./../pages/AddDues";
+import AddScholarship from "./../pages/AddScholarship";
 import UploadAcademicCalender from "./../pages/UploadAcademicCalender";
 
 const StudentRoutes = () => {
@@ -36,6 +37,9 @@ const StudentRoutes = () => {
       <Route path="/adddues" exact>
         <AddDues />
       </Route>
+      <Route path="/addscholarship" exact>
+        <AddScholarship />
+      </Route>      
       <Route path="/uploadacademiccalender" exact>
         <UploadAcademicCalender />
       </Route>

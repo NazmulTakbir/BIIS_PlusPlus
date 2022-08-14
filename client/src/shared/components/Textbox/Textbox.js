@@ -19,6 +19,7 @@ const Textbox = (props) => {
             fontSize: props.fontSize,
           }}
           value={props.value}
+          required={props.required}
           onChange={props.onChange}
         />
       </div>

@@ -8,7 +8,26 @@ import "./Advisee.css";
 import CustomButton from "../../../../shared/components/CustomButton/CustomButton";
 import Stack from "@mui/material/Stack";
 
-const columnLabels = ["STUDENT ID", "COURSE ID", "REQUEST DATE", "ACTION"];
+const columnLabels = ["STUDENT ID", "COURSE ID", "REQUEST DATE", "APPROVE"];
+
+let checkedAddRequests = [];
+let checkedDropRequests = [];
+
+const approveAddCallback = (id, actionType) => {
+  if (actionType === "check") {
+    checkedAddRequests.push(id);
+  } else if (actionType === "uncheck") {
+    checkedAddRequests.splice(checkedAddRequests.indexOf(id), 1);
+  }
+};
+
+const approveDropCallback = (id, actionType) => {
+  if (actionType === "check") {
+    checkedDropRequests.push(id);
+  } else if (actionType === "uncheck") {
+    checkedDropRequests.splice(checkedDropRequests.indexOf(id), 1);
+  }
+};
 
 const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth) => {
   try {
@@ -23,18 +42,11 @@ const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
-      row.push({
-        type: "Buttons",
-        data: {
-          buttonList: [
-            { buttonText: "Approve", textColor: "white", backColor: "#697A8D" },
-            { buttonText: "Reject", textColor: "white", backColor: "#DB6066" },
-          ],
-        },
-      });
       if (jsonData[i]["request_type"].toUpperCase() === "ADD") {
+        row.push({ type: "CheckBox", data: { id: jsonData[i]["reg_request_id"], callback: approveAddCallback } });
         addTableData.push(row);
       } else if (jsonData[i]["request_type"].toUpperCase() === "DROP") {
+        row.push({ type: "CheckBox", data: { id: jsonData[i]["reg_request_id"], callback: approveDropCallback } });
         dropTableData.push(row);
       }
     }
@@ -47,6 +59,7 @@ const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth
 
 const AdviseeRegistration = () => {
   const auth = useContext(AuthContext);
+  const [stateNo, setStateNo] = useState(0);
   const [addTableData, setAddTableData] = useState([]);
   const [dropTableData, setDropTableData] = useState([]);
   let { studentID } = useParams();
@@ -66,13 +79,63 @@ const AdviseeRegistration = () => {
     },
   ];
 
+  const approveRequests = async (args) => {
+    const requestType = args[0];
+    if (requestType === "add") {
+      await fetch("/api/teacher/advisees/approveregistrationrequests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify({
+          requestIDs: checkedAddRequests,
+          submission_date: new Date(),
+        }),
+      });
+      checkedAddRequests = [];
+    } else if (requestType === "drop") {
+      await fetch("/api/teacher/advisees/approveregistrationrequests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify({
+          requestIDs: checkedDropRequests,
+          submission_date: new Date(),
+        }),
+      });
+      checkedDropRequests = [];
+    }
+
+    setStateNo((stateNo + 1) % 100);
+  };
+
+  const rejectRequests = async (args) => {
+    const requestType = args[0];
+    if (requestType === "add") {
+      await fetch("/api/teacher/advisees/rejectregistrationrequests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify({
+          requestIDs: checkedAddRequests,
+          submission_date: new Date(),
+        }),
+      });
+      checkedAddRequests = [];
+    } else if (requestType === "drop") {
+      await fetch("/api/teacher/advisees/rejectregistrationrequests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify({
+          requestIDs: checkedDropRequests,
+          submission_date: new Date(),
+        }),
+      });
+      checkedDropRequests = [];
+    }
+
+    setStateNo((stateNo + 1) % 100);
+  };
+
   useEffect(() => {
     fetchTableData(`/api/teacher/advisees/registrationrequests/${studentID}`, setAddTableData, setDropTableData, auth);
-  }, [studentID, auth]);
-
-  const handleAddAll = async () => {
-    console.log("here");
-  };
+  }, [studentID, auth, stateNo]);
 
   return (
     <React.Fragment>
@@ -87,6 +150,7 @@ const AdviseeRegistration = () => {
               <Navbar NavbarData={NavbarData} />
               <h3>Add Course Requests</h3>
               <Table columnLabels={columnLabels} tableData={addTableData} />
+              <br />
 
               <Stack
                 spacing={2}
@@ -95,33 +159,27 @@ const AdviseeRegistration = () => {
                   margin: "auto",
                   width: "350px",
                   padding: "10px",
-                  textAlign: "center",
+                  textAlign: "left",
                   justifyContent: "space-between",
                 }}
               >
                 <CustomButton
-                  width="150px"
-                  type="submit"
-                  label="Approve All Add Course Requests"
+                  label="Approve Selections"
                   variant="contained"
-                  color="#ffffff"
+                  color="white"
                   bcolor="#697A8D"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={handleAddAll}
+                  width="150px"
+                  onClickFunction={approveRequests}
+                  onClickArguments={["add"]}
                 />
                 <CustomButton
-                  width="150px"
-                  type="submit"
-                  label="Reject All Add Course Requests"
+                  label="Reject Selections"
                   variant="contained"
-                  color="#ffffff"
-                  bcolor="#DB6066"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={handleAddAll}
+                  color="white"
+                  bcolor="#b13137"
+                  width="150px"
+                  onClickFunction={rejectRequests}
+                  onClickArguments={["add"]}
                 />
               </Stack>
 
@@ -130,6 +188,7 @@ const AdviseeRegistration = () => {
               <br />
               <h3>Drop Course Requests</h3>
               <Table columnLabels={columnLabels} tableData={dropTableData} />
+              <br />
 
               <Stack
                 spacing={2}
@@ -138,33 +197,27 @@ const AdviseeRegistration = () => {
                   margin: "auto",
                   width: "350px",
                   padding: "10px",
-                  textAlign: "center",
+                  textAlign: "left",
                   justifyContent: "space-between",
                 }}
               >
                 <CustomButton
-                  type="submit"
-                  width="150px"
-                  label="Approve All Drop Course Requests"
+                  label="Approve Selections"
                   variant="contained"
-                  color="#ffffff"
+                  color="white"
                   bcolor="#697A8D"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={handleAddAll}
+                  width="150px"
+                  onClickFunction={approveRequests}
+                  onClickArguments={["drop"]}
                 />
                 <CustomButton
-                  type="submit"
-                  width="150px"
-                  label="Reject All Drop Course Requests"
+                  label="Reject Selections"
                   variant="contained"
-                  color="#ffffff"
-                  bcolor="#DB6066"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={handleAddAll}
+                  color="white"
+                  bcolor="#b13137"
+                  width="150px"
+                  onClickFunction={rejectRequests}
+                  onClickArguments={["drop"]}
                 />
               </Stack>
             </div>
