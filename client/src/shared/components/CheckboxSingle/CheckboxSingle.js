@@ -21,7 +21,13 @@ const CheckboxSingle = (props) => {
         ) : (
           <div className="checkbox-label" style={{ display: "none" }}></div>
         )}
-        <Checkbox onChange={handleOnChange} className="checkbox-main" name={props.name} />
+        <Checkbox
+          key={id}
+          defaultChecked={false}
+          onChange={handleOnChange}
+          className="checkbox-main"
+          name={props.name}
+        />
       </div>
     </div>
   );

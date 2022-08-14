@@ -28,6 +28,15 @@ TeacherRoutes.get("/exam/scrutinize/courses", ScrutinizeController.getCourses);
 
 TeacherRoutes.get("/advisees/registrationrequests/:sid", AdviseeCourseRegistrationController.getRegistrationRequests);
 TeacherRoutes.get("/advisees/registrationsummary", AdviseeCourseRegistrationController.getRegistrationRequestSummary);
+TeacherRoutes.post(
+  "/advisees/approveregistrationrequests",
+  AdviseeCourseRegistrationController.postApproveRegistrationRequests
+);
+TeacherRoutes.post(
+  "/advisees/rejectregistrationrequests",
+  AdviseeCourseRegistrationController.postRejectRegistrationRequests
+);
+
 TeacherRoutes.get("/advisees/feedbacks", AdviseeFeedbackController.getFeedbacks);
 
 TeacherRoutes.get("/hallprovost/scholarshiprequests", HallProvostController.getScholarshipRequests);
