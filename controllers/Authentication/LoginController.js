@@ -19,13 +19,18 @@ const postLogin = async (req, res, next) => {
       if (!isValidPassword) {
         res.json({ message: "wrong password" });
       } else {
-        const token = jwt.sign({ id: id, userType: authData["userType"] }, "supersecret_dont_share", {
-          expiresIn: "1h",
-        });
+        const token = jwt.sign(
+          { id: id, userType: authData["userType"], responsibilities: authData["responsibilities"] },
+          "supersecret_dont_share",
+          {
+            expiresIn: "1h",
+          }
+        );
         res.json({
           message: "logged in",
           id: id,
           userType: authData["userType"],
+          responsibilities: authData["responsibilities"],
           token: token,
         });
       }

@@ -21,7 +21,7 @@ const Login = () => {
       }),
     });
     const jsonData = await response.json();
-    auth.login(jsonData.id, jsonData.userType, jsonData.token);
+    auth.login(jsonData.id, jsonData.userType, jsonData.responsibilities, jsonData.token);
   };
 
   return (

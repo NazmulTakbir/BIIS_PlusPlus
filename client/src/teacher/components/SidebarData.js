@@ -22,12 +22,12 @@ export const SidebarData = [
     link: "/advisees/all",
   },
   {
-    title: "Hall Issues",
+    title: "Hall Provost Issues",
     icon: <HomeIcon />,
     link: "/hallissues",
   },
   {
-    title: "Department Issues",
+    title: "Dept Head Issues",
     icon: <BusinessIcon />,
     link: "/deptissues",
   },

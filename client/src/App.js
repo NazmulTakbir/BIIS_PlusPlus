@@ -15,18 +15,24 @@ const App = () => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [userType, setUserType] = useState(null);
+  const [responsibilities, setResponsibilities] = useState(null);
 
-  const login = useCallback((uid, uType, token) => {
+  const login = useCallback((uid, uType, responsibilities, token) => {
     setToken(token);
     setUserId(uid);
     setUserType(uType);
-    localStorage.setItem("userData", JSON.stringify({ userID: uid, userType: uType, token: token }));
+    setResponsibilities(responsibilities);
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({ userID: uid, userType: uType, responsibilities: responsibilities, token: token })
+    );
   }, []);
 
   const logout = useCallback(() => {
     setToken(false);
     setUserId(false);
     setUserType(false);
+    setResponsibilities(false);
     localStorage.removeItem("userData");
   }, []);
 
@@ -39,7 +45,7 @@ const App = () => {
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
         logout();
       } else {
-        login(storedData.userID, storedData.userType, storedData.token);
+        login(storedData.userID, storedData.userType, storedData.responsibilities, storedData.token);
       }
     } else {
       logout();
@@ -67,6 +73,8 @@ const App = () => {
         isLoggedIn: !!token,
         token: token,
         userId: userId,
+        userType: userType,
+        responsibilities: responsibilities,
         login: login,
         logout: logout,
       }}
