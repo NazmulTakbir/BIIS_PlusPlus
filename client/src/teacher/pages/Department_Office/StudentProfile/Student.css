@@ -1,0 +1,16 @@
+.profiler-id{
+    font-size: 1.2rem;
+    font-weight: bolder;
+    padding: 30px 0px 10px;
+    color: rgb(163, 0, 0);
+}
+
+@media screen and (max-width: 1040px){
+    .profiler-id{
+        padding: 0px;
+    }
+
+    .wrapper{
+        margin: 70px 0px 0px 2px !important;
+    }
+}

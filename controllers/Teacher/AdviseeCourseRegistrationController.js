@@ -33,7 +33,7 @@ const getRegistrationRequestSummary = async (req, res, next) => {
     let queryRes = await pool.query(
       'select request_type, student_id, request_date, COUNT(*) as req_count \
       from (select * from "registration request" natural join student natural join \
-      "course offering" where reg_status=\'awaiting_advisor\' and advisor_id = $1) \
+      "course offering" where reg_status=\'awaiting_advisor\' and advisor_id = $1 ) \
       as t1 group by student_id, request_type, request_date order by request_date asc;',
       [tid]
     );

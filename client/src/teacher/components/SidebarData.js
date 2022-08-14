@@ -29,6 +29,6 @@ export const SidebarData = [
   {
     title: "Dept Head Issues",
     icon: <BusinessIcon />,
-    link: "/deptissues",
+    link: "/deptStudents/all",
   },
 ];
