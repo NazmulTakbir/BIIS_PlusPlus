@@ -121,10 +121,10 @@ const getRegistrationRequests = async (req, res, next) => {
     const tid = req.userData.id;
     const sid = req.params.sid;
     let queryRes = await pool.query(
-      'select request_type, student_id, course_id, request_date  from \
-      "registration request" natural join student natural join "course offering" \
-      where reg_status=\'awaiting_advisor\' and advisor_id = $1 and student_id=$2 order by reg_request_id;',
-      [tid, sid]
+      'select rr.request_type, s.student_id, co.course_id, rr.request_date , rr.reg_request_id  from \
+      "registration request" as rr , student as s , "course offering" as co\
+      where reg_status=$2 and s.student_id=$1 and rr.student_id = s.student_id and rr.offering_id = co.offering_id order by reg_request_id;',
+      [sid , 'awaiting_head']
     );
     data = queryRes.rows;
     for (let i = 0; i < data.length; i++) {
@@ -221,7 +221,39 @@ const getGrades = async (req, res, next) => {
   }
 };
 
+const postApproveRegistrationRequests = async (req, res, next) => {
+  try {
+    const { requestIDs } = req.body;
+    console.log("here"+requestIDs);
+    for (let i = 0; i < requestIDs.length; i++) {
+      await pool.query("update \"registration request\" set reg_status='approved' where reg_request_id=$1;", [
+        requestIDs[i],
+      ]);
+    }
+    res.json({ message: "postApproveRegistrationRequests" });
+  } catch (err) {
+    const error = new HttpError("postApproveRegistrationRequests Failed", 500);
+    return next(error);
+  }
+};
 
+const postRejectRegistrationRequests = async (req, res, next) => {
+  try {
+    const { requestIDs } = req.body;
+    for (let i = 0; i < requestIDs.length; i++) {
+      await pool.query("update \"registration request\" set reg_status='rejected_departmenthead' where reg_request_id=$1;", [
+        requestIDs[i],
+      ]);
+    }
+    res.json({ message: "postRejectRegistrationRequests" });
+  } catch (err) {
+    const error = new HttpError("postRejectRegistrationRequests Failed", 500);
+    return next(error);
+  }
+};
+
+exports.postApproveRegistrationRequests = postApproveRegistrationRequests;
+exports.postRejectRegistrationRequests = postRejectRegistrationRequests;
 exports.getAvailableResults = getAvailableResults;
 exports.getGrades = getGrades;
 exports.getRegistrationRequests = getRegistrationRequests;

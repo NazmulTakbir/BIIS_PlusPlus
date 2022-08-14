@@ -56,6 +56,7 @@ const getRegistrationRequestSummary = async (req, res, next) => {
 const postApproveRegistrationRequests = async (req, res, next) => {
   try {
     const { requestIDs } = req.body;
+    console.log("here" + requestIDs);
     for (let i = 0; i < requestIDs.length; i++) {
       await pool.query("update \"registration request\" set reg_status='awaiting_head' where reg_request_id=$1;", [
         requestIDs[i],

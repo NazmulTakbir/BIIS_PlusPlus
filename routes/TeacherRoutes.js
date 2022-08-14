@@ -50,5 +50,13 @@ TeacherRoutes.get("/departmenthead/registrationrequests/:sid", DepartmentHeadCon
 TeacherRoutes.get("/departmenthead/deptStudentInfo/:sid", DepartmentHeadController.getDeptStudentInfo);
 TeacherRoutes.get("/departmenthead/getAvailableResults/:sid", DepartmentHeadController.getAvailableResults);
 TeacherRoutes.get("/departmenthead/getGrades/:sid/:level/:term", DepartmentHeadController.getGrades);
+TeacherRoutes.post(
+    "/departmenthead/approveregistrationrequests",
+    DepartmentHeadController.postApproveRegistrationRequests
+  );
+  TeacherRoutes.post(
+    "/departmenthead/rejectregistrationrequests",
+    DepartmentHeadController.postRejectRegistrationRequests
+  );
 
 module.exports = TeacherRoutes;
