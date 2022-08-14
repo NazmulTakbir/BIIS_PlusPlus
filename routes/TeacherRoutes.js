@@ -32,6 +32,14 @@ TeacherRoutes.get("/advisees/feedbacks", AdviseeFeedbackController.getFeedbacks)
 
 TeacherRoutes.get("/hallprovost/scholarshiprequests", HallProvostController.getScholarshipRequests);
 
+//dept head routes
 TeacherRoutes.get("/departmenthead/feedbacks", DepartmentHeadController.getFeedbacks);
+TeacherRoutes.get("/departmenthead/deptStudents", DepartmentHeadController.getDepartmentStudents);
+TeacherRoutes.get("/departmenthead/registrationsummary", DepartmentHeadController.getRegistrationRequestSummary);
+//route for deptStudent
+TeacherRoutes.get("/departmenthead/registrationrequests/:sid", DepartmentHeadController.getRegistrationRequests);
+TeacherRoutes.get("/departmenthead/deptStudentInfo/:sid", DepartmentHeadController.getDeptStudentInfo);
+TeacherRoutes.get("/departmenthead/getAvailableResults/:sid", DepartmentHeadController.getAvailableResults);
+TeacherRoutes.get("/departmenthead/getGrades/:sid/:level/:term", DepartmentHeadController.getGrades);
 
 module.exports = TeacherRoutes;
