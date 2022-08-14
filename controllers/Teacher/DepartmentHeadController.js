@@ -224,7 +224,6 @@ const getGrades = async (req, res, next) => {
 const postApproveRegistrationRequests = async (req, res, next) => {
   try {
     const { requestIDs } = req.body;
-    console.log("here"+requestIDs);
     for (let i = 0; i < requestIDs.length; i++) {
       await pool.query("update \"registration request\" set reg_status='approved' where reg_request_id=$1;", [
         requestIDs[i],
@@ -240,11 +239,13 @@ const postApproveRegistrationRequests = async (req, res, next) => {
 const postRejectRegistrationRequests = async (req, res, next) => {
   try {
     const { requestIDs } = req.body;
+    console.log("here" + requestIDs);
     for (let i = 0; i < requestIDs.length; i++) {
-      await pool.query("update \"registration request\" set reg_status='rejected_departmenthead' where reg_request_id=$1;", [
+      await pool.query("update \"registration request\" set reg_status='rejected_head' where reg_request_id=$1;", [
         requestIDs[i],
       ]);
     }
+    console.log("here" + requestIDs);
     res.json({ message: "postRejectRegistrationRequests" });
   } catch (err) {
     const error = new HttpError("postRejectRegistrationRequests Failed", 500);
