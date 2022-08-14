@@ -61,7 +61,7 @@ const Sidebar = (props) => {
         }
         setAuthorizationSidebar(temp);
       } else if (auth.userType.toLowerCase() === "hall admin") {
-        let toKeep = ["Admin Info", "Add Students", "Add Dues"];
+        let toKeep = ["Admin Info", "Add Students", "Add Scholarship", "Add Dues"];
 
         let temp = [];
         for (i = 0; i < SidebarData.length; i++) {

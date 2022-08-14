@@ -1,8 +1,5 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
-
-const essentialAttributes = [];
 
 const allAttributes = [
   "student_id",
@@ -12,9 +9,9 @@ const allAttributes = [
 
 const createScholarship = async (data) => {
   await pool.query(
-    `INSERT INTO public.scholarship(student_id, session_id, scholarship_state, scholarship_type_id, payment_date, \
-      credits) VALUES ($1, $2,'awaiting_application', $3, NULL);`,
-    data
+    `INSERT INTO public.scholarship(student_id, session_id, scholarship_state, scholarship_type_id, payment_date) \
+    VALUES ($1, $2,'awaiting_application', $3, NULL);`
+    , data
   );
 };
 
@@ -39,7 +36,6 @@ const getSampleFile = async (req, res, next) => {
 const postAddScholarship = async (req, res, next) => {
   try {
     const allData = req.body.data;
-    console.log(allData);
     for (let rowNo = 0; rowNo < allData.length; rowNo++) {
       let data = [];
       for (let columnNo = 0; columnNo < allAttributes.length; columnNo++) {

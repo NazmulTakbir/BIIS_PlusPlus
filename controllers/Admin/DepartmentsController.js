@@ -57,7 +57,7 @@ const getSessionList = async (req, res, next) => {
 
 const getScholarshipTypeList = async (req, res, next) => {
   try {
-    let queryRes = await pool.query(`select * from "scholarship type" `);
+    let queryRes = await pool.query(`select * from "scholarship type"`);
     const scholarship_type_list = queryRes.rows;
 
     res.json({ message: "getInfo", data: scholarship_type_list });

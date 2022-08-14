@@ -22,14 +22,9 @@ const AddScholarship = () => {
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
-  const [offered_to_list, set_offered_to_list] = useState([]);
-  const [offered_to_dept_id, set_offered_to_dept_id] = useState("Select a department");
-
   const [student_id, set_student_id] = useState("");
- 
   const [session_id, set_session_id] = useState("");
   const [session_list, set_session_list] = useState([]);
- 
   const [scholarship_type_id, set_scholarship_type_id] = useState("");
   const [scholarship_type_list, set_scholarship_type_list] = useState([]);
 
@@ -56,9 +51,6 @@ const AddScholarship = () => {
   }, [auth]);
 
 
-/**
-   @todo: change downloadSampleCSV api call
-**/
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/scholarship/samplefile", {
       headers: { Authorization: "Bearer " + auth.token },
@@ -85,9 +77,7 @@ const AddScholarship = () => {
     }
   };
 
-/**
-   @todo: change handleFileSubmit api call
-**/  
+
   const handleFileSubmit = async () => {
     if (!file) {
       alert("Enter a valid file");
@@ -121,6 +111,7 @@ const AddScholarship = () => {
 
 
   const submissionHandler = async (e) => {
+    e.preventDefault();
     try {
       let data = [
         {
@@ -137,6 +128,14 @@ const AddScholarship = () => {
           data: data,
         }),
       });
+
+      //form reset
+      set_student_id("");
+      set_session_id("");
+      set_scholarship_type_id("");
+      
+      alert("Scholarship Added Successfully");
+
     } catch (err) {}
   };
 
@@ -232,12 +231,13 @@ const AddScholarship = () => {
               </div>
 
               <div className="admin-form-container" style={{ paddingTop: "10px" }}>
-                <form onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
+                <form id="add-sch-form" onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
                   <Textbox
                     width="350px"
                     height="46px"
                     resize="none"
                     name="student_id"
+                    required={true}
                     padding="0px"
                     fontSize="17px"
                     placeholder=""
@@ -249,6 +249,7 @@ const AddScholarship = () => {
                   <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Select type of Scholarship</InputLabel>
                     <Select
+                      required={true}
                       labelId="demo-simple-select-label"
                       id="scholarship_type_id"
                       name="scholarship_type_id"
@@ -270,6 +271,7 @@ const AddScholarship = () => {
                   <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Select a Session</InputLabel>
                     <Select
+                      required={true}
                       labelId="demo-simple-select-label"
                       id="session_id"
                       name="session_id"
