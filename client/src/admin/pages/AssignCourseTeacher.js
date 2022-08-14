@@ -7,7 +7,6 @@ import { SidebarData } from "../components/SidebarData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
-import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -27,18 +26,16 @@ const AddCourseTeachers = () => {
   const [teacher_id, setTeacher_id] = useState(0);
   const [role, setRole] = useState("");
 
-  const admin_dept_id = 5; //change it after adming logins
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await fetch(`/api/admin/departments/getTeacher/${admin_dept_id}`, {
+        let response = await fetch(`/api/admin/departments/getTeacher`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         let jsonData = await response.json();
         setTeacher_list(jsonData.data);
 
-        response = await fetch(`/api/admin/offering/getOffering_admin_dept/${admin_dept_id}`, {
+        response = await fetch(`/api/admin/offering/getOffering_admin_dept`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         jsonData = await response.json();
@@ -124,12 +121,11 @@ const AddCourseTeachers = () => {
           data: data,
         }),
       });
-      //setTeacher_list,offering_list,role to null string
+
       setOffering_id("");
       setTeacher_id("");
       setRole("");
 
-      //alert msg that course teacher added successfully
       alert("Course Teacher Added Successfully");
     } catch (err) {}
   };
@@ -243,18 +239,25 @@ const AddCourseTeachers = () => {
                     </Select>
                   </FormControl>
 
-                  <Textbox
-                    width="350px"
-                    height="46px"
-                    resize="none"
-                    name="Role"
-                    padding="0px"
-                    fontSize="17px"
-                    placeholder=""
-                    label="Role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                  />
+                  <FormControl fullWidth style={{ marginTop: "25px" }}>
+                    <InputLabel id="demo-simple-select-label">Select Role of Teacher</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="teacher_role"
+                      name="teacher_role"
+                      value={role}
+                      label="Role of Teacher"
+                      onChange={(e) => setRole(e.target.value)}
+                    >
+                      {["Course Taker", "Scrutinizer"].map((val, key) => {
+                        return (
+                          <MenuItem key={key} value={val}>
+                            {val}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
 
                   <CustomButton
                     type="submit"

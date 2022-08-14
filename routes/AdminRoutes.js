@@ -19,7 +19,8 @@ const AdminRoutes = express.Router();
 AdminRoutes.use(verifyAdmin);
 
 AdminRoutes.get("/departments/get", DepartmentsController.getDepartmentsList);
-AdminRoutes.get("/departments/getTeacher/:admin_dept_id", DepartmentsController.getTeachersList);
+AdminRoutes.get("/departments/self", DepartmentsController.getSelfDepartment);
+AdminRoutes.get("/departments/getTeacher", DepartmentsController.getTeachersList);
 
 //AdminRoutes.get("/departments/getdeptid/:dept_name", DepartmentsController.get_dept_id);
 
@@ -43,9 +44,8 @@ AdminRoutes.get("/course/samplefile", CourseController.getSampleFile);
 AdminRoutes.post("/offering/add", CourseOfferingController.postAddCourseOffering);
 AdminRoutes.get("/offering/samplefile", CourseOfferingController.getSampleFile);
 AdminRoutes.get("/offering/getunofferedcourses", CourseOfferingController.getunofferedcourses);
-//AdminRoutes.get("/offering/getunofferedcourses/admin_dept_id", CourseOfferingController.getunofferedcourses);
 AdminRoutes.get("/offering/getexamslots", CourseOfferingController.getexamslots);
-AdminRoutes.get("/offering/getOffering_admin_dept/:admin_dept_id", CourseOfferingController.getOffering_admin_dept);
+AdminRoutes.get("/offering/getOffering_admin_dept", CourseOfferingController.getOffering_admin_dept);
 
 AdminRoutes.post("/courseteacher/add", CourseTeacherController.postAddCourseTeacher);
 AdminRoutes.get("/courseteacher/samplefile", CourseTeacherController.getSampleFile);
