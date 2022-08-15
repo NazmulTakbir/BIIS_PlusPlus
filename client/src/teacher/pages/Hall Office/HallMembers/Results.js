@@ -1,30 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+// import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 
-import { AuthContext } from "../../../../shared/context/AuthContext";
-import "./Advisee.css";
+// import { AuthContext } from "../../../../shared/context/AuthContext";
+// import Table from "../../../../shared/components/Table/Table";
 import Navbar from "../../../../shared/components/Navbar/Navbar";
-import Profile from "../../../../student/components/Profile/Profile";
 
-const MemberInfo = () => {
-  const auth = useContext(AuthContext);
+const Dues = () => {
+  //   const auth = useContext(AuthContext);
   let { studentID } = useParams();
-  const [studentInfo, setStudentInfo] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/teacher/hallmemberinfo/${studentID}`, {
-          headers: { Authorization: "Bearer " + auth.token },
-        });
-        const jsonData = await response.json();
-        setStudentInfo(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, [studentID, auth]);
 
   const NavbarData = [
     {
@@ -58,9 +42,7 @@ const MemberInfo = () => {
               <div className="profile-id-container">
                 <div className="profiler-id">Profile of {studentID}</div>
               </div>
-
               <Navbar NavbarData={NavbarData} />
-              <Profile ProfileData={studentInfo} />
             </div>
           </div>
         </div>
@@ -69,4 +51,4 @@ const MemberInfo = () => {
   );
 };
 
-export default MemberInfo;
+export default Dues;

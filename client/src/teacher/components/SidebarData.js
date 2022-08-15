@@ -24,7 +24,7 @@ export const SidebarData = [
   {
     title: "Hall Provost Issues",
     icon: <HomeIcon />,
-    link: "/hallissues/scholarships/pending",
+    link: "/hallissues/allstudents",
   },
   {
     title: "Dept Head Issues",

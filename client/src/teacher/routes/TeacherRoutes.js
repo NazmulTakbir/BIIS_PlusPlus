@@ -14,7 +14,6 @@ import AdviseeInfo from "../pages/Advisees/AdviseeProfile/Info";
 import AdviseeAcademic from "../pages/Advisees/AdviseeProfile/Academic";
 import AdviseeRegistration from "../pages/Advisees/AdviseeProfile/Registration";
 
-
 import DeptStudentList from "../pages/Department_Office/StudentList";
 import DeptCourseRegistration from "../pages/Department_Office/CourseRegistration";
 import DeptFeedback from "../pages/Department_Office/Feedback";
@@ -24,12 +23,18 @@ import DeptStudentAcademic from "../pages/Department_Office/StudentProfile/Acade
 import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/Registration";
 
 
-import PendingScholarships from "../pages/Hall Office/PendingScholarships";
-import AllScholarships from "../pages/Hall Office/AllScholarships";
+import DepartmentalIssues from "../pages/Department_Office/DepartmentIssues";
+import HallPendingScholarships from "../pages/Hall Office/PendingScholarships";
+import HallPendingResults from "../pages/Hall Office/PendingResults";
+import HallAllScholarships from "../pages/Hall Office/AllScholarships";
 import MemberInfo from "../pages/Hall Office/HallMembers/MemberInfo";
 import MemberAcademics from "../pages/Hall Office/HallMembers/MemberAcademics";
 import ScholarshipAction from "../pages/Hall Office/HallMembers/ScholarshipAction";
-import ScholarshipHead from "../pages/Department_Office/ScholarshipsHead";
+import HallStudentDues from "../pages/Hall Office/HallMembers/Dues";
+import HallStudentResults from "../pages/Hall Office/HallMembers/Results";
+
+import HallStudentList from "../pages/Hall Office/StudentList";
+
 
 const TeacherRoutes = () => {
   return (
@@ -73,7 +78,6 @@ const TeacherRoutes = () => {
         <AdviseeRegistration />
       </Route>
 
-      
       <Route path="/deptStudents/courseregistration" exact>
         <DeptCourseRegistration />
       </Route>
@@ -87,7 +91,7 @@ const TeacherRoutes = () => {
         <ScholarshipHead />
       </Route>      
       <Route path="/deptStudents/profile/info/:studentID" exact>
-        <DeptStudentInfo/>
+        <DeptStudentInfo />
       </Route>
       <Route path="/deptStudents/profile/academic/:studentID" exact>
         <DeptStudentAcademic />
@@ -97,7 +101,10 @@ const TeacherRoutes = () => {
       </Route>
 
       <Route path="/hallissues/scholarships/pending" exact>
-        <PendingScholarships />
+        <HallPendingScholarships />
+      </Route>
+      <Route path="/hallissues/results/pending" exact>
+        <HallPendingResults />
       </Route>
 
       <Route path="/hallissues/profile/info/:studentID" exact>
@@ -108,11 +115,21 @@ const TeacherRoutes = () => {
       </Route>
       <Route path="/hallissues/profile/scholarship/:studentID" exact>
         <ScholarshipAction />
-      </Route>      
+      </Route>
+      <Route path="/hallissues/profile/dues/:studentID" exact>
+        <HallStudentDues />
+      </Route>
+      <Route path="/hallissues/profile/results/:studentID" exact>
+        <HallStudentResults />
+      </Route>
 
       <Route path="/hallissues/scholarships/processing" exact>
-        <AllScholarships />
-      </Route>      
+        <HallAllScholarships />
+      </Route>
+
+      <Route path="/hallissues/allstudents" exact>
+        <HallStudentList />
+      </Route>
 
       <Redirect to="/teacherinfo" />
     </Switch>

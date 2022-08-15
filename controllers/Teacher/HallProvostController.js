@@ -6,16 +6,23 @@ const getScholarshipRequests = async (req, res, next) => {
   try {
     let queryRes = await pool.query(`Select hall_id from public.hall where hall_provost_id=$1;`, [req.userData.id]);
     const hall_id = queryRes.rows[0]["hall_id"];
+<<<<<<< HEAD
     //console.log("hall id is:" + hall_id);
+=======
+>>>>>>> cc243cfdb965affed531778cc5efcb57d2721f03
 
     queryRes = await pool.query(
       `SELECT scholarship.scholarship_id, scholarship.student_id, student.name, scholarship.session_id, \
       (SELECT scholarship_name from "scholarship type" where scholarship_type_id=scholarship.scholarship_type_id) \
       FROM scholarship \
       INNER JOIN student ON scholarship.student_id=student.student_id \
-      where student.hall_id = $1 and scholarship.scholarship_state='awaiting_provost';` , [hall_id]
+      where student.hall_id = $1 and scholarship.scholarship_state='awaiting_provost';`,
+      [hall_id]
     );
+<<<<<<< HEAD
     //console.log(queryRes.rows);
+=======
+>>>>>>> cc243cfdb965affed531778cc5efcb57d2721f03
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
@@ -24,21 +31,19 @@ const getScholarshipRequests = async (req, res, next) => {
   }
 };
 
-
 const getAllScholarshipRequests = async (req, res, next) => {
   try {
     let queryRes = await pool.query(`Select hall_id from public.hall where hall_provost_id=$1;`, [req.userData.id]);
     const hall_id = queryRes.rows[0]["hall_id"];
-    //console.log("hall id is:" + hall_id);
 
     queryRes = await pool.query(
       `SELECT scholarship.scholarship_id, scholarship.scholarship_state ,scholarship.student_id, student.name, scholarship.session_id, \
       (SELECT scholarship_name from "scholarship type" where scholarship_type_id=scholarship.scholarship_type_id) \
       FROM scholarship \
       INNER JOIN student ON scholarship.student_id=student.student_id \
-      where student.hall_id = $1;` , [hall_id]
+      where student.hall_id = $1;`,
+      [hall_id]
     );
-    //console.log(queryRes.rows);
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
@@ -165,9 +170,9 @@ const getHallMemberScholarshipRequests = async (req, res, next) => {
             select scholarship_name from "scholarship type" \
             where scholarship_type_id=scholarship.scholarship_type_id \
           ) \
-          from scholarship where student_id=$1 and scholarship_state='awaiting_provost'`, [sid]
+          from scholarship where student_id=$1 and scholarship_state='awaiting_provost'`,
+      [sid]
     );
-    console.log(queryRes.rows);
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
@@ -175,7 +180,6 @@ const getHallMemberScholarshipRequests = async (req, res, next) => {
     return next(error);
   }
 };
-
 
 const allowHallMemberScholarshipRequests = async (req, res, next) => {
   try {
@@ -188,7 +192,6 @@ const allowHallMemberScholarshipRequests = async (req, res, next) => {
        where scholarship_id = $2",
       ["awaiting_head", sc_id]
     );
-    //console.log(queryRes);
     res.status(201).json({ message: "scholarship state updated to awaiting_head" });
   } catch (err) {
     const error = new HttpError("scholarship state update Failed", 500);
@@ -207,7 +210,6 @@ const rejectHallMemberScholarshipRequests = async (req, res, next) => {
        where scholarship_id = $2",
       ["rejected_provost", sc_id]
     );
-    //console.log(queryRes);
     res.status(201).json({ message: "scholarship state updated to rejected" });
   } catch (err) {
     const error = new HttpError("scholarship state update Failed", 500);
@@ -215,7 +217,59 @@ const rejectHallMemberScholarshipRequests = async (req, res, next) => {
   }
 };
 
+const getAllStudents = async (req, res, next) => {
+  try {
+    let queryRes = await pool.query(`Select hall_id from public.hall where hall_provost_id=$1;`, [req.userData.id]);
+    const hall_id = queryRes.rows[0]["hall_id"];
 
+    queryRes = await pool.query(
+      `select student.student_id, student.name, level, term from student natural join hall where hall_id=$1;`,
+      [hall_id]
+    );
+
+    res.json({ message: "getScholarshipRequests", data: queryRes.rows });
+  } catch (err) {
+    const error = new HttpError("Fetching Student Info Failed", 500);
+    return next(error);
+  }
+};
+
+const getPendingDues = async (req, res, next) => {
+  try {
+    const sid = req.params.sid;
+    const stat = "Not Paid";
+    let queryRes = await pool.query(
+      'select dt.description , dt.amount , d.deadline , d.payment_date , d.dues_status, d.specification \
+        from dues as d , "dues type" as dt \
+        where d.dues_type_id = dt."dues_type_id" and d.dues_status = $2 and d.student_id = $1  ',
+      [sid, stat]
+    );
+
+    pending_dues_list = [];
+
+    for (const element of queryRes.rows) {
+      due_obj = {};
+      due_obj["description"] = element["description"];
+      due_obj["amount"] = element["amount"];
+
+      let date_ = "";
+      date_ = (date_ + element["deadline"]).substring(4, 16);
+      due_obj["deadline"] = date_;
+
+      due_obj["dues_status"] = element["dues_status"];
+      due_obj["specification"] = element["specification"];
+
+      pending_dues_list.push(due_obj);
+    }
+
+    res.status(201).json({ message: "getPendingDues", data: pending_dues_list });
+  } catch (err) {
+    const error = new HttpError("Fetching Student Info Failed", 500);
+    return next(error);
+  }
+};
+
+exports.getAllStudents = getAllStudents;
 exports.getGrades = getGrades;
 exports.getHallMemberInfo = getHallMemberInfo;
 exports.getAvailableResults = getAvailableResults;
@@ -224,3 +278,4 @@ exports.getAllScholarshipRequests = getAllScholarshipRequests;
 exports.getHallMemberScholarshipRequests = getHallMemberScholarshipRequests;
 exports.allowHallMemberScholarshipRequests = allowHallMemberScholarshipRequests;
 exports.rejectHallMemberScholarshipRequests = rejectHallMemberScholarshipRequests;
+exports.getPendingDues = getPendingDues;

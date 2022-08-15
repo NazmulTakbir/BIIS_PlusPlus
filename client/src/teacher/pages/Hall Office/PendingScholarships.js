@@ -33,13 +33,14 @@ const fetchTableData = async (api_route, setTableData, auth) => {
               textColor: "white",
               backColor: "#697A8D",
               onClickFunction: openInNewTab,
-              onClickArguments: ["/hallissues/profile/info/" + jsonData[i]["student_id"]],
+              onClickArguments: ["/hallissues/profile/scholarship/" + jsonData[i]["student_id"]],
             },
           ],
         },
       });
       tableData.push(row);
     }
+    console.log(tableData);
     setTableData(tableData);
   } catch (err) {
     console.log(err);
@@ -52,7 +53,7 @@ const PendingScholarships = () => {
 
   useEffect(() => {
     fetchTableData(`/api/teacher/hallprovost/scholarshiprequests`, setTableData, auth);
-  }, [auth, tableData]);
+  }, [auth]);
 
   return (
     <React.Fragment>
@@ -73,4 +74,3 @@ const PendingScholarships = () => {
 };
 
 export default PendingScholarships;
-

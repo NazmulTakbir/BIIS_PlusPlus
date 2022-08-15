@@ -39,6 +39,7 @@ TeacherRoutes.post(
 
 TeacherRoutes.get("/advisees/feedbacks", AdviseeFeedbackController.getFeedbacks);
 
+TeacherRoutes.get("/hallprovost/allstudents", HallProvostController.getAllStudents);
 //pending requests
 TeacherRoutes.get("/hallprovost/scholarshiprequests", HallProvostController.getScholarshipRequests);
 
@@ -48,10 +49,17 @@ TeacherRoutes.get("/hallprovost/allrequests", HallProvostController.getAllSchola
 //new window for approving requests
 TeacherRoutes.get("/hallmemberinfo/:sid", HallProvostController.getHallMemberInfo);
 TeacherRoutes.get("/hallmemberinfo/:sid/getAvailableResults", HallProvostController.getAvailableResults);
+TeacherRoutes.get("/hallmemberinfo/:sid/getpendingdues", HallProvostController.getPendingDues);
 TeacherRoutes.get("/hallmemberinfo/:sid/getGrades/:level/:term", HallProvostController.getGrades);
 TeacherRoutes.get("/hallmemberinfo/scholarshiprequests/:sid", HallProvostController.getHallMemberScholarshipRequests);
-TeacherRoutes.post("/hallmemberinfo/approvescholarship/:scid", HallProvostController.allowHallMemberScholarshipRequests);
-TeacherRoutes.post("/hallmemberinfo/rejectscholarship/:scid", HallProvostController.rejectHallMemberScholarshipRequests);
+TeacherRoutes.post(
+  "/hallmemberinfo/approvescholarship/:scid",
+  HallProvostController.allowHallMemberScholarshipRequests
+);
+TeacherRoutes.post(
+  "/hallmemberinfo/rejectscholarship/:scid",
+  HallProvostController.rejectHallMemberScholarshipRequests
+);
 
 //dept head routes
 TeacherRoutes.get("/departmenthead/feedbacks", DepartmentHeadController.getFeedbacks);
@@ -63,13 +71,13 @@ TeacherRoutes.get("/departmenthead/deptStudentInfo/:sid", DepartmentHeadControll
 TeacherRoutes.get("/departmenthead/getAvailableResults/:sid", DepartmentHeadController.getAvailableResults);
 TeacherRoutes.get("/departmenthead/getGrades/:sid/:level/:term", DepartmentHeadController.getGrades);
 TeacherRoutes.post(
-    "/departmenthead/approveregistrationrequests",
-    DepartmentHeadController.postApproveRegistrationRequests
-  );
-  TeacherRoutes.post(
-    "/departmenthead/rejectregistrationrequests",
-    DepartmentHeadController.postRejectRegistrationRequests
-  );
+  "/departmenthead/approveregistrationrequests",
+  DepartmentHeadController.postApproveRegistrationRequests
+);
+TeacherRoutes.post(
+  "/departmenthead/rejectregistrationrequests",
+  DepartmentHeadController.postRejectRegistrationRequests
+);
 
 TeacherRoutes.get("/departmenthead/scholarshiprequests", DepartmentHeadController.getScholarshipRequests);
 

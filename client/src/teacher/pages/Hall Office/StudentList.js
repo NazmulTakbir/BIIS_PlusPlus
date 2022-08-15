@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
-import Header from "../../../shared/components/Header/Header";
 import Navbar from "../../../shared/components/Navbar/Navbar";
+import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
+import { openInNewTab } from "../../../shared/util/OpenNewTab";
 import { NavbarData } from "./NavbarData";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const columnLabels = ["STUDENT ID", "NAME", "SESSION ID", "SCHOLARSHIP TYPE", "STATE"];
+const columnLabels = ["STUDENT ID", "NAME", "LEVEL", "TERM", "DETAILS"];
 
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
@@ -21,9 +22,22 @@ const fetchTableData = async (api_route, setTableData, auth) => {
       let row = [];
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["name"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_state"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["level"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["term"] } });
+      row.push({
+        type: "Buttons",
+        data: {
+          buttonList: [
+            {
+              buttonText: "View Details",
+              textColor: "white",
+              backColor: "#697A8D",
+              onClickFunction: openInNewTab,
+              onClickArguments: ["/deptStudents/profile/info/" + jsonData[i]["student_id"]],
+            },
+          ],
+        },
+      });
       tableData.push(row);
     }
     setTableData(tableData);
@@ -32,12 +46,12 @@ const fetchTableData = async (api_route, setTableData, auth) => {
   }
 };
 
-const AllScholarships = () => {
+const HallStudentList = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/hallprovost/allrequests`, setTableData, auth);
+    fetchTableData(`/api/teacher/hallprovost/allstudents`, setTableData, auth);
   }, [auth]);
 
   return (
@@ -58,4 +72,4 @@ const AllScholarships = () => {
   );
 };
 
-export default AllScholarships;
+export default HallStudentList;
