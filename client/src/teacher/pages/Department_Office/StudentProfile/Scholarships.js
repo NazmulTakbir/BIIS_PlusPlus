@@ -67,32 +67,46 @@ const AdviseeRegistration = () => {
   ];
 
   const approveRequests = async () => {
-    console.log(checkedRequests);
-    // await fetch("/api/teacher/advisees/approveregistrationrequests", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-    //   body: JSON.stringify({
-    //     requestIDs: checkedRequests,
-    //     submission_date: new Date(),
-    //   }),
-    // });
-    checkedRequests = [];    
+    try {
+      const response = await fetch("/api/teacher/departmenthead/approvescholarship/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify({
+          requestIDs: checkedRequests,
+          submission_date: new Date(),
+        }),
+      });
+      //console.log(response["status"]);
+      if (response["status"] === 200) {
+        alert("Requests approved successfully");
+        checkedRequests = [];
+        setStateNo(stateNo + 1);
+      }
 
-    setStateNo((stateNo + 1) % 100);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const rejectRequests = async () => {
-    // await fetch("/api/teacher/advisees/rejectregistrationrequests", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-    //   body: JSON.stringify({
-    //     requestIDs: checkedRequests,
-    //     submission_date: new Date(),
-    //   }),
-    // });
+    try {
+      const response = await fetch("/api/teacher/departmenthead/rejectscholarship/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify({
+          requestIDs: checkedRequests,
+          submission_date: new Date(),
+        }),
+      });
+      if (response["status"] === 200) {
+        alert("Requests rejected successfully");
+        checkedRequests = [];
+        setStateNo(stateNo + 1);
+      }
 
-    checkedRequests = [];
-    setStateNo((stateNo + 1) % 100);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

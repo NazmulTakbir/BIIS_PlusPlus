@@ -239,13 +239,13 @@ const postApproveRegistrationRequests = async (req, res, next) => {
 const postRejectRegistrationRequests = async (req, res, next) => {
   try {
     const { requestIDs } = req.body;
-    console.log("here" + requestIDs);
+    //console.log("here" + requestIDs);
     for (let i = 0; i < requestIDs.length; i++) {
       await pool.query("update \"registration request\" set reg_status='rejected_head' where reg_request_id=$1;", [
         requestIDs[i],
       ]);
     }
-    console.log("here" + requestIDs);
+    //console.log("here" + requestIDs);
     res.json({ message: "postRejectRegistrationRequests" });
   } catch (err) {
     const error = new HttpError("postRejectRegistrationRequests Failed", 500);
@@ -258,7 +258,7 @@ const getScholarshipRequests = async (req, res, next) => {
   try {
     let queryRes = await pool.query(`Select dept_id from public.department where dept_head=$1;`, [req.userData.id]);
     const dept_id = queryRes.rows[0]["dept_id"];
-    console.log("dept head is: " + dept_id);
+    //console.log("dept head is: " + dept_id);
 
     queryRes = await pool.query(
       `SELECT scholarship.scholarship_id, scholarship.student_id, student.name, scholarship.session_id, \
@@ -267,7 +267,7 @@ const getScholarshipRequests = async (req, res, next) => {
       INNER JOIN student ON scholarship.student_id=student.student_id \
       where student.dept_id = $1 and scholarship.scholarship_state='awaiting_head';` , [dept_id]
     );
-    console.log(queryRes.rows);
+    //console.log(queryRes.rows);
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
@@ -279,7 +279,7 @@ const getScholarshipRequests = async (req, res, next) => {
 const getStudentScholarshipRequests = async (req, res, next) => {
   try {
     const sid = req.params.sid;
-    console.log("sid is: " + sid);
+    //console.log("sid is: " + sid);
     queryRes = await pool.query(
       `select scholarship_id, student_id, session_id, \
         (select name from student where student_id=scholarship.student_id) as name, \
@@ -290,7 +290,7 @@ const getStudentScholarshipRequests = async (req, res, next) => {
           from scholarship where student_id=$1 and scholarship_state='awaiting_head'`,
       [sid]
     );
-    console.log(queryRes.rows);
+    //console.log(queryRes.rows);
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
     const error = new HttpError("Fetching Grades Failed", 500);
@@ -298,6 +298,38 @@ const getStudentScholarshipRequests = async (req, res, next) => {
   }
 };
 
+
+const allowDeptScholarshipRequests = async (req, res, next) => {
+  try {
+    const { requestIDs } = req.body;
+    //console.log("here" + requestIDs);
+    for (let i = 0; i < requestIDs.length; i++) {
+      await pool.query("update \"scholarship\" set scholarship_state='awaiting_comptroller' where scholarship_id=$1;", [
+        requestIDs[i],
+      ]);
+    }
+    res.json({ message: "postAllowDeptScholarshipRequests" });
+  } catch (err) {
+    const error = new HttpError("postAllowDeptScholarshipRequests Failed", 500);
+    return next(error);
+  }  
+}
+
+const rejectDeptScholarshipRequests = async (req, res, next) => {
+  try {
+    const { requestIDs } = req.body;
+    //console.log("here" + requestIDs);
+    for (let i = 0; i < requestIDs.length; i++) {
+      await pool.query("update \"scholarship\" set scholarship_state='rejected_head' where scholarship_id=$1;", [
+        requestIDs[i],
+      ]);
+    }
+    res.json({ message: "postRejectDeptScholarshipRequests" });
+  } catch (err) {
+    const error = new HttpError("postRejectDeptScholarshipRequests Failed", 500);
+    return next(error);
+  }  
+}
 
 
 exports.postApproveRegistrationRequests = postApproveRegistrationRequests;
@@ -311,3 +343,5 @@ exports.getFeedbacks = getFeedbacks;
 exports.getDepartmentStudents = getDepartmentStudents;
 exports.getScholarshipRequests = getScholarshipRequests;
 exports.getStudentScholarshipRequests = getStudentScholarshipRequests;
+exports.allowDeptScholarshipRequests = allowDeptScholarshipRequests;
+exports.rejectDeptScholarshipRequests = rejectDeptScholarshipRequests;

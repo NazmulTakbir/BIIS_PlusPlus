@@ -81,5 +81,13 @@ TeacherRoutes.post(
 
 TeacherRoutes.get("/departmenthead/scholarshiprequests", DepartmentHeadController.getScholarshipRequests);
 TeacherRoutes.get("/departmenthead/student/scholarshiprequests/:sid", DepartmentHeadController.getStudentScholarshipRequests);
+TeacherRoutes.post(
+  "/departmenthead/approvescholarship/",
+  DepartmentHeadController.allowDeptScholarshipRequests
+);
+TeacherRoutes.post(
+  "/departmenthead/rejectscholarship/",
+  DepartmentHeadController.rejectDeptScholarshipRequests
+);
 
 module.exports = TeacherRoutes;
