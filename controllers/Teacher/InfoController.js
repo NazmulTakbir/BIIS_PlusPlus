@@ -10,7 +10,6 @@ const getInfo = async (req, res, next) => {
     teacherInfo["dept_name"] = queryRes.rows[0]["dept_name"];
 
     res.json(teacherInfo);
-    console.log(teacherInfo);
   } catch (err) {
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);

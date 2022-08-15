@@ -33,7 +33,7 @@ const fetchTableData = async (api_route, setTableData, auth) => {
               textColor: "white",
               backColor: "#697A8D",
               onClickFunction: openInNewTab,
-              onClickArguments: ["/deptStudents/profile/info/" + jsonData[i]["student_id"]],
+              onClickArguments: ["/hallissues/profile/info/" + jsonData[i]["student_id"]],
             },
           ],
         },
