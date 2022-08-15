@@ -75,6 +75,14 @@ const MemberAcademics = () => {
       title: "Pending Scholarships",
       link: "/hallissues/profile/scholarship/" + studentID,
     },
+    {
+      title: "Pending Dues",
+      link: "/hallissues/profile/dues/" + studentID,
+    },
+    {
+      title: "Pending Results",
+      link: "/hallissues/profile/results/" + studentID,
+    },
   ];
 
   useEffect(() => {
@@ -98,7 +106,12 @@ const MemberAcademics = () => {
 
     setDropDownText("Level " + level + "  Term " + term);
 
-    fetchTableData(`/api/teacher/hallmemberinfo/${studentID}/getGrades/${level}/${term}`, setTableData, setExtraData, auth);
+    fetchTableData(
+      `/api/teacher/hallmemberinfo/${studentID}/getGrades/${level}/${term}`,
+      setTableData,
+      setExtraData,
+      auth
+    );
     setNoneSelected(false);
   };
 

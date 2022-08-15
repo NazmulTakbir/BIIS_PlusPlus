@@ -2,29 +2,40 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { AuthContext } from "../../../../shared/context/AuthContext";
-import "./Advisee.css";
+import Table from "../../../../shared/components/Table/Table";
 import Navbar from "../../../../shared/components/Navbar/Navbar";
-import Profile from "../../../../student/components/Profile/Profile";
 
-const MemberInfo = () => {
+const columnLabels = ["TYPE", "AMOUNT", "SPECIFICATION", "DEADLINE"];
+
+const fetchTableData = async (api_route, setTableData, auth) => {
+  try {
+    const response = await fetch(api_route, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["description"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["amount"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["specification"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["deadline"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const Dues = () => {
   const auth = useContext(AuthContext);
   let { studentID } = useParams();
-  const [studentInfo, setStudentInfo] = useState("");
+  const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/teacher/hallmemberinfo/${studentID}`, {
-          headers: { Authorization: "Bearer " + auth.token },
-        });
-        const jsonData = await response.json();
-        setStudentInfo(jsonData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, [studentID, auth]);
+    fetchTableData(`/api/teacher/hallmemberinfo/${studentID}/getpendingdues`, setTableData, auth);
+  }, [auth, studentID]);
 
   const NavbarData = [
     {
@@ -60,7 +71,7 @@ const MemberInfo = () => {
               </div>
 
               <Navbar NavbarData={NavbarData} />
-              <Profile ProfileData={studentInfo} />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>
@@ -69,4 +80,4 @@ const MemberInfo = () => {
   );
 };
 
-export default MemberInfo;
+export default Dues;

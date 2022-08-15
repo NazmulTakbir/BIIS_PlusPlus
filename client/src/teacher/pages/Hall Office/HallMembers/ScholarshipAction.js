@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext, useParams } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../../../../shared/components/Navbar/Navbar";
-
 
 import { AuthContext } from "../../../../shared/context/AuthContext";
 import "../../../../shared/components/MainContainer.css";
@@ -8,46 +8,48 @@ import Table from "../../../../shared/components/Table/Table";
 
 const columnLabels = ["STUDENT ID", "NAME", "SESSION ID", "SCHOLARSHIP TYPE", "ACTION"];
 
-
 const acceptScholarship = async (args) => {
-    if (window.confirm("Approve this Scholarship?")) {
-      const auth = args[1];
-      console.log(args);
-      try {
-          await fetch(`/api/teacher/hallmemberinfo/approvescholarship/${args[0]}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-          });
-          alert("Scholarship Approved Successfully!");
-          window.location.reload();
-      } catch (err) {
-        console.log(err);
-      }    
-    } else {
-      return false;
+  if (window.confirm("Approve this Scholarship?")) {
+    const auth = args[1];
+
+    try {
+      await fetch(`/api/teacher/hallmemberinfo/approvescholarship/${args[0]}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      });
+      const incrementState = args[2];
+      incrementState();
+
+      alert("Scholarship Approved Successfully!");
+    } catch (err) {
+      console.log(err);
     }
+  } else {
+    return false;
+  }
 };
 
 const rejectScholarship = async (args) => {
-    if (window.confirm("Reject this Scholarship?")) {
-      const auth = args[1];
-      console.log(args);
-      try {
-          await fetch(`/api/teacher/hallmemberinfo/rejectscholarship/${args[0]}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-          });
-          alert("Scholarship Rejected Successfully!");
-          window.location.reload();
-      } catch (err) {
-        console.log(err);
-      }    
-    } else {
-      return false;
+  if (window.confirm("Reject this Scholarship?")) {
+    const auth = args[1];
+    try {
+      await fetch(`/api/teacher/hallmemberinfo/rejectscholarship/${args[0]}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      });
+      const incrementState = args[2];
+      incrementState();
+
+      alert("Scholarship Rejected Successfully!");
+    } catch (err) {
+      console.log(err);
     }
+  } else {
+    return false;
+  }
 };
 
-const fetchTableData = async (api_route, setTableData, auth) => {
+const fetchTableData = async (api_route, setTableData, auth, incrementState) => {
   try {
     const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
     const jsonData = (await response.json())["data"];
@@ -63,18 +65,18 @@ const fetchTableData = async (api_route, setTableData, auth) => {
         data: {
           buttonList: [
             {
-                buttonText: "Accept",
-                textColor: "white",
-                backColor: "#b13137",
-                onClickFunction: acceptScholarship,
-                onClickArguments: [jsonData[i]["scholarship_id"], auth],
+              buttonText: "Accept",
+              textColor: "white",
+              backColor: "#b13137",
+              onClickFunction: acceptScholarship,
+              onClickArguments: [jsonData[i]["scholarship_id"], auth, incrementState],
             },
             {
-                buttonText: "Reject",
-                textColor: "white",
-                backColor: "#697A8D",
-                onClickFunction: rejectScholarship,
-                onClickArguments: [jsonData[i]["scholarship_id"], auth],
+              buttonText: "Reject",
+              textColor: "white",
+              backColor: "#697A8D",
+              onClickFunction: rejectScholarship,
+              onClickArguments: [jsonData[i]["scholarship_id"], auth, incrementState],
             },
           ],
         },
@@ -89,14 +91,17 @@ const fetchTableData = async (api_route, setTableData, auth) => {
 
 const ScholarshipAction = () => {
   const auth = useContext(AuthContext);
-  //let { studentID } = useParams();
-  let studentID = '1705103';
-  console.log("id: " + studentID);
+  let { studentID } = useParams();
+
   const [tableData, setTableData] = useState([]);
+  const [stateNo, setStateNo] = useState(0);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/hallmemberinfo/scholarshiprequests/` + studentID, setTableData, auth);
-  }, [auth, tableData.length]);
+    const incrementState = () => {
+      setStateNo((stateNo + 1) % 100);
+    };
+    fetchTableData(`/api/teacher/hallmemberinfo/scholarshiprequests/` + studentID, setTableData, auth, incrementState);
+  }, [auth, studentID, stateNo]);
 
   const NavbarData = [
     {
@@ -110,6 +115,14 @@ const ScholarshipAction = () => {
     {
       title: "Pending Scholarships",
       link: "/hallissues/profile/scholarship/" + studentID,
+    },
+    {
+      title: "Pending Dues",
+      link: "/hallissues/profile/dues/" + studentID,
+    },
+    {
+      title: "Pending Results",
+      link: "/hallissues/profile/results/" + studentID,
     },
   ];
 
@@ -134,4 +147,3 @@ const ScholarshipAction = () => {
 };
 
 export default ScholarshipAction;
-
