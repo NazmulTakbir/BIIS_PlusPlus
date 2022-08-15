@@ -5,6 +5,7 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { openInNewTab } from "../../../shared/util/OpenNewTab";
+import { NavbarData } from "./NavbarData";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -44,20 +45,6 @@ const fetchTableData = async (api_route, setTableData, auth) => {
     console.log(err);
   }
 };
-export const NavbarData = [
-  {
-    title: "All Students",
-    link: "/deptStudents/all",
-  },
-  {
-    title: "Course Registration Requests",
-    link: "/deptStudents/courseregistration",
-  },
-  {
-    title: "Feedbacks",
-    link: "/deptStudents/feedback",
-  },
-];
 
 const DeptStudentList = () => {
   const auth = useContext(AuthContext);

@@ -24,12 +24,12 @@ import DeptStudentAcademic from "../pages/Department_Office/StudentProfile/Acade
 import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/Registration";
 
 
-import DepartmentalIssues from "../pages/Department_Office/DepartmentIssues";
 import PendingScholarships from "../pages/Hall Office/PendingScholarships";
 import AllScholarships from "../pages/Hall Office/AllScholarships";
 import MemberInfo from "../pages/Hall Office/HallMembers/MemberInfo";
 import MemberAcademics from "../pages/Hall Office/HallMembers/MemberAcademics";
 import ScholarshipAction from "../pages/Hall Office/HallMembers/ScholarshipAction";
+import ScholarshipHead from "../pages/Department_Office/ScholarshipsHead";
 
 const TeacherRoutes = () => {
   return (
@@ -83,6 +83,9 @@ const TeacherRoutes = () => {
       <Route path="/deptStudents/feedback" exact>
         <DeptFeedback />
       </Route>
+      <Route path="/deptStudents/scholarship" exact>
+        <ScholarshipHead />
+      </Route>      
       <Route path="/deptStudents/profile/info/:studentID" exact>
         <DeptStudentInfo/>
       </Route>
@@ -91,10 +94,6 @@ const TeacherRoutes = () => {
       </Route>
       <Route path="/deptStudents/profile/registration/:studentID" exact>
         <DeptStudentRegistration />
-      </Route>
-
-      <Route path="/deptissues" exact>
-        <DepartmentalIssues />
       </Route>
 
       <Route path="/hallissues/scholarships/pending" exact>

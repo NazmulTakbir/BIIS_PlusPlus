@@ -4,7 +4,7 @@ export const NavbarData = [
     link: "/hallissues/scholarships/pending",
   },
   {
-    title: "Processed Scholarships",
+    title: "ALL Scholarships",
     link: "/hallissues/scholarships/processing",
   },
 ];

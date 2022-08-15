@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
-import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
+import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
+import { openInNewTab } from "../../../shared/util/OpenNewTab";
 import { NavbarData } from "./NavbarData";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const columnLabels = ["SUBJECT", "STUDENT ID", "STUDENT NAME", "DATE", "DETAILS"];
+const columnLabels = ["STUDENT ID", "NAME", "SESSION ID", "SCHOLARSHIP TYPE", "ACTION"];
+
 
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
@@ -19,16 +21,22 @@ const fetchTableData = async (api_route, setTableData, auth) => {
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
-      row.push({ type: "PlainText", data: { value: jsonData[i]["subject"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["student_name"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["submission_date"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
       row.push({
-        type: "SimpleModal",
+        type: "Buttons",
         data: {
-          buttonText: "View",
-          header: jsonData[i]["subject"],
-          body: jsonData[i]["details"],
+          buttonList: [
+            {
+              buttonText: "View Details",
+              textColor: "white",
+              backColor: "#697A8D",
+              onClickFunction: openInNewTab,
+              onClickArguments: ["/deptStudents/profile/info/" + jsonData[i]["student_id"]],
+            },
+          ],
         },
       });
       tableData.push(row);
@@ -39,14 +47,13 @@ const fetchTableData = async (api_route, setTableData, auth) => {
   }
 };
 
-
-const DeptFeedback = () => {
+const ScholarshipsHead = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetchTableData(`/api/teacher/departmenthead/feedbacks`, setTableData, auth);
-  }, [auth]);
+    fetchTableData(`/api/teacher/departmenthead/scholarshiprequests`, setTableData, auth);
+  }, [auth, tableData]);
 
   return (
     <React.Fragment>
@@ -66,4 +73,5 @@ const DeptFeedback = () => {
   );
 };
 
-export default DeptFeedback;
+export default ScholarshipsHead;
+
