@@ -11,6 +11,7 @@ const NoticeController = require("../controllers/Admin/NoticeController");
 const DuesController = require("../controllers/Admin/DuesController");
 const AcademicCalenderController = require("../controllers/Admin/AcademicCalenderController");
 const ScholarshipController = require("../controllers/Admin/ScholarshipController");
+const ComptrollerController = require("../controllers/Admin/ComptrollerController");
 
 const verifyAdmin = require("../controllers/Authentication/VerifyAdmin");
 
@@ -59,5 +60,8 @@ AdminRoutes.get("/dues/getDuesTypes", DuesController.getDuesTypes);
 
 AdminRoutes.post("/academiccalender/add", AcademicCalenderController.addCalender);
 AdminRoutes.get("/academiccalender/samplefile", AcademicCalenderController.getSampleFile);
+
+AdminRoutes.get("/comptroller/pendingscholarships", ComptrollerController.getPendingScholarships);
+AdminRoutes.get("/comptroller/pendingdues", ComptrollerController.getPendingDues);
 
 module.exports = AdminRoutes;

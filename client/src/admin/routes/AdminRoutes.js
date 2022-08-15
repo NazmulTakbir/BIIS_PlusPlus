@@ -9,6 +9,8 @@ import AddTeachers from "./../pages/AddTeachers";
 import AddDues from "./../pages/AddDues";
 import AddScholarship from "./../pages/AddScholarship";
 import UploadAcademicCalender from "./../pages/UploadAcademicCalender";
+import PaymentDues from "./../pages/PaymentDues";
+import PaymentScholarships from "./../pages/PaymentScholarships";
 
 const StudentRoutes = () => {
   return (
@@ -39,11 +41,17 @@ const StudentRoutes = () => {
       </Route>
       <Route path="/addscholarship" exact>
         <AddScholarship />
-      </Route>      
+      </Route>
       <Route path="/uploadacademiccalender" exact>
         <UploadAcademicCalender />
       </Route>
-      <Redirect to="/admininfo" />
+      <Route path="/paymentdues" exact>
+        <PaymentDues />
+      </Route>
+      <Route path="/paymentscholarships" exact>
+        <PaymentScholarships />
+      </Route>
+      <Redirect to="/paymentscholarships" />
     </Switch>
   );
 };

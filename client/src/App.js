@@ -59,7 +59,12 @@ const App = () => {
         routes = <StudentRoutes />;
       } else if (userType === "teacher") {
         routes = <TeacherRoutes />;
-      } else if (userType === "office admin" || userType === "hall admin" || userType === "department admin") {
+      } else if (
+        userType === "comptroller admin" ||
+        userType === "office admin" ||
+        userType === "hall admin" ||
+        userType === "department admin"
+      ) {
         routes = <AdminRoutes />;
       }
     } else {

@@ -72,6 +72,18 @@ const Sidebar = (props) => {
           }
         }
         setAuthorizationSidebar(temp);
+      } else if (auth.userType.toLowerCase() === "comptroller admin") {
+        let toKeep = ["Admin Info", "Payment of Dues", "Payment of Scholarships"];
+
+        let temp = [];
+        for (i = 0; i < SidebarData.length; i++) {
+          elem = SidebarData[i];
+
+          if (toKeep.indexOf(elem.title) !== -1) {
+            temp.push(elem);
+          }
+        }
+        setAuthorizationSidebar(temp);
       }
     }
     fetchMyAPI();

@@ -41,6 +41,11 @@ const getAuthData = async (userid) => {
     return { userType: "department admin", password: queryRes.rows[0]["password"], responsibilities: [] };
   }
 
+  queryRes = await pool.query('select * from "comptroller admin" where comptroller_admin_id=$1', [userid]);
+  if (queryRes.rows.length > 0) {
+    return { userType: "comptroller admin", password: queryRes.rows[0]["password"], responsibilities: [] };
+  }
+
   return "invalid";
 };
 
