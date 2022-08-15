@@ -8,7 +8,7 @@ import { NavbarData } from "./NavbarData";
 
 import "../../../shared/components/MainContainer.css";
 
-const HallIssues = () => {
+const AllScholarships = () => {
   return (
     <React.Fragment>
       <div className="App">
@@ -18,7 +18,7 @@ const HallIssues = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <h1>HallIssues</h1>
+              <h1>AllScholarships</h1>
             </div>
           </div>
         </div>
@@ -27,4 +27,4 @@ const HallIssues = () => {
   );
 };
 
-export default HallIssues;
+export default AllScholarships;

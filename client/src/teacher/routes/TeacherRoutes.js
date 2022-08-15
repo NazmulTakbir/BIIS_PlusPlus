@@ -26,6 +26,8 @@ import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/R
 
 import DepartmentalIssues from "../pages/Department_Office/DepartmentIssues";
 import HallIssues from "../pages/Hall Office/HallIssues";
+import PendingScholarships from "../pages/Hall Office/PendingScholarships";
+import AllScholarships from "../pages/Hall Office/AllScholarships";
 
 const TeacherRoutes = () => {
   return (
@@ -93,9 +95,13 @@ const TeacherRoutes = () => {
         <DepartmentalIssues />
       </Route>
 
-      <Route path="/hallissues" exact>
-        <HallIssues />
+      <Route path="/hallissues/scholarships/pending" exact>
+        <PendingScholarships />
       </Route>
+
+      <Route path="/hallissues/scholarships/processing" exact>
+        <AllScholarships />
+      </Route>      
 
       <Redirect to="/teacherinfo" />
     </Switch>
