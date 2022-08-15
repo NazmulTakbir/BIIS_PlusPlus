@@ -21,6 +21,7 @@ import DeptFeedback from "../pages/Department_Office/Feedback";
 import DeptStudentInfo from "../pages/Department_Office/StudentProfile/Info";
 import DeptStudentAcademic from "../pages/Department_Office/StudentProfile/Academic";
 import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/Registration";
+import DeptStudentScholarships from "../pages/Department_Office/StudentProfile/Scholarships";
 
 
 import HallPendingScholarships from "../pages/Hall Office/PendingScholarships";
@@ -99,6 +100,9 @@ const TeacherRoutes = () => {
       <Route path="/deptStudents/profile/registration/:studentID" exact>
         <DeptStudentRegistration />
       </Route>
+      <Route path="/deptStudents/profile/scholarships/:studentID" exact>
+        <DeptStudentScholarships />
+      </Route>      
 
       <Route path="/hallissues/scholarships/pending" exact>
         <HallPendingScholarships />

@@ -276,6 +276,29 @@ const getScholarshipRequests = async (req, res, next) => {
   }
 };
 
+const getStudentScholarshipRequests = async (req, res, next) => {
+  try {
+    const sid = req.params.sid;
+    console.log("sid is: " + sid);
+    queryRes = await pool.query(
+      `select scholarship_id, student_id, session_id, \
+        (select name from student where student_id=scholarship.student_id) as name, \
+          (
+            select scholarship_name from "scholarship type" \
+            where scholarship_type_id=scholarship.scholarship_type_id \
+          ) \
+          from scholarship where student_id=$1 and scholarship_state='awaiting_head'`,
+      [sid]
+    );
+    console.log(queryRes.rows);
+    res.json({ message: "getScholarshipRequests", data: queryRes.rows });
+  } catch (err) {
+    const error = new HttpError("Fetching Grades Failed", 500);
+    return next(error);
+  }
+};
+
+
 
 exports.postApproveRegistrationRequests = postApproveRegistrationRequests;
 exports.postRejectRegistrationRequests = postRejectRegistrationRequests;
@@ -287,3 +310,4 @@ exports.getRegistrationRequestSummary = getRegistrationRequestSummary;
 exports.getFeedbacks = getFeedbacks;
 exports.getDepartmentStudents = getDepartmentStudents;
 exports.getScholarshipRequests = getScholarshipRequests;
+exports.getStudentScholarshipRequests = getStudentScholarshipRequests;

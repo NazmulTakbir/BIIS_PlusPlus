@@ -80,5 +80,6 @@ TeacherRoutes.post(
 );
 
 TeacherRoutes.get("/departmenthead/scholarshiprequests", DepartmentHeadController.getScholarshipRequests);
+TeacherRoutes.get("/departmenthead/student/scholarshiprequests/:sid", DepartmentHeadController.getStudentScholarshipRequests);
 
 module.exports = TeacherRoutes;

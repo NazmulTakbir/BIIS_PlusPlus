@@ -39,6 +39,10 @@ const DeptStudentInfo = () => {
       title: "Course Registration",
       link: "/deptStudents/profile/registration/" + studentID,
     },
+    {
+      title: "Scholarships",
+      link: "/deptStudents/profile/scholarships/" + studentID,
+    },    
   ];
 
   return (

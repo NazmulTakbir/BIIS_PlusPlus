@@ -77,6 +77,10 @@ const DeptStudentRegistration = () => {
       title: "Course Registration",
       link: "/deptStudents/profile/registration/" + studentID,
     },
+    {
+      title: "Scholarships",
+      link: "/deptStudents/profile/scholarships/" + studentID,
+    },    
   ];
 
   const approveRequests = async (args) => {
