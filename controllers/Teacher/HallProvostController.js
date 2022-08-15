@@ -6,10 +6,6 @@ const getScholarshipRequests = async (req, res, next) => {
   try {
     let queryRes = await pool.query(`Select hall_id from public.hall where hall_provost_id=$1;`, [req.userData.id]);
     const hall_id = queryRes.rows[0]["hall_id"];
-<<<<<<< HEAD
-    //console.log("hall id is:" + hall_id);
-=======
->>>>>>> cc243cfdb965affed531778cc5efcb57d2721f03
 
     queryRes = await pool.query(
       `SELECT scholarship.scholarship_id, scholarship.student_id, student.name, scholarship.session_id, \
@@ -19,10 +15,6 @@ const getScholarshipRequests = async (req, res, next) => {
       where student.hall_id = $1 and scholarship.scholarship_state='awaiting_provost';`,
       [hall_id]
     );
-<<<<<<< HEAD
-    //console.log(queryRes.rows);
-=======
->>>>>>> cc243cfdb965affed531778cc5efcb57d2721f03
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
