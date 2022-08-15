@@ -22,7 +22,7 @@ import DeptStudentInfo from "../pages/Department_Office/StudentProfile/Info";
 import DeptStudentAcademic from "../pages/Department_Office/StudentProfile/Academic";
 import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/Registration";
 
-import DepartmentalIssues from "../pages/Department_Office/DepartmentIssues";
+
 import HallPendingScholarships from "../pages/Hall Office/PendingScholarships";
 import HallPendingResults from "../pages/Hall Office/PendingResults";
 import HallAllScholarships from "../pages/Hall Office/AllScholarships";
@@ -31,8 +31,10 @@ import MemberAcademics from "../pages/Hall Office/HallMembers/MemberAcademics";
 import ScholarshipAction from "../pages/Hall Office/HallMembers/ScholarshipAction";
 import HallStudentDues from "../pages/Hall Office/HallMembers/Dues";
 import HallStudentResults from "../pages/Hall Office/HallMembers/Results";
+import ScholarshipsHead from "../pages/Department_Office/ScholarshipsHead";
 
 import HallStudentList from "../pages/Hall Office/StudentList";
+
 
 const TeacherRoutes = () => {
   return (
@@ -85,6 +87,9 @@ const TeacherRoutes = () => {
       <Route path="/deptStudents/feedback" exact>
         <DeptFeedback />
       </Route>
+      <Route path="/deptStudents/scholarship" exact>
+        <ScholarshipsHead />
+      </Route>      
       <Route path="/deptStudents/profile/info/:studentID" exact>
         <DeptStudentInfo />
       </Route>
@@ -93,10 +98,6 @@ const TeacherRoutes = () => {
       </Route>
       <Route path="/deptStudents/profile/registration/:studentID" exact>
         <DeptStudentRegistration />
-      </Route>
-
-      <Route path="/deptissues" exact>
-        <DepartmentalIssues />
       </Route>
 
       <Route path="/hallissues/scholarships/pending" exact>

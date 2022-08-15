@@ -253,6 +253,30 @@ const postRejectRegistrationRequests = async (req, res, next) => {
   }
 };
 
+// for scholarships =============================================================
+const getScholarshipRequests = async (req, res, next) => {
+  try {
+    let queryRes = await pool.query(`Select dept_id from public.department where dept_head=$1;`, [req.userData.id]);
+    const dept_id = queryRes.rows[0]["dept_id"];
+    console.log("dept head is: " + dept_id);
+
+    queryRes = await pool.query(
+      `SELECT scholarship.scholarship_id, scholarship.student_id, student.name, scholarship.session_id, \
+      (SELECT scholarship_name from "scholarship type" where scholarship_type_id=scholarship.scholarship_type_id) \
+      FROM scholarship \
+      INNER JOIN student ON scholarship.student_id=student.student_id \
+      where student.dept_id = $1 and scholarship.scholarship_state='awaiting_head';` , [dept_id]
+    );
+    console.log(queryRes.rows);
+
+    res.json({ message: "getScholarshipRequests", data: queryRes.rows });
+  } catch (err) {
+    const error = new HttpError("Fetching Student Info Failed", 500);
+    return next(error);
+  }
+};
+
+
 exports.postApproveRegistrationRequests = postApproveRegistrationRequests;
 exports.postRejectRegistrationRequests = postRejectRegistrationRequests;
 exports.getAvailableResults = getAvailableResults;
@@ -262,3 +286,4 @@ exports.getDeptStudentInfo = getDeptStudentInfo;
 exports.getRegistrationRequestSummary = getRegistrationRequestSummary;
 exports.getFeedbacks = getFeedbacks;
 exports.getDepartmentStudents = getDepartmentStudents;
+exports.getScholarshipRequests = getScholarshipRequests;

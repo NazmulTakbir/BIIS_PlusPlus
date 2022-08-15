@@ -79,4 +79,6 @@ TeacherRoutes.post(
   DepartmentHeadController.postRejectRegistrationRequests
 );
 
+TeacherRoutes.get("/departmenthead/scholarshiprequests", DepartmentHeadController.getScholarshipRequests);
+
 module.exports = TeacherRoutes;
