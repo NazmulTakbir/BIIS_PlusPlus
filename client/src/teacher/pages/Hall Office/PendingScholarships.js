@@ -33,7 +33,7 @@ const fetchTableData = async (api_route, setTableData, auth) => {
               textColor: "white",
               backColor: "#697A8D",
               onClickFunction: openInNewTab,
-              onClickArguments: ["/advisees/profile/info/" + jsonData[i]["student_id"]],
+              onClickArguments: ["/hallissues/profile/info/" + jsonData[i]["student_id"]],
             },
           ],
         },
@@ -52,7 +52,7 @@ const PendingScholarships = () => {
 
   useEffect(() => {
     fetchTableData(`/api/teacher/hallprovost/scholarshiprequests`, setTableData, auth);
-  }, [auth]);
+  }, [auth, tableData]);
 
   return (
     <React.Fragment>

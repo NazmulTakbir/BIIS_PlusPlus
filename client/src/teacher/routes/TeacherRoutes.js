@@ -25,9 +25,11 @@ import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/R
 
 
 import DepartmentalIssues from "../pages/Department_Office/DepartmentIssues";
-import HallIssues from "../pages/Hall Office/HallIssues";
 import PendingScholarships from "../pages/Hall Office/PendingScholarships";
 import AllScholarships from "../pages/Hall Office/AllScholarships";
+import MemberInfo from "../pages/Hall Office/HallMembers/MemberInfo";
+import MemberAcademics from "../pages/Hall Office/HallMembers/MemberAcademics";
+import ScholarshipAction from "../pages/Hall Office/HallMembers/ScholarshipAction";
 
 const TeacherRoutes = () => {
   return (
@@ -98,6 +100,16 @@ const TeacherRoutes = () => {
       <Route path="/hallissues/scholarships/pending" exact>
         <PendingScholarships />
       </Route>
+
+      <Route path="/hallissues/profile/info/:studentID" exact>
+        <MemberInfo />
+      </Route>
+      <Route path="/hallissues/profile/academic/:studentID" exact>
+        <MemberAcademics />
+      </Route>
+      <Route path="/hallissues/profile/scholarship/:studentID" exact>
+        <ScholarshipAction />
+      </Route>      
 
       <Route path="/hallissues/scholarships/processing" exact>
         <AllScholarships />

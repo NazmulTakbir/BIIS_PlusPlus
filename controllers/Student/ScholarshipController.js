@@ -41,7 +41,12 @@ const getProcessing = async (req, res, next) => {
       "select s.scholarship_id , s.scholarship_state , s.session_id , s.payment_date , st.scholarship_name , st.amount \
       from scholarship as s , \"scholarship type\" as st \
       where s.scholarship_type_id = st.scholarship_type_id and s.student_id = $1 and \
-      (s.scholarship_state='awaiting_provost' or s.scholarship_state='awaiting_head' or s.scholarship_state='awaiting_comptroller')",
+      (s.scholarship_state='awaiting_provost' or s.scholarship_state='awaiting_head' \
+      or s.scholarship_state='awaiting_comptroller' \
+      or s.scholarship_state='rejected_provost' \
+      or s.scholarship_state='rejected_head' \
+      or s.scholarship_state='rejected_comptroller' \
+      )",
       [req.userData.id]
     );
 

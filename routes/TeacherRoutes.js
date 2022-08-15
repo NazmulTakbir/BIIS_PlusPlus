@@ -39,7 +39,19 @@ TeacherRoutes.post(
 
 TeacherRoutes.get("/advisees/feedbacks", AdviseeFeedbackController.getFeedbacks);
 
+//pending requests
 TeacherRoutes.get("/hallprovost/scholarshiprequests", HallProvostController.getScholarshipRequests);
+
+//all scholarships in stages
+TeacherRoutes.get("/hallprovost/allrequests", HallProvostController.getAllScholarshipRequests);
+
+//new window for approving requests
+TeacherRoutes.get("/hallmemberinfo/:sid", HallProvostController.getHallMemberInfo);
+TeacherRoutes.get("/hallmemberinfo/:sid/getAvailableResults", HallProvostController.getAvailableResults);
+TeacherRoutes.get("/hallmemberinfo/:sid/getGrades/:level/:term", HallProvostController.getGrades);
+TeacherRoutes.get("/hallmemberinfo/scholarshiprequests/:sid", HallProvostController.getHallMemberScholarshipRequests);
+TeacherRoutes.post("/hallmemberinfo/approvescholarship/:scid", HallProvostController.allowHallMemberScholarshipRequests);
+TeacherRoutes.post("/hallmemberinfo/rejectscholarship/:scid", HallProvostController.rejectHallMemberScholarshipRequests);
 
 //dept head routes
 TeacherRoutes.get("/departmenthead/feedbacks", DepartmentHeadController.getFeedbacks);
