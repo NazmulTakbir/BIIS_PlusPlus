@@ -63,5 +63,6 @@ AdminRoutes.get("/academiccalender/samplefile", AcademicCalenderController.getSa
 
 AdminRoutes.get("/comptroller/pendingscholarships", ComptrollerController.getPendingScholarships);
 AdminRoutes.get("/comptroller/pendingdues", ComptrollerController.getPendingDues);
+AdminRoutes.post("/comptroller/markduesaspaid", ComptrollerController.postMarkDuesPaid);
 
 module.exports = AdminRoutes;
