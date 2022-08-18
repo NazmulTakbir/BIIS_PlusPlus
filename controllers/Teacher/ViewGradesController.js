@@ -1,6 +1,5 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
 
 const getCourses = async (req, res, next) => {
   try {

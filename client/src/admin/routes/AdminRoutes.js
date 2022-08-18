@@ -51,7 +51,7 @@ const StudentRoutes = () => {
       <Route path="/paymentscholarships" exact>
         <PaymentScholarships />
       </Route>
-      <Redirect to="/paymentscholarships" />
+      <Redirect to="/admininfo" />
     </Switch>
   );
 };

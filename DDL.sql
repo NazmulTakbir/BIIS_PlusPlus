@@ -188,36 +188,23 @@ CREATE TABLE "registration request"
 DROP TABLE IF EXISTS "mark distribution policy";
 CREATE TABLE "mark distribution policy"
 (
-    md_policy_id SERIAL PRIMARY KEY,
-    total_marks integer
-);
-
-DROP TABLE IF EXISTS "marking criteria";
-CREATE TABLE "marking criteria"
-(
     criteria_name text,
-    md_policy_id integer,
     criteria_weight real,
     total_marks integer,
-    CONSTRAINT marking_criteria_pkey PRIMARY KEY (criteria_name, md_policy_id)
+	teacher_id integer, 
+	offering_id integer,
+    CONSTRAINT marking_criteria_pkey PRIMARY KEY (criteria_name, offering_id, teacher_id)
 );
 
 DROP TABLE IF EXISTS "grade distribution policy";
 CREATE TABLE "grade distribution policy"
 (
-    gd_policy_id SERIAL PRIMARY KEY
-);
-
-DROP TABLE IF EXISTS "grade distribution policy details";
-CREATE TABLE "grade distribution policy details"
-(
-    gd_policy_id integer,
-    policy_number integer,
+    offering_id integer,
     upper_bound integer,
     lower_bound integer,
     letter_grade text,
     grade_point text,
-    CONSTRAINT grade_dist_policy_details_pkey PRIMARY KEY (gd_policy_id, policy_number)
+    CONSTRAINT grade_dist_policy_details_pkey PRIMARY KEY (offering_id, letter_grade)
 );
 
 DROP TABLE IF EXISTS "result util";

@@ -12,7 +12,7 @@ const DuesController = require("../controllers/Admin/DuesController");
 const AcademicCalenderController = require("../controllers/Admin/AcademicCalenderController");
 const ScholarshipController = require("../controllers/Admin/ScholarshipController");
 const ComptrollerController = require("../controllers/Admin/ComptrollerController");
-
+const InfoController = require("../controllers/Admin/InfoController");
 const verifyAdmin = require("../controllers/Authentication/VerifyAdmin");
 
 const AdminRoutes = express.Router();
@@ -64,5 +64,8 @@ AdminRoutes.get("/academiccalender/samplefile", AcademicCalenderController.getSa
 AdminRoutes.get("/comptroller/pendingscholarships", ComptrollerController.getPendingScholarships);
 AdminRoutes.get("/comptroller/pendingdues", ComptrollerController.getPendingDues);
 AdminRoutes.post("/comptroller/markduesaspaid", ComptrollerController.postMarkDuesPaid);
+
+AdminRoutes.get("/admininfo" , InfoController.getAdminInfo);
+AdminRoutes.get("/" , InfoController.getAdminInfo);
 
 module.exports = AdminRoutes;

@@ -18,6 +18,13 @@ TeacherRoutes.use(verifyTeacher);
 
 TeacherRoutes.get("/teacherinfo", InfoController.getInfo);
 TeacherRoutes.get("/adviseelist", InfoController.getAllAdvisee);
+TeacherRoutes.get("/coursescoordinated", InfoController.getCoursesCoordinated);
+TeacherRoutes.get("/coursestaught", InfoController.getCoursesTaught);
+TeacherRoutes.get("/coursesscrutinized", InfoController.getCoursesScrutinized);
+TeacherRoutes.get("/assignedteachers/:course_id", InfoController.getAssignedTeachers);
+TeacherRoutes.post("/newmarkingcriteria", InfoController.postMarkingCriteria);
+TeacherRoutes.get("/markingcriteria/:course_id", InfoController.getMarkingCriteria);
+
 TeacherRoutes.get("/adviseeinfo/:sid", AdviseeInfoController.getAdviseeInfo);
 TeacherRoutes.get("/advisee/:sid/getAvailableResults", AdviseeInfoController.getAvailableResults);
 TeacherRoutes.get("/advisee/:sid/getGrades/:level/:term", AdviseeInfoController.getGrades);
@@ -80,14 +87,11 @@ TeacherRoutes.post(
 );
 
 TeacherRoutes.get("/departmenthead/scholarshiprequests", DepartmentHeadController.getScholarshipRequests);
-TeacherRoutes.get("/departmenthead/student/scholarshiprequests/:sid", DepartmentHeadController.getStudentScholarshipRequests);
-TeacherRoutes.post(
-  "/departmenthead/approvescholarship/",
-  DepartmentHeadController.allowDeptScholarshipRequests
+TeacherRoutes.get(
+  "/departmenthead/student/scholarshiprequests/:sid",
+  DepartmentHeadController.getStudentScholarshipRequests
 );
-TeacherRoutes.post(
-  "/departmenthead/rejectscholarship/",
-  DepartmentHeadController.rejectDeptScholarshipRequests
-);
+TeacherRoutes.post("/departmenthead/approvescholarship/", DepartmentHeadController.allowDeptScholarshipRequests);
+TeacherRoutes.post("/departmenthead/rejectscholarship/", DepartmentHeadController.rejectDeptScholarshipRequests);
 
 module.exports = TeacherRoutes;
