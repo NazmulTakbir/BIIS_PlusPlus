@@ -117,7 +117,6 @@ const getOffering_admin_dept = async (req, res, next) => {
 
     const currentSession = await getCurrentSession();
 
-    //console.log(offered_to_dept_id);
     data = [];
     queryRes = await pool.query(
       'select c.course_name , co.offering_id from public."course" as c , public."course offering" as co where \
@@ -129,8 +128,7 @@ const getOffering_admin_dept = async (req, res, next) => {
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i]);
     }
-    //print data
-    console.log(data);
+
     res.json({ message: "getOffering_admin_dept successful", data: data });
   } catch (err) {
     const error = new HttpError("getOffering_admin_dept failed", 500);
