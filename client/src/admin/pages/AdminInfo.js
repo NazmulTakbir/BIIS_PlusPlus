@@ -4,14 +4,13 @@ import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
 
-import ComptrollerAdminProfile from "../../shared/components/AdminProfile/ComptrollerAdminProfile";
-import OfficeAdminProfile from "../../shared/components/AdminProfile/OfficeAdminProfile";
-import HallAdminProfile from "../../shared/components/AdminProfile/HallAdminProfile";
-import DepartmentAdminProfile from "../../shared/components/AdminProfile/DepartmentAdminProfile"
+import ComptrollerAdminProfile from "./AdminProfile/ComptrollerAdminProfile";
+import OfficeAdminProfile from "./AdminProfile/OfficeAdminProfile";
+import HallAdminProfile from "./AdminProfile/HallAdminProfile";
+import DepartmentAdminProfile from "./AdminProfile/DepartmentAdminProfile";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
-
 
 const AdminInfo = () => {
   const auth = useContext(AuthContext);
@@ -19,18 +18,17 @@ const AdminInfo = () => {
   const renderCell = () => {
     switch (auth.userType) {
       case "comptroller admin":
-        return <ComptrollerAdminProfile/>    
+        return <ComptrollerAdminProfile />;
       case "office admin":
-        return <OfficeAdminProfile/>;
+        return <OfficeAdminProfile />;
       case "hall admin":
-        return <HallAdminProfile/>;
+        return <HallAdminProfile />;
       case "department admin":
-        return <DepartmentAdminProfile/>;
+        return <DepartmentAdminProfile />;
       default:
         return null;
     }
   };
-
 
   return (
     <React.Fragment>
@@ -48,8 +46,6 @@ const AdminInfo = () => {
       </div>
     </React.Fragment>
   );
-
-  
 };
 
 export default AdminInfo;
