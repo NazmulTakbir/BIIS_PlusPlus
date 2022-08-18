@@ -2,10 +2,10 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import TeacherInfo from "../pages/Info/TeacherInfo";
 
+import CoursesCoordinated from "../pages/Courses/CoursesCoordinated";
+import CoursesTaught from "../pages/Courses/CoursesTaught";
+import CoursesScrutinized from "../pages/Courses/CoursesScrutinized";
 import AllCourses from "../pages/Courses/AllCourses";
-import AddGrades from "../pages/Courses/CourseDetail/AddGrades";
-import ViewGrades from "../pages/Courses/CourseDetail/ViewGrades";
-import Scrutinize from "../pages/Courses/CourseDetail/Scrutinize";
 
 import AdviseeCourseRegistration from "../pages/Advisees/CourseRegistration";
 import AdviseeFeedback from "../pages/Advisees/Feedback";
@@ -23,7 +23,6 @@ import DeptStudentAcademic from "../pages/Department_Office/StudentProfile/Acade
 import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/Registration";
 import DeptStudentScholarships from "../pages/Department_Office/StudentProfile/Scholarships";
 
-
 import HallPendingScholarships from "../pages/Hall Office/PendingScholarships";
 import HallPendingResults from "../pages/Hall Office/PendingResults";
 import HallAllScholarships from "../pages/Hall Office/AllScholarships";
@@ -36,7 +35,6 @@ import ScholarshipsHead from "../pages/Department_Office/ScholarshipsHead";
 
 import HallStudentList from "../pages/Hall Office/StudentList";
 
-
 const TeacherRoutes = () => {
   return (
     <Switch>
@@ -47,17 +45,17 @@ const TeacherRoutes = () => {
         <TeacherInfo />
       </Route>
 
+      <Route path="/courses/coordinated" exact>
+        <CoursesCoordinated />
+      </Route>
+      <Route path="/courses/taught" exact>
+        <CoursesTaught />
+      </Route>
+      <Route path="/courses/scrutinized" exact>
+        <CoursesScrutinized />
+      </Route>
       <Route path="/courses/all" exact>
         <AllCourses />
-      </Route>
-      <Route path="/courses/addgrades" exact>
-        <AddGrades />
-      </Route>
-      <Route path="/courses/viewgrades" exact>
-        <ViewGrades />
-      </Route>
-      <Route path="/courses/scrutinize" exact>
-        <Scrutinize />
       </Route>
 
       <Route path="/advisees/courseregistration" exact>
@@ -90,7 +88,7 @@ const TeacherRoutes = () => {
       </Route>
       <Route path="/deptStudents/scholarship" exact>
         <ScholarshipsHead />
-      </Route>      
+      </Route>
       <Route path="/deptStudents/profile/info/:studentID" exact>
         <DeptStudentInfo />
       </Route>
@@ -102,7 +100,7 @@ const TeacherRoutes = () => {
       </Route>
       <Route path="/deptStudents/profile/scholarships/:studentID" exact>
         <DeptStudentScholarships />
-      </Route>      
+      </Route>
 
       <Route path="/hallissues/scholarships/pending" exact>
         <HallPendingScholarships />

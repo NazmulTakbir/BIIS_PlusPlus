@@ -41,7 +41,7 @@ const AddDues = () => {
         });
         let jsonData = await response.json();
         setDues_type_list(jsonData.data);
-        console.log(jsonData.data);
+
         response = await fetch(`/api/admin/student/getStudentsOfDept/${admin_dept_id}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });

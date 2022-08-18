@@ -249,7 +249,7 @@ const AddCourseTeachers = () => {
                       label="Role of Teacher"
                       onChange={(e) => setRole(e.target.value)}
                     >
-                      {["Course Taker", "Scrutinizer"].map((val, key) => {
+                      {["Coordinator", "Course Teacher", "Scrutinizer"].map((val, key) => {
                         return (
                           <MenuItem key={key} value={val}>
                             {val}

@@ -6,7 +6,6 @@ import { SidebarData } from "../components/SidebarData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
-import PendingScholarships from "./../../teacher/pages/Hall Office/PendingScholarships";
 
 const PaymentDues = () => {
   const auth = useContext(AuthContext);

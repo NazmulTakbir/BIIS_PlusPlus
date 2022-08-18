@@ -1,13 +1,11 @@
 import Papa from "papaparse";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
 
 import "../../shared/components/MainContainer.css";
-import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -23,7 +21,6 @@ const AddOffering = () => {
   const auth = useContext(AuthContext);
   const [currentSession, setCurrentSession] = useState("");
   const fileRef = useRef();
-  const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
   const [dropDownTextCourseID, setdropDownTextCourseID] = useState("Select Course ID");
@@ -62,15 +59,16 @@ const AddOffering = () => {
     fetchData();
   }, [auth]);
 
-
   const addCourseOffering = async (e) => {
     e.preventDefault();
 
-    let data = [{
-      course_id: dropDownTextCourseID,
-      exam_slot_id: dropDownTextExamSlotID,
-      session_id: currentSession,
-    }];
+    let data = [
+      {
+        course_id: dropDownTextCourseID,
+        exam_slot_id: dropDownTextExamSlotID,
+        session_id: currentSession,
+      },
+    ];
 
     await fetch(`/api/admin/offering/add`, {
       method: "POST",
@@ -98,12 +96,11 @@ const AddOffering = () => {
   };
 
   const handleFileChange = async (e) => {
-    setMessage("");
     if (e.target.files.length) {
       const inputFile = e.target.files[0];
       const fileExtension = inputFile?.type.split("/")[1];
       if (!allowedExtensions.includes(fileExtension)) {
-        setMessage("Please input a csv file");
+        alert("Please input a csv file");
         return;
       }
       setFile(inputFile);
@@ -111,7 +108,10 @@ const AddOffering = () => {
   };
 
   const handleFileSubmit = async () => {
-    if (!file) return setMessage("Enter a valid file");
+    if (!file) {
+      alert("Enter a valid file");
+      return;
+    }
 
     const reader = new FileReader();
 
@@ -130,7 +130,7 @@ const AddOffering = () => {
             }),
           });
           setFile("");
-          setMessage("Course Offerings Added Successfully");
+          alert("Course Offerings Added Successfully");
           fileRef.current.value = null;
         },
       });
@@ -146,7 +146,7 @@ const AddOffering = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-            <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
+              <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
                 <div
                   className="sections-heading"
                   style={{
@@ -214,65 +214,58 @@ const AddOffering = () => {
                 </div>
               </div>
 
-
               <form onSubmit={addCourseOffering} style={{ width: "350px", margin: "auto" }}>
-
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
-                    <InputLabel id="demo-simple-select-label">Course ID</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="offering_id"
-                      name="offering_id"
-                      value={dropDownTextCourseID}
-                      label="Course Offering"
-                      onChange={(e) => setdropDownTextCourseID(e.target.value)}
-                    >
-                      {dropDownOptionsCourseID.map((val,key) => {
-                    return (
-                     
-                       <MenuItem key={key} value={val}>
-                       Course ID : {val}
-                     </MenuItem>
-                     );
+                <FormControl fullWidth style={{ marginTop: "25px" }}>
+                  <InputLabel id="demo-simple-select-label">Course ID</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="offering_id"
+                    name="offering_id"
+                    value={dropDownTextCourseID}
+                    label="Course Offering"
+                    onChange={(e) => setdropDownTextCourseID(e.target.value)}
+                  >
+                    {dropDownOptionsCourseID.map((val, key) => {
+                      return (
+                        <MenuItem key={key} value={val}>
+                          Course ID : {val}
+                        </MenuItem>
+                      );
                     })}
-                    </Select>
-                  </FormControl>
+                  </Select>
+                </FormControl>
 
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
-                    <InputLabel id="demo-simple-select-label">Exam Slot ID</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="offering_id"
-                      name="offering_id"
-                      value={dropDownTextExamSlotID}
-                      label="Course Offering"
-                      onChange={(e) => setdropDownTextExamSlotID(e.target.value)}
-                    >
-                      {dropDownOptionsExamSlotID.map((val,key) => {
-                    return (
-                     
-                       <MenuItem key={key} value={val}>
-                       Exam Slot ID : {val}
-                     </MenuItem>
-                     );
+                <FormControl fullWidth style={{ marginTop: "25px" }}>
+                  <InputLabel id="demo-simple-select-label">Exam Slot ID</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="offering_id"
+                    name="offering_id"
+                    value={dropDownTextExamSlotID}
+                    label="Course Offering"
+                    onChange={(e) => setdropDownTextExamSlotID(e.target.value)}
+                  >
+                    {dropDownOptionsExamSlotID.map((val, key) => {
+                      return (
+                        <MenuItem key={key} value={val}>
+                          Exam Slot ID : {val}
+                        </MenuItem>
+                      );
                     })}
-                    </Select>
-                  </FormControl>
+                  </Select>
+                </FormControl>
 
-                 
-
-                  <CustomButton
-                    type="submit"
-                    label="Submit"
-                    variant="contained"
-                    color="#ffffff"
-                    bcolor="#b13137"
-                    margin="40px"
-                    padding="10px"
-                    fontSize="17px !important"
-                  />
-                </form>
-
+                <CustomButton
+                  type="submit"
+                  label="Submit"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="40px"
+                  padding="10px"
+                  fontSize="17px !important"
+                />
+              </form>
             </div>
           </div>
         </div>
