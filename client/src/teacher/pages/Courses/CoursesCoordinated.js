@@ -19,9 +19,9 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
 const criteriaColumns = ["CRITERIA NAME", "WEIGHT", "TOTAL MARKS", "ASSIGNED TEACHER"];
-const columnLabels = ["CRITERIA NAME", "WEIGHT", "TOTAL MARKS", "ASSIGNED TEACHER"];
+const gradeBoundaryColumns = ["LOWER BOUND", "UPPER BOUND", "GRADE POINT", "LETTER GRADE"];
 
-const fetchTableData = async (api_route, setTableData, auth) => {
+const fetchCriteriaData = async (api_route, setTableData, auth) => {
   try {
     const response = await fetch(api_route, {
       headers: { Authorization: "Bearer " + auth.token },
@@ -42,6 +42,27 @@ const fetchTableData = async (api_route, setTableData, auth) => {
   }
 };
 
+const fetchGradingData = async (api_route, setTableData, auth) => {
+  try {
+    const response = await fetch(api_route, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    const jsonData = (await response.json())["data"];
+    let tableData = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["lower_bound"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["upper_bound"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["grade_point"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["letter_grade"] } });
+      tableData.push(row);
+    }
+    setTableData(tableData);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const CoursesCoordinated = () => {
   const auth = useContext(AuthContext);
 
@@ -49,13 +70,18 @@ const CoursesCoordinated = () => {
   const [dropDownOptions, setDropDownOptions] = useState([]);
   const [noneSelected, setNoneSelected] = useState(true);
 
-  const [tableData, setTableData] = useState([]);
   const [criteriaTable, setCriteriaTable] = useState([]);
   const [newCriteria, setNewCriteria] = useState("");
   const [newWeight, setNewWeight] = useState("");
   const [newTotalMarks, setNewTotalMarks] = useState("");
   const [newAssignedTeacher, setNewAssignedTeacher] = useState("");
   const [availableTeachers, setAvailableTeachers] = useState([]);
+
+  const [gradeBoundaryTable, setGradeBoundaryTable] = useState([]);
+  const [newLowerBound, setNewLowerBound] = useState("");
+  const [newUpperBound, setNewUpperBound] = useState("");
+  const [newLetterGrade, setNewLetterGrade] = useState("");
+  const [newGradePoint, setNewGradePoint] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +99,8 @@ const CoursesCoordinated = () => {
   }, [auth]);
 
   const dropDownSelect = async (value) => {
-    fetchTableData(`/api/teacher/markingcriteria/${value}`, setCriteriaTable, auth);
+    fetchCriteriaData(`/api/teacher/markingcriteria/${value}`, setCriteriaTable, auth);
+    fetchGradingData(`/api/teacher/gradingboundary/${value}`, setGradeBoundaryTable, auth);
 
     setCourseID(value);
 
@@ -110,7 +137,7 @@ const CoursesCoordinated = () => {
           }),
         });
 
-        fetchTableData(`/api/teacher/markingcriteria/${course_id}`, setCriteriaTable, auth);
+        fetchCriteriaData(`/api/teacher/markingcriteria/${course_id}`, setCriteriaTable, auth);
 
         setNewAssignedTeacher("");
         setNewCriteria("");
@@ -124,31 +151,38 @@ const CoursesCoordinated = () => {
 
   const addGradingBoundaryHandler = async (e) => {
     e.preventDefault();
-    // try {
-    //   let data = [
-    //     {
-    //       dues_type_id: dues_type_id,
-    //       student_id: student_id,
-    //       specification: specification,
-    //       deadline: deadline,
-    //       dues_status: "Not Paid",
-    //     },
-    //   ];
-    //   await fetch(`/api/admin/dues/add`, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-    //     body: JSON.stringify({
-    //       data: data,
-    //     }),
-    //   });
+    if (
+      newLowerBound === "" ||
+      newUpperBound === "" ||
+      newLetterGrade === "" ||
+      newGradePoint === "" ||
+      course_id === "Select Course"
+    ) {
+      alert("Please fill all fields");
+    } else {
+      try {
+        await fetch(`/api/teacher/newgradingboundary`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+          body: JSON.stringify({
+            lower_bound: newLowerBound,
+            upper_bound: newUpperBound,
+            letter_grade: newLetterGrade,
+            grade_point: newGradePoint,
+            course_id: course_id,
+          }),
+        });
 
-    //   setDues_type_id("");
-    //   setStudent_id("");
-    //   setSpecification("");
-    //   setDeadline("");
+        fetchGradingData(`/api/teacher/gradingboundary/${course_id}`, setGradeBoundaryTable, auth);
 
-    //   alert("Dues Added Successfully");
-    // } catch (err) {}
+        setNewLowerBound("");
+        setNewUpperBound("");
+        setNewLetterGrade("");
+        setNewGradePoint("");
+
+        alert("Grading Boundary Added Successfully");
+      } catch (err) {}
+    }
   };
 
   return (
@@ -262,61 +296,60 @@ const CoursesCoordinated = () => {
                   <br />
                   <br />
                   <h4>Grade Distribution Policy</h4>
-                  <Table columnLabels={columnLabels} tableData={tableData} />
+                  <Table columnLabels={gradeBoundaryColumns} tableData={gradeBoundaryTable} />
                   <br />
                   <h5>Add Policy</h5>
-                  <form onSubmit={addCriteriaHandler} style={{ width: "350px", margin: "auto" }}>
-                    <FormControl fullWidth style={{ marginTop: "25px" }}>
-                      <InputLabel id="demo-simple-select-label">Dues Type</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="dues_type_id"
-                        name="dues_type_id"
-                        // value={dues_type_id}
-                        label="Dues Type"
-                        // onChange={(e) => setDues_type_id(e.target.value)}
-                      >
-                        {/* {dues_type_list.map((val, key) => {
-                          return (
-                            <MenuItem key={key} value={val.dues_type_id}>
-                              {val.description}
-                            </MenuItem>
-                          );
-                        })} */}
-                      </Select>
-                    </FormControl>
-
-                    <FormControl fullWidth style={{ marginTop: "25px" }}>
-                      <InputLabel id="demo-simple-select-label">Select Student</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="student_id"
-                        name="student_id"
-                        // value={student_id}
-                        // label="Student"
-                        // onChange={(e) => setStudent_id(e.target.value)}
-                      >
-                        {/* {students_list.map((val, key) => {
-                          return (
-                            <MenuItem key={key} value={val.student_id}>
-                              {val.name} - {val.student_id}
-                            </MenuItem>
-                          );
-                        })} */}
-                      </Select>
-                    </FormControl>
+                  <form onSubmit={addGradingBoundaryHandler} style={{ width: "350px", margin: "auto" }}>
+                    <Textbox
+                      width="350px"
+                      height="46px"
+                      resize="none"
+                      name="Lower Bound"
+                      padding="0px"
+                      fontSize="17px"
+                      placeholder=""
+                      label="Lower Bound"
+                      value={newLowerBound}
+                      onChange={(e) => setNewLowerBound(e.target.value)}
+                    />
 
                     <Textbox
                       width="350px"
                       height="46px"
                       resize="none"
-                      name="Specification"
+                      name="Upper Bound"
                       padding="0px"
                       fontSize="17px"
                       placeholder=""
-                      label="Specification"
-                      // value={specification}
-                      // onChange={(e) => setSpecification(e.target.value)}
+                      label="Upper Bound"
+                      value={newUpperBound}
+                      onChange={(e) => setNewUpperBound(e.target.value)}
+                    />
+
+                    <Textbox
+                      width="350px"
+                      height="46px"
+                      resize="none"
+                      name="Grade Point"
+                      padding="0px"
+                      fontSize="17px"
+                      placeholder=""
+                      label="Grade Point"
+                      value={newGradePoint}
+                      onChange={(e) => setNewGradePoint(e.target.value)}
+                    />
+
+                    <Textbox
+                      width="350px"
+                      height="46px"
+                      resize="none"
+                      name="Letter Grade"
+                      padding="0px"
+                      fontSize="17px"
+                      placeholder=""
+                      label="Letter Grade"
+                      value={newLetterGrade}
+                      onChange={(e) => setNewLetterGrade(e.target.value)}
                     />
 
                     <CustomButton
