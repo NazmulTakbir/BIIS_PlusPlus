@@ -119,12 +119,12 @@ const UploadAcademicCalender = () => {
                 />
                 <div>
                   <h6> Start Date </h6>
-                  <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                  {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
                 </div>
                 <br />
                 <div>
                   <h6> End Date </h6>
-                  <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+                  {/* <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} /> */}
                 </div>
                 <br />
                 <div>

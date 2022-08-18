@@ -26,7 +26,7 @@ const AddDues = () => {
 
   const [dues_type_id, setDues_type_id] = useState(0);
   const [student_id, setStudent_id] = useState(0);
-  const [deadline, setDeadline] = useState(null);
+  const [deadline, setDeadline] = useState(new Date("2022-12-12"));
   const [specification, setSpecification] = useState("");
   const [students_list, setStudents_list] = useState([]);
   const [dues_type_list, setDues_type_list] = useState([]);
@@ -249,7 +249,7 @@ const AddDues = () => {
                     </Select>
                   </FormControl>
 
-                  <DatePicker selected={deadline} onChange={(date) => setDeadline(date)} />
+                  {/* <DatePicker selected={deadline} onChange={(date) => setDeadline(date)} /> */}
 
                   <Textbox
                     width="350px"

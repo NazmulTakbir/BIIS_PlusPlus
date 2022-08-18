@@ -10,7 +10,7 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "STATUS"];
+const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "REQUEST TYPE", "STATUS"];
 
 const fetchTableData = async (api_route, setTableData, setSessionData, auth) => {
   try {
@@ -31,6 +31,7 @@ const fetchTableData = async (api_route, setTableData, setSessionData, auth) => 
         row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
         row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
         row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
+        row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
         row.push({ type: "PlainText", data: { value: jsonData[i]["reg_status"] } });
         tableData.push(row);
       }
@@ -56,8 +57,11 @@ const CoursesPending = () => {
     } else {
       return (
         <React.Fragment>
-          <div className="session-header" style={{margin: "auto", textAlign: "center"}}>
-            <div className="session-text" style={{marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137"}}>
+          <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
+            <div
+              className="session-text"
+              style={{ marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
+            >
               SESSION: {sessionData.session_id}
             </div>
           </div>

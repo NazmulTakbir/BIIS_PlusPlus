@@ -62,13 +62,24 @@ const AddOffering = () => {
   const addCourseOffering = async (e) => {
     e.preventDefault();
 
-    let data = [
-      {
-        course_id: dropDownTextCourseID,
-        exam_slot_id: dropDownTextExamSlotID,
-        session_id: currentSession,
-      },
-    ];
+    let data;
+    if (Number.isInteger(parseInt(dropDownTextExamSlotID))) {
+      data = [
+        {
+          course_id: dropDownTextCourseID,
+          exam_slot_id: dropDownTextExamSlotID,
+          session_id: currentSession,
+        },
+      ];
+    } else {
+      data = [
+        {
+          course_id: dropDownTextCourseID,
+          exam_slot_id: null,
+          session_id: currentSession,
+        },
+      ];
+    }
 
     await fetch(`/api/admin/offering/add`, {
       method: "POST",

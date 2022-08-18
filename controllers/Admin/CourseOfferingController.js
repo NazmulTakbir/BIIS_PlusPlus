@@ -16,7 +16,7 @@ const createCourseOffering = async (data) => {
 
 const postAddCourseOffering = async (req, res, next) => {
   try {
-    allData = req.body.data;
+    let allData = req.body.data;
     for (let rowNo = 0; rowNo < allData.length; rowNo++) {
       let data = [];
       for (let columnNo = 0; columnNo < allAttributes.length; columnNo++) {
@@ -31,7 +31,6 @@ const postAddCourseOffering = async (req, res, next) => {
         }
       }
       await createCourseOffering(data);
-      console.log("adding " + data);
     }
 
     res.status(201).json({ message: "postAddCourseOffering successful" });
@@ -85,9 +84,7 @@ const getunofferedcourses = async (req, res, next) => {
 
 const getexamslots = async (req, res, next) => {
   try {
-    //finding current session
     const currentSession = await getCurrentSession();
-    //console.log(currentSession_);
 
     data = [];
     let queryRes = await pool.query(
