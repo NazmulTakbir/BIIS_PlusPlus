@@ -3,8 +3,14 @@ const HttpError = require("../../models/HttpError");
 
 const getPendingScholarships = async (req, res, next) => {
   try {
-  
-    res.json({ message: "getPendingScholarships successful" });
+    let queryRes = await pool.query(
+      `SELECT scholarship.scholarship_id, scholarship.student_id, student.name, scholarship.session_id,\
+      (SELECT scholarship_name from "scholarship type" where scholarship_type_id=scholarship.scholarship_type_id)\
+      FROM scholarship\
+      INNER JOIN student ON scholarship.student_id=student.student_id\
+      where scholarship_state='awaiting_comptroller';`
+    );
+    res.json({ message: "getPendingScholarships successful", data: queryRes.rows });
   } catch (err) {
     const error = new HttpError("getPendingScholarships failed", 500);
     return next(error);
@@ -46,6 +52,27 @@ const postMarkDuesPaid = async (req, res, next) => {
   }
 }
 
+
+const postMarkScholarshipPaid = async (req, res, next) => {
+  try {
+    const { schIDs } = req.body;
+    console.log(schIDs);
+    let queryRes;
+    for(let i = 0; i < schIDs.length; i++){
+        queryRes = await pool.query(
+          "UPDATE scholarship SET scholarship_state = 'paid', payment_date=NOW() WHERE scholarship_id = $1",[schIDs[i]]
+        );
+    }
+    console.log(schIDs);
+    
+    res.json({ message: "postMarkScholarshipPaid successful" });
+  } catch (err) {
+    const error = new HttpError("postMarkScholarshipPaid failed", 500);
+    return next(error);
+  }
+}
+
+exports.postMarkScholarshipPaid = postMarkScholarshipPaid;
 exports.postMarkDuesPaid = postMarkDuesPaid;
 exports.getPendingScholarships = getPendingScholarships;
 exports.getPendingDues = getPendingDues;
