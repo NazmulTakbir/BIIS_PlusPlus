@@ -6,6 +6,7 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import { make2DArray } from "../../../shared/util/TableFunctions";
+import { SearchMenuData } from "../../components/SearchMenuData";
 
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
@@ -84,7 +85,7 @@ const StudentInfoClassRoutine = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData}/>
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
