@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
+import { SearchMenuData } from "../components/SearchMenuData";
 import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
 
@@ -100,7 +101,7 @@ const UploadAcademicCalender = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">

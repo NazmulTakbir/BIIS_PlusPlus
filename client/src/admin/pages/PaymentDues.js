@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
+import { SearchMenuData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -77,7 +78,7 @@ const PaymentDues = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
