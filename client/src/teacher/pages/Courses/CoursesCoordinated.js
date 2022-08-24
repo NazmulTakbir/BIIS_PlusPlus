@@ -7,6 +7,7 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { SearchMenuData } from "../../components/SearchMenuData";
 import Table from "../../../shared/components/Table/Table";
 import Textbox from "../../../shared/components/Textbox/Textbox";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
@@ -205,7 +206,7 @@ const CoursesCoordinated = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">

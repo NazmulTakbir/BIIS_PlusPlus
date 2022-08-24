@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
+import { SearchMenuData } from "../components/SearchMenuData";
 
 import "../../shared/components/MainContainer.css";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
@@ -152,7 +153,7 @@ const AddOffering = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
