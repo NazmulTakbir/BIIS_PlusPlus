@@ -4,6 +4,7 @@ import SimpleModal from "./SimpleModal";
 import PlainText from "./PlainText";
 import Buttons from "./Buttons";
 import CheckBox from "./CheckBox";
+import TextboxCell from "./TextboxCell";
 
 const Table = (props) => {
   const { columnLabels, tableData } = props;
@@ -18,6 +19,10 @@ const Table = (props) => {
         return <Buttons data={cellData.data} />;
       case "CheckBox":
         return <CheckBox data={cellData.data} />;
+      case "TextboxCell":
+        return <TextboxCell data={cellData.data} />;
+      case "empty":
+        return <td className="text-left"></td>;
       default:
         return null;
     }
