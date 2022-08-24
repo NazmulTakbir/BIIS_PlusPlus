@@ -110,10 +110,21 @@ const sendForScrutiny = async (req, res, next) => {
     const offering_id = queryRes.rows[0]["offering_id"];
 
     for (let i = 0; i < studentIDs.length; i++) {
-      await pool.query(
-        "UPDATE public.\"result details\" SET status='Awaiting Scrutiny' WHERE student_id=$1 and offering_id=$2 and criteria_name=$3;",
-        [studentIDs[i], offering_id, criteria]
+      queryRes = await pool.query(
+        'select scrutinizer_id from "mark distribution policy" where offering_id=$1 and criteria_name=$2;',
+        [offering_id, criteria]
       );
+      if (queryRes.rows[0]["scrutinizer_id"] === null) {
+        await pool.query(
+          "UPDATE public.\"result details\" SET status='Awaiting Department Head Approval' WHERE student_id=$1 and offering_id=$2 and criteria_name=$3;",
+          [studentIDs[i], offering_id, criteria]
+        );
+      } else {
+        await pool.query(
+          "UPDATE public.\"result details\" SET status='Awaiting Scrutiny' WHERE student_id=$1 and offering_id=$2 and criteria_name=$3;",
+          [studentIDs[i], offering_id, criteria]
+        );
+      }
     }
 
     res.json({ message: "sendForScrutiny" });

@@ -22,6 +22,7 @@ TeacherRoutes.get("/coursescoordinated", InfoController.getCoursesCoordinated);
 TeacherRoutes.get("/coursestaught", InfoController.getCoursesTaught);
 TeacherRoutes.get("/coursesscrutinized", InfoController.getCoursesScrutinized);
 TeacherRoutes.get("/assignedteachers/:course_id", InfoController.getAssignedTeachers);
+TeacherRoutes.get("/assignedscrutinizers/:course_id", InfoController.getAssignedScrutinizers);
 
 TeacherRoutes.post("/newmarkingcriteria", CourseCoordinatorController.postMarkingCriteria);
 TeacherRoutes.get("/markingcriteria/:course_id", CourseCoordinatorController.getMarkingCriteria);
@@ -29,6 +30,7 @@ TeacherRoutes.post("/newgradingboundary", CourseCoordinatorController.postGradin
 TeacherRoutes.get("/gradingboundary/:course_id", CourseCoordinatorController.getGradingBoundary);
 
 TeacherRoutes.get("/coursecriteriabyteacher/:course_id", InfoController.getCourseCriteriaByTeacher);
+TeacherRoutes.get("/coursecriteriabyscrutinizer/:course_id", InfoController.getCourseCriteriaByScrutinizer);
 
 TeacherRoutes.get("/adviseeinfo/:sid", AdviseeInfoController.getAdviseeInfo);
 TeacherRoutes.get("/advisee/:sid/getAvailableResults", AdviseeInfoController.getAvailableResults);
@@ -38,7 +40,11 @@ TeacherRoutes.get("/studentmarks/:course_id/:criteria", GradingController.getStu
 TeacherRoutes.post("/studentmarks/:course_id/:criteria", GradingController.postStudentMarks);
 TeacherRoutes.post("/sendForScrutiny/:course_id/:criteria", GradingController.sendForScrutiny);
 
-TeacherRoutes.get("/exam/scrutinize/courses", ScrutinizeController.getCourses);
+TeacherRoutes.get("/scrutinize/getall/:course_id/:criteria", ScrutinizeController.getAll);
+TeacherRoutes.post("/scrutinize/approve/:course_id/:criteria", ScrutinizeController.postApproval);
+TeacherRoutes.post("/scrutinize/reject/:course_id/:criteria", ScrutinizeController.postRejection);
+
+// TeacherRoutes.get("/exam/scrutinize/courses", ScrutinizeController.getCourses);
 
 TeacherRoutes.get("/advisees/registrationrequests/:sid", AdviseeCourseRegistrationController.getRegistrationRequests);
 TeacherRoutes.get("/advisees/registrationsummary", AdviseeCourseRegistrationController.getRegistrationRequestSummary);

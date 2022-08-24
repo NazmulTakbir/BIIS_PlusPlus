@@ -18,7 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
-const criteriaColumns = ["CRITERIA NAME", "WEIGHT", "TOTAL MARKS", "ASSIGNED TEACHER"];
+const criteriaColumns = ["CRITERIA NAME", "WEIGHT", "TOTAL MARKS", "ASSIGNED TEACHER", "ASSIGNED SCURTINIZER"];
 const gradeBoundaryColumns = ["LOWER BOUND", "UPPER BOUND", "GRADE POINT", "LETTER GRADE"];
 
 const fetchCriteriaData = async (api_route, setTableData, auth) => {
@@ -34,6 +34,7 @@ const fetchCriteriaData = async (api_route, setTableData, auth) => {
       row.push({ type: "PlainText", data: { value: jsonData[i]["criteria_weight"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["total_marks"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["teacher_name"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["scrutinizer_name"] } });
       tableData.push(row);
     }
     setTableData(tableData);
@@ -74,8 +75,12 @@ const CoursesCoordinated = () => {
   const [newCriteria, setNewCriteria] = useState("");
   const [newWeight, setNewWeight] = useState("");
   const [newTotalMarks, setNewTotalMarks] = useState("");
+
   const [newAssignedTeacher, setNewAssignedTeacher] = useState("");
+  const [newAssignedScrutinizer, setNewAssignedScrutinizer] = useState("");
+
   const [availableTeachers, setAvailableTeachers] = useState([]);
+  const [availableScrutinizers, setAvailableScrutinizers] = useState([]);
 
   const [gradeBoundaryTable, setGradeBoundaryTable] = useState([]);
   const [newLowerBound, setNewLowerBound] = useState("");
@@ -104,11 +109,17 @@ const CoursesCoordinated = () => {
 
     setCourseID(value);
 
-    const response = await fetch(`/api/teacher/assignedteachers/${value}`, {
+    let response = await fetch(`/api/teacher/assignedteachers/${value}`, {
       headers: { Authorization: "Bearer " + auth.token },
     });
-    const jsonData = await response.json();
+    let jsonData = await response.json();
     setAvailableTeachers(jsonData["data"]);
+
+    response = await fetch(`/api/teacher/assignedscrutinizers/${value}`, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    jsonData = await response.json();
+    setAvailableScrutinizers(jsonData["data"]);
 
     setNoneSelected(false);
   };
@@ -125,6 +136,10 @@ const CoursesCoordinated = () => {
       alert("Please fill all fields");
     } else {
       try {
+        let tempScrutinizerID;
+        if (newAssignedScrutinizer.length === 0) tempScrutinizerID = null;
+        else tempScrutinizerID = newAssignedScrutinizer;
+
         await fetch(`/api/teacher/newmarkingcriteria`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
@@ -134,6 +149,7 @@ const CoursesCoordinated = () => {
             total_marks: newTotalMarks,
             teacher_id: newAssignedTeacher,
             course_id: course_id,
+            scrutinizer_id: tempScrutinizerID,
           }),
         });
 
@@ -143,6 +159,7 @@ const CoursesCoordinated = () => {
         setNewCriteria("");
         setNewWeight("");
         setNewTotalMarks("");
+        setNewAssignedScrutinizer("");
 
         alert("Criteria Added Successfully");
       } catch (err) {}
@@ -272,6 +289,26 @@ const CoursesCoordinated = () => {
                         onChange={(e) => setNewAssignedTeacher(e.target.value)}
                       >
                         {availableTeachers.map((val, key) => {
+                          return (
+                            <MenuItem key={key} value={val.teacher_id}>
+                              {val.name}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth style={{ marginTop: "25px" }}>
+                      <InputLabel id="demo-simple-select-label">Assigned Scrutinizer</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="dues_type_id"
+                        name="teacher"
+                        value={newAssignedScrutinizer}
+                        label="Assigned Teacher"
+                        onChange={(e) => setNewAssignedScrutinizer(e.target.value)}
+                      >
+                        {availableScrutinizers.map((val, key) => {
                           return (
                             <MenuItem key={key} value={val.teacher_id}>
                               {val.name}

@@ -20,8 +20,8 @@ let studentMarks = {};
 const CoursesTaught = () => {
   const auth = useContext(AuthContext);
   const [course_id, setCourseID] = useState("Select Course");
-  const [dropDownOptions, setDropDownOptions] = useState([]);
-  const [noneSelected, setNoneSelected] = useState(true);
+  const [availableCourses, setAvailableCourses] = useState([]);
+  const [noCourseSelected, setNoCourseSelected] = useState(true);
 
   const [availableCriteria, setAvailableCriteria] = useState([]);
   const [selectedCriteria, setSelectedCriteria] = useState("Select Criteria");
@@ -38,7 +38,7 @@ const CoursesTaught = () => {
           headers: { Authorization: "Bearer " + auth.token },
         });
         let jsonData = await response.json();
-        setDropDownOptions(jsonData["data"]);
+        setAvailableCourses(jsonData["data"]);
       } catch (err) {
         console.log(err);
       }
@@ -48,6 +48,7 @@ const CoursesTaught = () => {
 
   const studentMarksCallback = (mark, args, setValue) => {
     const studentID = args[0];
+    const total_marks = args[1];
     if (mark === "") {
       setValue("");
       if (studentID in studentMarks) {
@@ -82,24 +83,24 @@ const CoursesTaught = () => {
       setTotalMarks(jsonData["total_marks"]);
       setCriteriaWeight(jsonData["criteria_weight"]);
 
-      jsonData = jsonData["data"];
+      let data = jsonData["data"];
       let tableData = [];
-      for (let i = 0; i < jsonData.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         let row = [];
-        row.push({ type: "PlainText", data: { value: jsonData[i]["studentID"] } });
-        row.push({ type: "PlainText", data: { value: jsonData[i]["marks"] } });
-        row.push({ type: "PlainText", data: { value: jsonData[i]["status"] } });
+        row.push({ type: "PlainText", data: { value: data[i]["studentID"] } });
+        row.push({ type: "PlainText", data: { value: data[i]["marks"] } });
+        row.push({ type: "PlainText", data: { value: data[i]["status"] } });
 
         if (
-          jsonData[i]["status"] === "No Score Added" ||
-          jsonData[i]["status"] === "Added by Course Teacher" ||
-          jsonData[i]["status"] === "Rejected by Scrutinizer"
+          data[i]["status"] === "No Score Added" ||
+          data[i]["status"] === "Added by Course Teacher" ||
+          data[i]["status"] === "Rejected by Scrutinizer"
         ) {
           row.push({
             type: "TextboxCell",
             data: {
               callback: studentMarksCallback,
-              callbackArguments: [jsonData[i]["studentID"]],
+              callbackArguments: [data[i]["studentID"], jsonData["total_marks"]],
             },
           });
         } else {
@@ -117,7 +118,7 @@ const CoursesTaught = () => {
     }
   };
 
-  const dropDownSelect = async (value) => {
+  const selectCourse = async (value) => {
     setCourseID(value);
 
     const response = await fetch(`/api/teacher/coursecriteriabyteacher/${value}`, {
@@ -126,7 +127,7 @@ const CoursesTaught = () => {
     let jsonData = await response.json();
 
     setAvailableCriteria(jsonData["data"]);
-    setNoneSelected(false);
+    setNoCourseSelected(false);
 
     setSelectedCriteria("Select Criteria");
     setNoCriteriaSelected(true);
@@ -135,7 +136,7 @@ const CoursesTaught = () => {
     studentMarks = {};
   };
 
-  const dropDownCriteriaSelect = async (value) => {
+  const selectCriteria = async (value) => {
     fetchStudentData(`/api/teacher/studentmarks/${course_id}/${value}`);
 
     setSelectedCriteria(value);
@@ -206,9 +207,9 @@ const CoursesTaught = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {dropDownOptions.map((option, optionNo) => {
+                  {availableCourses.map((option, optionNo) => {
                     return (
-                      <Dropdown.Item key={optionNo} onClick={() => dropDownSelect(option)}>
+                      <Dropdown.Item key={optionNo} onClick={() => selectCourse(option)}>
                         {option}
                       </Dropdown.Item>
                     );
@@ -219,7 +220,7 @@ const CoursesTaught = () => {
               <br />
               <br />
 
-              {noneSelected ? null : (
+              {noCourseSelected ? null : (
                 <div>
                   <Dropdown>
                     <Dropdown.Toggle variant="danger" id="dropdown-basic">
@@ -229,7 +230,7 @@ const CoursesTaught = () => {
                     <Dropdown.Menu>
                       {availableCriteria.map((option, optionNo) => {
                         return (
-                          <Dropdown.Item key={optionNo} onClick={() => dropDownCriteriaSelect(option)}>
+                          <Dropdown.Item key={optionNo} onClick={() => selectCriteria(option)}>
                             {option}
                           </Dropdown.Item>
                         );

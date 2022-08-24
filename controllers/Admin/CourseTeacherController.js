@@ -15,7 +15,7 @@ const createCourseTeacher = async (data) => {
 
 const postAddCourseTeacher = async (req, res, next) => {
   try {
-    allData = req.body.data;
+    let allData = req.body.data;
     for (let rowNo = 0; rowNo < allData.length; rowNo++) {
       let data = [];
       for (let columnNo = 0; columnNo < allAttributes.length; columnNo++) {

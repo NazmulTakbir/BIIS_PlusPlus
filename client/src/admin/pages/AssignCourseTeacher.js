@@ -23,8 +23,19 @@ const AddCourseTeachers = () => {
   const [offering_list, setOffering_list] = useState([]);
   const [teacher_list, setTeacher_list] = useState([]);
   const [offering_id, setOffering_id] = useState(0);
-  const [teacher_id, setTeacher_id] = useState(0);
-  const [role, setRole] = useState("");
+
+  const [teacher_ids, setTeacher_ids] = useState([0, 0, 0, 0, 0, 0]);
+  const [roles, setRoles] = useState([0, 0, 0, 0, 0, 0]);
+
+  const [countTeachers, setCountTeachers] = useState(1);
+
+  const incrementCountTeachers = (args) => {
+    setCountTeachers(Math.min(countTeachers + 1, 6));
+  };
+
+  const decrementCountTeachers = (args) => {
+    setCountTeachers(Math.max(countTeachers - 1, 1));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,13 +118,14 @@ const AddCourseTeachers = () => {
   const submissionHandler = async (e) => {
     e.preventDefault();
     try {
-      let data = [
-        {
+      let data = [];
+      for (let i = 0; i < countTeachers; i++) {
+        data.push({
           offering_id: offering_id,
-          teacher_id: teacher_id,
-          role: role,
-        },
-      ];
+          teacher_id: teacher_ids[i],
+          role: roles[i],
+        });
+      }
       await fetch(`/api/admin/courseteacher/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
@@ -123,11 +135,73 @@ const AddCourseTeachers = () => {
       });
 
       setOffering_id("");
-      setTeacher_id("");
-      setRole("");
+      setTeacher_ids([]);
+      setRoles([]);
 
       alert("Course Teacher Added Successfully");
+      setCountTeachers(1);
     } catch (err) {}
+  };
+
+  const teacherInput = () => {
+    let inputs = [];
+    for (let i = 0; i < countTeachers; i++) {
+      inputs.push(<br />);
+      inputs.push(<br />);
+
+      inputs.push(
+        <FormControl fullWidth style={{ marginTop: "25px" }}>
+          <InputLabel id="demo-simple-select-label">Select Teacher</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="teacher_id"
+            name="teacher_id"
+            value={teacher_ids[i]}
+            label="Teachers"
+            onChange={(e) => {
+              let temp_ids = [...teacher_ids];
+              temp_ids[i] = e.target.value;
+              setTeacher_ids(temp_ids);
+            }}
+          >
+            {teacher_list.map((val, key) => {
+              return (
+                <MenuItem key={key} value={val.teacher_id}>
+                  {val.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      );
+
+      inputs.push(
+        <FormControl fullWidth style={{ marginTop: "25px" }}>
+          <InputLabel id="demo-simple-select-label">Select Role of Teacher</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="teacher_role"
+            name="teacher_role"
+            value={roles[i]}
+            label="Role of Teacher"
+            onChange={(e) => {
+              let temp_roles = [...roles];
+              temp_roles[i] = e.target.value;
+              setRoles(temp_roles);
+            }}
+          >
+            {["Coordinator", "Course Teacher", "Scrutinizer"].map((val, key) => {
+              return (
+                <MenuItem key={key} value={val}>
+                  {val}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      );
+    }
+    return inputs;
   };
 
   return (
@@ -219,45 +293,33 @@ const AddCourseTeachers = () => {
                     </Select>
                   </FormControl>
 
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
-                    <InputLabel id="demo-simple-select-label">Select Teacher</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="teacher_id"
-                      name="teacher_id"
-                      value={teacher_id}
-                      label="Teachers"
-                      onChange={(e) => setTeacher_id(e.target.value)}
-                    >
-                      {teacher_list.map((val, key) => {
-                        return (
-                          <MenuItem key={key} value={val.teacher_id}>
-                            {val.name}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
+                  {teacherInput()}
 
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
-                    <InputLabel id="demo-simple-select-label">Select Role of Teacher</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="teacher_role"
-                      name="teacher_role"
-                      value={role}
-                      label="Role of Teacher"
-                      onChange={(e) => setRole(e.target.value)}
-                    >
-                      {["Coordinator", "Course Teacher", "Scrutinizer"].map((val, key) => {
-                        return (
-                          <MenuItem key={key} value={val}>
-                            {val}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
+                  <CustomButton
+                    type="button"
+                    label="Add More Teachers"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#b13137"
+                    margin="40px"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={incrementCountTeachers}
+                    onClickFunctionArguements={[]}
+                  />
+
+                  <CustomButton
+                    type="button"
+                    label="Add Less Teachers"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#b13137"
+                    margin="40px"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={decrementCountTeachers}
+                    onClickFunctionArguements={[]}
+                  />
 
                   <CustomButton
                     type="submit"

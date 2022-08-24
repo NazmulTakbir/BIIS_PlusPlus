@@ -107,6 +107,24 @@ const getAssignedTeachers = async (req, res, next) => {
   }
 };
 
+const getAssignedScrutinizers = async (req, res, next) => {
+  try {
+    const session_id = await getCurrentSession();
+    const course_id = req.params.course_id;
+
+    let queryRes = await pool.query(
+      'select DISTINCT teacher_id, name from teacher natural join "course offering teacher" natural join \
+      "course offering" where session_id=$1 and course_id=$2 and role=\'Scrutinizer\';',
+      [session_id, course_id]
+    );
+
+    res.json({ message: "getAssignedScrutinizers", data: queryRes.rows });
+  } catch (err) {
+    const error = new HttpError("getAssignedScrutinizers Failed", 500);
+    return next(error);
+  }
+};
+
 const getCourseCriteriaByTeacher = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
@@ -130,6 +148,29 @@ const getCourseCriteriaByTeacher = async (req, res, next) => {
   }
 };
 
+const getCourseCriteriaByScrutinizer = async (req, res, next) => {
+  try {
+    const session_id = await getCurrentSession();
+    const course_id = req.params.course_id;
+
+    let queryRes = await pool.query(
+      'select criteria_name from "mark distribution policy" natural join "course offering" where \
+      course_id=$1 and scrutinizer_id=$2 and session_id=$3;',
+      [course_id, req.userData.id, session_id]
+    );
+
+    data = [];
+    for (let i = 0; i < queryRes.rows.length; i++) {
+      data.push(queryRes.rows[i]["criteria_name"]);
+    }
+
+    res.json({ message: "getCourseCriteriaByScrutinizer", data: data });
+  } catch (err) {
+    const error = new HttpError("getCourseCriteriaByScrutinizer Failed", 500);
+    return next(error);
+  }
+};
+
 exports.getInfo = getInfo;
 exports.getAllAdvisee = getAllAdvisee;
 exports.getCoursesScrutinized = getCoursesScrutinized;
@@ -137,3 +178,5 @@ exports.getCoursesTaught = getCoursesTaught;
 exports.getCoursesCoordinated = getCoursesCoordinated;
 exports.getAssignedTeachers = getAssignedTeachers;
 exports.getCourseCriteriaByTeacher = getCourseCriteriaByTeacher;
+exports.getCourseCriteriaByScrutinizer = getCourseCriteriaByScrutinizer;
+exports.getAssignedScrutinizers = getAssignedScrutinizers;

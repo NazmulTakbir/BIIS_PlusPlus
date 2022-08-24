@@ -5,7 +5,7 @@ const { getCurrentSession } = require("../../util/CurrentSession");
 const postMarkingCriteria = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
-    const { criteria_name, criteria_weight, total_marks, teacher_id, course_id } = req.body;
+    const { criteria_name, criteria_weight, total_marks, teacher_id, course_id, scrutinizer_id } = req.body;
 
     let queryRes = await pool.query(
       'select offering_id from "course offering" where course_id=$1 and \
@@ -17,8 +17,8 @@ const postMarkingCriteria = async (req, res, next) => {
 
     await pool.query(
       'INSERT INTO public."mark distribution policy"(criteria_name, criteria_weight, total_marks, teacher_id, \
-          offering_id) VALUES ($1, $2, $3, $4, $5);',
-      [criteria_name, criteria_weight, total_marks, teacher_id, offering_id]
+          offering_id, scrutinizer_id) VALUES ($1, $2, $3, $4, $5, $6);',
+      [criteria_name, criteria_weight, total_marks, teacher_id, offering_id, scrutinizer_id]
     );
 
     res.json({ message: "postMarkingCriteria successful" });
@@ -34,9 +34,10 @@ const getMarkingCriteria = async (req, res, next) => {
     const course_id = req.params.course_id;
 
     let queryRes = await pool.query(
-      'select criteria_name, criteria_weight, total_marks, t.name as teacher_name from \
+      'select criteria_name, criteria_weight, total_marks, teacher_name, scrutinizer_id, t2.name as scrutinizer_name\
+      from (select criteria_name, criteria_weight, total_marks, t.name as teacher_name, scrutinizer_id from \
         "mark distribution policy" natural join "course offering" natural join teacher as t where \
-        course_id=$1 and session_id=$2',
+        course_id=$1 and session_id=$2) as t1 LEFT JOIN teacher as t2 ON t1.scrutinizer_id=t2.teacher_id;',
       [course_id, session_id]
     );
 
