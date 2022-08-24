@@ -6,6 +6,7 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { openInNewTab } from "../../../shared/util/OpenNewTab";
 import { NavbarData } from "./NavbarData";
+import { SearchMenuData } from "../../components/SearchMenuData";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -58,7 +59,7 @@ const ScholarshipsHead = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">

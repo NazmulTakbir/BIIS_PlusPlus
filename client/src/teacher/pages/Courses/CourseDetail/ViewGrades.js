@@ -12,7 +12,7 @@ const ViewGrades = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
