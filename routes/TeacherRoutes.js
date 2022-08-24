@@ -1,14 +1,14 @@
 const express = require("express");
 
 const InfoController = require("../controllers/Teacher/InfoController");
-const AddGradesController = require("../controllers/Teacher/AddGradesController");
-const ViewGradesController = require("../controllers/Teacher/ViewGradesController");
+const GradingController = require("../controllers/Teacher/GradingController");
 const ScrutinizeController = require("../controllers/Teacher/ScrutinizeController");
 const AdviseeCourseRegistrationController = require("../controllers/Teacher/AdviseeCourseRegistrationController");
 const AdviseeFeedbackController = require("../controllers/Teacher/AdviseeFeedbackController");
 const HallProvostController = require("../controllers/Teacher/HallProvostController");
 const DepartmentHeadController = require("../controllers/Teacher/DepartmentHeadController");
 const AdviseeInfoController = require("../controllers/Teacher/AdviseeInfoController");
+const CourseCoordinatorController = require("../controllers/Teacher/CourseCoordinatorController");
 
 const verifyTeacher = require("../controllers/Authentication/VerifyTeacher");
 
@@ -22,19 +22,22 @@ TeacherRoutes.get("/coursescoordinated", InfoController.getCoursesCoordinated);
 TeacherRoutes.get("/coursestaught", InfoController.getCoursesTaught);
 TeacherRoutes.get("/coursesscrutinized", InfoController.getCoursesScrutinized);
 TeacherRoutes.get("/assignedteachers/:course_id", InfoController.getAssignedTeachers);
-TeacherRoutes.post("/newmarkingcriteria", InfoController.postMarkingCriteria);
-TeacherRoutes.get("/markingcriteria/:course_id", InfoController.getMarkingCriteria);
-TeacherRoutes.post("/newgradingboundary", InfoController.postGradingBoundary);
-TeacherRoutes.get("/gradingboundary/:course_id", InfoController.getGradingBoundary);
+
+TeacherRoutes.post("/newmarkingcriteria", CourseCoordinatorController.postMarkingCriteria);
+TeacherRoutes.get("/markingcriteria/:course_id", CourseCoordinatorController.getMarkingCriteria);
+TeacherRoutes.post("/newgradingboundary", CourseCoordinatorController.postGradingBoundary);
+TeacherRoutes.get("/gradingboundary/:course_id", CourseCoordinatorController.getGradingBoundary);
+
 TeacherRoutes.get("/coursecriteriabyteacher/:course_id", InfoController.getCourseCriteriaByTeacher);
-TeacherRoutes.get("/studentmarks/:course_id/:criteria", InfoController.getStudentMarks);
 
 TeacherRoutes.get("/adviseeinfo/:sid", AdviseeInfoController.getAdviseeInfo);
 TeacherRoutes.get("/advisee/:sid/getAvailableResults", AdviseeInfoController.getAvailableResults);
 TeacherRoutes.get("/advisee/:sid/getGrades/:level/:term", AdviseeInfoController.getGrades);
 
-TeacherRoutes.get("/exam/addgrades/courses", AddGradesController.getCourses);
-TeacherRoutes.get("/exam/viewgrades/courses", ViewGradesController.getCourses);
+TeacherRoutes.get("/studentmarks/:course_id/:criteria", GradingController.getStudentMarks);
+TeacherRoutes.post("/studentmarks/:course_id/:criteria", GradingController.postStudentMarks);
+TeacherRoutes.post("/sendForScrutiny/:course_id/:criteria", GradingController.sendForScrutiny);
+
 TeacherRoutes.get("/exam/scrutinize/courses", ScrutinizeController.getCourses);
 
 TeacherRoutes.get("/advisees/registrationrequests/:sid", AdviseeCourseRegistrationController.getRegistrationRequests);
