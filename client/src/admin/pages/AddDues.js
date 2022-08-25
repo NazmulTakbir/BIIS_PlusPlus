@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import Papa from "papaparse";
 import DatePicker from "react-datepicker";
+import NativeDatePicker from "../../shared/components/NativeDatePicker/NativeDatePicker";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
@@ -251,6 +252,13 @@ const AddDues = () => {
                   </FormControl>
 
                   {/* <DatePicker selected={deadline} onChange={(date) => setDeadline(date)} /> */}
+                  <NativeDatePicker
+                    value={deadline}
+                    width="100%"
+                    label="Set Deadline"
+                    margin="17px 0px 10px 0px"
+                    onChange={(e) => setDeadline(e.target.value)}
+                  />
 
                   <Textbox
                     width="350px"
