@@ -9,6 +9,7 @@ const getStudentResults = async (studentList, offeringID) => {
       student_id,
       offeringID,
     ]);
+    queryRes.rows[0]["status"] = studentList[i]["status"];
     data.push(queryRes.rows[0]);
   }
 

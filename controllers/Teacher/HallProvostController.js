@@ -278,27 +278,57 @@ const getPendingResults = async (req, res, next) => {
 
     let queryRes = await pool.query(
       "select t2.student_id, t3.offering_id, t4.course_name, get_grade_point(t2.student_id, t3.offering_id) as grade_point, \
-      get_letter_grade(t2.student_id, t3.offering_id) as letter_grade from \
-      (select student_id, all_offering_result_complete_for_student(student_id, $1, 'Awaiting Hall Provost Approval') as filter_result \
+      get_letter_grade(t2.student_id, t3.offering_id) as letter_grade, filter_result1, filter_result2 from \
+      (select student_id, all_offering_result_complete_for_student(student_id, $1, 'Awaiting Hall Provost Approval') as filter_result1, \
+      all_offering_result_complete_for_student(student_id, $1, 'Rejected by Exam Controller') as filter_result2 \
       from (select student_id from hall natural join student where hall_provost_id=$2) as t1) as t2 \
       join \"course registrations\" as t3 on t2.student_id=t3.student_id natural join course as t4 \
-      where t2.filter_result=true and t3.session_id=$1;",
+      where (t2.filter_result1=true or t2.filter_result2=true) and t3.session_id=$1;",
       [session_id, req.userData.id]
     );
 
     let data = {};
     for (const element of queryRes.rows) {
       if (element["student_id"] in data) {
-        data[element["student_id"]].push([
-          element["offering_id"],
-          element["course_name"],
-          element["grade_point"],
-          element["letter_grade"],
-        ]);
+        if (element["filter_result1"]) {
+          data[element["student_id"]].push([
+            element["offering_id"],
+            element["course_name"],
+            element["grade_point"],
+            element["letter_grade"],
+            "Awaiting Hall Provost Approval",
+          ]);
+        } else {
+          data[element["student_id"]].push([
+            element["offering_id"],
+            element["course_name"],
+            element["grade_point"],
+            element["letter_grade"],
+            "Rejected by Exam Controller",
+          ]);
+        }
       } else {
-        data[element["student_id"]] = [
-          [element["offering_id"], element["course_name"], element["grade_point"], element["letter_grade"]],
-        ];
+        if (element["filter_result1"]) {
+          data[element["student_id"]] = [
+            [
+              element["offering_id"],
+              element["course_name"],
+              element["grade_point"],
+              element["letter_grade"],
+              "Awaiting Hall Provost Approval",
+            ],
+          ];
+        } else {
+          data[element["student_id"]] = [
+            [
+              element["offering_id"],
+              element["course_name"],
+              element["grade_point"],
+              element["letter_grade"],
+              "Rejected by Exam Controller",
+            ],
+          ];
+        }
       }
     }
 

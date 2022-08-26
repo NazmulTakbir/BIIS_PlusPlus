@@ -10,11 +10,12 @@ import { NavbarData } from "./NavbarData";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import { SearchMenuData } from "../../components/SearchMenuData";
+import Stack from "@mui/material/Stack";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
-const resultTableColumns = ["STUDENT ID", "GRADE POINT", "LETTER GRADE", "VIEW DETAILS", "SELECT"];
+const resultTableColumns = ["STUDENT ID", "GRADE POINT", "LETTER GRADE", "STATUS", "VIEW DETAILS", "SELECT"];
 const pendingTableColumns = ["STUDENT ID", "VIEW DETAILS"];
 
 let selectedList = [];
@@ -74,7 +75,6 @@ const DeptHeadResults = () => {
         let row = [];
         row.push({ type: "PlainText", data: { value: data[i]["student_id"] } });
 
-        // TODO
         let detailsData = data[i]["details"];
         let detailsText = [];
         for (let j = 0; j < detailsData.length; j++) {
@@ -119,6 +119,7 @@ const DeptHeadResults = () => {
         row.push({ type: "PlainText", data: { value: data[i]["student_id"] } });
         row.push({ type: "PlainText", data: { value: data[i]["grade_point"] } });
         row.push({ type: "PlainText", data: { value: data[i]["letter_grade"] } });
+        row.push({ type: "PlainText", data: { value: data[i]["status"] } });
 
         response = await fetch(`/api/teacher/departmenthead/resultdetails/${course_id}/${data[i]["student_id"]}`, {
           headers: { Authorization: "Bearer " + auth.token },
@@ -223,31 +224,43 @@ const DeptHeadResults = () => {
                       <Table columnLabels={resultTableColumns} tableData={resultTableData} />
                     </h4>
 
-                    <form onSubmit={approveHandler}>
-                      <CustomButton
-                        type="submit"
-                        label="Approve Selected"
-                        variant="contained"
-                        color="#ffffff"
-                        bcolor="#b13137"
-                        margin="40px"
-                        padding="10px"
-                        fontSize="17px !important"
-                      />
-                    </form>
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      style={{
+                        margin: "auto",
+                        width: "350px",
+                        padding: "10px",
+                        textAlign: "left",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <form onSubmit={approveHandler}>
+                        <CustomButton
+                          type="submit"
+                          label="Approve Selected"
+                          variant="contained"
+                          color="#ffffff"
+                          bcolor="#b13137"
+                          margin="40px"
+                          padding="10px"
+                          fontSize="17px !important"
+                        />
+                      </form>
 
-                    <form onSubmit={rejectHandler}>
-                      <CustomButton
-                        type="submit"
-                        label="Reject Selected"
-                        variant="contained"
-                        color="#ffffff"
-                        bcolor="#bdbdbd"
-                        margin="40px"
-                        padding="10px"
-                        fontSize="17px !important"
-                      />
-                    </form>
+                      <form onSubmit={rejectHandler}>
+                        <CustomButton
+                          type="submit"
+                          label="Reject Selected"
+                          variant="contained"
+                          color="#ffffff"
+                          bcolor="#bdbdbd"
+                          margin="40px"
+                          padding="10px"
+                          fontSize="17px !important"
+                        />
+                      </form>
+                    </Stack>
                   </div>
                   <h3>Results Not Prepared Yet</h3>
                   <Table columnLabels={pendingTableColumns} tableData={pendingTableData} />

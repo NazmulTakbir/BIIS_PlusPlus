@@ -73,7 +73,8 @@ const postStudentMarks = async (req, res, next) => {
       if (queryRes.rows.length > 0) {
         if (
           queryRes.rows[0]["status"] == "Added by Course Teacher" ||
-          queryRes.rows[0]["status"] == "Rejected by Scrutinizer"
+          queryRes.rows[0]["status"] == "Rejected by Scrutinizer" ||
+          queryRes.rows[0]["status"] == "Rejected by Dept Head"
         ) {
           await pool.query(
             "UPDATE public.\"result details\" SET marks=$1, status='Added by Course Teacher' WHERE student_id=$2 and offering_id=$3 and criteria_name=$4;",

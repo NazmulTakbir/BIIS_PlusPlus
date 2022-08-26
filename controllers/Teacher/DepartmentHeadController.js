@@ -364,14 +364,26 @@ const getPreparedResults = async (req, res, next) => {
 
     // get students whose results are prepared
     queryRes = await pool.query(
-      "select student_id from (select student_id, \
-       offering_result_complete_for_student($1, student_id, 'Awaiting Department Head Approval') as filter_value \
+      "select student_id, filter_value1, filter_value2 from (select student_id, \
+       offering_result_complete_for_student($1, student_id, 'Awaiting Department Head Approval') as filter_value1, \
+       offering_result_complete_for_student($1, student_id, 'Rejected by Hall Provost') as filter_value2 \
        from \"course registrations\" where offering_id=$1) as t1\
-       where filter_value=true",
+       where filter_value1=true or filter_value2=true",
       [offering_id]
     );
 
+    for (let i = 0; i < queryRes.rows.length; i++) {
+      if (queryRes.rows[i]["filter_value1"]) {
+        queryRes.rows[i]["status"] = "Awaiting Department Head Approval";
+      }
+      if (queryRes.rows[i]["filter_value2"]) {
+        queryRes.rows[i]["status"] = "Rejected by Hall Provost";
+      }
+    }
+
     const data = await getStudentResults(queryRes.rows, offering_id);
+
+    console.log(data);
 
     res.json({ message: "getPreparedResults", data: data });
   } catch (err) {
@@ -548,6 +560,8 @@ const getPendingResults = async (req, res, next) => {
         data[i]["details"][j].scrutinizer_name = queryRes.rows[0]["scrutinizer_name"];
       }
     }
+
+    console.log(data);
 
     res.json({ message: "getPendingResults", data: data });
   } catch (err) {
