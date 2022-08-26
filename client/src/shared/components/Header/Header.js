@@ -14,7 +14,7 @@ const Header = (props) => {
       {/*SEARCH BAR FUNCTIONALITY CODE:
             https://dev.to/salehmubashar/search-bar-in-react-js-545l
         */}
-      <CustomSearch data={props.searchData} onClickRoute={true}/>
+      <CustomSearch data={props.searchData} onClickRoute={true} label="Search Menu"/>
 
       {/*THE LOGOUT AND NOTIFICATIONS*/}
       <HeaderMenu />

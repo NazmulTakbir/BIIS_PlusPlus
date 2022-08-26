@@ -20,19 +20,28 @@ const CustomSearch = (props) => {
       
       //check if input value is in data array
       const is_user_input_valid = data.some(
-        (element) => element.toLowerCase().includes(value.toLowerCase())
+        (element) => element.name.toLowerCase().includes(value.toLowerCase())
       );
-      
       if (value.length > 0 && !is_user_input_valid) {
         set_error_msg("No search results found!");
       } else {
         set_error_msg("");
+      }
+
+      //send input to parent
+      if(props.parentCallback !== undefined) {
+        props.parentCallback(value);
       }
   };
 
   //when search/enter pressed
   const onSearch = async (name, value) => {
       set_typed_in_value(name);
+
+      //send input to parent
+      if(props.parentCallback !== undefined) {
+        props.parentCallback(value);
+      }
       
       //link is clicked!
       if(onClickRoute !== undefined) {
@@ -53,16 +62,22 @@ const CustomSearch = (props) => {
 
 
   return (
-    <div className="search_bar">
+    <div className="search_bar" 
+      style={{
+        width: props.width,
+        margin: props.margin,
+      }}>
         
         <TextField
             id="outlined-basic"
             variant="outlined"
-            label="Search"
+            label={props.label}
             value={user_input}
             type="text"
             className="search-text"
             onChange={onChange}
+            autoComplete="off"
+            required={props.required}
         />
 
         <div className="dropdown"
