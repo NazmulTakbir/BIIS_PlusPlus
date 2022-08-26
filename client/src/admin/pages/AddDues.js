@@ -30,14 +30,12 @@ const AddDues = () => {
   const [student_id, setStudent_id] = useState(0);
   const [deadline, setDeadline] = useState(new Date("2022-12-12"));
   const [specification, setSpecification] = useState("");
-  const [students_list, setStudents_list] = useState([]);
+  // const [students_list, setStudents_list] = useState([]);
   const [dues_type_list, setDues_type_list] = useState([]);
 
   //for searchable student ids
   const [search_students_list, setSearch_students_list] = useState([]);
-  const is_student_id_valid = search_students_list.some(
-    (element) => element.value === student_id
-  );
+  const is_student_id_valid = search_students_list.some((element) => element.value === student_id);
 
   const admin_dept_id = 5; //change it after adming logins
 
@@ -54,18 +52,17 @@ const AddDues = () => {
           headers: { Authorization: "Bearer " + auth.token },
         });
         jsonData = await response.json();
-        setStudents_list(jsonData.data);
+        // setStudents_list(jsonData.data);
 
         //set data in valid format for search component
         let search_list = [];
-        for(var i=0; i<jsonData.data.length; i++) {
+        for (var i = 0; i < jsonData.data.length; i++) {
           search_list.push({
             name: jsonData.data[i].student_id + " - " + jsonData.data[i].name,
             value: jsonData.data[i].student_id,
           });
         }
         setSearch_students_list(search_list);
-
       } catch (err) {
         console.log(err);
       }
@@ -132,8 +129,8 @@ const AddDues = () => {
 
   const submissionHandler = async (e) => {
     e.preventDefault();
-    
-    if(is_student_id_valid){
+
+    if (is_student_id_valid) {
       //POST request to add dues
       try {
         let data = [
@@ -160,10 +157,9 @@ const AddDues = () => {
 
         alert("Dues Added Successfully");
       } catch (err) {}
-
     }
     //Invalid Student id
-    else{
+    else {
       alert("Entered Student Id is not valid");
     }
   };

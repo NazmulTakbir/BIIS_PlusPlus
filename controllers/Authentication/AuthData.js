@@ -22,6 +22,10 @@ const getAuthData = async (userid) => {
     if (hasRole.rows.length > 0) {
       responsibilities.push("depthead");
     }
+    hasRole = await pool.query("select * from session where exam_controller_id=$1", [queryRes.rows[0]["teacher_id"]]);
+    if (hasRole.rows.length > 0) {
+      responsibilities.push("examcontroller");
+    }
 
     return { userType: "teacher", password: queryRes.rows[0]["password"], responsibilities: responsibilities };
   }

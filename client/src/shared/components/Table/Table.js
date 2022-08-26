@@ -5,6 +5,7 @@ import PlainText from "./PlainText";
 import Buttons from "./Buttons";
 import CheckBox from "./CheckBox";
 import TextboxCell from "./TextboxCell";
+import MultiBodyModal from "./MultiBodyModal";
 
 const Table = (props) => {
   const { columnLabels, tableData } = props;
@@ -21,6 +22,8 @@ const Table = (props) => {
         return <CheckBox data={cellData.data} />;
       case "TextboxCell":
         return <TextboxCell data={cellData.data} />;
+      case "MultiBodyModal":
+        return <MultiBodyModal data={cellData.data} />;
       case "empty":
         return <td className="text-left"></td>;
       default:

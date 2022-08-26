@@ -25,6 +25,7 @@ const getPastSubmissions = async (req, res, next) => {
 
     res.status(201).json({ message: "getPastSubmissions", data: feedback_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Add Failed", 500);
     return next(error);
   }
@@ -60,6 +61,7 @@ const postNewSubmission = async (req, res, next) => {
       res.status(201).json({ message: "postNewSubmission" });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Submitting Feedback Failed", 500);
     return next(error);
   }

@@ -9,6 +9,7 @@ const getRegistrationPhase = async () => {
     const queryRes = await pool.query('select registration_phase from "session" where session_id = $1', [session_id]);
     return queryRes.rows[0]["registration_phase"];
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Registration Phase Failed", 500);
     return next(error);
   }
@@ -44,6 +45,7 @@ const getRegisteredCourses = async (req, res, next) => {
     
     res.json({ message: "registeredCourses", data: registeredCourses ,course_ids : course_ids});
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Registered Courses Failed", 500);
     return next(error);
   }
@@ -68,6 +70,7 @@ const getPendingRequests = async (req, res, next) => {
 
     res.json({ message: "getPendingRequests", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Pending Registration Requests Failed", 500);
     return next(error);
   }
@@ -114,6 +117,7 @@ const getCoursesToAdd = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Add Failed", 500);
     return next(error);
   }
@@ -160,6 +164,7 @@ const getCoursesToDrop = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
   }
@@ -195,6 +200,7 @@ const postAddRequest = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Failed to Place Add Request", 500);
     return next(error);
   }
@@ -229,6 +235,7 @@ const postDropRequest = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Failed to Place Drop Request", 500);
     return next(error);
   }

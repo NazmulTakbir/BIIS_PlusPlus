@@ -35,6 +35,7 @@ const postAddCourseOffering = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddCourseOffering successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddCourseOffering failed", 500);
     return next(error);
   }
@@ -53,6 +54,7 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }
@@ -77,6 +79,7 @@ const getunofferedcourses = async (req, res, next) => {
 
     res.json({ message: "getunofferedcourses successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getunofferedcourses failed", 500);
     return next(error);
   }
@@ -99,6 +102,7 @@ const getexamslots = async (req, res, next) => {
     }
     res.json({ message: "getunofferedcourses successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getexamslots failed", 500);
     return next(error);
   }
@@ -128,6 +132,7 @@ const getOffering_admin_dept = async (req, res, next) => {
 
     res.json({ message: "getOffering_admin_dept successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getOffering_admin_dept failed", 500);
     return next(error);
   }

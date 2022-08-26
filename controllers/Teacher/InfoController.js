@@ -12,6 +12,7 @@ const getInfo = async (req, res, next) => {
 
     res.json(teacherInfo);
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -27,6 +28,7 @@ const getAllAdvisee = async (req, res, next) => {
 
     res.json({ message: "getInfo", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching All Advisees Failed", 500);
     return next(error);
   }
@@ -46,6 +48,7 @@ const getCoursesCoordinated = async (req, res, next) => {
     }
     res.json({ message: "getCoursesCoordinated", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getCoursesCoordinated Failed", 500);
     return next(error);
   }
@@ -65,6 +68,7 @@ const getCoursesTaught = async (req, res, next) => {
     }
     res.json({ message: "getCoursesTaught", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getCoursesTaught Failed", 500);
     return next(error);
   }
@@ -84,6 +88,7 @@ const getCoursesScrutinized = async (req, res, next) => {
     }
     res.json({ message: "getCoursesScrutinized", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getCoursesScrutinized Failed", 500);
     return next(error);
   }
@@ -102,6 +107,7 @@ const getAssignedTeachers = async (req, res, next) => {
 
     res.json({ message: "getAssignedTeachers", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getAssignedTeachers Failed", 500);
     return next(error);
   }
@@ -120,6 +126,7 @@ const getAssignedScrutinizers = async (req, res, next) => {
 
     res.json({ message: "getAssignedScrutinizers", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getAssignedScrutinizers Failed", 500);
     return next(error);
   }
@@ -143,6 +150,7 @@ const getCourseCriteriaByTeacher = async (req, res, next) => {
 
     res.json({ message: "getCourseCriteriaByTeacher", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getCourseCriteriaByTeacher Failed", 500);
     return next(error);
   }
@@ -166,6 +174,7 @@ const getCourseCriteriaByScrutinizer = async (req, res, next) => {
 
     res.json({ message: "getCourseCriteriaByScrutinizer", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getCourseCriteriaByScrutinizer Failed", 500);
     return next(error);
   }

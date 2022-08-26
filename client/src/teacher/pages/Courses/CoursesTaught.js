@@ -10,6 +10,7 @@ import { NavbarData } from "./NavbarData";
 import Table from "../../../shared/components/Table/Table";
 import { SearchMenuData } from "../../components/SearchMenuData";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
+import Stack from "@mui/material/Stack";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -95,7 +96,8 @@ const CoursesTaught = () => {
         if (
           data[i]["status"] === "No Score Added" ||
           data[i]["status"] === "Added by Course Teacher" ||
-          data[i]["status"] === "Rejected by Scrutinizer"
+          data[i]["status"] === "Rejected by Scrutinizer" ||
+          data[i]["status"] === "Rejected by Dept Head"
         ) {
           row.push({
             type: "TextboxCell",
@@ -250,31 +252,43 @@ const CoursesTaught = () => {
                         <Table columnLabels={studentTableColumns} tableData={studentTableData} />
                       </h4>
 
-                      <form onSubmit={saveScoresHandler}>
-                        <CustomButton
-                          type="submit"
-                          label="Save Scores"
-                          variant="contained"
-                          color="#ffffff"
-                          bcolor="#b13137"
-                          margin="40px"
-                          padding="10px"
-                          fontSize="17px !important"
-                        />
-                      </form>
+                      <Stack
+                        spacing={2}
+                        direction="row"
+                        style={{
+                          margin: "auto",
+                          width: "350px",
+                          padding: "10px",
+                          textAlign: "left",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <form onSubmit={saveScoresHandler}>
+                          <CustomButton
+                            type="submit"
+                            label="Save Scores"
+                            variant="contained"
+                            color="#ffffff"
+                            bcolor="#b13137"
+                            margin="40px"
+                            padding="10px"
+                            fontSize="17px !important"
+                          />
+                        </form>
 
-                      <form onSubmit={sendForScrutinyHandler}>
-                        <CustomButton
-                          type="submit"
-                          label="Submit For Scrutiny"
-                          variant="contained"
-                          color="#ffffff"
-                          bcolor="#bdbdbd"
-                          margin="40px"
-                          padding="10px"
-                          fontSize="17px !important"
-                        />
-                      </form>
+                        <form onSubmit={sendForScrutinyHandler}>
+                          <CustomButton
+                            type="submit"
+                            label="Send For Scrutiny"
+                            variant="contained"
+                            color="#ffffff"
+                            bcolor="#bdbdbd"
+                            margin="40px"
+                            padding="10px"
+                            fontSize="17px !important"
+                          />
+                        </form>
+                      </Stack>
                     </div>
                   )}
                 </div>

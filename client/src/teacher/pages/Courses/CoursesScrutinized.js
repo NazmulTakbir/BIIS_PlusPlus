@@ -10,6 +10,7 @@ import { NavbarData } from "./NavbarData";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import { SearchMenuData } from "../../components/SearchMenuData";
+import Stack from "@mui/material/Stack";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -137,7 +138,7 @@ const CoursesScrutinized = () => {
         headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
         body: JSON.stringify(selectedList),
       });
-      alert("Approved Successfully");
+      alert("Rejected Successfully");
 
       selectedList = [];
       setStudentTableData([]);
@@ -203,31 +204,43 @@ const CoursesScrutinized = () => {
                         <Table columnLabels={studentTableColumns} tableData={studentTableData} />
                       </h4>
 
-                      <form onSubmit={approveHandler}>
-                        <CustomButton
-                          type="submit"
-                          label="Approve Selected"
-                          variant="contained"
-                          color="#ffffff"
-                          bcolor="#b13137"
-                          margin="40px"
-                          padding="10px"
-                          fontSize="17px !important"
-                        />
-                      </form>
+                      <Stack
+                        spacing={2}
+                        direction="row"
+                        style={{
+                          margin: "auto",
+                          width: "350px",
+                          padding: "10px",
+                          textAlign: "left",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <form onSubmit={approveHandler}>
+                          <CustomButton
+                            type="submit"
+                            label="Approve Selected"
+                            variant="contained"
+                            color="#ffffff"
+                            bcolor="#b13137"
+                            margin="40px"
+                            padding="10px"
+                            fontSize="17px !important"
+                          />
+                        </form>
 
-                      <form onSubmit={rejectHandler}>
-                        <CustomButton
-                          type="submit"
-                          label="Reject Selected"
-                          variant="contained"
-                          color="#ffffff"
-                          bcolor="#bdbdbd"
-                          margin="40px"
-                          padding="10px"
-                          fontSize="17px !important"
-                        />
-                      </form>
+                        <form onSubmit={rejectHandler}>
+                          <CustomButton
+                            type="submit"
+                            label="Reject Selected"
+                            variant="contained"
+                            color="#ffffff"
+                            bcolor="#bdbdbd"
+                            margin="40px"
+                            padding="10px"
+                            fontSize="17px !important"
+                          />
+                        </form>
+                      </Stack>
                     </div>
                   )}
                 </div>

@@ -17,11 +17,13 @@ import AdviseeRegistration from "../pages/Advisees/AdviseeProfile/Registration";
 import DeptStudentList from "../pages/Department_Office/StudentList";
 import DeptCourseRegistration from "../pages/Department_Office/CourseRegistration";
 import DeptFeedback from "../pages/Department_Office/Feedback";
+import DeptHeadResults from "../pages/Department_Office/Results";
 
 import DeptStudentInfo from "../pages/Department_Office/StudentProfile/Info";
 import DeptStudentAcademic from "../pages/Department_Office/StudentProfile/Academic";
 import DeptStudentRegistration from "../pages/Department_Office/StudentProfile/Registration";
 import DeptStudentScholarships from "../pages/Department_Office/StudentProfile/Scholarships";
+import ScholarshipsHead from "../pages/Department_Office/ScholarshipsHead";
 
 import HallPendingScholarships from "../pages/Hall Office/PendingScholarships";
 import HallPendingResults from "../pages/Hall Office/PendingResults";
@@ -31,9 +33,9 @@ import MemberAcademics from "../pages/Hall Office/HallMembers/MemberAcademics";
 import ScholarshipAction from "../pages/Hall Office/HallMembers/ScholarshipAction";
 import HallStudentDues from "../pages/Hall Office/HallMembers/Dues";
 import HallStudentResults from "../pages/Hall Office/HallMembers/Results";
-import ScholarshipsHead from "../pages/Department_Office/ScholarshipsHead";
-
 import HallStudentList from "../pages/Hall Office/StudentList";
+
+import ExamControllerPendingResults from "./../pages/ExamController/PendingResults";
 
 const TeacherRoutes = () => {
   return (
@@ -89,6 +91,9 @@ const TeacherRoutes = () => {
       <Route path="/deptStudents/scholarship" exact>
         <ScholarshipsHead />
       </Route>
+      <Route path="/deptStudents/results" exact>
+        <DeptHeadResults />
+      </Route>
       <Route path="/deptStudents/profile/info/:studentID" exact>
         <DeptStudentInfo />
       </Route>
@@ -131,6 +136,10 @@ const TeacherRoutes = () => {
 
       <Route path="/hallissues/allstudents" exact>
         <HallStudentList />
+      </Route>
+
+      <Route path="/examcontroller/pendingresults" exact>
+        <ExamControllerPendingResults />
       </Route>
 
       <Redirect to="/teacherinfo" />

@@ -35,6 +35,7 @@ const getPendingDues = async (req, res, next) => {
 
     res.status(201).json({ message: "getPendingDues", data: pending_dues_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching pending dues Failed", 500);
     return next(error);
   }
@@ -73,6 +74,7 @@ const getPaidDues = async (req, res, next) => {
     }
     res.status(201).json({ message: "getPaidDues", data: dues_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
   }

@@ -32,6 +32,7 @@ const getAcademicCalender = async (req, res, next) => {
 
     res.status(201).json({ message: "getAcademicCalender", data: phase_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Add Failed", 500);
     return next(error);
   }
@@ -60,6 +61,7 @@ const getHallInfo = async (req, res, next) => {
 
     res.status(201).json({ message: "getHallInfo", data: hallData });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
   }
@@ -86,6 +88,7 @@ const getNotices = async (req, res, next) => {
 
     res.status(201).json({ message: "getNotices", data: notice_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
   }

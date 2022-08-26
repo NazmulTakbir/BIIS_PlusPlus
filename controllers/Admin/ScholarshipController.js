@@ -1,17 +1,13 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 
-const allAttributes = [
-  "student_id",
-  "session_id",
-  "scholarship_type_id",
-];
+const allAttributes = ["student_id", "session_id", "scholarship_type_id"];
 
 const createScholarship = async (data) => {
   await pool.query(
     `INSERT INTO public.scholarship(student_id, session_id, scholarship_state, scholarship_type_id, payment_date) \
-    VALUES ($1, $2,'awaiting_application', $3, NULL);`
-    , data
+    VALUES ($1, $2,'awaiting_application', $3, NULL);`,
+    data
   );
 };
 
@@ -28,6 +24,7 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }
@@ -54,6 +51,7 @@ const postAddScholarship = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddScholarship successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddScholarship failed", 500);
     return next(error);
   }

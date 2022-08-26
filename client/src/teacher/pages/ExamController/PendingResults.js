@@ -6,15 +6,13 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import { SearchMenuData } from "../../components/SearchMenuData";
-import { openInNewTab } from "../../../shared/util/OpenNewTab";
-import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
-import Stack from "@mui/material/Stack";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
-const tableColumns = ["STUDENT ID", "STATUS", "RESULT DETAILS", "STUDENT DETAILS", "SELECT"];
+const resultTableColumns = ["STUDENT ID", "RESULT DETAILS", "STUDENT DETAILS", "SELECT"];
 
 let selectedList = [];
 
@@ -30,10 +28,10 @@ const PendingResults = () => {
     }
   };
 
-  const fetchCompleteResultsData = React.useCallback(
+  const fetchResultTableData = React.useCallback(
     async (api_route) => {
       try {
-        const response = await fetch(`/api/teacher/hallprovost/pendingresults`, {
+        const response = await fetch(api_route, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const jsonData = (await response.json())["data"];
@@ -48,9 +46,18 @@ const PendingResults = () => {
             result_details.push(temp);
           }
 
+          let student_details = [];
+          for (let i = 0; i < jsonData[studentID].length; i++) {
+            let temp = "Name: " + jsonData[studentID][i][4] + "\n";
+            temp += "Department: " + jsonData[studentID][i][5] + "\n";
+            temp += "Hall: " + jsonData[studentID][i][6] + "\n";
+            temp += "Level: " + jsonData[studentID][i][7] + "\n";
+            temp += "Term: " + jsonData[studentID][i][8] + "\n";
+            student_details.push(temp);
+          }
+
           let row = [];
           row.push({ type: "PlainText", data: { value: studentID } });
-          row.push({ type: "PlainText", data: { value: jsonData[studentID][0][4] } });
           row.push({
             type: "MultiBodyModal",
             data: {
@@ -60,17 +67,11 @@ const PendingResults = () => {
             },
           });
           row.push({
-            type: "Buttons",
+            type: "MultiBodyModal",
             data: {
-              buttonList: [
-                {
-                  buttonText: "View Details",
-                  textColor: "white",
-                  backColor: "#697A8D",
-                  onClickFunction: openInNewTab,
-                  onClickArguments: ["/hallissues/profile/info/" + studentID],
-                },
-              ],
+              buttonText: "View",
+              header: "Student Details of " + studentID,
+              body: student_details,
             },
           });
           row.push({ type: "CheckBox", data: { id: studentID, callback: checkListCallback } });
@@ -85,8 +86,8 @@ const PendingResults = () => {
   );
 
   useEffect(() => {
-    fetchCompleteResultsData(`/api/teacher/hallprovost/pendingresults`);
-  }, [auth, fetchCompleteResultsData]);
+    fetchResultTableData(`/api/teacher/examcontroller/pendingresults`);
+  }, [auth, fetchResultTableData]);
 
   const approveHandler = async (e) => {
     e.preventDefault();
@@ -94,7 +95,7 @@ const PendingResults = () => {
       if (selectedList.length === 0) {
         alert("Please select atleast one student");
       } else {
-        await fetch(`/api/teacher/hallprovost/approveresults`, {
+        await fetch(`/api/teacher/examcontroller/approveresults`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify(selectedList),
@@ -102,7 +103,7 @@ const PendingResults = () => {
         alert("Approved Successfully");
         selectedList = [];
         setResultTableData([]);
-        fetchCompleteResultsData(`/api/teacher/hallprovost/pendingresults`);
+        fetchResultTableData(`/api/teacher/examcontroller/pendingresults`);
       }
     } catch (err) {}
   };
@@ -113,7 +114,7 @@ const PendingResults = () => {
       if (selectedList.length === 0) {
         alert("Please select atleast one student");
       } else {
-        await fetch(`/api/teacher/hallprovost/rejectresults`, {
+        await fetch(`/api/teacher/examcontroller/rejectresults`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify(selectedList),
@@ -121,7 +122,7 @@ const PendingResults = () => {
         alert("Rejected Successfully");
         selectedList = [];
         setResultTableData([]);
-        fetchCompleteResultsData(`/api/teacher/hallprovost/pendingresults`);
+        fetchResultTableData(`/api/teacher/examcontroller/pendingresults`);
       }
     } catch (err) {}
   };
@@ -135,45 +136,33 @@ const PendingResults = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={tableColumns} tableData={resultTableData} />
+              <Table columnLabels={resultTableColumns} tableData={resultTableData} modal="true" />
 
-              <Stack
-                spacing={2}
-                direction="row"
-                style={{
-                  margin: "auto",
-                  width: "350px",
-                  padding: "10px",
-                  textAlign: "left",
-                  justifyContent: "space-between",
-                }}
-              >
-                <form onSubmit={approveHandler}>
-                  <CustomButton
-                    type="submit"
-                    label="Approve Selected"
-                    variant="contained"
-                    color="#ffffff"
-                    bcolor="#b13137"
-                    margin="40px"
-                    padding="10px"
-                    fontSize="17px !important"
-                  />
-                </form>
+              <form onSubmit={approveHandler}>
+                <CustomButton
+                  type="submit"
+                  label="Approve Selected"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="40px"
+                  padding="10px"
+                  fontSize="17px !important"
+                />
+              </form>
 
-                <form onSubmit={rejectHandler}>
-                  <CustomButton
-                    type="submit"
-                    label="Reject Selected"
-                    variant="contained"
-                    color="#ffffff"
-                    bcolor="#bdbdbd"
-                    margin="40px"
-                    padding="10px"
-                    fontSize="17px !important"
-                  />
-                </form>
-              </Stack>
+              <form onSubmit={rejectHandler}>
+                <CustomButton
+                  type="submit"
+                  label="Reject Selected"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#bdbdbd"
+                  margin="40px"
+                  padding="10px"
+                  fontSize="17px !important"
+                />
+              </form>
             </div>
           </div>
         </div>

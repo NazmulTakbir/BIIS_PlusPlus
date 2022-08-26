@@ -23,6 +23,7 @@ const postMarkingCriteria = async (req, res, next) => {
 
     res.json({ message: "postMarkingCriteria successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postMarkingCriteria Failed", 500);
     return next(error);
   }
@@ -43,6 +44,7 @@ const getMarkingCriteria = async (req, res, next) => {
 
     res.json({ message: "getAssignedTeachers", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getAssignedTeachers Failed", 500);
     return next(error);
   }
@@ -69,6 +71,7 @@ const postGradingBoundary = async (req, res, next) => {
 
     res.json({ message: "postGradingBoundary", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postGradingBoundary Failed", 500);
     return next(error);
   }
@@ -88,6 +91,7 @@ const getGradingBoundary = async (req, res, next) => {
 
     res.json({ message: "getGradingBoundary", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getGradingBoundary Failed", 500);
     return next(error);
   }

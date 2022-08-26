@@ -43,6 +43,7 @@ const getStudentMarks = async (req, res, next) => {
 
     res.json({ message: "getStudentMarks", data: data, total_marks: total_marks, criteria_weight: criteria_weight });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getStudentMarks Failed", 500);
     return next(error);
   }
@@ -72,7 +73,8 @@ const postStudentMarks = async (req, res, next) => {
       if (queryRes.rows.length > 0) {
         if (
           queryRes.rows[0]["status"] == "Added by Course Teacher" ||
-          queryRes.rows[0]["status"] == "Rejected by Scrutinizer"
+          queryRes.rows[0]["status"] == "Rejected by Scrutinizer" ||
+          queryRes.rows[0]["status"] == "Rejected by Dept Head"
         ) {
           await pool.query(
             "UPDATE public.\"result details\" SET marks=$1, status='Added by Course Teacher' WHERE student_id=$2 and offering_id=$3 and criteria_name=$4;",
@@ -89,6 +91,7 @@ const postStudentMarks = async (req, res, next) => {
 
     res.json({ message: "postStudentMarks" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postStudentMarks Failed", 500);
     return next(error);
   }
@@ -129,6 +132,7 @@ const sendForScrutiny = async (req, res, next) => {
 
     res.json({ message: "sendForScrutiny" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("sendForScrutiny Failed", 500);
     return next(error);
   }
