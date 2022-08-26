@@ -27,6 +27,7 @@ import ScholarshipReceived from "../pages/Scholarship/ScholarshipReceived";
 
 import FeedbackNew from "../pages/Feedback/FeedbackNew";
 import FeedbackOld from "../pages/Feedback/FeedbackOld";
+import CourseFeedback from "../pages/Feedback/CourseFeedback";
 
 const StudentRoutes = () => {
   return (
@@ -103,6 +104,9 @@ const StudentRoutes = () => {
       </Route>
       <Route path="/feedback/old" exact>
         <FeedbackOld />
+      </Route>
+      <Route path="/feedback/course" exact>
+        <CourseFeedback />
       </Route>
 
       <Redirect to="/studentinfo/home" />

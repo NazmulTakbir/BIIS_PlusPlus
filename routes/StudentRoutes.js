@@ -45,6 +45,8 @@ StudentRoutes.get("/dues/pendingdues", DuesController.getPendingDues);
 StudentRoutes.get("/dues/paiddues", DuesController.getPaidDues);
 
 StudentRoutes.get("/feedback/pastsubmissions", FeedbackController.getPastSubmissions);
+StudentRoutes.get("/feedback/course/pastsubmissions", FeedbackController.getCourseFeedback);
 StudentRoutes.post("/feedback/newsubmission", FeedbackController.postNewSubmission);
+StudentRoutes.post("/feedback/course/newsubmission/", FeedbackController.postCourseFeedback);
 
 module.exports = StudentRoutes;

@@ -25,8 +25,10 @@ const fetchTableData = async (api_route, setTableData, setSessionData, auth) => 
       const response = await fetch(api_route, {
         headers: { Authorization: "Bearer " + auth.token },
       });
+
       const jsonData = (await response.json())["data"];
       let tableData = [];
+      
       for (let i = 0; i < jsonData.length; i++) {
         let row = [];
         row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });

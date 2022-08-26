@@ -13,6 +13,8 @@ import Table from "../../../shared/components/Table/Table";
 
 const columnLabels = ["SUBJECT", "RECEIVER", "DATE", "DETAILS"];
 
+const columnLabels_ = ["Course ID", "DATE", "DETAILS"];
+
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
     const response = await fetch(api_route, {
@@ -41,12 +43,42 @@ const fetchTableData = async (api_route, setTableData, auth) => {
   }
 };
 
+const fetchTableData_ = async (api_route, setTableData_, auth) => {
+  try {
+    const response = await fetch(api_route, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    const jsonData = (await response.json())["data"];
+    let tableData_ = [];
+    for (let i = 0; i < jsonData.length; i++) {
+      let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["submission_date"] } });
+      row.push({
+        type: "SimpleModal",
+        data: {
+          buttonText: "View",
+          header: jsonData[i]["course_id"],
+          body: jsonData[i]["details"],
+        },
+      });
+      tableData_.push(row);
+    }
+    setTableData_(tableData_);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const FeedbackOld = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
+  const [tableData_, setTableData_] = useState([]);
+  
 
   useEffect(() => {
     fetchTableData(`/api/student/feedback/pastsubmissions`, setTableData, auth);
+    fetchTableData_(`/api/student/feedback/course/pastsubmissions`, setTableData_, auth);
   }, [auth]);
 
   return (
@@ -58,7 +90,10 @@ const FeedbackOld = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
+              <h1>General Feedbacks</h1>
               <Table columnLabels={columnLabels} tableData={tableData} modal="true" />
+              <h1>Course Feedbacks</h1>
+              <Table columnLabels={columnLabels_} tableData={tableData_} modal="true" />
             </div>
           </div>
         </div>

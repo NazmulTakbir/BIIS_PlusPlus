@@ -23,19 +23,26 @@ const getRegisteredCourses = async (req, res, next) => {
     ]);
 
     const registeredCourses = [];
+    course_ids = [];
     for (const element of queryRes.rows) {
-      queryRes = await pool.query("SELECT course_name, credits from course where course_id = $1", [
-        element["course_id"],
-      ]);
+      queryRes = await pool.query(
+        `SELECT c.course_name, c.credits , co.offering_id from course as c ,\
+        "course offering" as co where c.course_id = $1 \
+        and c.course_id = co.course_id and co.session_id = $2`, 
+        [element["course_id"], session_id]
+      );
+      
       registeredCourses.push({
         course_id: element["course_id"],
+        offering_id: element["offering_id"],
         course_name: queryRes.rows[0]["course_name"],
         credits: queryRes.rows[0]["credits"],
         reg_status: element["reg_status"],
       });
+      course_ids.push(element["course_id"]);
     }
-
-    res.json({ message: "registeredCourses", data: registeredCourses });
+    
+    res.json({ message: "registeredCourses", data: registeredCourses ,course_ids : course_ids});
   } catch (err) {
     const error = new HttpError("Fetching Registered Courses Failed", 500);
     return next(error);
