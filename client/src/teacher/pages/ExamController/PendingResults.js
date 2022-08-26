@@ -6,14 +6,13 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import { SearchMenuData } from "../../components/SearchMenuData";
-import { openInNewTab } from "../../../shared/util/OpenNewTab";
-import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
+import Table from "../../../shared/components/Table/Table";
 
-const tableColumns = ["STUDENT ID", "RESULT DETAILS", "STUDENT DETAILS", "SELECT"];
+const resultTableColumns = ["STUDENT ID", "RESULT DETAILS", "STUDENT DETAILS", "SELECT"];
 
 let selectedList = [];
 
@@ -29,59 +28,66 @@ const PendingResults = () => {
     }
   };
 
-  const fetchCompleteResultsData = async (api_route) => {
-    try {
-      const response = await fetch(`/api/teacher/hallprovost/pendingresults`, {
-        headers: { Authorization: "Bearer " + auth.token },
-      });
-      const jsonData = (await response.json())["data"];
+  const fetchResultTableData = React.useCallback(
+    async (api_route) => {
+      try {
+        const response = await fetch(api_route, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
+        const jsonData = (await response.json())["data"];
 
-      let tableData = [];
-      for (let studentID in jsonData) {
-        let result_details = [];
-        for (let i = 0; i < jsonData[studentID].length; i++) {
-          let temp = "Course: " + jsonData[studentID][i][1] + "\n";
-          temp += "Letter Grade: " + jsonData[studentID][i][3] + "\n";
-          temp += "Grade Point: " + jsonData[studentID][i][2] + "\n";
-          result_details.push(temp);
+        let tableData = [];
+        for (let studentID in jsonData) {
+          let result_details = [];
+          for (let i = 0; i < jsonData[studentID].length; i++) {
+            let temp = "Course: " + jsonData[studentID][i][1] + "\n";
+            temp += "Letter Grade: " + jsonData[studentID][i][3] + "\n";
+            temp += "Grade Point: " + jsonData[studentID][i][2] + "\n";
+            result_details.push(temp);
+          }
+
+          let student_details = [];
+          for (let i = 0; i < jsonData[studentID].length; i++) {
+            let temp = "Name: " + jsonData[studentID][i][4] + "\n";
+            temp += "Department: " + jsonData[studentID][i][5] + "\n";
+            temp += "Hall: " + jsonData[studentID][i][6] + "\n";
+            temp += "Level: " + jsonData[studentID][i][7] + "\n";
+            temp += "Term: " + jsonData[studentID][i][8] + "\n";
+            student_details.push(temp);
+          }
+
+          let row = [];
+          row.push({ type: "PlainText", data: { value: studentID } });
+          row.push({
+            type: "MultiBodyModal",
+            data: {
+              buttonText: "View",
+              header: "Result Details of " + studentID,
+              body: result_details,
+            },
+          });
+          row.push({
+            type: "MultiBodyModal",
+            data: {
+              buttonText: "View",
+              header: "Student Details of " + studentID,
+              body: student_details,
+            },
+          });
+          row.push({ type: "CheckBox", data: { id: studentID, callback: checkListCallback } });
+          tableData.push(row);
         }
-
-        let row = [];
-        row.push({ type: "PlainText", data: { value: studentID } });
-        row.push({
-          type: "MultiBodyModal",
-          data: {
-            buttonText: "View",
-            header: "Result Details of " + studentID,
-            body: result_details,
-          },
-        });
-        row.push({
-          type: "Buttons",
-          data: {
-            buttonList: [
-              {
-                buttonText: "View Details",
-                textColor: "white",
-                backColor: "#697A8D",
-                onClickFunction: openInNewTab,
-                onClickArguments: ["/hallissues/profile/info/" + studentID],
-              },
-            ],
-          },
-        });
-        row.push({ type: "CheckBox", data: { id: studentID, callback: checkListCallback } });
-        tableData.push(row);
+        setResultTableData(tableData);
+      } catch (err) {
+        console.log(err);
       }
-      setResultTableData(tableData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    },
+    [auth]
+  );
 
   useEffect(() => {
-    fetchCompleteResultsData(`/api/teacher/hallprovost/pendingresults`);
-  }, [auth]);
+    fetchResultTableData(`/api/teacher/examcontroller/pendingresults`);
+  }, [auth, fetchResultTableData]);
 
   const approveHandler = async (e) => {
     e.preventDefault();
@@ -89,7 +95,7 @@ const PendingResults = () => {
       if (selectedList.length === 0) {
         alert("Please select atleast one student");
       } else {
-        await fetch(`/api/teacher/hallprovost/approveresults`, {
+        await fetch(`/api/teacher/examcontroller/approveresults`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify(selectedList),
@@ -97,7 +103,7 @@ const PendingResults = () => {
         alert("Approved Successfully");
         selectedList = [];
         setResultTableData([]);
-        fetchCompleteResultsData(`/api/teacher/hallprovost/pendingresults`);
+        fetchResultTableData(`/api/teacher/examcontroller/pendingresults`);
       }
     } catch (err) {}
   };
@@ -108,7 +114,7 @@ const PendingResults = () => {
       if (selectedList.length === 0) {
         alert("Please select atleast one student");
       } else {
-        await fetch(`/api/teacher/hallprovost/rejectresults`, {
+        await fetch(`/api/teacher/examcontroller/rejectresults`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
           body: JSON.stringify(selectedList),
@@ -116,7 +122,7 @@ const PendingResults = () => {
         alert("Rejected Successfully");
         selectedList = [];
         setResultTableData([]);
-        fetchCompleteResultsData(`/api/teacher/hallprovost/pendingresults`);
+        fetchResultTableData(`/api/teacher/examcontroller/pendingresults`);
       }
     } catch (err) {}
   };
@@ -130,7 +136,7 @@ const PendingResults = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={tableColumns} tableData={resultTableData} />
+              <Table columnLabels={resultTableColumns} tableData={resultTableData} modal="true" />
 
               <form onSubmit={approveHandler}>
                 <CustomButton

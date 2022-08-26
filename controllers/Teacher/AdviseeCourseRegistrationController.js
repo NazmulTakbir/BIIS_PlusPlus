@@ -1,6 +1,5 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
 
 const getRegistrationRequests = async (req, res, next) => {
   try {
@@ -22,6 +21,7 @@ const getRegistrationRequests = async (req, res, next) => {
 
     res.json({ message: "getRegistrationRequests", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -48,6 +48,7 @@ const getRegistrationRequestSummary = async (req, res, next) => {
 
     res.json({ message: "getRegistrationRequestSummary", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Registration Summary Failed", 500);
     return next(error);
   }
@@ -64,6 +65,7 @@ const postApproveRegistrationRequests = async (req, res, next) => {
     }
     res.json({ message: "postApproveRegistrationRequests" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postApproveRegistrationRequests Failed", 500);
     return next(error);
   }
@@ -79,6 +81,7 @@ const postRejectRegistrationRequests = async (req, res, next) => {
     }
     res.json({ message: "postRejectRegistrationRequests" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postRejectRegistrationRequests Failed", 500);
     return next(error);
   }

@@ -35,6 +35,7 @@ const postAddTeacher = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddTeacher successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddTeacher failed", 500);
     return next(error);
   }
@@ -53,6 +54,7 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }
@@ -63,13 +65,13 @@ const getnextid = async (req, res, next) => {
     let queryRes = await pool.query(" select MAX(teacher_id) from public.teacher");
     let nextid = queryRes.rows[0].max + 1;
 
-    res.json({ message: "getnextid successful", nextid : nextid });
+    res.json({ message: "getnextid successful", nextid: nextid });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getnextid failed", 500);
     return next(error);
   }
 };
-
 
 exports.getSampleFile = getSampleFile;
 exports.getnextid = getnextid;

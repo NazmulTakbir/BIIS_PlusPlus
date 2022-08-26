@@ -31,4 +31,9 @@ export const SidebarData = [
     icon: <BusinessIcon />,
     link: "/deptStudents/all",
   },
+  {
+    title: "Exam Controller Issues",
+    icon: <BusinessIcon />,
+    link: "/examcontroller/pendingresults",
+  },
 ];

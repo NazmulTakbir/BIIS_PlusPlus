@@ -26,6 +26,9 @@ const Sidebar = (props) => {
         if (auth.responsibilities.includes("depthead")) {
           toKeep.push("Dept Head Issues");
         }
+        if (auth.responsibilities.includes("examcontroller")) {
+          toKeep.push("Exam Controller Issues");
+        }
 
         let temp = [];
         for (i = 0; i < SidebarData.length; i++) {

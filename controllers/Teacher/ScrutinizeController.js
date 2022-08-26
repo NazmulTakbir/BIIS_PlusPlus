@@ -43,6 +43,7 @@ const getAll = async (req, res, next) => {
 
     res.json({ message: "getAll", data: data, total_marks: total_marks, criteria_weight: criteria_weight });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getAll Failed", 500);
     return next(error);
   }
@@ -84,6 +85,7 @@ const postApproval = async (req, res, next) => {
 
     res.json({ message: "postApproval" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postApproval Failed", 500);
     return next(error);
   }
@@ -125,6 +127,7 @@ const postRejection = async (req, res, next) => {
 
     res.json({ message: "postRejection" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postRejection Failed", 500);
     return next(error);
   }

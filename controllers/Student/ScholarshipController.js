@@ -30,6 +30,7 @@ const getReceived = async (req, res, next) => {
 
     res.status(201).json({ message: "getReceived", data: scholarship_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching scholarship data Failed", 500);
     return next(error);
   }
@@ -65,6 +66,7 @@ const getProcessing = async (req, res, next) => {
 
     res.status(201).json({ message: "getProcessing", data: scholarship_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching scholarship data Failed", 500);
     return next(error);
   }
@@ -95,6 +97,7 @@ const getAvailable = async (req, res, next) => {
 
     res.status(201).json({ message: "getAvailable", data: scholarship_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching scholarship data Failed", 500);
     return next(error);
   }
@@ -105,6 +108,7 @@ const getForm = async (req, res, next) => {
     //file stuff to be done later
     res.status(201).json({ message: "getForm" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
   }
@@ -124,6 +128,7 @@ const postApplication = async (req, res, next) => {
     //console.log(queryRes);
     res.status(201).json({ message: "scholarship state updated to awaiting_provost" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("scholarship state update Failed", 500);
     return next(error);
   }

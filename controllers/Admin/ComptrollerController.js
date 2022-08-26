@@ -12,6 +12,7 @@ const getPendingScholarships = async (req, res, next) => {
     );
     res.json({ message: "getPendingScholarships successful", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getPendingScholarships failed", 500);
     return next(error);
   }
@@ -27,6 +28,7 @@ const getPendingDues = async (req, res, next) => {
 
     res.json({ message: "getPendingDues successful", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getPendingDues failed", 500);
     return next(error);
   }
@@ -38,39 +40,39 @@ const postMarkDuesPaid = async (req, res, next) => {
     const { duesIDs } = req.body;
     let queryRes;
     console.log(duesIDs);
-    for(let i = 0; i < duesIDs.length; i++){
-        queryRes = await pool.query(
-          "UPDATE dues SET dues_status = 'Paid' WHERE dues_id = $1",[duesIDs[i]]
-        );
+    for (let i = 0; i < duesIDs.length; i++) {
+      queryRes = await pool.query("UPDATE dues SET dues_status = 'Paid' WHERE dues_id = $1", [duesIDs[i]]);
     }
     console.log(duesIDs);
-    
+
     res.json({ message: "postMarkDuesPaid successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postMarkDuesPaid failed", 500);
     return next(error);
   }
-}
-
+};
 
 const postMarkScholarshipPaid = async (req, res, next) => {
   try {
     const { schIDs } = req.body;
     console.log(schIDs);
     let queryRes;
-    for(let i = 0; i < schIDs.length; i++){
-        queryRes = await pool.query(
-          "UPDATE scholarship SET scholarship_state = 'paid', payment_date=NOW() WHERE scholarship_id = $1",[schIDs[i]]
-        );
+    for (let i = 0; i < schIDs.length; i++) {
+      queryRes = await pool.query(
+        "UPDATE scholarship SET scholarship_state = 'paid', payment_date=NOW() WHERE scholarship_id = $1",
+        [schIDs[i]]
+      );
     }
     console.log(schIDs);
-    
+
     res.json({ message: "postMarkScholarshipPaid successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postMarkScholarshipPaid failed", 500);
     return next(error);
   }
-}
+};
 
 exports.postMarkScholarshipPaid = postMarkScholarshipPaid;
 exports.postMarkDuesPaid = postMarkDuesPaid;

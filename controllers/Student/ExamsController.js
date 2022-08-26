@@ -9,7 +9,7 @@ const getAvailableResults = async (req, res, next) => {
 
     let query = await pool.query(
       'select distinct(level, term) from "result summary" as r natural join "course offering" as co natural join \
-      course as c where student_id=$1 and result_status=\'published\';',
+      course as c where student_id=$1',
       [sid]
     );
     data = [];
@@ -19,6 +19,7 @@ const getAvailableResults = async (req, res, next) => {
 
     res.status(201).json({ message: "getGrades", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }
@@ -78,6 +79,7 @@ const getGrades = async (req, res, next) => {
       cgpa: cgpa,
     });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }
@@ -115,6 +117,7 @@ const getExamRoutine = async (req, res, next) => {
 
     res.status(201).json({ message: "getExamRoutine", data: exam_routine_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching exam routine Failed", 500);
     return next(error);
   }
@@ -145,6 +148,7 @@ const getSeatPlan = async (req, res, next) => {
 
     res.status(201).json({ message: "getSeatPlan", data: seatingGrid, building: building, room_no: room_no });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching seat plan Failed", 500);
     return next(error);
   }
@@ -172,6 +176,7 @@ const getGuidelines = async (req, res, next) => {
 
     res.status(201).json({ message: "getGuidelines", data: exam_guidelines_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching exam guidelines Failed", 500);
     return next(error);
   }

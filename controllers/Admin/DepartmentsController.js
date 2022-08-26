@@ -9,6 +9,7 @@ const getDepartmentsList = async (req, res, next) => {
 
     res.json({ message: "getInfo", data: deptData });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Dept Data Failed", 500);
     return next(error);
   }
@@ -22,7 +23,7 @@ const getDepartmentsList = async (req, res, next) => {
   
       res.json({ message: "getInfo", dept_id: dept_id });
     } catch (err) {
-      const error = new HttpError("Fetching Dept Data Failed", 500);
+      console.log(err);const error = new HttpError("Fetching Dept Data Failed", 500);
       return next(error);
     }
   };
@@ -42,6 +43,7 @@ const getTeachersList = async (req, res, next) => {
 
     res.json({ message: "getInfo", data: teacherData });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Teacher Data Failed", 500);
     return next(error);
   }
@@ -54,6 +56,7 @@ const getSessionList = async (req, res, next) => {
 
     res.json({ message: "getInfo", data: sessionList });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Session Data Failed", 500);
     return next(error);
   }
@@ -66,6 +69,7 @@ const getScholarshipTypeList = async (req, res, next) => {
 
     res.json({ message: "getInfo", data: scholarship_type_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Session Data Failed", 500);
     return next(error);
   }
@@ -80,6 +84,7 @@ const getSelfDepartment = async (req, res, next) => {
 
     res.json({ message: "getInfo", data: queryRes.rows[0] });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Session Data Failed", 500);
     return next(error);
   }

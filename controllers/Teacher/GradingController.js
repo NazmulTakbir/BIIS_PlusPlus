@@ -43,6 +43,7 @@ const getStudentMarks = async (req, res, next) => {
 
     res.json({ message: "getStudentMarks", data: data, total_marks: total_marks, criteria_weight: criteria_weight });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getStudentMarks Failed", 500);
     return next(error);
   }
@@ -89,6 +90,7 @@ const postStudentMarks = async (req, res, next) => {
 
     res.json({ message: "postStudentMarks" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postStudentMarks Failed", 500);
     return next(error);
   }
@@ -129,6 +131,7 @@ const sendForScrutiny = async (req, res, next) => {
 
     res.json({ message: "sendForScrutiny" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("sendForScrutiny Failed", 500);
     return next(error);
   }

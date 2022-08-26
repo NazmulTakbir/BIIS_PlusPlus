@@ -1,6 +1,7 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 const getScholarshipRequests = async (req, res, next) => {
   try {
@@ -18,6 +19,7 @@ const getScholarshipRequests = async (req, res, next) => {
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -39,6 +41,7 @@ const getAllScholarshipRequests = async (req, res, next) => {
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -66,6 +69,7 @@ const getHallMemberInfo = async (req, res, next) => {
 
     res.json(studentInfo);
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -77,7 +81,7 @@ const getAvailableResults = async (req, res, next) => {
 
     let query = await pool.query(
       'select distinct(level, term) from "result summary" as r natural join "course offering" as co natural join \
-        course as c where student_id=$1 and result_status=\'published\';',
+        course as c where student_id=$1',
       [sid]
     );
     data = [];
@@ -87,6 +91,7 @@ const getAvailableResults = async (req, res, next) => {
 
     res.status(201).json({ message: "getGrades", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }
@@ -146,6 +151,7 @@ const getGrades = async (req, res, next) => {
       cgpa: cgpa,
     });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }
@@ -168,6 +174,7 @@ const getHallMemberScholarshipRequests = async (req, res, next) => {
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }
@@ -186,6 +193,7 @@ const allowHallMemberScholarshipRequests = async (req, res, next) => {
     );
     res.status(201).json({ message: "scholarship state updated to awaiting_head" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("scholarship state update Failed", 500);
     return next(error);
   }
@@ -204,6 +212,7 @@ const rejectHallMemberScholarshipRequests = async (req, res, next) => {
     );
     res.status(201).json({ message: "scholarship state updated to rejected" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("scholarship state update Failed", 500);
     return next(error);
   }
@@ -221,6 +230,7 @@ const getAllStudents = async (req, res, next) => {
 
     res.json({ message: "getScholarshipRequests", data: queryRes.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -256,12 +266,97 @@ const getPendingDues = async (req, res, next) => {
 
     res.status(201).json({ message: "getPendingDues", data: pending_dues_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
 };
 
+const getPendingResults = async (req, res, next) => {
+  try {
+    const session_id = await getCurrentSession();
+
+    let queryRes = await pool.query(
+      "select t2.student_id, t3.offering_id, t4.course_name, get_grade_point(t2.student_id, t3.offering_id) as grade_point, \
+      get_letter_grade(t2.student_id, t3.offering_id) as letter_grade from \
+      (select student_id, all_offering_result_complete_for_student(student_id, $1, 'Awaiting Hall Provost Approval') as filter_result \
+      from (select student_id from hall natural join student where hall_provost_id=$2) as t1) as t2 \
+      join \"course registrations\" as t3 on t2.student_id=t3.student_id natural join course as t4 \
+      where t2.filter_result=true and t3.session_id=$1;",
+      [session_id, req.userData.id]
+    );
+
+    let data = {};
+    for (const element of queryRes.rows) {
+      if (element["student_id"] in data) {
+        data[element["student_id"]].push([
+          element["offering_id"],
+          element["course_name"],
+          element["grade_point"],
+          element["letter_grade"],
+        ]);
+      } else {
+        data[element["student_id"]] = [
+          [element["offering_id"], element["course_name"], element["grade_point"], element["letter_grade"]],
+        ];
+      }
+    }
+
+    res.status(201).json({ message: "getPendingResults", data: data });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("Fetching getPendingResults Failed", 500);
+    return next(error);
+  }
+};
+
+const postApproveResults = async (req, res, next) => {
+  try {
+    const session_id = await getCurrentSession();
+
+    const student_ids = req.body;
+    console.log(student_ids);
+    for (let i = 0; i < student_ids.length; i++) {
+      await pool.query(
+        'UPDATE public."result details" as t1 SET status=\'Awaiting Exam Controller Approval\' \
+        from "course offering" as t2 WHERE t1.offering_id=t2.offering_id and \
+        t1.student_id=$1 and t2.session_id=$2',
+        [student_ids[i], session_id]
+      );
+    }
+
+    res.json({ message: "postApproveResults" });
+  } catch (err) {
+    const error = new HttpError("postApproveResults Failed", 500);
+    return next(error);
+  }
+};
+
+const postRejectResults = async (req, res, next) => {
+  try {
+    const session_id = await getCurrentSession();
+
+    const student_ids = req.body;
+    for (let i = 0; i < student_ids.length; i++) {
+      await pool.query(
+        'UPDATE public."result details" as t1 SET status=\'Rejected by Hall Provost\' \
+        from "course offering" as t2 WHERE t1.offering_id=t2.offering_id and \
+        t1.student_id=$1 and t2.session_id=$2',
+        [student_ids[i], session_id]
+      );
+    }
+
+    res.json({ message: "postRejectResults" });
+  } catch (err) {
+    const error = new HttpError("postRejectResults Failed", 500);
+    return next(error);
+  }
+};
+
+exports.postApproveResults = postApproveResults;
+exports.postRejectResults = postRejectResults;
 exports.getAllStudents = getAllStudents;
+exports.getPendingResults = getPendingResults;
 exports.getGrades = getGrades;
 exports.getHallMemberInfo = getHallMemberInfo;
 exports.getAvailableResults = getAvailableResults;

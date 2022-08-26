@@ -35,6 +35,7 @@ const postAddDues = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddDues successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddDues failed", 500);
     return next(error);
   }
@@ -53,11 +54,11 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }
 };
-
 
 //create getDuesTypes async function
 const getDuesTypes = async (req, res, next) => {
@@ -65,11 +66,11 @@ const getDuesTypes = async (req, res, next) => {
     const result = await pool.query(`SELECT dues_type_id , description FROM public."dues type" `);
     res.json({ message: "getDuesTypes successful", data: result.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getDuesTypes failed", 500);
     return next(error);
   }
-}
-
+};
 
 exports.getDuesTypes = getDuesTypes;
 exports.getSampleFile = getSampleFile;

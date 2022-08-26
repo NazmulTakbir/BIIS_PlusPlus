@@ -52,7 +52,7 @@ const FeedbackOld = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header searchData={SearchMenuData}/>
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">

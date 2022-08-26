@@ -60,6 +60,7 @@ const postAddStudent = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddStudent successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddStudent failed", 500);
     return next(error);
   }
@@ -78,6 +79,7 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }
@@ -87,16 +89,14 @@ const getSampleFile = async (req, res, next) => {
 const getStudentsOfDept = async (req, res, next) => {
   try {
     const { dept_id } = req.params;
-    const result = await pool.query(
-      "SELECT student_id, name FROM public.student WHERE dept_id = $1",
-      [dept_id]
-    );
+    const result = await pool.query("SELECT student_id, name FROM public.student WHERE dept_id = $1", [dept_id]);
     res.json({ message: "getStudentsOfDept successful", data: result.rows });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getStudentsOfDept failed", 500);
     return next(error);
   }
-}
+};
 
 exports.getStudentsOfDept = getStudentsOfDept;
 exports.getSampleFile = getSampleFile;

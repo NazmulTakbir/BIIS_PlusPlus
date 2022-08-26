@@ -14,5 +14,9 @@ export const NavbarData = [
   {
     title: "Scholarship",
     link: "/deptStudents/scholarship",
-  },  
+  },
+  {
+    title: "Results",
+    link: "/deptStudents/results",
+  },
 ];

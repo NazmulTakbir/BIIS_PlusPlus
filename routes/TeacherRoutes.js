@@ -9,6 +9,7 @@ const HallProvostController = require("../controllers/Teacher/HallProvostControl
 const DepartmentHeadController = require("../controllers/Teacher/DepartmentHeadController");
 const AdviseeInfoController = require("../controllers/Teacher/AdviseeInfoController");
 const CourseCoordinatorController = require("../controllers/Teacher/CourseCoordinatorController");
+const ExamcontrollerController = require("../controllers/Teacher/ExamcontrollerController");
 
 const verifyTeacher = require("../controllers/Authentication/VerifyTeacher");
 
@@ -65,6 +66,9 @@ TeacherRoutes.get("/hallprovost/scholarshiprequests", HallProvostController.getS
 
 //all scholarships in stages
 TeacherRoutes.get("/hallprovost/allrequests", HallProvostController.getAllScholarshipRequests);
+TeacherRoutes.get("/hallprovost/pendingresults", HallProvostController.getPendingResults);
+TeacherRoutes.post("/hallprovost/approveresults", HallProvostController.postApproveResults);
+TeacherRoutes.post("/hallprovost/rejectresults", HallProvostController.postRejectResults);
 
 //new window for approving requests
 TeacherRoutes.get("/hallmemberinfo/:sid", HallProvostController.getHallMemberInfo);
@@ -85,6 +89,13 @@ TeacherRoutes.post(
 TeacherRoutes.get("/departmenthead/feedbacks", DepartmentHeadController.getFeedbacks);
 TeacherRoutes.get("/departmenthead/deptStudents", DepartmentHeadController.getDepartmentStudents);
 TeacherRoutes.get("/departmenthead/registrationsummary", DepartmentHeadController.getRegistrationRequestSummary);
+TeacherRoutes.get("/departmenthead/offeredcourses", DepartmentHeadController.getOfferedCourses);
+TeacherRoutes.get("/departmenthead/preparedresults/:course_id", DepartmentHeadController.getPreparedResults);
+TeacherRoutes.get("/departmenthead/pendingresults/:course_id", DepartmentHeadController.getPendingResults);
+TeacherRoutes.get("/departmenthead/resultdetails/:course_id/:student_id", DepartmentHeadController.getResultDetails);
+TeacherRoutes.post("/departmenthead/approveresults/:course_id", DepartmentHeadController.postApproveResults);
+TeacherRoutes.post("/departmenthead/rejectresults/:course_id", DepartmentHeadController.postRejectResults);
+
 //route for deptStudent
 TeacherRoutes.get("/departmenthead/registrationrequests/:sid", DepartmentHeadController.getRegistrationRequests);
 TeacherRoutes.get("/departmenthead/deptStudentInfo/:sid", DepartmentHeadController.getDeptStudentInfo);
@@ -106,5 +117,9 @@ TeacherRoutes.get(
 );
 TeacherRoutes.post("/departmenthead/approvescholarship/", DepartmentHeadController.allowDeptScholarshipRequests);
 TeacherRoutes.post("/departmenthead/rejectscholarship/", DepartmentHeadController.rejectDeptScholarshipRequests);
+
+TeacherRoutes.get("/examcontroller/pendingresults/", ExamcontrollerController.getPendingResults);
+TeacherRoutes.post("/examcontroller/approveresults/", ExamcontrollerController.postApproveResults);
+TeacherRoutes.post("/examcontroller/rejectresults/", ExamcontrollerController.postRejectResults);
 
 module.exports = TeacherRoutes;
