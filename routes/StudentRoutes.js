@@ -7,6 +7,7 @@ const ScholarshipController = require("../controllers/Student/ScholarshipControl
 const GeneralInfoController = require("../controllers/Student/GeneralInfoController");
 const DuesController = require("../controllers/Student/DuesController");
 const FeedbackController = require("../controllers/Student/FeedbackController");
+const NotificationsController = require("../controllers/Student/NotificationsController");
 
 const verifyStudent = require("../controllers/Authentication/VerifyStudent");
 
@@ -48,5 +49,8 @@ StudentRoutes.get("/feedback/pastsubmissions", FeedbackController.getPastSubmiss
 StudentRoutes.get("/feedback/course/pastsubmissions", FeedbackController.getCourseFeedback);
 StudentRoutes.post("/feedback/newsubmission", FeedbackController.postNewSubmission);
 StudentRoutes.post("/feedback/course/newsubmission/", FeedbackController.postCourseFeedback);
+
+StudentRoutes.get("/notifications/getall/", NotificationsController.getNotifications);
+StudentRoutes.get("/notifications/subscriptions/", NotificationsController.getSubscriptions);
 
 module.exports = StudentRoutes;
