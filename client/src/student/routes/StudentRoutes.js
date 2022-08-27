@@ -28,6 +28,8 @@ import ScholarshipReceived from "../pages/Scholarship/ScholarshipReceived";
 import FeedbackNew from "../pages/Feedback/FeedbackNew";
 import FeedbackOld from "../pages/Feedback/FeedbackOld";
 import CourseFeedback from "../pages/Feedback/CourseFeedback";
+import Notifications from "../../shared/pages/Notifications/Notifications";
+import Subscriptions from "../../shared/pages/Notifications/Subscriptions";
 
 const StudentRoutes = () => {
   return (
@@ -108,6 +110,13 @@ const StudentRoutes = () => {
       <Route path="/feedback/course" exact>
         <CourseFeedback />
       </Route>
+      <Route path="/notifications" exact>
+        <Notifications />
+      </Route>   
+      <Route path="/subscriptions" exact>
+        <Subscriptions />
+      </Route>      
+   
 
       <Redirect to="/studentinfo/home" />
     </Switch>
