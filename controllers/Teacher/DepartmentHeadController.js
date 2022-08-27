@@ -228,12 +228,14 @@ const postApproveRegistrationRequests = async (req, res, next) => {
       ]);
 
       queryRes = await pool.query(
-        'select course_id, session_id, student_id from "registration request" natural join "course offering" where reg_request_id=$1',
+        'select course_id, session_id, student_id, request_type from "registration request" natural join "course offering" where reg_request_id=$1',
         [requestIDs[i]]
       );
 
       const description =
-        "The following Registration Request has been Approved: Course ID" +
+        "The following Registration Request has been Approved: " +
+        queryRes.rows[0].request_type.toUpperCase() +
+        " Course ID: " +
         queryRes.rows[0].course_id +
         ". Session: " +
         queryRes.rows[0].session_id;
@@ -259,6 +261,27 @@ const postRejectRegistrationRequests = async (req, res, next) => {
     for (let i = 0; i < requestIDs.length; i++) {
       await pool.query("update \"registration request\" set reg_status='rejected_head' where reg_request_id=$1;", [
         requestIDs[i],
+      ]);
+
+      queryRes = await pool.query(
+        'select course_id, session_id, student_id, request_type from "registration request" natural join "course offering" where reg_request_id=$1',
+        [requestIDs[i]]
+      );
+
+      const description =
+        "The following Registration Request has been Rejected by Department Head: " +
+        queryRes.rows[0].request_type.toUpperCase() +
+        " Course ID: " +
+        queryRes.rows[0].course_id +
+        ". Session: " +
+        queryRes.rows[0].session_id;
+
+      await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
+        "student",
+        queryRes.rows[0].student_id,
+        "Course Registration Approval/Rejection",
+        new Date(),
+        description,
       ]);
     }
     res.json({ message: "postRejectRegistrationRequests" });
