@@ -9,6 +9,7 @@ import { getSearchBarData } from "../components/SearchMenuData";
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
 import Textbox from "../../shared/components/Textbox/Textbox";
+import CustomSearch from "../../shared/components/CustomSearch/CustomSearch";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,28 +25,58 @@ const AddScholarship = () => {
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
-  const [student_id, set_student_id] = useState("");
+  const [student_id, setStudent_id] = useState("");
   const [session_id, set_session_id] = useState("");
   const [session_list, set_session_list] = useState([]);
   const [scholarship_type_id, set_scholarship_type_id] = useState("");
   const [scholarship_type_list, set_scholarship_type_list] = useState([]);
+
+  //for searchable student ids
+  const [search_students_list, setSearch_students_list] = useState([]);
+  const is_student_id_valid = search_students_list.some((element) => element.value === student_id);
+
 
   // scholarshiptypelist sessionlist
   useEffect(() => {
     const fetchData = async () => {
       try {
         setSearchMenuData(getSearchBarData(auth.userType));
-        const response1 = await fetch(`/api/admin/sessionlist/get`, {
+        let response = await fetch(`/api/admin/sessionlist/get`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
-        const jsonData1 = await response1.json();
-        set_session_list(jsonData1.data);
+        let jsonData = await response.json();
+        set_session_list(jsonData.data);
 
-        const response2 = await fetch(`/api/admin/scholarshiptypelist/get`, {
+        response = await fetch(`/api/admin/scholarshiptypelist/get`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
-        const jsonData2 = await response2.json();
-        set_scholarship_type_list(jsonData2.data);
+        jsonData = await response.json();
+        set_scholarship_type_list(jsonData.data);
+
+        const hall_admin_id = auth.userId;
+        console.log("hall admin id" , hall_admin_id);
+        //get hall_id from hall_admin_id
+        response = await fetch(`/api/admin/hall/getHallId/${hall_admin_id}`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
+        const hall_id = (await response.json()).hall_id;
+        console.log(hall_id);
+        
+        response = await fetch(`/api/admin/student/getStudentsOfHall/${hall_id}`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
+        jsonData = await response.json();
+        console.log(jsonData);
+
+        //set data in valid format for search component
+        let search_list = [];
+        for (var i = 0; i < jsonData.data.length; i++) {
+          search_list.push({
+            name: jsonData.data[i].student_id + " - " + jsonData.data[i].name,
+            value: jsonData.data[i].student_id,
+          });
+        }
+        setSearch_students_list(search_list);
       } catch (err) {
         console.log(err);
       }
@@ -129,7 +160,7 @@ const AddScholarship = () => {
       });
 
       //form reset
-      set_student_id("");
+      setStudent_id("");
       set_session_id("");
       set_scholarship_type_id("");
 
@@ -229,18 +260,14 @@ const AddScholarship = () => {
 
               <div className="admin-form-container" style={{ paddingTop: "10px" }}>
                 <form id="add-sch-form" onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
-                  <Textbox
-                    width="350px"
-                    height="46px"
-                    resize="none"
-                    name="student_id"
+                  
+                  <CustomSearch
+                    data={search_students_list}
+                    parentCallback={setStudent_id}
                     required={true}
-                    padding="0px"
-                    fontSize="17px"
-                    placeholder=""
-                    label="Student ID:"
-                    value={student_id}
-                    onChange={(e) => set_student_id(e.target.value)}
+                    margin="25px 0px 10px 0px"
+                    width="100%"
+                    label="Select Student"
                   />
 
                   <FormControl fullWidth style={{ marginTop: "25px" }}>

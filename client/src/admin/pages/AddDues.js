@@ -38,7 +38,7 @@ const AddDues = () => {
   const [search_students_list, setSearch_students_list] = useState([]);
   const is_student_id_valid = search_students_list.some((element) => element.value === student_id);
 
-  const admin_dept_id = 5; //change it after adming logins
+  //const admin_dept_id = 5; //change it after adming logins
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,10 +50,20 @@ const AddDues = () => {
         let jsonData = await response.json();
         setDues_type_list(jsonData.data);
 
-        response = await fetch(`/api/admin/student/getStudentsOfDept/${admin_dept_id}`, {
+        const hall_admin_id = auth.userId;
+        console.log("hall admin id" , hall_admin_id);
+        //get hall_id from hall_admin_id
+        response = await fetch(`/api/admin/hall/getHallId/${hall_admin_id}`, {
+          headers: { Authorization: "Bearer " + auth.token },
+        });
+        const hall_id = (await response.json()).hall_id;
+        console.log(hall_id);
+        
+        response = await fetch(`/api/admin/student/getStudentsOfHall/${hall_id}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         jsonData = await response.json();
+        console.log(jsonData);
         // setStudents_list(jsonData.data);
 
         //set data in valid format for search component
