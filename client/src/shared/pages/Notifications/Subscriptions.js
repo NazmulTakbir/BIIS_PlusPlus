@@ -4,26 +4,52 @@ import "../../components/MainContainer.css";
 import Navbar from "../../components/Navbar/Navbar";
 import { NavbarData } from "./NavbarData";
 import "./Notifications.css"
+import Table from "../../components/Table/Table";
+import CustomButton from "../../components/CustomButton/CustomButton";
 
+const columnLabels = ["Serial", "Types of Notifications"];
+const checkedSubscriptions = [];
 
+const checkBoxCallBack = (id, actionType) => {
+  if (actionType === "check") {
+    checkedSubscriptions.push(id);
+  } else if (actionType === "uncheck") {
+    checkedSubscriptions.splice(checkedSubscriptions.indexOf(id), 1);
+  }
+};
 
-//remove this later
-import { dummyTable } from "./dummy";
+const fetchTableData = async (api_route, setTableData, setSessionData, auth) => {
+
+};
 
 const Subscriptions = () => {
   const auth = useContext(AuthContext);
-  const dataTable = dummyTable; //fetch data from server
+  const [tableData, setTableData] = useState([]);
+  const [sessionData, setSessionData] = useState({});
+
+  // useEffect(() => {
+  //   fetchTableData(`/api/student/courses/coursestodrop`, setTableData, setSessionData, auth);
+  // }, [auth]);
 
   const renderPage = () => {
-    if (dataTable.length === 0) {
-      return <h3>You Have No New Notifications</h3>;
-    } else {
-      return (
-        <React.Fragment>
-            <h1>Notification Subscriptions</h1>
-        </React.Fragment>
-      );
-    }
+    return (
+      <React.Fragment>
+        <Table columnLabels={columnLabels} tableData={tableData} />
+        <CustomButton
+          label="Unsubscribe"
+          variant="contained"
+          color="white"
+          bcolor="#b13137"
+          width="160px"
+          onClickFunction={submissionHandler}
+          onClickArguments={[]}
+        />
+      </React.Fragment>
+    );
+  };
+
+  const submissionHandler = async () => {
+    console.log(checkedSubscriptions);
   };
 
   return (

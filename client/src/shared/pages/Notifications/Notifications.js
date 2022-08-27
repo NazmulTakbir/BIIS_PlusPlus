@@ -62,10 +62,16 @@ const Notifications = () => {
 
   return (
     <React.Fragment>
-        <div className="content">
-          <Navbar NavbarData={NavbarData} />
-          {renderPage()}
+      <div className="App">
+        <div className="wrapper">
+          <div className="main_container">
+            <div className="content">
+              <Navbar NavbarData={NavbarData} />
+              {renderPage()}
+            </div>
+          </div>
         </div>
+      </div>
     </React.Fragment>
   );
 };
