@@ -2,6 +2,7 @@ const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const { getCurrentSession } = require("../../util/CurrentSession");
 const { getStudentResults } = require("./utils");
+const mailController = require("../Shared/email");
 
 const getFeedbacks = async (req, res, next) => {
   try {
@@ -245,6 +246,15 @@ const postApproveRegistrationRequests = async (req, res, next) => {
         new Date(),
         description,
       ]);
+
+      let queryRes = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      const email = queryRes.rows[0].email;
+      const subject = "BIISPLUSPLUS : Scholarship Made Available";
+      description = "You are eligible for " + scholarship_info.rows[0].scholarship_name + " scholarship" + " of Session " + data[1] + ".\nAmount: " + scholarship_info.rows[0].amount + " BDT";
+      description = "Dear Student,\n\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+      description += "\n\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+      const text = description;
+      mailController.sendMail(email, subject, text);
     }
     res.json({ message: "postApproveRegistrationRequests" });
   } catch (err) {
