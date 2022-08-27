@@ -1,5 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
+const mailController = require("../Shared/email");
 
 const getPendingScholarships = async (req, res, next) => {
   try {

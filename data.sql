@@ -1461,6 +1461,8 @@ INSERT INTO public.hall (hall_id, hall_name, hall_provost_id, supervisor_name, s
 
 INSERT INTO public."hall admin" (hall_admin_id, hall_id, name, password) OVERRIDING SYSTEM VALUE VALUES (200000, 1, 'Asif Hasan', '$2a$10$zra60zwI/E0FvrMpVCe.X.oy89sx90ik1H3piym.Hc0uGelfkmaC.');
 INSERT INTO public."hall admin" (hall_admin_id, hall_id, name, password) OVERRIDING SYSTEM VALUE VALUES (200001, 2, 'Sadman Kabir', '$2a$10$bPdAVbUChiIEQc6D.93/rucPvGZlQ4X6q5.i/VlVg0i.cfffUsnQS');
+INSERT INTO public."hall admin" (hall_admin_id, hall_id, name, password) OVERRIDING SYSTEM VALUE VALUES (200002, 6, 'Sadman Karim', '$2a$10$bPdAVbUChiIEQc6D.93/rucPvGZlQ4X6q5.i/VlVg0i.cfffUsnQS');
+INSERT INTO public."hall admin" (hall_admin_id, hall_id, name, password) OVERRIDING SYSTEM VALUE VALUES (200003, 5, 'Sabina Akter', '$2a$10$bPdAVbUChiIEQc6D.93/rucPvGZlQ4X6q5.i/VlVg0i.cfffUsnQS');
 
 
 --
@@ -1824,7 +1826,7 @@ INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_i
 INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705097, 'Claudia Pozzecco', 'geronimogalilei@example.com', 5, 5, 100004, '+39 0358460532', '3266583157', 'Borgo Loretta, 2
 88835, Roccabernarda (KR)', 'Stretto Zabarella, 8 Piano 3
 32032, Feltre (BL)', '1998-06-12', '5008324433', 1, 2, '$2a$10$zrzjnI8sTcFZU5pdYYT0ROCxIh4JXfseVkv7JICfBgqzd8kh5EIC6');
-INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705098, 'Stefano Veneziano-Spadafora', 'sihatafnan15.9.1997@gmail.com', 5, 5, 100004, '36678517055', '9209495841', 'Borgo Angelo, 90 Piano 0
+INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705098, 'Sihat Afnan', 'sihatafnan15.9.1997@gmail.com', 5, 5, 100004, '36678517055', '9209495841', 'Borgo Angelo, 90 Piano 0
 24066, Pedrengo (BG)', 'Stretto Binaghi, 34
 28859, Trontano (VB)', '1997-05-06', '1743233830', 1, 2, '$2a$10$EVG2HSEqSSaTmo/mgEMyZO.6YLgqRCPIqNDB2GL89G8Bi4Li..UF2');
 INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705099, 'Amanda Curci', 'dgentilini@example.org', 5, 5, 100004, '+39 096115992', '3998693197', 'Vicolo Sabatini, 35 Appartamento 7
