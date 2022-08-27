@@ -427,4 +427,22 @@ create or replace function get_grade_point(
 	
 $$ language plpgsql;
 
+CREATE TABLE IF NOT EXISTS public.student_notification_registrations
+(
+    notification_type text COLLATE pg_catalog."default",
+    student_id integer,
+    CONSTRAINT student_notification_registrations_notification_type_check CHECK (notification_type = 'Course Registration Approval/Rejection'::text OR notification_type = 'Results Published'::text OR notification_type = 'Scholarship Made Available'::text OR notification_type = 'Scholarship Paid'::text OR notification_type = 'New Dues to be Paid'::text OR notification_type = 'Dues Payment Confirmed'::text OR notification_type = 'Notice Added'::text),
+	CONSTRAINT "student_notification_registrations_pkey" PRIMARY KEY (notification_type, student_id)
+)
+
+create table IF NOT EXISTS student_notifications (
+	notification_id SERIAL PRIMARY KEY,
+	notification_type text,
+	student_id int,
+	CONSTRAINT student_notifications_notification_type_check CHECK (notification_type = 'Course Registration Approval/Rejection'::text OR notification_type = 'Results Published'::text OR notification_type = 'Scholarship Made Available'::text OR notification_type = 'Scholarship Paid'::text OR notification_type = 'New Dues to be Paid'::text OR notification_type = 'Dues Payment Confirmed'::text OR notification_type = 'Notice Added'::text),
+	notification_date date,
+	details text,
+	seen bool
+)
+
 

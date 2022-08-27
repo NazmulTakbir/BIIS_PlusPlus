@@ -12,6 +12,23 @@ const createDue = async (data) => {
     VALUES ($1, $2, $3, $4, $5, $6);",
     data
   );
+  const student_id = data[0];
+  const dues_type = data[1];
+
+  let queryRes = await pool.query('select description, amount from \
+    public."dues type" where dues_type_id = $1', [
+    dues_type,
+  ]);
+  const description = queryRes.rows[0].description;
+  const amount = queryRes.rows[0].amount;
+
+  await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
+    "student",
+    student_id,
+    "New Dues to be Paid",
+    new Date(),
+    description + " due. Amount: " + amount + " Taka. Payment Deadline: " + data[2],
+  ]);
 };
 
 const postAddDues = async (req, res, next) => {
