@@ -10,6 +10,7 @@ const DepartmentHeadController = require("../controllers/Teacher/DepartmentHeadC
 const AdviseeInfoController = require("../controllers/Teacher/AdviseeInfoController");
 const CourseCoordinatorController = require("../controllers/Teacher/CourseCoordinatorController");
 const ExamcontrollerController = require("../controllers/Teacher/ExamcontrollerController");
+const NotificationsController = require("../controllers/Teacher/NotificationsController");
 
 const verifyTeacher = require("../controllers/Authentication/VerifyTeacher");
 
@@ -122,5 +123,7 @@ TeacherRoutes.post("/departmenthead/rejectscholarship/", DepartmentHeadControlle
 TeacherRoutes.get("/examcontroller/pendingresults/", ExamcontrollerController.getPendingResults);
 TeacherRoutes.post("/examcontroller/approveresults/", ExamcontrollerController.postApproveResults);
 TeacherRoutes.post("/examcontroller/rejectresults/", ExamcontrollerController.postRejectResults);
+
+TeacherRoutes.get("/notifications/getall/", NotificationsController.getNotifications);
 
 module.exports = TeacherRoutes;
