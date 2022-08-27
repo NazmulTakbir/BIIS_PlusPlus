@@ -15,4 +15,8 @@ export const NavbarData = [
     title: "Courses Scrutinized",
     link: "/courses/scrutinized",
   },
+  {
+    title: "Course Feedbacks",
+    link: "/courses/feedbacks",
+  },
 ];

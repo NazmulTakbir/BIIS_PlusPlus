@@ -4,7 +4,7 @@ const InfoController = require("../controllers/Teacher/InfoController");
 const GradingController = require("../controllers/Teacher/GradingController");
 const ScrutinizeController = require("../controllers/Teacher/ScrutinizeController");
 const AdviseeCourseRegistrationController = require("../controllers/Teacher/AdviseeCourseRegistrationController");
-const AdviseeFeedbackController = require("../controllers/Teacher/AdviseeFeedbackController");
+const FeedbackController = require("../controllers/Teacher/FeedbackController");
 const HallProvostController = require("../controllers/Teacher/HallProvostController");
 const DepartmentHeadController = require("../controllers/Teacher/DepartmentHeadController");
 const AdviseeInfoController = require("../controllers/Teacher/AdviseeInfoController");
@@ -58,7 +58,8 @@ TeacherRoutes.post(
   AdviseeCourseRegistrationController.postRejectRegistrationRequests
 );
 
-TeacherRoutes.get("/advisees/feedbacks", AdviseeFeedbackController.getFeedbacks);
+TeacherRoutes.get("/advisees/feedbacks", FeedbackController.getAdviseeFeedbacks);
+TeacherRoutes.get("/courses/feedbacks", FeedbackController.getCourseFeedbacks);
 
 TeacherRoutes.get("/hallprovost/allstudents", HallProvostController.getAllStudents);
 //pending requests

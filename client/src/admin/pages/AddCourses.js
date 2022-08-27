@@ -4,7 +4,6 @@ import Papa from "papaparse";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -14,6 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 const allowedExtensions = ["csv"];
 const level_list = ["1", "2", "3", "4"];
@@ -22,6 +22,7 @@ const credit_list = ["0.75", "1", "1.5", "2", "3", "4", "6"];
 
 const AddCourses = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
@@ -38,6 +39,7 @@ const AddCourses = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.userType));
         let response = await fetch(`/api/admin/departments/self`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
@@ -97,7 +99,6 @@ const AddCourses = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/course/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },

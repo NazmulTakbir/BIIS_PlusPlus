@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 import "../../shared/components/MainContainer.css";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
@@ -20,6 +20,7 @@ const allowedExtensions = ["csv"];
 
 const AddOffering = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [currentSession, setCurrentSession] = useState("");
   const fileRef = useRef();
   const [file, setFile] = useState("");
@@ -34,6 +35,7 @@ const AddOffering = () => {
     const fetchData = async () => {
       try {
         //finding current session
+        setSearchMenuData(getSearchBarData(auth.userType));
         const session_response = await fetch(`/api/shared/session/getcurrent`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
@@ -133,7 +135,6 @@ const AddOffering = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/offering/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },

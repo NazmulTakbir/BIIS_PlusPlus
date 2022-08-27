@@ -4,7 +4,7 @@ import Papa from "papaparse";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -18,6 +18,7 @@ const allowedExtensions = ["csv"];
 
 const AddCourseTeachers = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
@@ -41,6 +42,7 @@ const AddCourseTeachers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.userType));
         let response = await fetch(`/api/admin/departments/getTeacher`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
@@ -99,7 +101,6 @@ const AddCourseTeachers = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/teacher/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },

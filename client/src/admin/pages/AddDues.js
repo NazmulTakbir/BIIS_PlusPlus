@@ -5,7 +5,7 @@ import NativeDatePicker from "../../shared/components/NativeDatePicker/NativeDat
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 import CustomSearch from "../../shared/components/CustomSearch/CustomSearch";
 
 import { AuthContext } from "../../shared/context/AuthContext";
@@ -23,6 +23,7 @@ const allowedExtensions = ["csv"];
 
 const AddDues = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
@@ -42,6 +43,7 @@ const AddDues = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.userType));
         let response = await fetch(`/api/admin/dues/getDuesTypes`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
@@ -110,7 +112,6 @@ const AddDues = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/dues/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },

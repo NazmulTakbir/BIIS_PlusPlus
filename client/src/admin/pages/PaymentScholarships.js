@@ -3,11 +3,10 @@ import React, { useEffect, useState, useContext } from "react";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
-
 
 //import Table
 import Table from "../../shared/components/Table/Table";
@@ -44,7 +43,7 @@ const fetchTableData = async (api_route, setTableData, auth) => {
       row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
       row.push({ type: "CheckBox", data: { id: jsonData[i]["scholarship_id"], callback: approveAddCallback } });
-      
+
       tableData.push(row);
     }
     setTableData(tableData);
@@ -55,6 +54,7 @@ const fetchTableData = async (api_route, setTableData, auth) => {
 
 const PaymentScholarships = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [stateNo, setStateNo] = useState(0);
   const [addTableData, setAddTableData] = useState([]);
 
@@ -75,9 +75,9 @@ const PaymentScholarships = () => {
   };
 
   useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.userType));
     fetchTableData(`/api/admin/comptroller/pendingscholarships`, setAddTableData, auth);
   }, [auth, stateNo]);
-
 
   return (
     <React.Fragment>
@@ -107,12 +107,8 @@ const PaymentScholarships = () => {
                   bcolor="#697A8D"
                   width="150px"
                   onClickFunction={markAsPaid}
-                  
                 />
-          
               </Stack>
-              
-            
             </div>
           </div>
         </div>

@@ -383,8 +383,6 @@ const getPreparedResults = async (req, res, next) => {
 
     const data = await getStudentResults(queryRes.rows, offering_id);
 
-    console.log(data);
-
     res.json({ message: "getPreparedResults", data: data });
   } catch (err) {
     console.log(err);

@@ -5,7 +5,7 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -40,12 +40,13 @@ const fetchTableData = async (api_route, setTableData, auth) => {
   }
 };
 
-
 const DeptFeedback = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.responsibilities));
     fetchTableData(`/api/teacher/departmenthead/feedbacks`, setTableData, auth);
   }, [auth]);
 

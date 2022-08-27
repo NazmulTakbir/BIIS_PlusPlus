@@ -1,11 +1,10 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import Papa from "papaparse";
-import DatePicker from "react-datepicker";
 
+import { getSearchBarData } from "../components/SearchMenuData";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
 import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
 
@@ -17,12 +16,17 @@ const allowedExtensions = ["csv"];
 
 const UploadAcademicCalender = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
   const [session_id, setSessionID] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+
+  useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.userType));
+  }, [auth]);
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/academiccalender/samplefile", {
@@ -75,7 +79,6 @@ const UploadAcademicCalender = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/academiccalender/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },

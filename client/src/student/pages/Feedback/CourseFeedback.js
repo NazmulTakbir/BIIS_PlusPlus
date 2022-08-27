@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
@@ -17,28 +16,25 @@ import "../../../shared/components/MainContainer.css";
 import Textbox from "../../../shared/components/Textbox/Textbox";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 
-
-
 const CourseFeedback = () => {
   const auth = useContext(AuthContext);
-  const [currentSession, setCurrentSession] = useState("");
+  // const [currentSession, setCurrentSession] = useState("");
   const [dropDownTextCourseID, setdropDownTextCourseID] = useState("Select Course ID");
   const [dropDownOptionsCourseID, setdropDownOptionsCourseID] = useState([]);
   //usestate for registeredcourses
   const [registeredCourses, setRegisteredCourses] = useState([]);
   const [offering_id, setOffering_id] = useState(0);
   const [details, setDetails] = useState("");
-  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         //finding current session
-        const session_response = await fetch(`/api/shared/session/getcurrent`, {
-            headers: { Authorization: "Bearer " + auth.token },
-          });
-          const session_data = await session_response.json();
-          setCurrentSession(session_data["data"]["session_id"]);
+        // const session_response = await fetch(`/api/shared/session/getcurrent`, {
+        //   headers: { Authorization: "Bearer " + auth.token },
+        // });
+        // const session_data = await session_response.json();
+        // setCurrentSession(session_data["data"]["session_id"]);
 
         //courseID dropdown
         let response = await fetch(`/api/student/courses/registeredcourses`, {
@@ -47,7 +43,6 @@ const CourseFeedback = () => {
         let res_data = await response.json();
         setdropDownOptionsCourseID(res_data["course_ids"]);
         setRegisteredCourses(res_data["data"]);
-
       } catch (err) {
         console.log(err);
       }
@@ -62,9 +57,9 @@ const CourseFeedback = () => {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
       body: JSON.stringify({
-          offering_id: offering_id,
-          details: details,
-          submission_date: new Date(),
+        offering_id: offering_id,
+        details: details,
+        submission_date: new Date(),
       }),
     });
 
@@ -77,13 +72,9 @@ const CourseFeedback = () => {
   const handleChangeCourseID = (e) => {
     setdropDownTextCourseID(e.target.value);
     //find offering_id from registeredcourses
-    const obj = registeredCourses.find(
-        (course) => course.course_id === e.target.value
-    )
+    const obj = registeredCourses.find((course) => course.course_id === e.target.value);
     setOffering_id(obj.offering_id);
-  }
-
-  
+  };
 
   return (
     <React.Fragment>
@@ -93,7 +84,7 @@ const CourseFeedback = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-            <Navbar NavbarData={NavbarData} />
+              <Navbar NavbarData={NavbarData} />
 
               <form onSubmit={addCoursefeedback} style={{ width: "350px", margin: "auto" }}>
                 <FormControl fullWidth style={{ marginTop: "25px" }}>
@@ -117,18 +108,17 @@ const CourseFeedback = () => {
                 </FormControl>
 
                 <Textbox
-                    width="350px"
-                    height="150px"
-                    resize="none"
-                    name="course_name"
-                    padding="0px"
-                    fontSize="17px"
-                    placeholder=""
-                    label="Details"
-                    value={details}
-                    onChange={(e) => setDetails(e.target.value)}
-                  />
-
+                  width="350px"
+                  height="150px"
+                  resize="none"
+                  name="course_name"
+                  padding="0px"
+                  fontSize="17px"
+                  placeholder=""
+                  label="Details"
+                  value={details}
+                  onChange={(e) => setDetails(e.target.value)}
+                />
 
                 <CustomButton
                   type="submit"

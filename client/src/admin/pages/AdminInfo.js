@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 import ComptrollerAdminProfile from "./AdminProfile/ComptrollerAdminProfile";
 import OfficeAdminProfile from "./AdminProfile/OfficeAdminProfile";
@@ -15,6 +15,11 @@ import "../../shared/components/MainContainer.css";
 
 const AdminInfo = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
+
+  useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.userType));
+  }, [auth]);
 
   const renderCell = () => {
     switch (auth.userType) {

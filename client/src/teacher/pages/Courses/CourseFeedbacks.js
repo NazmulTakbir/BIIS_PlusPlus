@@ -1,42 +1,37 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
-import { openInNewTab } from "../../../shared/util/OpenNewTab";
 import { NavbarData } from "./NavbarData";
 import { getSearchBarData } from "../../components/SearchMenuData";
-
 import { AuthContext } from "../../../shared/context/AuthContext";
+
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const columnLabels = ["STUDENT ID", "REQUEST TYPE", "COURSE COUNT", "REQUEST DATE", "ACTION"];
+const columnLabels = ["COURSE ID", "SESSION", "SUBJECT", "STUDENT ID", "DATE", "DETAILS"];
 
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
     const response = await fetch(api_route, { headers: { Authorization: "Bearer " + auth.token } });
     const jsonData = (await response.json())["data"];
+
     let tableData = [];
     for (let i = 0; i < jsonData.length; i++) {
       let row = [];
+      row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["subject"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["student_id"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["req_count"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
+      row.push({ type: "PlainText", data: { value: jsonData[i]["submission_date"].substring(0, 10) } });
       row.push({
-        type: "Buttons",
+        type: "SimpleModal",
         data: {
-          buttonList: [
-            {
-              buttonText: "View Details",
-              textColor: "white",
-              backColor: "#697A8D",
-              onClickFunction: openInNewTab,
-              onClickArguments: ["/deptStudents/profile/registration/" + jsonData[i]["student_id"]],
-            },
-          ],
+          buttonText: "View",
+          header: jsonData[i]["subject"],
+          body: jsonData[i]["details"],
         },
       });
       tableData.push(row);
@@ -47,14 +42,14 @@ const fetchTableData = async (api_route, setTableData, auth) => {
   }
 };
 
-const DeptCourseRegistration = () => {
+const CourseFeedbacks = () => {
   const auth = useContext(AuthContext);
   const [SearchMenuData, setSearchMenuData] = useState([]);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
     setSearchMenuData(getSearchBarData(auth.responsibilities));
-    fetchTableData(`/api/teacher/departmenthead/registrationsummary`, setTableData, auth);
+    fetchTableData(`/api/teacher/courses/feedbacks`, setTableData, auth);
   }, [auth]);
 
   return (
@@ -66,7 +61,7 @@ const DeptCourseRegistration = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <Table columnLabels={columnLabels} tableData={tableData} modal="true" />
+              <Table columnLabels={columnLabels} tableData={tableData} />
             </div>
           </div>
         </div>
@@ -75,4 +70,4 @@ const DeptCourseRegistration = () => {
   );
 };
 
-export default DeptCourseRegistration;
+export default CourseFeedbacks;

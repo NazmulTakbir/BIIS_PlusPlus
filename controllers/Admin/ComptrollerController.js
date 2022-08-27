@@ -39,11 +39,9 @@ const postMarkDuesPaid = async (req, res, next) => {
   try {
     const { duesIDs } = req.body;
     let queryRes;
-    console.log(duesIDs);
     for (let i = 0; i < duesIDs.length; i++) {
       queryRes = await pool.query("UPDATE dues SET dues_status = 'Paid' WHERE dues_id = $1", [duesIDs[i]]);
     }
-    console.log(duesIDs);
 
     res.json({ message: "postMarkDuesPaid successful" });
   } catch (err) {
@@ -56,7 +54,6 @@ const postMarkDuesPaid = async (req, res, next) => {
 const postMarkScholarshipPaid = async (req, res, next) => {
   try {
     const { schIDs } = req.body;
-    console.log(schIDs);
     let queryRes;
     for (let i = 0; i < schIDs.length; i++) {
       queryRes = await pool.query(
@@ -64,7 +61,6 @@ const postMarkScholarshipPaid = async (req, res, next) => {
         [schIDs[i]]
       );
     }
-    console.log(schIDs);
 
     res.json({ message: "postMarkScholarshipPaid successful" });
   } catch (err) {

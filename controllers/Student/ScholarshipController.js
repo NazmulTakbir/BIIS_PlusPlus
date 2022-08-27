@@ -125,7 +125,6 @@ const postApplication = async (req, res, next) => {
        where scholarship_id = $2",
       ["awaiting_provost", sc_id]
     );
-    //console.log(queryRes);
     res.status(201).json({ message: "scholarship state updated to awaiting_provost" });
   } catch (err) {
     console.log(err);

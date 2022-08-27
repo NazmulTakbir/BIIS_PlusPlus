@@ -36,7 +36,7 @@ const fetchTableData = async (api_route, setTableData, auth) => {
       row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
       row.push({ type: "CheckBox", data: { id: jsonData[i]["scholarship_id"], callback: approveAddCallback } });
-      
+
       tableData.push(row);
     }
     setTableData(tableData);
@@ -76,13 +76,11 @@ const AdviseeRegistration = () => {
           submission_date: new Date(),
         }),
       });
-      //console.log(response["status"]);
       if (response["status"] === 200) {
         alert("Requests approved successfully");
         checkedRequests = [];
         setStateNo(stateNo + 1);
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -103,7 +101,6 @@ const AdviseeRegistration = () => {
         checkedRequests = [];
         setStateNo(stateNo + 1);
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -156,7 +153,6 @@ const AdviseeRegistration = () => {
                   onClickFunction={rejectRequests}
                 />
               </Stack>
-
             </div>
           </div>
         </div>

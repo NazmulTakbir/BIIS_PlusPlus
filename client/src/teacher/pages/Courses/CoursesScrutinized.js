@@ -5,11 +5,11 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
-import { SidebarData } from "../../components/SidebarData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 import { NavbarData } from "./NavbarData";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { SidebarData } from "../../components/SidebarData";
 import Stack from "@mui/material/Stack";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
@@ -21,6 +21,7 @@ let selectedList = [];
 
 const CoursesScrutinized = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [course_id, setCourseID] = useState("Select Course");
   const [availableCourses, setAvailableCourses] = useState([]);
   const [noCourseSelected, setNoCourseSelected] = useState(true);
@@ -36,6 +37,7 @@ const CoursesScrutinized = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.responsibilities));
         const response = await fetch(`/api/teacher/coursesscrutinized`, {
           headers: { Authorization: "Bearer " + auth.token },
         });

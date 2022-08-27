@@ -1,4 +1,5 @@
 const pool = require("../../db");
+const { getCurrentSession } = require("../../util/CurrentSession");
 
 const getAuthData = async (userid) => {
   let queryRes = await pool.query("select * from student where student_id=$1", [userid]);
@@ -22,7 +23,11 @@ const getAuthData = async (userid) => {
     if (hasRole.rows.length > 0) {
       responsibilities.push("depthead");
     }
-    hasRole = await pool.query("select * from session where exam_controller_id=$1", [queryRes.rows[0]["teacher_id"]]);
+    const session_id = await getCurrentSession();
+    hasRole = await pool.query("select * from session where exam_controller_id=$1 and session_id=$2", [
+      queryRes.rows[0]["teacher_id"],
+      session_id,
+    ]);
     if (hasRole.rows.length > 0) {
       responsibilities.push("examcontroller");
     }

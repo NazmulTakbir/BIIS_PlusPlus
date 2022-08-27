@@ -5,7 +5,7 @@ import Header from "../../../shared/components/Header/Header";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 import { openInNewTab } from "../../../shared/util/OpenNewTab";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
@@ -20,6 +20,7 @@ let selectedList = [];
 
 const PendingResults = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [resultTableData, setResultTableData] = useState([]);
 
   const checkListCallback = (studentID, actionType) => {
@@ -85,6 +86,7 @@ const PendingResults = () => {
   );
 
   useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.responsibilities));
     fetchCompleteResultsData(`/api/teacher/hallprovost/pendingresults`);
   }, [auth, fetchCompleteResultsData]);
 

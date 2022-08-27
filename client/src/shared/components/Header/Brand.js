@@ -1,29 +1,24 @@
-import React from 'react'
-import MenuIcon from '@mui/icons-material/Menu';
-
+import React from "react";
+import MenuIcon from "@mui/icons-material/Menu";
 
 function toggleSideBar() {
-  console.log("toggleSideBar");
   const nav_ul = document.getElementById("sidebar");
 
   //initially not set to anything
-  if(nav_ul.style.display === ""){
+  if (nav_ul.style.display === "") {
     nav_ul.style.display = "block";
   }
 
   //set to block if it is currently none
-  else if (nav_ul.style.display === "none"){
-    console.log("show");
+  else if (nav_ul.style.display === "none") {
     nav_ul.style.display = "block";
   }
-  
+
   //set to none if it is currently block
   else {
-    console.log("hide");
     nav_ul.style.display = "none";
   }
 }
-
 
 const Brand = (props) => {
   return (
@@ -31,7 +26,9 @@ const Brand = (props) => {
       <div className={props.brand_container_class}>
         {props.no_menu === "true" ? null : (
           <div id="hamburger_btn" onClick={toggleSideBar}>
-            <div className="hamburger_btn_container"><MenuIcon /></div>
+            <div className="hamburger_btn_container">
+              <MenuIcon />
+            </div>
           </div>
         )}
         <img
@@ -43,6 +40,6 @@ const Brand = (props) => {
       </div>
     </div>
   );
-}
+};
 
-export default Brand
+export default Brand;

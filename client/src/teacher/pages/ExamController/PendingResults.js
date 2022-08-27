@@ -5,7 +5,7 @@ import Header from "../../../shared/components/Header/Header";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
@@ -18,6 +18,7 @@ let selectedList = [];
 
 const PendingResults = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [resultTableData, setResultTableData] = useState([]);
 
   const checkListCallback = (studentID, actionType) => {
@@ -86,6 +87,7 @@ const PendingResults = () => {
   );
 
   useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.responsibilities));
     fetchResultTableData(`/api/teacher/examcontroller/pendingresults`);
   }, [auth, fetchResultTableData]);
 

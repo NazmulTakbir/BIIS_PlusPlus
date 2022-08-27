@@ -6,7 +6,7 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import { openInNewTab } from "../../../shared/util/OpenNewTab";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -41,7 +41,6 @@ const fetchTableData = async (api_route, setTableData, auth) => {
       });
       tableData.push(row);
     }
-    console.log(tableData);
     setTableData(tableData);
   } catch (err) {
     console.log(err);
@@ -50,9 +49,11 @@ const fetchTableData = async (api_route, setTableData, auth) => {
 
 const PendingScholarships = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.responsibilities));
     fetchTableData(`/api/teacher/hallprovost/scholarshiprequests`, setTableData, auth);
   }, [auth]);
 

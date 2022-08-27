@@ -4,7 +4,7 @@ import Papa from "papaparse";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -19,6 +19,7 @@ const allowedExtensions = ["csv"];
 
 const AddTeachers = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
@@ -30,13 +31,14 @@ const AddTeachers = () => {
 
   const [dept_id, setDept_id] = useState("Select a Department");
   const [dept_name, setDept_name] = useState("");
-    
+
   const [teacher_name, setTeacher_name] = useState("");
   const [teacher_id, setTeacher_id] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.userType));
         //get admin's self department
         let response = await fetch(`/api/admin/departments/self`, {
           headers: { Authorization: "Bearer " + auth.token },
@@ -98,7 +100,6 @@ const AddTeachers = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/teacher/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
@@ -178,7 +179,7 @@ const AddTeachers = () => {
                   name="file"
                   type="File"
                 />
-                 <CustomButton
+                <CustomButton
                   type="submit"
                   label="Submit"
                   variant="contained"
@@ -189,20 +190,19 @@ const AddTeachers = () => {
                   fontSize="17px !important"
                   onClickFunction={handleFileSubmit}
                 />
-              
               </div>
 
               <CustomButton
-                  type="submit"
-                  label="Download Sample CSV"
-                  variant="contained"
-                  color="#ffffff"
-                  bcolor="#b13137"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={downloadSampleCSV}
-                />
+                type="submit"
+                label="Download Sample CSV"
+                variant="contained"
+                color="#ffffff"
+                bcolor="#b13137"
+                margin="20px"
+                padding="10px"
+                fontSize="17px !important"
+                onClickFunction={downloadSampleCSV}
+              />
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
                 <div
@@ -243,7 +243,7 @@ const AddTeachers = () => {
                       value={dept_id}
                       label="Department"
                     >
-                     <MenuItem value={dept_id}>{dept_name}</MenuItem>
+                      <MenuItem value={dept_id}>{dept_name}</MenuItem>
                     </Select>
                   </FormControl>
 

@@ -4,7 +4,7 @@ import Papa from "papaparse";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -20,6 +20,7 @@ const allowedExtensions = ["csv"];
 
 const AddScholarship = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
@@ -33,6 +34,7 @@ const AddScholarship = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.userType));
         const response1 = await fetch(`/api/admin/sessionlist/get`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
@@ -50,7 +52,6 @@ const AddScholarship = () => {
     };
     fetchData();
   }, [auth]);
-
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/scholarship/samplefile", {
@@ -78,7 +79,6 @@ const AddScholarship = () => {
     }
   };
 
-
   const handleFileSubmit = async () => {
     if (!file) {
       alert("Enter a valid file");
@@ -93,7 +93,6 @@ const AddScholarship = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/scholarship/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
@@ -110,15 +109,14 @@ const AddScholarship = () => {
     reader.readAsText(file);
   };
 
-
   const submissionHandler = async (e) => {
     e.preventDefault();
     try {
       let data = [
         {
-            student_id: student_id,
-            session_id: session_id,
-            scholarship_type_id: scholarship_type_id,
+          student_id: student_id,
+          session_id: session_id,
+          scholarship_type_id: scholarship_type_id,
         },
       ];
 
@@ -134,9 +132,8 @@ const AddScholarship = () => {
       set_student_id("");
       set_session_id("");
       set_scholarship_type_id("");
-      
-      alert("Scholarship Added Successfully");
 
+      alert("Scholarship Added Successfully");
     } catch (err) {}
   };
 
@@ -177,43 +174,42 @@ const AddScholarship = () => {
                   name="file"
                   type="File"
                 />
-                    <Stack
-                        spacing={2}
-                        direction="row"
-                        style={{
-                            margin: "auto",
-                            width: "350px",
-                            padding: "10px",
-                            textAlign: "center",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <CustomButton
-                            type="submit"
-                            label="Submit"
-                            variant="contained"
-                            color="#ffffff"
-                            bcolor="#b13137"
-                            margin="20px"
-                            width="fit-content"
-                            padding="10px"
-                            fontSize="17px !important"
-                            onClickFunction={handleFileSubmit}
-                        />
-                        <CustomButton
-                            type="submit"
-                            label="Download Sample CSV"
-                            variant="contained"
-                            color="#ffffff"
-                            bcolor="#b13137"
-                            margin="20px"
-                            width="fit-content"
-                            padding="10px"
-                            fontSize="17px !important"
-                            onClickFunction={downloadSampleCSV}
-                        />
-                    </Stack>
-
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  style={{
+                    margin: "auto",
+                    width: "350px",
+                    padding: "10px",
+                    textAlign: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <CustomButton
+                    type="submit"
+                    label="Submit"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#b13137"
+                    margin="20px"
+                    width="fit-content"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={handleFileSubmit}
+                  />
+                  <CustomButton
+                    type="submit"
+                    label="Download Sample CSV"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#b13137"
+                    margin="20px"
+                    width="fit-content"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={downloadSampleCSV}
+                  />
+                </Stack>
               </div>
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
@@ -258,8 +254,7 @@ const AddScholarship = () => {
                       label="Select type of Scholarship"
                       onChange={(e) => set_scholarship_type_id(e.target.value)}
                     >
-                      {scholarship_type_list
-                      .map((val, key) => {
+                      {scholarship_type_list.map((val, key) => {
                         return (
                           <MenuItem key={key} value={val.scholarship_type_id}>
                             {val.scholarship_name}
@@ -280,8 +275,7 @@ const AddScholarship = () => {
                       label="Select a Session"
                       onChange={(e) => set_session_id(e.target.value)}
                     >
-                      {session_list
-                      .map((val, key) => {
+                      {session_list.map((val, key) => {
                         return (
                           <MenuItem key={key} value={val.session_id}>
                             {val.session_id}
@@ -289,7 +283,7 @@ const AddScholarship = () => {
                         );
                       })}
                     </Select>
-                  </FormControl>                  
+                  </FormControl>
 
                   <CustomButton
                     type="submit"
