@@ -40,17 +40,30 @@ const AllCourses = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <h3>Courses Coordinated</h3>
+              
+              <div className="text-header" style={{margin: "auto", textAlign: "center"}}>
+                <div className="text-text" style={{marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137"}}>
+                  Courses Coordinated
+                </div>
+              </div>
               <Table columnLabels={columnLabels} tableData={coordinated} />
               <br />
               <br />
 
-              <h3>Courses Taught</h3>
+              <div className="text-header" style={{margin: "auto", textAlign: "center"}}>
+                <div className="text-text" style={{marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137"}}>
+                  Courses Taught
+                </div>
+              </div>            
               <Table columnLabels={columnLabels} tableData={taught} />
               <br />
               <br />
 
-              <h3>Courses Scrutinized</h3>
+              <div className="text-header" style={{margin: "auto", textAlign: "center"}}>
+                <div className="text-text" style={{marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137"}}>
+                  Courses Scrutinized
+                </div>
+              </div>            
               <Table columnLabels={columnLabels} tableData={scrutinized} />
               <br />
               <br />
