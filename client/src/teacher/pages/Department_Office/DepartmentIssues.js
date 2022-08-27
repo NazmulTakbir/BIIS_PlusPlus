@@ -7,21 +7,22 @@ import { SidebarData } from "../../components/SidebarData";
 import "../../../shared/components/MainContainer.css";
 
 const DepartmentIssues = () => {
-  return (
-    <React.Fragment>
-      <div className="App">
-        <Header />
-        <div className="wrapper">
-          <Sidebar SidebarData={SidebarData} />
-          <div className="main_container">
-            <div className="content">
-              <h1>DepartmentIssues</h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
-  );
+ return (
+   <React.Fragment>
+     <div className="App">
+       <Header />
+       <div className="wrapper">
+         <Sidebar SidebarData={SidebarData} />
+         <div className="main_container">
+           <div className="content">
+             <h1>DepartmentIssues</h1>
+           </div>
+         </div>
+       </div>
+     </div>
+   </React.Fragment>
+ );
 };
 
 export default DepartmentIssues;
+

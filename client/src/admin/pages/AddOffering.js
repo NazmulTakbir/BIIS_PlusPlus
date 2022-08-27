@@ -1,10 +1,17 @@
 import Papa from "papaparse";
 import React, { useEffect, useState, useRef, useContext } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
+import { SearchMenuData } from "../components/SearchMenuData";
+
+import "../../shared/components/MainContainer.css";
+import CustomButton from "../../shared/components/CustomButton/CustomButton";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -15,7 +22,6 @@ const AddOffering = () => {
   const auth = useContext(AuthContext);
   const [currentSession, setCurrentSession] = useState("");
   const fileRef = useRef();
-  const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
   const [dropDownTextCourseID, setdropDownTextCourseID] = useState("Select Course ID");
@@ -54,23 +60,27 @@ const AddOffering = () => {
     fetchData();
   }, [auth]);
 
-  const dropDownSelectCourseID = async (value) => {
-    setdropDownTextCourseID(value);
-  };
+  const addCourseOffering = async (e) => {
+    e.preventDefault();
 
-  const dropDownSelectExamSlotID = async (value) => {
-    setdropDownTextExamSlotID(value);
-  };
-
-  const addCourseOffering = async (course_id, exam_slot_id, session_id) => {
-    let data = [];
-    const obj = {
-      course_id: course_id,
-      exam_slot_id: exam_slot_id,
-      session_id: session_id,
-    };
-
-    data.push(obj);
+    let data;
+    if (Number.isInteger(parseInt(dropDownTextExamSlotID))) {
+      data = [
+        {
+          course_id: dropDownTextCourseID,
+          exam_slot_id: dropDownTextExamSlotID,
+          session_id: currentSession,
+        },
+      ];
+    } else {
+      data = [
+        {
+          course_id: dropDownTextCourseID,
+          exam_slot_id: null,
+          session_id: currentSession,
+        },
+      ];
+    }
 
     await fetch(`/api/admin/offering/add`, {
       method: "POST",
@@ -98,12 +108,11 @@ const AddOffering = () => {
   };
 
   const handleFileChange = async (e) => {
-    setMessage("");
     if (e.target.files.length) {
       const inputFile = e.target.files[0];
       const fileExtension = inputFile?.type.split("/")[1];
       if (!allowedExtensions.includes(fileExtension)) {
-        setMessage("Please input a csv file");
+        alert("Please input a csv file");
         return;
       }
       setFile(inputFile);
@@ -111,7 +120,10 @@ const AddOffering = () => {
   };
 
   const handleFileSubmit = async () => {
-    if (!file) return setMessage("Enter a valid file");
+    if (!file) {
+      alert("Enter a valid file");
+      return;
+    }
 
     const reader = new FileReader();
 
@@ -130,7 +142,7 @@ const AddOffering = () => {
             }),
           });
           setFile("");
-          setMessage("Course Offerings Added Successfully");
+          alert("Course Offerings Added Successfully");
           fileRef.current.value = null;
         },
       });
@@ -141,61 +153,131 @@ const AddOffering = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-              <h3>{currentSession}</h3>
-              <p>{error}</p>
-              <input ref={fileRef} onChange={handleFileChange} id="csvInput" name="file" type="File" />
-              <button onClick={handleFileSubmit}>Submit</button>
-              <button onClick={downloadSampleCSV}>Download Sample CSV</button>
+              <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
+                <div
+                  className="sections-heading"
+                  style={{
+                    textAlign: "left",
+                    padding: "25px 0px 5px 0px",
+                    fontWeight: "bolder",
+                    fontSize: "17px",
+                    color: "#b13137",
+                  }}
+                >
+                  Add by uploading a CSV File:
+                </div>
+              </div>
 
-              <Dropdown>
-                <Dropdown.Toggle variant="danger" id="dropdown-basic">
-                  {dropDownTextCourseID}
-                </Dropdown.Toggle>
+              <div className="file-input_container" style={{ width: "350px", margin: "auto" }}>
+                <input
+                  style={{
+                    background: "#faebd7a3",
+                    borderRadius: "5px",
+                    padding: "7px",
+                    margin: "10px",
+                  }}
+                  ref={fileRef}
+                  onChange={handleFileChange}
+                  id="csvInput"
+                  name="file"
+                  type="File"
+                />
+                <CustomButton
+                  type="submit"
+                  label="Submit"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={handleFileSubmit}
+                />
+                <CustomButton
+                  type="submit"
+                  label="Download Sample CSV"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={downloadSampleCSV}
+                />
+              </div>
 
-                <Dropdown.Menu>
-                  {dropDownOptionsCourseID.map((option, optionNo) => {
-                    return (
-                      <Dropdown.Item key={optionNo} onClick={() => dropDownSelectCourseID(option)}>
-                        Course ID: {option}
-                      </Dropdown.Item>
-                    );
-                  })}
-                </Dropdown.Menu>
-              </Dropdown>
+              <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
+                <div
+                  className="sections-heading"
+                  style={{
+                    textAlign: "left",
+                    padding: "25px 0px 5px 0px",
+                    fontWeight: "bolder",
+                    fontSize: "17px",
+                    color: "#b13137",
+                  }}
+                >
+                  Add an Entry Manually:
+                </div>
+              </div>
 
-              <Dropdown>
-                <Dropdown.Toggle variant="danger" id="dropdown-basic">
-                  {dropDownTextExamSlotID}
-                </Dropdown.Toggle>
+              <form onSubmit={addCourseOffering} style={{ width: "350px", margin: "auto" }}>
+                <FormControl fullWidth style={{ marginTop: "25px" }}>
+                  <InputLabel id="demo-simple-select-label">Course ID</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="offering_id"
+                    name="offering_id"
+                    value={dropDownTextCourseID}
+                    label="Course Offering"
+                    onChange={(e) => setdropDownTextCourseID(e.target.value)}
+                  >
+                    {dropDownOptionsCourseID.map((val, key) => {
+                      return (
+                        <MenuItem key={key} value={val}>
+                          Course ID : {val}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
 
-                <Dropdown.Menu>
-                  {dropDownOptionsExamSlotID.map((option, optionNo) => {
-                    return (
-                      <Dropdown.Item key={optionNo} onClick={() => dropDownSelectExamSlotID(option)}>
-                        Exam SLot ID: {option}
-                      </Dropdown.Item>
-                    );
-                  })}
-                </Dropdown.Menu>
-              </Dropdown>
+                <FormControl fullWidth style={{ marginTop: "25px" }}>
+                  <InputLabel id="demo-simple-select-label">Exam Slot ID</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="offering_id"
+                    name="offering_id"
+                    value={dropDownTextExamSlotID}
+                    label="Course Offering"
+                    onChange={(e) => setdropDownTextExamSlotID(e.target.value)}
+                  >
+                    {dropDownOptionsExamSlotID.map((val, key) => {
+                      return (
+                        <MenuItem key={key} value={val}>
+                          Exam Slot ID : {val}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
 
-              <input
-                type="submit"
-                value="Add Course Offering"
-                onClick={(e) => {
-                  console.log("inside");
-                  addCourseOffering(dropDownTextCourseID, dropDownTextExamSlotID, currentSession);
-                  setdropDownTextCourseID("Select Course ID");
-                  setdropDownTextExamSlotID("Select Exam Slot ID");
-                  //reload window
-                  window.location.reload();
-                }}
-              />
+                <CustomButton
+                  type="submit"
+                  label="Submit"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="40px"
+                  padding="10px"
+                  fontSize="17px !important"
+                />
+              </form>
             </div>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import React from "react";
 import "./Header.css";
 import Brand from "./Brand";
-import SearchBar from "./SearchBar";
+import CustomSearch from "../CustomSearch/CustomSearch";
 import HeaderMenu from "./HeaderMenu";
 
-function Header() {
+const Header = (props) => {
   return (
     /*THE TOP BAR*/
     <div className="header">
@@ -14,7 +14,7 @@ function Header() {
       {/*SEARCH BAR FUNCTIONALITY CODE:
             https://dev.to/salehmubashar/search-bar-in-react-js-545l
         */}
-      <SearchBar />
+      <CustomSearch data={props.searchData} onClickRoute={true} label="Search Menu"/>
 
       {/*THE LOGOUT AND NOTIFICATIONS*/}
       <HeaderMenu />

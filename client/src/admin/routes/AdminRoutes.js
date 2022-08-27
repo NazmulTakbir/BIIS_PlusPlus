@@ -7,7 +7,10 @@ import AddStudents from "../pages/AddStudents";
 import AssignCourseTeacher from "../pages/AssignCourseTeacher";
 import AddTeachers from "./../pages/AddTeachers";
 import AddDues from "./../pages/AddDues";
+import AddScholarship from "./../pages/AddScholarship";
 import UploadAcademicCalender from "./../pages/UploadAcademicCalender";
+import PaymentDues from "./../pages/PaymentDues";
+import PaymentScholarships from "./../pages/PaymentScholarships";
 
 const StudentRoutes = () => {
   return (
@@ -36,8 +39,17 @@ const StudentRoutes = () => {
       <Route path="/adddues" exact>
         <AddDues />
       </Route>
+      <Route path="/addscholarship" exact>
+        <AddScholarship />
+      </Route>
       <Route path="/uploadacademiccalender" exact>
         <UploadAcademicCalender />
+      </Route>
+      <Route path="/paymentdues" exact>
+        <PaymentDues />
+      </Route>
+      <Route path="/paymentscholarships" exact>
+        <PaymentScholarships />
       </Route>
       <Redirect to="/admininfo" />
     </Switch>

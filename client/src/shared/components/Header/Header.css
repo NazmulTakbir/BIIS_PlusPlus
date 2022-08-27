@@ -33,14 +33,6 @@
     padding: 5px;
 }
 
-.search_bar{
-    border-radius: 10px;
-    background-color: #ffffff;
-    margin: auto 15px auto 35px;
-    flex: auto;
-    width: max-content;
-}
-
 .header_menu{
     width: 250px;
     margin: auto;

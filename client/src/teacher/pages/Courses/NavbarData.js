@@ -1,14 +1,18 @@
 export const NavbarData = [
   {
-    title: "Add Grades",
-    link: "/exam/addgrades",
+    title: "All Courses",
+    link: "/courses/all",
   },
   {
-    title: "View Grades",
-    link: "/exam/viewgrades",
+    title: "Courses Coordinated",
+    link: "/courses/coordinated",
   },
   {
-    title: "View Grades",
-    link: "/exam/scrutinize",
+    title: "Courses Taught",
+    link: "/courses/taught",
+  },
+  {
+    title: "Courses Scrutinized",
+    link: "/courses/scrutinized",
   },
 ];

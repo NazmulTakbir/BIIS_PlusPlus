@@ -15,7 +15,7 @@ const createCourseTeacher = async (data) => {
 
 const postAddCourseTeacher = async (req, res, next) => {
   try {
-    allData = req.body.data;
+    let allData = req.body.data;
     for (let rowNo = 0; rowNo < allData.length; rowNo++) {
       let data = [];
       for (let columnNo = 0; columnNo < allAttributes.length; columnNo++) {
@@ -34,6 +34,7 @@ const postAddCourseTeacher = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddCourseTeacher successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddCourseTeacher failed", 500);
     return next(error);
   }
@@ -52,6 +53,7 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }

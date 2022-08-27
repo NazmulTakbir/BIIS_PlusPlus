@@ -23,6 +23,7 @@ const getAdviseeInfo = async (req, res, next) => {
 
     res.json(studentInfo);
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -34,7 +35,7 @@ const getAvailableResults = async (req, res, next) => {
 
     let query = await pool.query(
       'select distinct(level, term) from "result summary" as r natural join "course offering" as co natural join \
-        course as c where student_id=$1 and result_status=\'published\';',
+        course as c where student_id=$1',
       [sid]
     );
     data = [];
@@ -44,6 +45,7 @@ const getAvailableResults = async (req, res, next) => {
 
     res.status(201).json({ message: "getGrades", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }
@@ -103,6 +105,7 @@ const getGrades = async (req, res, next) => {
       cgpa: cgpa,
     });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Grades Failed", 500);
     return next(error);
   }

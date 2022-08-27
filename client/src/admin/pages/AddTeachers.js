@@ -4,6 +4,7 @@ import Papa from "papaparse";
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
+import { SearchMenuData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -26,19 +27,23 @@ const AddTeachers = () => {
   const [link, setLink] = useState("");
   const [cell_phone, setCellPhone] = useState("");
   const [office_phone, setOfficePhone] = useState("");
-  const [department_list, setDepartmentList] = useState([]);
-  const [department, setDepartment] = useState("Select a Department");
+
+  const [dept_id, setDept_id] = useState("Select a Department");
+  const [dept_name, setDept_name] = useState("");
+    
   const [teacher_name, setTeacher_name] = useState("");
   const [teacher_id, setTeacher_id] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await fetch(`/api/admin/departments/get`, {
+        //get admin's self department
+        let response = await fetch(`/api/admin/departments/self`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
-        let jsonData = await response.json();
-        setDepartmentList(jsonData.data);
+        let jsonData = (await response.json())["data"];
+        setDept_id(jsonData.dept_id);
+        setDept_name(jsonData.dept_name);
 
         //get next teacher id
         response = await fetch(`/api/admin/teacher/getnextid`, {
@@ -121,7 +126,7 @@ const AddTeachers = () => {
           link: link,
           office_phone: office_phone,
           cell_phone: cell_phone,
-          dept_id: department,
+          dept_id: dept_id,
           teacher_id: teacher_id,
         },
       ];
@@ -139,7 +144,7 @@ const AddTeachers = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
@@ -173,7 +178,7 @@ const AddTeachers = () => {
                   name="file"
                   type="File"
                 />
-                <CustomButton
+                 <CustomButton
                   type="submit"
                   label="Submit"
                   variant="contained"
@@ -184,9 +189,20 @@ const AddTeachers = () => {
                   fontSize="17px !important"
                   onClickFunction={handleFileSubmit}
                 />
+              
               </div>
 
-              <button onClick={downloadSampleCSV}>Download Sample CSV</button>
+              <CustomButton
+                  type="submit"
+                  label="Download Sample CSV"
+                  variant="contained"
+                  color="#ffffff"
+                  bcolor="#b13137"
+                  margin="20px"
+                  padding="10px"
+                  fontSize="17px !important"
+                  onClickFunction={downloadSampleCSV}
+                />
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
                 <div
@@ -224,17 +240,10 @@ const AddTeachers = () => {
                       labelId="demo-simple-select-label"
                       id="dept_id"
                       name="dept_id"
-                      value={department}
+                      value={dept_id}
                       label="Department"
-                      onChange={(e) => setDepartment(e.target.value)}
                     >
-                      {department_list.map((val, key) => {
-                        return (
-                          <MenuItem key={key} value={val.dept_id}>
-                            {val.dept_name}
-                          </MenuItem>
-                        );
-                      })}
+                     <MenuItem value={dept_id}>{dept_name}</MenuItem>
                     </Select>
                   </FormControl>
 

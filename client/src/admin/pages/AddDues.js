@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import Papa from "papaparse";
-import DatePicker from "react-datepicker";
+import NativeDatePicker from "../../shared/components/NativeDatePicker/NativeDatePicker";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
+import { SearchMenuData } from "../components/SearchMenuData";
+import CustomSearch from "../../shared/components/CustomSearch/CustomSearch";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -26,10 +28,14 @@ const AddDues = () => {
 
   const [dues_type_id, setDues_type_id] = useState(0);
   const [student_id, setStudent_id] = useState(0);
-  const [deadline, setDeadline] = useState(null);
+  const [deadline, setDeadline] = useState(new Date("2022-12-12"));
   const [specification, setSpecification] = useState("");
-  const [students_list, setStudents_list] = useState([]);
+  // const [students_list, setStudents_list] = useState([]);
   const [dues_type_list, setDues_type_list] = useState([]);
+
+  //for searchable student ids
+  const [search_students_list, setSearch_students_list] = useState([]);
+  const is_student_id_valid = search_students_list.some((element) => element.value === student_id);
 
   const admin_dept_id = 5; //change it after adming logins
 
@@ -41,12 +47,22 @@ const AddDues = () => {
         });
         let jsonData = await response.json();
         setDues_type_list(jsonData.data);
-        console.log(jsonData.data);
+
         response = await fetch(`/api/admin/student/getStudentsOfDept/${admin_dept_id}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         jsonData = await response.json();
-        setStudents_list(jsonData.data);
+        // setStudents_list(jsonData.data);
+
+        //set data in valid format for search component
+        let search_list = [];
+        for (var i = 0; i < jsonData.data.length; i++) {
+          search_list.push({
+            name: jsonData.data[i].student_id + " - " + jsonData.data[i].name,
+            value: jsonData.data[i].student_id,
+          });
+        }
+        setSearch_students_list(search_list);
       } catch (err) {
         console.log(err);
       }
@@ -113,37 +129,45 @@ const AddDues = () => {
 
   const submissionHandler = async (e) => {
     e.preventDefault();
-    try {
-      let data = [
-        {
-          dues_type_id: dues_type_id,
-          student_id: student_id,
-          specification: specification,
-          deadline: deadline,
-          dues_status: "Not Paid",
-        },
-      ];
-      await fetch(`/api/admin/dues/add`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-        body: JSON.stringify({
-          data: data,
-        }),
-      });
 
-      setDues_type_id("");
-      setStudent_id("");
-      setSpecification("");
-      setDeadline("");
+    if (is_student_id_valid) {
+      //POST request to add dues
+      try {
+        let data = [
+          {
+            dues_type_id: dues_type_id,
+            student_id: student_id,
+            specification: specification,
+            deadline: deadline,
+            dues_status: "Not Paid",
+          },
+        ];
+        await fetch(`/api/admin/dues/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+          body: JSON.stringify({
+            data: data,
+          }),
+        });
 
-      alert("Dues Added Successfully");
-    } catch (err) {}
+        setDues_type_id("");
+        setStudent_id("");
+        setSpecification("");
+        setDeadline("");
+
+        alert("Dues Added Successfully");
+      } catch (err) {}
+    }
+    //Invalid Student id
+    else {
+      alert("Entered Student Id is not valid");
+    }
   };
 
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
@@ -229,27 +253,22 @@ const AddDues = () => {
                     </Select>
                   </FormControl>
 
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
-                    <InputLabel id="demo-simple-select-label">Select Student</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="student_id"
-                      name="student_id"
-                      value={student_id}
-                      label="Student"
-                      onChange={(e) => setStudent_id(e.target.value)}
-                    >
-                      {students_list.map((val, key) => {
-                        return (
-                          <MenuItem key={key} value={val.student_id}>
-                            {val.name} - {val.student_id}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
+                  <CustomSearch
+                    data={search_students_list}
+                    parentCallback={setStudent_id}
+                    required={true}
+                    margin="25px 0px 10px 0px"
+                    width="100%"
+                    label="Select Student"
+                  />
 
-                  <DatePicker selected={deadline} onChange={(date) => setDeadline(date)} />
+                  <NativeDatePicker
+                    value={deadline}
+                    width="100%"
+                    label="Set Deadline"
+                    margin="17px 0px 10px 0px"
+                    onChange={(e) => setDeadline(e.target.value)}
+                  />
 
                   <Textbox
                     width="350px"

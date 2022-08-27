@@ -30,6 +30,7 @@ const getReceived = async (req, res, next) => {
 
     res.status(201).json({ message: "getReceived", data: scholarship_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching scholarship data Failed", 500);
     return next(error);
   }
@@ -41,7 +42,12 @@ const getProcessing = async (req, res, next) => {
       "select s.scholarship_id , s.scholarship_state , s.session_id , s.payment_date , st.scholarship_name , st.amount \
       from scholarship as s , \"scholarship type\" as st \
       where s.scholarship_type_id = st.scholarship_type_id and s.student_id = $1 and \
-      (s.scholarship_state='awaiting_provost' or s.scholarship_state='awaiting_head' or s.scholarship_state='awaiting_comptroller')",
+      (s.scholarship_state='awaiting_provost' or s.scholarship_state='awaiting_head' \
+      or s.scholarship_state='awaiting_comptroller' \
+      or s.scholarship_state='rejected_provost' \
+      or s.scholarship_state='rejected_head' \
+      or s.scholarship_state='rejected_comptroller' \
+      )",
       [req.userData.id]
     );
 
@@ -60,6 +66,7 @@ const getProcessing = async (req, res, next) => {
 
     res.status(201).json({ message: "getProcessing", data: scholarship_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching scholarship data Failed", 500);
     return next(error);
   }
@@ -90,6 +97,7 @@ const getAvailable = async (req, res, next) => {
 
     res.status(201).json({ message: "getAvailable", data: scholarship_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching scholarship data Failed", 500);
     return next(error);
   }
@@ -100,6 +108,7 @@ const getForm = async (req, res, next) => {
     //file stuff to be done later
     res.status(201).json({ message: "getForm" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
   }
@@ -107,9 +116,9 @@ const getForm = async (req, res, next) => {
 
 const postApplication = async (req, res, next) => {
   try {
-    //retrieve student id and scholarship_type_id from URL
-    const sid = req.userData.id;
+    //retrieve scholarship_type_id from URL
     const sc_id = req.params.scid;
+
     //create a new scholarship obj
     let queryRes = await pool.query(
       "UPDATE scholarship SET scholarship_state = $1  \
@@ -119,6 +128,7 @@ const postApplication = async (req, res, next) => {
     //console.log(queryRes);
     res.status(201).json({ message: "scholarship state updated to awaiting_provost" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("scholarship state update Failed", 500);
     return next(error);
   }

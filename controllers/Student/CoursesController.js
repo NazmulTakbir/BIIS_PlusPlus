@@ -9,6 +9,7 @@ const getRegistrationPhase = async () => {
     const queryRes = await pool.query('select registration_phase from "session" where session_id = $1', [session_id]);
     return queryRes.rows[0]["registration_phase"];
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Registration Phase Failed", 500);
     return next(error);
   }
@@ -23,20 +24,28 @@ const getRegisteredCourses = async (req, res, next) => {
     ]);
 
     const registeredCourses = [];
+    course_ids = [];
     for (const element of queryRes.rows) {
-      queryRes = await pool.query("SELECT course_name, credits from course where course_id = $1", [
-        element["course_id"],
-      ]);
+      queryRes = await pool.query(
+        `SELECT c.course_name, c.credits , co.offering_id from course as c ,\
+        "course offering" as co where c.course_id = $1 \
+        and c.course_id = co.course_id and co.session_id = $2`, 
+        [element["course_id"], session_id]
+      );
+      
       registeredCourses.push({
         course_id: element["course_id"],
+        offering_id: element["offering_id"],
         course_name: queryRes.rows[0]["course_name"],
         credits: queryRes.rows[0]["credits"],
         reg_status: element["reg_status"],
       });
+      course_ids.push(element["course_id"]);
     }
-
-    res.json({ message: "registeredCourses", data: registeredCourses });
+    
+    res.json({ message: "registeredCourses", data: registeredCourses ,course_ids : course_ids});
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Registered Courses Failed", 500);
     return next(error);
   }
@@ -61,6 +70,7 @@ const getPendingRequests = async (req, res, next) => {
 
     res.json({ message: "getPendingRequests", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Pending Registration Requests Failed", 500);
     return next(error);
   }
@@ -107,6 +117,7 @@ const getCoursesToAdd = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Add Failed", 500);
     return next(error);
   }
@@ -153,6 +164,7 @@ const getCoursesToDrop = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Courses to Drop Failed", 500);
     return next(error);
   }
@@ -188,6 +200,7 @@ const postAddRequest = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Failed to Place Add Request", 500);
     return next(error);
   }
@@ -222,6 +235,7 @@ const postDropRequest = async (req, res, next) => {
       res.status(201).json({ message: registrationPhase });
     }
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Failed to Place Drop Request", 500);
     return next(error);
   }

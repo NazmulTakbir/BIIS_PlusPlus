@@ -35,6 +35,7 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }
@@ -61,6 +62,7 @@ const postAddCourse = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddCourse successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddCourse failed", 500);
     return next(error);
   }

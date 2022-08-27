@@ -35,6 +35,7 @@ const getHomeInfo = async (req, res, next) => {
 
     res.json(studentInfo);
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }
@@ -62,6 +63,7 @@ const getClassRoutine = async (req, res, next) => {
     }
     res.json({ message: "getClassRoutine", data: courseTimings });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Routine Info Failed", 500);
     return next(error);
   }
@@ -79,6 +81,7 @@ const getAdvisorInfo = async (req, res, next) => {
     teacherInfo["dept_name"] = dept_name;
     res.status(201).json(teacherInfo);
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }

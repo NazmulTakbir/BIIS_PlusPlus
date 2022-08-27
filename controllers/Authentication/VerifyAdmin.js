@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
   }
   try {
     if (
+      req.userData.userType === "comptroller admin" ||
       req.userData.userType === "office admin" ||
       req.userData.userType === "hall admin" ||
       req.userData.userType === "department admin"

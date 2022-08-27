@@ -188,36 +188,23 @@ CREATE TABLE "registration request"
 DROP TABLE IF EXISTS "mark distribution policy";
 CREATE TABLE "mark distribution policy"
 (
-    md_policy_id SERIAL PRIMARY KEY,
-    total_marks integer
-);
-
-DROP TABLE IF EXISTS "marking criteria";
-CREATE TABLE "marking criteria"
-(
     criteria_name text,
-    md_policy_id integer,
     criteria_weight real,
     total_marks integer,
-    CONSTRAINT marking_criteria_pkey PRIMARY KEY (criteria_name, md_policy_id)
+	teacher_id integer, 
+	offering_id integer,
+    CONSTRAINT marking_criteria_pkey PRIMARY KEY (criteria_name, offering_id, teacher_id)
 );
 
 DROP TABLE IF EXISTS "grade distribution policy";
 CREATE TABLE "grade distribution policy"
 (
-    gd_policy_id SERIAL PRIMARY KEY
-);
-
-DROP TABLE IF EXISTS "grade distribution policy details";
-CREATE TABLE "grade distribution policy details"
-(
-    gd_policy_id integer,
-    policy_number integer,
+    offering_id integer,
     upper_bound integer,
     lower_bound integer,
     letter_grade text,
     grade_point text,
-    CONSTRAINT grade_dist_policy_details_pkey PRIMARY KEY (gd_policy_id, policy_number)
+    CONSTRAINT grade_dist_policy_details_pkey PRIMARY KEY (offering_id, letter_grade)
 );
 
 DROP TABLE IF EXISTS "result util";
@@ -341,3 +328,103 @@ select student_id, session_id, course_id, course_name, credits, grade_point, let
 level, term
 from "result summary" as r natural join "course offering" as co natural join course as c
 where result_status='published';
+
+create or replace function offering_result_complete_for_student(
+	oid int, 
+	sid int, 
+	req_status text) returns boolean as $$
+    
+	declare
+		count_val int;
+        complete boolean;
+    begin
+		select count(*) into count_val from "mark distribution policy" where offering_id=oid; 
+		IF count_val = 0 THEN
+     		return false;
+   		END IF;
+		
+        select count(*) into count_val from (select criteria_name from "mark distribution policy" 
+		where offering_id=oid
+		EXCEPT 
+		select criteria_name  from "result details" 
+		where student_id=sid and offering_id=oid and status=req_status) as t1;
+
+ 		IF count_val = 0 THEN
+     		return true;
+ 		ELSE
+      		return false;
+   		END IF;
+		
+	end;
+	
+$$ language plpgsql;
+
+create or replace function all_offering_result_complete_for_student(
+	sid int, 
+	ssid text,
+	req_status text) returns boolean as $$
+    
+	declare
+		count_val int;
+        complete boolean;
+    begin
+		complete := false;
+		select coalesce(bool_and(offering_result_complete_for_student(offering_id, sid, req_status)), false) 
+		into complete from "course registrations" where student_id=sid and session_id=ssid;
+		
+		return complete;
+	end;
+	
+$$ language plpgsql;
+
+create or replace function get_letter_grade(
+	sid int, 
+	oid int) returns text as $$
+    
+	declare
+        let_grade text := 'NO GRADE DISTRIBUTION POLICY SET';
+		total_marks int;
+    begin
+		select coalesce(obtained_marks,0) into total_marks from students_total_marks 
+		where student_id=sid and offering_id=oid;
+		
+		select coalesce(letter_grade, 'NO GRADE DISTRIBUTION POLICY SET') into let_grade 
+		from "grade distribution policy" where offering_id=oid
+		and total_marks>lower_bound and total_marks<=upper_bound;
+		
+		if let_grade is null then
+			return 'NO GRADE DISTRIBUTION POLICY SET';
+		else
+			return let_grade;
+		end if;
+		
+	end;
+	
+$$ language plpgsql;
+
+create or replace function get_grade_point(
+	sid int, 
+	oid int) returns text as $$
+    
+	declare
+        grade_pt text := 'NO GRADE DISTRIBUTION POLICY SET';
+		total_marks int;
+    begin
+		select coalesce(obtained_marks,0) into total_marks from students_total_marks 
+		where student_id=sid and offering_id=oid;
+		
+		select coalesce(grade_point, 'NO GRADE DISTRIBUTION POLICY SET') into grade_pt 
+		from "grade distribution policy" where offering_id=oid
+		and total_marks>lower_bound and total_marks<=upper_bound;
+		
+		if grade_pt is null then
+			return 'NO GRADE DISTRIBUTION POLICY SET';
+		else
+			return grade_pt;
+		end if;
+		
+	end;
+	
+$$ language plpgsql;
+
+

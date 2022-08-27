@@ -32,6 +32,7 @@ const postAddNotice = async (req, res, next) => {
 
     res.status(201).json({ message: "postAddNotice successful" });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("postAddNotice failed", 500);
     return next(error);
   }
@@ -50,6 +51,7 @@ const getSampleFile = async (req, res, next) => {
 
     res.json({ message: "getSampleFile successful", data: data });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("getSampleFile failed", 500);
     return next(error);
   }

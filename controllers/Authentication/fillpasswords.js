@@ -11,6 +11,7 @@ const main = async () => {
     ]);
   }
   console.log("done 1");
+
   queryRes = await pool.query("select teacher_id from teacher");
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);
@@ -20,6 +21,7 @@ const main = async () => {
     ]);
   }
   console.log("done 2");
+
   queryRes = await pool.query('select dept_admin_id from "department admin"');
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);
@@ -29,6 +31,7 @@ const main = async () => {
     ]);
   }
   console.log("done 3");
+
   queryRes = await pool.query('select hall_admin_id from "hall admin"');
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);
@@ -38,6 +41,7 @@ const main = async () => {
     ]);
   }
   console.log("done 4");
+
   queryRes = await pool.query('select office_admin_id from "office admin"');
   for (let i = 0; i < queryRes.rows.length; i++) {
     hashedPassword = await bcrypt.hash("1234", 10);
@@ -47,6 +51,16 @@ const main = async () => {
     ]);
   }
   console.log("done 5");
+
+  queryRes = await pool.query('select comptroller_admin_id from "comptroller admin"');
+  for (let i = 0; i < queryRes.rows.length; i++) {
+    hashedPassword = await bcrypt.hash("1234", 10);
+    await pool.query('update "comptroller admin" set password=$1 where comptroller_admin_id=$2', [
+      hashedPassword,
+      queryRes.rows[i]["comptroller_admin_id"],
+    ]);
+  }
+  console.log("done 6");
 };
 
 main();

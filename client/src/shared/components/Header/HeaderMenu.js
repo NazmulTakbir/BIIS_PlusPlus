@@ -13,20 +13,18 @@ function HeaderMenu() {
     } else {
       return false;
     }
-  }
+  };
 
   return (
     <div className="header_menu">
       <div className="header_menu_container">
-        
-        <div id="notifications_btn">
+        {/* <div id="notifications_btn">
           <NotificationsIcon />
-        </div>
-        
+        </div> */}
+
         <div id="logout_btn" onClick={handleLogout}>
           <PowerSettingsNewIcon />
         </div>
-
       </div>
     </div>
   );

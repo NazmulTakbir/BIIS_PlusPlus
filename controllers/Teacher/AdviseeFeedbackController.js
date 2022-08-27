@@ -1,6 +1,5 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
-const session_id = require("../../placeHolder");
 
 const getFeedbacks = async (req, res, next) => {
   try {
@@ -29,6 +28,7 @@ const getFeedbacks = async (req, res, next) => {
 
     res.status(201).json({ message: "getFeedbacks", data: feedback_list });
   } catch (err) {
+    console.log(err);
     const error = new HttpError("Fetching Student Info Failed", 500);
     return next(error);
   }

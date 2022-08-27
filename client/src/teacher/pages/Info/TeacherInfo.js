@@ -5,6 +5,7 @@ import Header from "../../../shared/components/Header/Header";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
+import { SearchMenuData } from "../../components/SearchMenuData";
 
 import "../../../shared/components/MainContainer.css";
 import TeacherProfile from "../../../shared/components/TeacherProfile/TeacherProfile";
@@ -32,7 +33,7 @@ const TeacherInfo = () => {
   return (
     <React.Fragment>
       <div className="App">
-        <Header />
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
@@ -48,4 +49,3 @@ const TeacherInfo = () => {
 };
 
 export default TeacherInfo;
-
