@@ -1822,7 +1822,7 @@ INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_i
 INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705097, 'Claudia Pozzecco', 'geronimogalilei@example.com', 5, 5, 100004, '+39 0358460532', '3266583157', 'Borgo Loretta, 2
 88835, Roccabernarda (KR)', 'Stretto Zabarella, 8 Piano 3
 32032, Feltre (BL)', '1998-06-12', '5008324433', 1, 2, '$2a$10$zrzjnI8sTcFZU5pdYYT0ROCxIh4JXfseVkv7JICfBgqzd8kh5EIC6');
-INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705098, 'Stefano Veneziano-Spadafora', 'cassandra52@example.com', 5, 5, 100004, '36678517055', '9209495841', 'Borgo Angelo, 90 Piano 0
+INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705098, 'Stefano Veneziano-Spadafora', 'sihatafnan15.9.1997@gmail.com', 5, 5, 100004, '36678517055', '9209495841', 'Borgo Angelo, 90 Piano 0
 24066, Pedrengo (BG)', 'Stretto Binaghi, 34
 28859, Trontano (VB)', '1997-05-06', '1743233830', 1, 2, '$2a$10$EVG2HSEqSSaTmo/mgEMyZO.6YLgqRCPIqNDB2GL89G8Bi4Li..UF2');
 INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_id, mobile_no, bank_acc_no, present_address, contact_person_address, date_of_birth, nid_no, level, term, password) VALUES (1705099, 'Amanda Curci', 'dgentilini@example.org', 5, 5, 100004, '+39 096115992', '3998693197', 'Vicolo Sabatini, 35 Appartamento 7
