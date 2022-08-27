@@ -34,6 +34,7 @@ AdminRoutes.get("/scholarship/samplefile", ScholarshipController.getSampleFile);
 AdminRoutes.post("/student/add", StudentController.postAddStudent);
 AdminRoutes.get("/student/samplefile", StudentController.getSampleFile);
 AdminRoutes.get("/student/getStudentsOfDept/:dept_id", StudentController.getStudentsOfDept);
+AdminRoutes.get("/student/getStudentsOfHall/:hall_id", StudentController.getStudentsOfHall);
 
 AdminRoutes.post("/teacher/add", TeacherController.postAddTeacher);
 AdminRoutes.get("/teacher/samplefile", TeacherController.getSampleFile);
@@ -67,6 +68,7 @@ AdminRoutes.post("/comptroller/markduesaspaid", ComptrollerController.postMarkDu
 AdminRoutes.post("/comptroller/markscholarshipaspaid", ComptrollerController.postMarkScholarshipPaid);
 
 AdminRoutes.get("/admininfo" , InfoController.getAdminInfo);
+AdminRoutes.get("/hall/getHallId/:hall_admin_id", InfoController.getHallId);
 AdminRoutes.get("/" , InfoController.getAdminInfo);
 
 module.exports = AdminRoutes;

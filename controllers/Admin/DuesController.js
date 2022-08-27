@@ -16,12 +16,12 @@ const createDue = async (data) => {
   const student_id = data[0];
   const dues_type = data[1];
 
-  let queryRes = await pool.query('select description, amount from \
+  let dueInfo = await pool.query('select description, amount from \
     public."dues type" where dues_type_id = $1', [
     dues_type,
   ]);
-  const amount = queryRes.rows[0].amount;
-  let description = "Your " + queryRes.rows[0].description + " is due to be paid.\nAmount: " 
+  const amount = dueInfo.rows[0].amount;
+  let description = dueInfo.rows[0].description + " due.\nAmount: " 
    + amount + " BDT.\nPayment Deadline: "
    + data[2];
   await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
@@ -33,11 +33,13 @@ const createDue = async (data) => {
   ]);
 
   //send email
-  queryRes = await pool.query('select email from public.student where student_id = $1', [student_id]);
+  let queryRes = await pool.query('select email from public.student where student_id = $1', [student_id]);
   const email = queryRes.rows[0].email;
   const subject = "BIISPLUSPLUS : New Dues to be Paid";
-  description += + "\n\nThank you."
-  + "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+  description = "You have " + dueInfo.rows[0].description
+   + " dues to be paid.\nAmount : " + dueInfo.rows[0].amount + " BDT.\nPayment Deadline: " + data[2];
+  description = "Dear Student,\n\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+  description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
   const text = description;
   mailController.sendMail(email, subject, text);
 };

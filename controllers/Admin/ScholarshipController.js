@@ -14,18 +14,18 @@ const createScholarship = async (data) => {
   const student_id = data[0];
   const scholarship_type = data[2];
 
-  let queryRes = await pool.query(
+  let scholarship_info = await pool.query(
     'select scholarship_name, amount from public."scholarship type" \
     where scholarship_type_id = $1',
     [scholarship_type]
   );
   let description =
     "Eligible for " +
-    queryRes.rows[0].scholarship_name + " scholarship" +
+    scholarship_info.rows[0].scholarship_name + " scholarship" +
     " of Session " +
     data[1] +
     ". Amount: " +
-    queryRes.rows[0].amount +
+    scholarship_info.rows[0].amount +
     " Taka";
 
   await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
@@ -36,11 +36,12 @@ const createScholarship = async (data) => {
     description,
   ]);
 
-  queryRes = await pool.query('select email from public.student where student_id = $1', [student_id]);
+  let queryRes = await pool.query('select email from public.student where student_id = $1', [student_id]);
   const email = queryRes.rows[0].email;
   const subject = "BIISPLUSPLUS : Scholarship Made Available";
-  description += + "\n\nThank you."
-  + "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+  description = "You are eligible for " + scholarship_info.rows[0].scholarship_name + " scholarship" + " of Session " + data[1] + ".\nAmount: " + scholarship_info.rows[0].amount + " BDT";
+  description = "Dear Student,\n\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+  description += "\n\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
   const text = description;
   mailController.sendMail(email, subject, text);
 };

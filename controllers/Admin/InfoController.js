@@ -53,4 +53,20 @@ const getAdminInfo = async (req, res, next) => {
   }
 };
 
+//get hall_id from hall_admin_id
+const getHallId = async (req, res, next) => {
+  try {
+    let queryRes = await pool.query(
+      `SELECT hall_id FROM "hall admin" WHERE hall_admin_id = $1`,
+      [req.userData.id]
+    );
+    res.json({ message: "getHallId successful", hall_id: queryRes.rows[0].hall_id });
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError("getHallId failed", 500);
+    return next(error);
+  }
+}
+
+exports.getHallId = getHallId;
 exports.getAdminInfo = getAdminInfo;
