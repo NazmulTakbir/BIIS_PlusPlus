@@ -9,6 +9,31 @@ const createScholarship = async (data) => {
     VALUES ($1, $2,'awaiting_application', $3, NULL);`,
     data
   );
+
+  const student_id = data[0];
+  const scholarship_type = data[2];
+
+  let queryRes = await pool.query(
+    'select scholarship_name, amount from public."scholarship type" \
+    where scholarship_type_id = $1',
+    [scholarship_type]
+  );
+  const description =
+    "Eligible for Scholarship: " +
+    queryRes.rows[0].scholarship_name +
+    " of Session " +
+    data[1] +
+    ". Amount: " +
+    queryRes.rows[0].amount +
+    " Taka";
+
+  await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
+    "student",
+    student_id,
+    "Scholarship Made Available",
+    new Date(),
+    description,
+  ]);
 };
 
 const getSampleFile = async (req, res, next) => {
