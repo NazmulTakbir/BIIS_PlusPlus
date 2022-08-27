@@ -1,7 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const session_id = require("../../placeHolder");
-//import email.js
 const mailController = require("../Shared/email");
 
 const essentialAttributes = [];
@@ -22,11 +21,9 @@ const createDue = async (data) => {
     dues_type,
   ]);
   const amount = queryRes.rows[0].amount;
-  const description = "Your " + queryRes.rows[0].description + " is due to be paid.\nAmount: " 
+  let description = "Your " + queryRes.rows[0].description + " is due to be paid.\nAmount: " 
    + amount + " BDT.\nPayment Deadline: "
-   + data[2] + "\n\nThank you."
-   + "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
-
+   + data[2];
   await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
     "student",
     student_id,
@@ -39,6 +36,8 @@ const createDue = async (data) => {
   queryRes = await pool.query('select email from public.student where student_id = $1', [student_id]);
   const email = queryRes.rows[0].email;
   const subject = "BIISPLUSPLUS : New Dues to be Paid";
+  description += + "\n\nThank you."
+  + "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
   const text = description;
   mailController.sendMail(email, subject, text);
 };

@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 const sendMail = (to, subject, text) => {
     //const {to, subject, text } = req.body;
-    console.log(to , subject , text);
+    console.log(text);
     const mailData = {
         from: 'biisplusplus@gmail.com',
         to: to,

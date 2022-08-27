@@ -1,5 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
+const mailController = require("../Shared/email");
 
 const allAttributes = ["student_id", "session_id", "scholarship_type_id"];
 
@@ -18,9 +19,9 @@ const createScholarship = async (data) => {
     where scholarship_type_id = $1',
     [scholarship_type]
   );
-  const description =
-    "Eligible for Scholarship: " +
-    queryRes.rows[0].scholarship_name +
+  let description =
+    "Eligible for " +
+    queryRes.rows[0].scholarship_name + " scholarship" +
     " of Session " +
     data[1] +
     ". Amount: " +
@@ -34,6 +35,14 @@ const createScholarship = async (data) => {
     new Date(),
     description,
   ]);
+
+  queryRes = await pool.query('select email from public.student where student_id = $1', [student_id]);
+  const email = queryRes.rows[0].email;
+  const subject = "BIISPLUSPLUS : Scholarship Made Available";
+  description += + "\n\nThank you."
+  + "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+  const text = description;
+  mailController.sendMail(email, subject, text);
 };
 
 const getSampleFile = async (req, res, next) => {
