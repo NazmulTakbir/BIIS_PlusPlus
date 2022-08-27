@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+import { openInNewTab } from "../../util/OpenNewTab";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 
@@ -18,9 +19,9 @@ function HeaderMenu() {
   return (
     <div className="header_menu">
       <div className="header_menu_container">
-        {/* <div id="notifications_btn">
+        <div id="notifications_btn" onClick={() => openInNewTab(['/notifications'])}>
           <NotificationsIcon />
-        </div> */}
+        </div>
 
         <div id="logout_btn" onClick={handleLogout}>
           <PowerSettingsNewIcon />
