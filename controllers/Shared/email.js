@@ -11,8 +11,8 @@ const transporter = nodemailer.createTransport({
     secure: true, // upgrades later with STARTTLS -- change this based on the PORT
 });
 
-const sendMail = (req , res) => {
-    const {to, subject, text } = req.body;
+const sendMail = (to, subject, text) => {
+    //const {to, subject, text } = req.body;
     console.log(to , subject , text);
     const mailData = {
         from: 'biisplusplus@gmail.com',
@@ -29,6 +29,8 @@ const sendMail = (req , res) => {
         res.status(200).send({ message: "Mail send", message_id: info.messageId });
     });
 };
+
+exports.sendMail = sendMail;
 
 
 
