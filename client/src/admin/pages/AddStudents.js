@@ -1,10 +1,10 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import Papa from "papaparse";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
-import { SearchMenuData } from "../components/SearchMenuData";
+import { getSearchBarData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -13,9 +13,14 @@ const allowedExtensions = ["csv"];
 
 const AddStudents = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
+
+  useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.userType));
+  }, [auth]);
 
   const downloadSampleCSV = async (e) => {
     const response = await fetch("/api/admin/student/samplefile", {
@@ -55,7 +60,6 @@ const AddStudents = () => {
         header: true,
         skipEmptyLines: true,
         complete: async function (results, file) {
-          console.log();
           await fetch(`/api/admin/student/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },

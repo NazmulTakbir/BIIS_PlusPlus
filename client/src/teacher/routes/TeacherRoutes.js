@@ -6,6 +6,7 @@ import CoursesCoordinated from "../pages/Courses/CoursesCoordinated";
 import CoursesTaught from "../pages/Courses/CoursesTaught";
 import CoursesScrutinized from "../pages/Courses/CoursesScrutinized";
 import AllCourses from "../pages/Courses/AllCourses";
+import CourseFeedbacks from "../pages/Courses/CourseFeedbacks";
 
 import AdviseeCourseRegistration from "../pages/Advisees/CourseRegistration";
 import AdviseeFeedback from "../pages/Advisees/Feedback";
@@ -58,6 +59,9 @@ const TeacherRoutes = () => {
       </Route>
       <Route path="/courses/all" exact>
         <AllCourses />
+      </Route>
+      <Route path="/courses/feedbacks" exact>
+        <CourseFeedbacks />
       </Route>
 
       <Route path="/advisees/courseregistration" exact>

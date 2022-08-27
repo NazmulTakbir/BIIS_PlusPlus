@@ -9,7 +9,7 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 import Stack from "@mui/material/Stack";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
@@ -22,6 +22,7 @@ let selectedList = [];
 
 const DeptHeadResults = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [course_id, setCourseID] = useState("Select Course");
   const [availableCourses, setAvailableCourses] = useState([]);
   const [noCourseSelected, setNoCourseSelected] = useState(true);
@@ -32,6 +33,7 @@ const DeptHeadResults = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.responsibilities));
         const response = await fetch(`/api/teacher/departmenthead/offeredcourses`, {
           headers: { Authorization: "Bearer " + auth.token },
         });

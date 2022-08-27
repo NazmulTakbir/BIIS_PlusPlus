@@ -4,14 +4,11 @@ const session_id = require("../../placeHolder");
 
 //async function getAdminInfo
 const getAdminInfo = async (req, res, next) => {
-  console.log(req.userData);
-
   if (req.userData.userType === "comptroller admin") {
     try {
       let queryRes = await pool.query(`SELECT * FROM "comptroller admin" WHERE comptroller_admin_id = $1`, [
         req.userData.id,
       ]);
-      console.log(queryRes.rows[0]);
       res.json({ message: "getAdminInfo successful", ProfileData: queryRes.rows[0] });
     } catch (err) {
       console.log(err);

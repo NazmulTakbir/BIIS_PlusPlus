@@ -8,7 +8,7 @@ import Header from "../../../shared/components/Header/Header";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import Table from "../../../shared/components/Table/Table";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import Stack from "@mui/material/Stack";
 
@@ -21,6 +21,7 @@ let studentMarks = {};
 
 const CoursesTaught = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [course_id, setCourseID] = useState("Select Course");
   const [availableCourses, setAvailableCourses] = useState([]);
   const [noCourseSelected, setNoCourseSelected] = useState(true);
@@ -36,6 +37,7 @@ const CoursesTaught = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.responsibilities));
         const response = await fetch(`/api/teacher/coursestaught`, {
           headers: { Authorization: "Bearer " + auth.token },
         });

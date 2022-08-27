@@ -5,7 +5,7 @@ import Header from "../../../shared/components/Header/Header";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 
 import "../../../shared/components/MainContainer.css";
 import TeacherProfile from "../../../shared/components/TeacherProfile/TeacherProfile";
@@ -13,11 +13,13 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 
 const TeacherInfo = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [teacherInfo, setTeacherInfo] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.responsibilities));
         const response = await fetch(`/api/teacher/teacherinfo`, {
           headers: { Authorization: "Bearer " + auth.token },
         });

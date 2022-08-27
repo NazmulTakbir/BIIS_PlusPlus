@@ -345,7 +345,6 @@ const postApproveResults = async (req, res, next) => {
     const session_id = await getCurrentSession();
 
     const student_ids = req.body;
-    console.log(student_ids);
     for (let i = 0; i < student_ids.length; i++) {
       await pool.query(
         'UPDATE public."result details" as t1 SET status=\'Awaiting Exam Controller Approval\' \

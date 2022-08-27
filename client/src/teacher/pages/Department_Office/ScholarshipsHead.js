@@ -6,14 +6,13 @@ import Navbar from "../../../shared/components/Navbar/Navbar";
 import { SidebarData } from "../../components/SidebarData";
 import { openInNewTab } from "../../../shared/util/OpenNewTab";
 import { NavbarData } from "./NavbarData";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
 const columnLabels = ["STUDENT ID", "NAME", "SESSION ID", "SCHOLARSHIP TYPE", "ACTION"];
-
 
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
@@ -50,9 +49,11 @@ const fetchTableData = async (api_route, setTableData, auth) => {
 
 const ScholarshipsHead = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
+    setSearchMenuData(getSearchBarData(auth.responsibilities));
     fetchTableData(`/api/teacher/departmenthead/scholarshiprequests`, setTableData, auth);
   }, [auth, tableData]);
 
@@ -75,4 +76,3 @@ const ScholarshipsHead = () => {
 };
 
 export default ScholarshipsHead;
-

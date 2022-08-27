@@ -5,9 +5,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Sidebar from "../../../shared/components/Sidebar/Sidebar";
 import Navbar from "../../../shared/components/Navbar/Navbar";
 import Header from "../../../shared/components/Header/Header";
-import { SidebarData } from "../../components/SidebarData";
+import { getSearchBarData } from "../../components/SearchMenuData";
 import { NavbarData } from "./NavbarData";
-import { SearchMenuData } from "../../components/SearchMenuData";
+import { SidebarData } from "../../components/SidebarData";
 import Table from "../../../shared/components/Table/Table";
 import Textbox from "../../../shared/components/Textbox/Textbox";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
@@ -67,6 +67,7 @@ const fetchGradingData = async (api_route, setTableData, auth) => {
 
 const CoursesCoordinated = () => {
   const auth = useContext(AuthContext);
+  const [SearchMenuData, setSearchMenuData] = useState([]);
 
   const [course_id, setCourseID] = useState("Select Course");
   const [dropDownOptions, setDropDownOptions] = useState([]);
@@ -92,6 +93,7 @@ const CoursesCoordinated = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearchMenuData(getSearchBarData(auth.responsibilities));
         const response = await fetch(`/api/teacher/coursescoordinated`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
