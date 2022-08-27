@@ -11,13 +11,29 @@ import Table from "../../../shared/components/Table/Table";
 import { getSearchBarData } from "../../components/SearchMenuData";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Typography  from "@mui/material/Typography";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
+import { display } from "@mui/system";
 
 const studentTableColumns = ["STUDENT ID", "CURRENT SCORE", "STATUS", "EDIT SCORE"];
 
 let studentMarks = {};
+
+const boxStyle = {
+  bgcolor: "background.paper",
+  border: "1px solid #bdbdbd",
+  boxShadow: 1,
+  p: 4,
+  padding: "15px 32px 15px 32px",
+  textAlign: "left",
+  width: "80%",
+  margin: "auto",
+  borderRadius: "10px !important",
+  marginTop: "25px"
+};
 
 const CoursesTaught = () => {
   const auth = useContext(AuthContext);
@@ -247,12 +263,22 @@ const CoursesTaught = () => {
 
                   {noCriteriaSelected ? null : (
                     <div>
-                      <h3>
-                        Total Marks: {total_marks} ------------- Criteria Weight: {criteria_weight}
-                      </h3>
-                      <h4>
-                        <Table columnLabels={studentTableColumns} tableData={studentTableData} />
-                      </h4>
+
+                      <Box id="modal-box" sx={boxStyle}>                        
+                        <Typography 
+                          id="modal-marks"
+                          sx={{display: "flex", justifyContent: "space-around" }}>
+                          <span style={{fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px"}}>
+                            Total Marks: {total_marks}
+                          </span>
+                          <span style={{fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px"}}>
+                            Criteria Weight: {criteria_weight}
+                          </span>
+                        </Typography>
+                      </Box> 
+                      
+                      <Table columnLabels={studentTableColumns} tableData={studentTableData} />
+
 
                       <Stack
                         spacing={2}

@@ -8,7 +8,6 @@ import { getSearchBarData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
-import Textbox from "../../shared/components/Textbox/Textbox";
 import CustomSearch from "../../shared/components/CustomSearch/CustomSearch";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
 import InputLabel from "@mui/material/InputLabel";
@@ -35,7 +34,6 @@ const AddScholarship = () => {
   const [search_students_list, setSearch_students_list] = useState([]);
   const is_student_id_valid = search_students_list.some((element) => element.value === student_id);
 
-
   // scholarshiptypelist sessionlist
   useEffect(() => {
     const fetchData = async () => {
@@ -54,14 +52,14 @@ const AddScholarship = () => {
         set_scholarship_type_list(jsonData.data);
 
         const hall_admin_id = auth.userId;
-        console.log("hall admin id" , hall_admin_id);
+        console.log("hall admin id", hall_admin_id);
         //get hall_id from hall_admin_id
         response = await fetch(`/api/admin/hall/getHallId/${hall_admin_id}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const hall_id = (await response.json()).hall_id;
         console.log(hall_id);
-        
+
         response = await fetch(`/api/admin/student/getStudentsOfHall/${hall_id}`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
@@ -142,30 +140,34 @@ const AddScholarship = () => {
 
   const submissionHandler = async (e) => {
     e.preventDefault();
-    try {
-      let data = [
-        {
-          student_id: student_id,
-          session_id: session_id,
-          scholarship_type_id: scholarship_type_id,
-        },
-      ];
+    if (is_student_id_valid) {
+      try {
+        let data = [
+          {
+            student_id: student_id,
+            session_id: session_id,
+            scholarship_type_id: scholarship_type_id,
+          },
+        ];
 
-      await fetch(`/api/admin/scholarship/add`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-        body: JSON.stringify({
-          data: data,
-        }),
-      });
+        await fetch(`/api/admin/scholarship/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+          body: JSON.stringify({
+            data: data,
+          }),
+        });
 
-      //form reset
-      setStudent_id("");
-      set_session_id("");
-      set_scholarship_type_id("");
+        //form reset
+        setStudent_id("");
+        set_session_id("");
+        set_scholarship_type_id("");
 
-      alert("Scholarship Added Successfully");
-    } catch (err) {}
+        alert("Scholarship Added Successfully");
+      } catch (err) {}
+    } else {
+      alert("Entered Student Id is not valid");
+    }
   };
 
   return (
@@ -260,7 +262,6 @@ const AddScholarship = () => {
 
               <div className="admin-form-container" style={{ paddingTop: "10px" }}>
                 <form id="add-sch-form" onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
-                  
                   <CustomSearch
                     data={search_students_list}
                     parentCallback={setStudent_id}

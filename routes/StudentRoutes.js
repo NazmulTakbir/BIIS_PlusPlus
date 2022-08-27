@@ -52,5 +52,6 @@ StudentRoutes.post("/feedback/course/newsubmission/", FeedbackController.postCou
 
 StudentRoutes.get("/notifications/getall/", NotificationsController.getNotifications);
 StudentRoutes.get("/notifications/subscriptions/", NotificationsController.getSubscriptions);
+StudentRoutes.post("/notifications/postsubscriptions/", NotificationsController.postSubscriptions);
 
 module.exports = StudentRoutes;
