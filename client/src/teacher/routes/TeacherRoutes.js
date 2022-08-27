@@ -7,14 +7,16 @@ import AddGrades from "../pages/Courses/CourseDetail/AddGrades";
 import ViewGrades from "../pages/Courses/CourseDetail/ViewGrades";
 import Scrutinize from "../pages/Courses/CourseDetail/Scrutinize";
 
-import CourseRegistration from "../pages/Advisees/CourseRegistration";
-import Feedback from "../pages/Advisees/Feedback";
+import AdviseeCourseRegistration from "../pages/Advisees/CourseRegistration";
+import AdviseeFeedback from "../pages/Advisees/Feedback";
+import AdviseeList from "../pages/Advisees/AdviseeList";
 import AdviseeInfo from "../pages/Advisees/AdviseeProfile/Info";
 import AdviseeAcademic from "../pages/Advisees/AdviseeProfile/Academic";
 import AdviseeRegistration from "../pages/Advisees/AdviseeProfile/Registration";
-import AdviseeList from "../pages/Advisees/AdviseeList";
 
-import DepartmentalIssues from "../pages/Department Office/DepartmentIssues";
+
+
+import DepartmentalIssues from "../pages/Department_Office/DepartmentIssues";
 import HallIssues from "../pages/Hall Office/HallIssues";
 
 const TeacherRoutes = () => {
@@ -41,13 +43,13 @@ const TeacherRoutes = () => {
       </Route>
 
       <Route path="/advisees/courseregistration" exact>
-        <CourseRegistration />
+        <AdviseeCourseRegistration />
       </Route>
       <Route path="/advisees/all" exact>
         <AdviseeList />
       </Route>
       <Route path="/advisees/feedback" exact>
-        <Feedback />
+        <AdviseeFeedback />
       </Route>
       <Route path="/advisees/profile/info/:studentID" exact>
         <AdviseeInfo />
@@ -57,10 +59,6 @@ const TeacherRoutes = () => {
       </Route>
       <Route path="/advisees/profile/registration/:studentID" exact>
         <AdviseeRegistration />
-      </Route>
-
-      <Route path="/deptissues" exact>
-        <DepartmentalIssues />
       </Route>
 
       <Route path="/hallissues" exact>
