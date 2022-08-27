@@ -41,6 +41,26 @@ const postMarkDuesPaid = async (req, res, next) => {
     let queryRes;
     for (let i = 0; i < duesIDs.length; i++) {
       queryRes = await pool.query("UPDATE dues SET dues_status = 'Paid' WHERE dues_id = $1", [duesIDs[i]]);
+
+      queryRes = await pool.query(
+        'select description, amount, student_id from dues natural join "dues type" where dues_id=$1',
+        [duesIDs[i]]
+      );
+
+      const description =
+        "Payment for the following due has been received: " +
+        queryRes.rows[0].description +
+        ". Amount: " +
+        queryRes.rows[0].amount +
+        " Taka";
+
+      await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
+        "student",
+        queryRes.rows[0].student_id,
+        "Dues Payment Confirmed",
+        new Date(),
+        description,
+      ]);
     }
 
     res.json({ message: "postMarkDuesPaid successful" });
@@ -60,6 +80,28 @@ const postMarkScholarshipPaid = async (req, res, next) => {
         "UPDATE scholarship SET scholarship_state = 'paid', payment_date=NOW() WHERE scholarship_id = $1",
         [schIDs[i]]
       );
+
+      queryRes = await pool.query(
+        'select scholarship_name, amount, session_id, student_id from scholarship natural join "scholarship type" where scholarship_id=$1',
+        [schIDs[i]]
+      );
+
+      const description =
+        "The following Scholarship has been Paid: " +
+        queryRes.rows[0].scholarship_name +
+        " of Session " +
+        queryRes.rows[0].session_id +
+        ". Amount: " +
+        queryRes.rows[0].amount +
+        " Taka";
+
+      await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
+        "student",
+        queryRes.rows[0].student_id,
+        "Scholarship Paid",
+        new Date(),
+        description,
+      ]);
     }
 
     res.json({ message: "postMarkScholarshipPaid successful" });
