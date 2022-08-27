@@ -35,6 +35,8 @@ import ScholarshipAction from "../pages/Hall Office/HallMembers/ScholarshipActio
 import HallStudentDues from "../pages/Hall Office/HallMembers/Dues";
 import HallStudentResults from "../pages/Hall Office/HallMembers/Results";
 import HallStudentList from "../pages/Hall Office/StudentList";
+import Notifications from "../../shared/pages/Notifications/Notifications";
+import Subscriptions from "../../shared/pages/Notifications/Subscriptions";
 
 import ExamControllerPendingResults from "./../pages/ExamController/PendingResults";
 
@@ -145,6 +147,12 @@ const TeacherRoutes = () => {
       <Route path="/examcontroller/pendingresults" exact>
         <ExamControllerPendingResults />
       </Route>
+      <Route path="/notifications" exact>
+        <Notifications />
+      </Route>   
+      <Route path="/subscriptions" exact>
+        <Subscriptions />
+      </Route>            
 
       <Redirect to="/teacherinfo" />
     </Switch>
