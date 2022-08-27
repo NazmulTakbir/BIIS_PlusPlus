@@ -10,17 +10,19 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 const columnLabels = ["Subscribe", "Notification Type"];
 const checkedSubscriptions = [];
 
-const checkBoxCallBack = (id, actionType) => {
-  if (actionType === "check") {
-    checkedSubscriptions.push(id);
-  } else if (actionType === "uncheck") {
-    checkedSubscriptions.splice(checkedSubscriptions.indexOf(id), 1);
-  }
-};
-
 const Subscriptions = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
+
+  const checkBoxCallBack = (id, actionType) => {
+    if (actionType === "check") {
+      checkedSubscriptions.push(id);
+    } else if (actionType === "uncheck") {
+      checkedSubscriptions.splice(checkedSubscriptions.indexOf(id), 1);
+    }
+    setUnsavedChanges(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +42,15 @@ const Subscriptions = () => {
         let tableData = [];
         for (let i = 0; i < jsonData.length; i++) {
           let row = [];
-          row.push({ type: "CheckBox", data: { id: jsonData[i]["notification_type"], callback: checkBoxCallBack } });
+          if (jsonData[i].subscribed === true) {
+            checkedSubscriptions.push(jsonData[i]["notification_type"]);
+            row.push({
+              type: "CheckBox",
+              data: { id: jsonData[i]["notification_type"], callback: checkBoxCallBack, custom_checked: true },
+            });
+          } else {
+            row.push({ type: "CheckBox", data: { id: jsonData[i]["notification_type"], callback: checkBoxCallBack } });
+          }
           row.push({ type: "PlainText", data: { value: jsonData[i]["notification_type"] } });
           tableData.push(row);
         }
@@ -53,15 +63,26 @@ const Subscriptions = () => {
   }, [auth]);
 
   const submissionHandler = async () => {
-    console.log(checkedSubscriptions);
+    await fetch(`/api/student/notifications/postsubscriptions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        subscriptions: checkedSubscriptions,
+      }),
+    });
+    alert("Changes Saved Successfully");
+    setUnsavedChanges(false);
   };
 
   const renderPage = () => {
     return (
       <React.Fragment>
+        {unsavedChanges ? <p>You Have Saved Changes</p> : null}
         <Table columnLabels={columnLabels} tableData={tableData} />
+        <br />
+        <br />
         <CustomButton
-          label="Unsubscribe"
+          label="Save Changes"
           variant="contained"
           color="white"
           bcolor="#b13137"

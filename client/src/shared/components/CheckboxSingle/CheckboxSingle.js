@@ -3,7 +3,14 @@ import "./CheckboxSingle.css";
 import Checkbox from "@mui/material/Checkbox";
 
 const CheckboxSingle = (props) => {
-  const { id, callback } = props;
+  const { id, callback, custom_checked } = props;
+
+  let provided_check_state;
+  if (custom_checked === undefined || custom_checked === false) {
+    provided_check_state = false;
+  } else {
+    provided_check_state = true;
+  }
 
   const handleOnChange = (event) => {
     if (event.target.checked) {
@@ -23,10 +30,10 @@ const CheckboxSingle = (props) => {
         )}
         <Checkbox
           key={id}
-          defaultChecked={false}
           onChange={handleOnChange}
           className="checkbox-main"
           name={props.name}
+          defaultChecked={provided_check_state}
         />
       </div>
     </div>
