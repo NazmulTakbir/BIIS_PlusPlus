@@ -44,8 +44,24 @@ const AdminInfo = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-              <h1>AdminInfo</h1>
-              {renderCell()}
+
+              <div 
+                  className="admin-profile-container"
+                  style={{
+                    width:"400px", margin: "40px auto", background: "linear-gradient(45deg, #fff3e3, white)",
+                    padding: "30px", borderRadius: "10px", border: "1px solid grey",
+              }}>
+                
+                <div className="header-text"
+                    style={{
+                      color: "#b13127", fontSize: "17px", fontWeight: "bold",
+                      margin: "30px auto 10px auto",
+                    }}>Admin Information
+                </div>      
+                {renderCell()}
+
+              </div>
+
             </div>
           </div>
         </div>
