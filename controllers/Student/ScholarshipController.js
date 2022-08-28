@@ -1,5 +1,7 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
+const path = require("path");
+const fs = require("fs");
 
 const getReceived = async (req, res, next) => {
   try {
@@ -103,13 +105,21 @@ const getAvailable = async (req, res, next) => {
   }
 };
 
-const getForm = async (req, res, next) => {
+const getApplicationPDF = async (req, res, next) => {
   try {
-    //file stuff to be done later
-    res.status(201).json({ message: "getForm" });
+    const fileName = req.params.filename;
+
+    var filePath = path.join(__dirname, "..", "..", "uploads", "scholarships", fileName);
+
+    var file = fs.createReadStream(filePath);
+    var stat = fs.statSync(filePath);
+    res.setHeader("Content-Length", stat.size);
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
+    file.pipe(res);
   } catch (err) {
     console.log(err);
-    const error = new HttpError("Fetching Courses to Drop Failed", 500);
+    const error = new HttpError("getApplicationPDF Failed", 500);
     return next(error);
   }
 };
@@ -136,5 +146,5 @@ const postApplication = async (req, res, next) => {
 exports.getReceived = getReceived;
 exports.getProcessing = getProcessing;
 exports.getAvailable = getAvailable;
-exports.getForm = getForm;
+exports.getApplicationPDF = getApplicationPDF;
 exports.postApplication = postApplication;

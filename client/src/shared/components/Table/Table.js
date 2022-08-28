@@ -43,14 +43,9 @@ const Table = (props) => {
 
   return (
     <div style={{ marginBottom: margin_bottom }} className="table-container">
-    {tableData.length === 0 ? 
-    (
-        <div className="empty-table-msg">
-          {emptyTableMessage}
-        </div>
-    ) : 
-    
-    (
+      {tableData.length === 0 ? (
+        <div className="empty-table-msg">{emptyTableMessage}</div>
+      ) : (
         <table className="table-custom">
           <thead>
             <tr>
@@ -65,7 +60,7 @@ const Table = (props) => {
           </thead>
 
           <tbody className="table-hover">
-          {tableData.map((row, rowNum) => {
+            {tableData.map((row, rowNum) => {
               return (
                 <tr className="text-left" key={rowNum}>
                   {row.map((cellData, columnNo) => {
@@ -76,7 +71,7 @@ const Table = (props) => {
             })}
           </tbody>
         </table>
-    )}
+      )}
     </div>
   );
 };

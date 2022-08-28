@@ -11,7 +11,7 @@ const generateScholarshipPDF = (filename, name, student_id, scholarship_type, am
   doc
     .fontSize(18)
     .text(
-      `Name: ${name}\n\nStudent ID: ${student_id}\n\nScholarship Type: ${scholarship_type}\n\nAmount: ${amount}'`,
+      `Name: ${name}\n\nStudent ID: ${student_id}\n\nScholarship Type: ${scholarship_type}\n\nAmount: ${amount} Taka`,
       100,
       200
     );

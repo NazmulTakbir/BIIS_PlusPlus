@@ -20,7 +20,6 @@ app.use(bodyParser.json());
 app.use(fileUpload());
 
 app.use("/uploads/notices", express.static(path.join("uploads", "notices")));
-app.use("/uploads/scholarships", express.static(path.join("uploads", "scholarships")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

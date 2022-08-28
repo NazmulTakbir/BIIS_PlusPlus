@@ -3,7 +3,22 @@ import CustomButton from "../CustomButton/CustomButton";
 
 const CustomAnchor = (props) => {
   const anchorRef = useRef();
-  const { url } = props.data;
+  const { auth, file_id } = props.data;
+
+  const anchorClick = async () => {
+    if (anchorRef.current.href) {
+      return;
+    }
+
+    const result = await fetch(`/api/student/scholarship/applicationpdf/${file_id}`, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+
+    const blob = await result.blob();
+    const href = window.URL.createObjectURL(blob);
+    anchorRef.current.href = href;
+    anchorRef.current.click();
+  };
 
   const handleOnClick = () => {
     anchorRef.current.click();
@@ -30,7 +45,14 @@ const CustomAnchor = (props) => {
           onClickFunction={handleOnClick}
         />
       </div>
-      <a ref={anchorRef} href={url} style={{ display: "none" }} target="_blank" rel="noopener noreferrer"></a>
+      <a
+        role="button"
+        ref={anchorRef}
+        onClick={anchorClick}
+        style={{ display: "none" }}
+        target="_blank"
+        rel="noopener noreferrer"
+      ></a>
     </td>
   );
 };

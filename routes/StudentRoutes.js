@@ -35,8 +35,8 @@ StudentRoutes.get("/exam/getAvailableResults", ExamsController.getAvailableResul
 StudentRoutes.get("/scholarship/received", ScholarshipController.getReceived);
 StudentRoutes.get("/scholarship/processing", ScholarshipController.getProcessing);
 StudentRoutes.get("/scholarship/available", ScholarshipController.getAvailable);
-StudentRoutes.get("/scholarship/download/:scid", ScholarshipController.getForm);
 StudentRoutes.post("/scholarship/apply/:scid", ScholarshipController.postApplication);
+StudentRoutes.get("/scholarship/applicationpdf/:filename", ScholarshipController.getApplicationPDF);
 
 StudentRoutes.get("/generalinfo/academiccalender", GeneralInfoController.getAcademicCalender);
 StudentRoutes.get("/generalinfo/hallinfo", GeneralInfoController.getHallInfo);

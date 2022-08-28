@@ -31,16 +31,6 @@ const applyScholarship = async (args) => {
   }
 };
 
-const downloadSchApp = async (args) => {
-  const file_id = args[0];
-  const auth = args[1];
-
-  const queryRes = await fetch(`/uploads/scholarships/${file_id}`, {
-    Authorization: "Bearer " + auth.token,
-  });
-  console.log(queryRes.files);
-};
-
 const fetchTableData = async (api_route, setTableData, auth) => {
   try {
     const response = await fetch(api_route, {
@@ -64,19 +54,12 @@ const fetchTableData = async (api_route, setTableData, auth) => {
               onClickFunction: applyScholarship,
               onClickArguments: [jsonData[i]["scholarship_id"], auth],
             },
-            // {
-            //   buttonText: "Download",
-            //   textColor: "white",
-            //   backColor: "#DB6066",
-            //   onClickFunction: downloadSchApp,
-            //   onClickArguments: [jsonData[i]["application_file"], auth],
-            // },
           ],
         },
       });
       row.push({
         type: "CustomAnchor",
-        data: { url: `http://localhost:5000/uploads/scholarships/${jsonData[i]["application_file"]}` },
+        data: { auth: auth, file_id: jsonData[i]["application_file"] },
       });
       tableData.push(row);
     }
