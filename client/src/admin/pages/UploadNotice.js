@@ -66,10 +66,27 @@ const UploadNotice = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-              <form onSubmit={submissionHandler}>
+              
+              <div className="header-text"
+                  style={{
+                    color: "#b13127", fontSize: "17px", fontWeight: "bold", margin: "60px auto 10px auto",
+                  }}>Upload a New Notice
+              </div>               
+
+              <form onSubmit={submissionHandler} 
+                style={{
+                    background: "#fff3e3",
+                    padding: "50px 40px 50px 40px",
+                    width: "max-content",
+                    margin: "auto",
+                    borderRadius: "10px",
+                    border: "1px solid grey",
+                }}
+              >
                 <Textbox
-                  height="40px"
+                  height="50px"
                   width="450px"
+                  fontSize="16px"
                   resize="none"
                   name="subject"
                   label="Notice Subject"
@@ -103,8 +120,8 @@ const UploadNotice = () => {
                     direction="row"
                     style={{
                       margin: "auto",
-                      width: "250px",
-                      padding: "10px",
+                      width: "70%",
+                      padding: "25px 10px 10px 10px",
                       textAlign: "center",
                       justifyContent: "space-between",
                     }}

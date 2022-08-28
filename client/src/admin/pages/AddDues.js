@@ -19,6 +19,7 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { setTodayAsMinDate } from "../../shared/util/DateMinToday";
 
 const allowedExtensions = ["csv"];
 
@@ -42,6 +43,8 @@ const AddDues = () => {
   //const admin_dept_id = 5; //change it after adming logins
 
   useEffect(() => {
+    setTodayAsMinDate("date");
+
     const fetchData = async () => {
       try {
         setSearchMenuData(getSearchBarData(auth.userType));

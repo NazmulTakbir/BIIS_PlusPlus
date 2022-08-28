@@ -7,6 +7,7 @@ const NativeDatePicker = (props) => {
       <div className="date-picker-label">{props.label}</div>
       <input
         type="date"
+        id="date"
         className="date-picker"
         placeholder="Select Date"
         style={{

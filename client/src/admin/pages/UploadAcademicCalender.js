@@ -16,6 +16,7 @@ import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { Stack } from "@mui/material";
+import { setTodayAsMinDate } from "../../shared/util/DateMinToday";
 
 const allowedExtensions = ["csv"];
 
@@ -36,6 +37,7 @@ const UploadAcademicCalender = () => {
   useEffect(() => {
     setSearchMenuData(getSearchBarData(auth.userType));
     populateSessions();
+    setTodayAsMinDate("date");
   }, [auth]);
 
   const populateSessions = () => {
