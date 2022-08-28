@@ -36,6 +36,23 @@ const AddCourseTeachers = () => {
   const [search_offerings_list, setSearch_offerings_list] = useState([]);
   const is_offering_id_valid = search_offerings_list.some((element) => element.value === offering_id);  
 
+  //for searchable course ids
+  const [search_teacherid_list, setSearch_teacherid_list] = useState([]);
+  function are_teacher_ids_valid() {
+    for (var i = 0; i < countTeachers; i++) {
+      const is_teacher_id_valid = search_teacherid_list.some((element) => element.value === teacher_ids[i]);
+      if (!is_teacher_id_valid) return false;
+    }
+    return true;
+  };
+
+
+  const setTeacherIDFromSearch = (value, i) => {
+      let temp_ids = [...teacher_ids];
+      temp_ids[i] = value;
+      setTeacher_ids(temp_ids);
+  };
+
   const incrementCountTeachers = (args) => {
     setCountTeachers(Math.min(countTeachers + 1, 6));
   };
@@ -56,6 +73,13 @@ const AddCourseTeachers = () => {
         
         //set data in valid format for search component
         let search_list = [];
+        for (var i = 0; i < jsonData.data.length; i++) {
+          search_list.push({
+            name: jsonData.data[i].name,
+            value: jsonData.data[i].teacher_id,
+          });
+        }
+        setSearch_teacherid_list(search_list);
 
         response = await fetch(`/api/admin/offering/getOffering_admin_dept`, {
           headers: { Authorization: "Bearer " + auth.token },
@@ -138,7 +162,7 @@ const AddCourseTeachers = () => {
 
   const submissionHandler = async (e) => {
     e.preventDefault();
-    if(is_offering_id_valid){
+    if(is_offering_id_valid && are_teacher_ids_valid()){
       try {
         let data = [];
         for (let i = 0; i < countTeachers; i++) {
@@ -174,30 +198,16 @@ const AddCourseTeachers = () => {
       inputs.push(<br />);
       inputs.push(<br />);
 
-      inputs.push(
-        <FormControl fullWidth style={{ marginTop: "25px" }}>
-          <InputLabel id="demo-simple-select-label">Select Teacher</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="teacher_id"
-            name="teacher_id"
-            value={teacher_ids[i]}
-            label="Teachers"
-            onChange={(e) => {
-              let temp_ids = [...teacher_ids];
-              temp_ids[i] = e.target.value;
-              setTeacher_ids(temp_ids);
-            }}
-          >
-            {teacher_list.map((val, key) => {
-              return (
-                <MenuItem key={key} value={val.teacher_id}>
-                  {val.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
+      inputs.push(   
+        <CustomSearch
+          data={search_teacherid_list}
+          parentCallback={setTeacherIDFromSearch}
+          index={i}
+          required={true}
+          margin="25px 0px 10px 0px"
+          width="100%"
+          label="Search Teacher by names"
+        />
       );
 
       inputs.push(
