@@ -41,7 +41,7 @@ const postMarkDuesPaid = async (req, res, next) => {
     const { duesIDs } = req.body;
     let queryRes;
     for (let i = 0; i < duesIDs.length; i++) {
-      queryRes = await pool.query("UPDATE dues SET dues_status = 'Paid' WHERE dues_id = $1", [duesIDs[i]]);
+      queryRes = await pool.query("UPDATE dues SET dues_status = 'Paid', payment_date=NOW() WHERE dues_id = $1", [duesIDs[i]]);
 
       queryRes = await pool.query(
         'select description, amount, student_id from dues natural join "dues type" where dues_id=$1',

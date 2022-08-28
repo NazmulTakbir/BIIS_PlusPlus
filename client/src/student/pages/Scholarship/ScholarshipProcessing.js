@@ -25,7 +25,18 @@ const fetchTableData = async (api_route, setTableData, auth) => {
       row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_name"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["session_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["amount"] } });
-      row.push({ type: "PlainText", data: { value: jsonData[i]["scholarship_state"] } });
+
+      let state = "";
+      if(jsonData[i]["scholarship_state"] === "awaiting_application") state = "Awaiting Application";
+      else if(jsonData[i]["scholarship_state"] === "awaiting_provost") state = "Awaiting Provost Approval";
+      else if(jsonData[i]["scholarship_state"] === "awaiting_head") state = "Awaiting Head Approval";
+      else if(jsonData[i]["scholarship_state"] === "awaiting_comptroller") state = "Awaiting Comptroller Payment";
+      else if(jsonData[i]["scholarship_state"] === "paid") state = "Paid";     
+      else if(jsonData[i]["scholarship_state"] === "rejected_provost") state = "Rejected by Provost";
+      else if(jsonData[i]["scholarship_state"] === "rejected_head") state = "Rejected by Head";
+      else if(jsonData[i]["scholarship_state"] === "rejected_comptroller") state = "Rejected by Comptroller";
+
+      row.push({ type: "PlainText", data: { value: state } });
       tableData.push(row);
     }
     setTableData(tableData);
