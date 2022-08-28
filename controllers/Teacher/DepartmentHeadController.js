@@ -240,7 +240,7 @@ const postApproveRegistrationRequests = async (req, res, next) => {
         queryRes.rows[0].course_id +
         ". Session: " +
         queryRes.rows[0].session_id;
-
+        console.log(description);
       await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
         "student",
         queryRes.rows[0].student_id,
@@ -248,6 +248,8 @@ const postApproveRegistrationRequests = async (req, res, next) => {
         new Date(),
         description,
       ]);
+
+      console.log(description);
 
       const student_id = queryRes.rows[0].student_id;
 

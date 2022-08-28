@@ -11,11 +11,26 @@ import Table from "../../../shared/components/Table/Table";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import { SidebarData } from "../../components/SidebarData";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 
 const studentTableColumns = ["STUDENT ID", "SCORE", "STATUS", "SELECT"];
+
+const boxStyle = {
+  bgcolor: "background.paper",
+  border: "1px solid #bdbdbd",
+  boxShadow: 1,
+  p: 4,
+  padding: "15px 32px 15px 32px",
+  textAlign: "left",
+  width: "80%",
+  margin: "auto",
+  borderRadius: "10px !important",
+  marginTop: "25px",
+};
 
 let selectedList = [];
 
@@ -199,9 +214,16 @@ const CoursesScrutinized = () => {
 
                   {noCriteriaSelected ? null : (
                     <div>
-                      <h3>
-                        Total Marks: {total_marks} ------------- Criteria Weight: {criteria_weight}
-                      </h3>
+                      <Box id="modal-box" sx={boxStyle}>
+                        <Typography id="modal-marks" sx={{ display: "flex", justifyContent: "space-around" }}>
+                          <span style={{ fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px" }}>
+                            Total Marks: {total_marks}
+                          </span>
+                          <span style={{ fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px" }}>
+                            Criteria Weight: {criteria_weight}
+                          </span>
+                        </Typography>
+                      </Box>
                       <h4>
                         <Table columnLabels={studentTableColumns} tableData={studentTableData} />
                       </h4>

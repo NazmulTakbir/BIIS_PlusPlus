@@ -83,7 +83,14 @@ const PaymentDues = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-              <h3>Pending Dues</h3>
+              <div style={{ margin: "auto", textAlign: "center" }}>
+                <div
+                  className="session-text"
+                  style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+                >
+                  Pending Dues
+                </div>
+              </div>
               <Table columnLabels={columnLabels} tableData={addTableData} />
 
               <Stack

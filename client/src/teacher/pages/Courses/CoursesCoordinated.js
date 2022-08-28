@@ -234,10 +234,24 @@ const CoursesCoordinated = () => {
               {noneSelected ? null : (
                 <div>
                   <br />
-                  <h4>Mark Distribution Policy</h4>
-                  <Table columnLabels={criteriaColumns} tableData={criteriaTable} />
+                  <div style={{ margin: "auto", textAlign: "center" }}>
+                    <div
+                      className="session-text"
+                      style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+                    >
+                      Mark Distribution Policy
+                    </div>
+                  </div>
+                  <Table margin_bottom="0px" columnLabels={criteriaColumns} tableData={criteriaTable} />
                   <br />
-                  <h5>Add Criteria</h5>
+                  <div style={{ margin: "auto", textAlign: "center" }}>
+                    <div
+                      className="session-text"
+                      style={{ marginTop: "0px", fontSize: "19px", fontWeight: "bolder", color: "#b13137" }}
+                    >
+                      Add Criteria
+                    </div>
+                  </div>
 
                   <form onSubmit={addCriteriaHandler} style={{ width: "350px", margin: "auto" }}>
                     <Textbox
@@ -332,13 +346,23 @@ const CoursesCoordinated = () => {
                       fontSize="17px !important"
                     />
                   </form>
-
-                  <br />
-                  <br />
-                  <h4>Grade Distribution Policy</h4>
-                  <Table columnLabels={gradeBoundaryColumns} tableData={gradeBoundaryTable} />
-                  <br />
-                  <h5>Add Policy</h5>
+                  <div style={{ margin: "auto", textAlign: "center" }}>
+                    <div
+                      className="session-text"
+                      style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+                    >
+                      Grade Distribution Policy
+                    </div>
+                  </div>
+                  <Table margin_bottom="0px" columnLabels={gradeBoundaryColumns} tableData={gradeBoundaryTable} />
+                  <div style={{ margin: "auto", textAlign: "center" }}>
+                    <div
+                      className="session-text"
+                      style={{ marginTop: "20px", fontSize: "19px", fontWeight: "bolder", color: "#b13137" }}
+                    >
+                      Add Policy
+                    </div>
+                  </div>
                   <form onSubmit={addGradingBoundaryHandler} style={{ width: "350px", margin: "auto" }}>
                     <Textbox
                       width="350px"

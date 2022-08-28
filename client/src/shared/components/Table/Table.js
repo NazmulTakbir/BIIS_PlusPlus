@@ -8,7 +8,14 @@ import TextboxCell from "./TextboxCell";
 import MultiBodyModal from "./MultiBodyModal";
 
 const Table = (props) => {
-  const { columnLabels, tableData } = props;
+  const { columnLabels, tableData, margin_bottom, noDataMessage } = props;
+
+  let emptyTableMessage;
+  if (!noDataMessage || noDataMessage.length === 0) {
+    emptyTableMessage = "No data found";
+  } else {
+    emptyTableMessage = noDataMessage;
+  }
 
   const renderCell = (cellData) => {
     switch (cellData.type) {
@@ -32,7 +39,7 @@ const Table = (props) => {
   };
 
   return (
-    <div className="table-container">
+    <div style={{ marginBottom: margin_bottom }} className="table-container">
       <table className="table-custom">
         <thead>
           <tr>
@@ -47,15 +54,19 @@ const Table = (props) => {
         </thead>
 
         <tbody className="table-hover">
-          {tableData.map((row, rowNum) => {
-            return (
-              <tr className="text-left" key={rowNum}>
-                {row.map((cellData, columnNo) => {
-                  return <Fragment key={columnNo}>{renderCell(cellData)}</Fragment>;
-                })}
-              </tr>
-            );
-          })}
+          {tableData.length === 0 ? (
+            <h4>{emptyTableMessage}</h4>
+          ) : (
+            tableData.map((row, rowNum) => {
+              return (
+                <tr className="text-left" key={rowNum}>
+                  {row.map((cellData, columnNo) => {
+                    return <Fragment key={columnNo}>{renderCell(cellData)}</Fragment>;
+                  })}
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
     </div>
