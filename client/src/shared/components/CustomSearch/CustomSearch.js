@@ -30,7 +30,9 @@ const CustomSearch = (props) => {
 
       //send input to parent
       if(props.parentCallback !== undefined) {
-        props.parentCallback(value);
+        if(props.index === undefined)
+          props.parentCallback(value);
+        else props.parentCallback(value, props.index);
       }
   };
 
@@ -40,7 +42,9 @@ const CustomSearch = (props) => {
 
       //send input to parent
       if(props.parentCallback !== undefined) {
-        props.parentCallback(value);
+        if(props.index === undefined)
+          props.parentCallback(value);
+        else props.parentCallback(value, props.index);
       }
       
       //link is clicked!

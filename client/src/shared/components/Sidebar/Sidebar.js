@@ -40,7 +40,7 @@ const Sidebar = (props) => {
         }
         setAuthorizationSidebar(temp);
       } else if (auth.userType.toLowerCase() === "office admin") {
-        let toKeep = ["Admin Info", "Upload Academic Calender"];
+        let toKeep = ["Admin Info", "Upload Academic Calender", "Upload Notice"];
 
         let temp = [];
         for (i = 0; i < SidebarData.length; i++) {
