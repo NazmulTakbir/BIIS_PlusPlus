@@ -1046,7 +1046,7 @@ ALTER TABLE public.student OWNER TO postgres;
 CREATE TABLE public.student_notification_registrations (
     notification_type text NOT NULL,
     student_id integer NOT NULL,
-    CONSTRAINT student_notification_registrations_notification_type_check CHECK (((notification_type = 'Course Registration Approval/Rejection'::text) OR (notification_type = 'Results Published'::text) OR (notification_type = 'Scholarship Made Available'::text) OR (notification_type = 'Scholarship Paid'::text) OR (notification_type = 'New Dues to be Paid'::text) OR (notification_type = 'Dues Payment Confirmed'::text) OR (notification_type = 'Notice Added'::text)))
+    CONSTRAINT student_notification_registrations_notification_type_check CHECK (((notification_type = 'Course Registration Approval'::text) OR notification_type = 'Course Registration Rejection'::text) OR (notification_type = 'Results Published'::text) OR (notification_type = 'Scholarship Made Available'::text) OR (notification_type = 'Scholarship Paid'::text) OR (notification_type = 'New Dues to be Paid'::text) OR (notification_type = 'Dues Payment Confirmed'::text) OR (notification_type = 'Notice Added'::text))
 );
 
 
@@ -1585,6 +1585,17 @@ INSERT INTO public."result summary" (offering_id, student_id, grade_point, lette
 INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (47, 1705103, 4, 'A+');
 
 
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (39, 1705098, 4, 'A+');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (40, 1705098, 4, 'A+');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (41, 1705098, 3.75, 'A');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (42, 1705098, 3.75, 'A');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (43, 1705098, 4, 'A+');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (44, 1705098, 4, 'A+');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (45, 1705098, 3.5, 'A-');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (46, 1705098, 3.75, 'A');
+INSERT INTO public."result summary" (offering_id, student_id, grade_point, letter_grade) VALUES (47, 1705098, 4, 'A+');
+
+
 --
 -- Data for Name: scholarship; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2003,13 +2014,21 @@ INSERT INTO public.student (student_id, name, email, hall_id, dept_id, advisor_i
 -- Data for Name: student_notification_registrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Course Registration Approval/Rejection', 1705103);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Course Registration Approval', 1705103);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Course Registration Rejection', 1705103);
 INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Dues Payment Confirmed', 1705103);
 INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Results Published', 1705103);
 INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Scholarship Paid', 1705103);
 INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Scholarship Made Available', 1705103);
 INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('New Dues to be Paid', 1705103);
 
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Course Registration Approval', 1705098);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Course Registration Rejection', 1705098);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Dues Payment Confirmed', 1705098);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Results Published', 1705098);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Scholarship Paid', 1705098);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('Scholarship Made Available', 1705098);
+INSERT INTO public.student_notification_registrations (notification_type, student_id) VALUES ('New Dues to be Paid', 1705098);
 
 --
 -- Data for Name: student_notifications; Type: TABLE DATA; Schema: public; Owner: postgres
