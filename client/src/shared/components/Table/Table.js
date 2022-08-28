@@ -13,7 +13,7 @@ const Table = (props) => {
 
   let emptyTableMessage;
   if (!noDataMessage || noDataMessage.length === 0) {
-    emptyTableMessage = "No data found";
+    emptyTableMessage = "You have no data for this page!";
   } else {
     emptyTableMessage = noDataMessage;
   }
@@ -43,24 +43,29 @@ const Table = (props) => {
 
   return (
     <div style={{ marginBottom: margin_bottom }} className="table-container">
-      <table className="table-custom">
-        <thead>
-          <tr>
-            {columnLabels.map((val) => {
-              return (
-                <th className="text-left" key={val}>
-                  <div className="text-block">{val}</div>
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
+    {tableData.length === 0 ? 
+    (
+        <div className="empty-table-msg">
+          {emptyTableMessage}
+        </div>
+    ) : 
+    
+    (
+        <table className="table-custom">
+          <thead>
+            <tr>
+              {columnLabels.map((val) => {
+                return (
+                  <th className="text-left" key={val}>
+                    <div className="text-block">{val}</div>
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
 
-        <tbody className="table-hover">
-          {tableData.length === 0 ? (
-            <h4>{emptyTableMessage}</h4>
-          ) : (
-            tableData.map((row, rowNum) => {
+          <tbody className="table-hover">
+          {tableData.map((row, rowNum) => {
               return (
                 <tr className="text-left" key={rowNum}>
                   {row.map((cellData, columnNo) => {
@@ -68,10 +73,10 @@ const Table = (props) => {
                   })}
                 </tr>
               );
-            })
-          )}
-        </tbody>
-      </table>
+            })}
+          </tbody>
+        </table>
+    )}
     </div>
   );
 };

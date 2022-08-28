@@ -3,6 +3,19 @@
   margin-bottom: 50px;
 }
 
+
+.empty-table-msg{
+  color: #819fbe;
+  margin: 80px auto;
+  font-weight: bolder;
+  padding: 50px 20px 50px 20px;
+  width: 350px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 12px 0px rgba(122,122,122,0.36);
+  -webkit-box-shadow: 2px 2px 12px 0px rgba(122,122,122,0.36);
+  -moz-box-shadow: 2px 2px 12px 0px rgba(122,122,122,0.36);
+}
+
 .table-custom {
   background: white;
   border-radius: 3px;

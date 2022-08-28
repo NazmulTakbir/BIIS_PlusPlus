@@ -95,7 +95,7 @@ const postRejectRegistrationRequests = async (req, res, next) => {
       await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
         "student",
         queryRes.rows[0].student_id,
-        "Course Registration Approval/Rejection",
+        "Course Registration Rejection",
         new Date(),
         description,
       ]);
