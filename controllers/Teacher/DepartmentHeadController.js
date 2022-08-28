@@ -2,6 +2,7 @@ const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const { getCurrentSession } = require("../../util/CurrentSession");
 const { getStudentResults } = require("./utils");
+const mailController = require("../Shared/email");
 
 const getFeedbacks = async (req, res, next) => {
   try {
@@ -232,7 +233,7 @@ const postApproveRegistrationRequests = async (req, res, next) => {
         [requestIDs[i]]
       );
 
-      const description =
+      let description =
         "The following Registration Request has been Approved: " +
         queryRes.rows[0].request_type.toUpperCase() +
         " Course ID: " +
@@ -247,6 +248,20 @@ const postApproveRegistrationRequests = async (req, res, next) => {
         new Date(),
         description,
       ]);
+
+      const student_id = queryRes.rows[0].student_id;
+
+      let mailInfo = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      const email = mailInfo.rows[0].email;
+      
+      const subject = "BIISPLUSPLUS : Course Registration Approved";
+
+      description = "Your " + queryRes.rows[0].request_type +" request for " + queryRes.rows[0].course_id + " course has been approved.";
+      description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+      description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+      const text = description;
+
+      mailController.sendMail(email, subject, text);
     }
     res.json({ message: "postApproveRegistrationRequests" });
   } catch (err) {
@@ -263,12 +278,12 @@ const postRejectRegistrationRequests = async (req, res, next) => {
         requestIDs[i],
       ]);
 
-      queryRes = await pool.query(
+      let queryRes = await pool.query(
         'select course_id, session_id, student_id, request_type from "registration request" natural join "course offering" where reg_request_id=$1',
         [requestIDs[i]]
       );
 
-      const description =
+      let description =
         "The following Registration Request has been Rejected by Department Head: " +
         queryRes.rows[0].request_type.toUpperCase() +
         " Course ID: " +
@@ -283,6 +298,21 @@ const postRejectRegistrationRequests = async (req, res, next) => {
         new Date(),
         description,
       ]);
+
+      const student_id = queryRes.rows[0].student_id;
+
+      let mailInfo = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      const email = mailInfo.rows[0].email;
+      
+      const subject = "BIISPLUSPLUS : Course Registration Rejected";
+
+      description = "Your " + queryRes.rows[0].request_type +" request for " + queryRes.rows[0].course_id + " course has been rejected.";
+      description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+      description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+      const text = description;
+
+      mailController.sendMail(email, subject, text);
+
     }
     res.json({ message: "postRejectRegistrationRequests" });
   } catch (err) {

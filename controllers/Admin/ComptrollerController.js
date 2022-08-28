@@ -1,5 +1,6 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
+const mailController = require("../Shared/email");
 
 const getPendingScholarships = async (req, res, next) => {
   try {
@@ -47,20 +48,35 @@ const postMarkDuesPaid = async (req, res, next) => {
         [duesIDs[i]]
       );
 
-      const description =
+      const student_id = queryRes.rows[0].student_id;
+
+      let description =
         "Payment for the following due has been received: " +
         queryRes.rows[0].description +
         ". Amount: " +
         queryRes.rows[0].amount +
-        " Taka";
+        " BDT";
 
       await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
         "student",
-        queryRes.rows[0].student_id,
+         student_id,
         "Dues Payment Confirmed",
         new Date(),
         description,
       ]);
+
+      
+
+      let mailInfo = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      const email = mailInfo.rows[0].email;
+      
+      const subject = "BIISPLUSPLUS : Dues Payment Confirmed";
+      description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+      description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+      
+      const text = description;
+
+      mailController.sendMail(email, subject, text);
     }
 
     res.json({ message: "postMarkDuesPaid successful" });
@@ -86,7 +102,9 @@ const postMarkScholarshipPaid = async (req, res, next) => {
         [schIDs[i]]
       );
 
-      const description =
+      const student_id = queryRes.rows[0].student_id;
+
+      let description =
         "The following Scholarship has been Paid: " +
         queryRes.rows[0].scholarship_name +
         " of Session " +
@@ -97,11 +115,23 @@ const postMarkScholarshipPaid = async (req, res, next) => {
 
       await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
         "student",
-        queryRes.rows[0].student_id,
+        student_id,
         "Scholarship Paid",
         new Date(),
         description,
       ]);
+
+      let mailInfo = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      const email = mailInfo.rows[0].email;
+      
+      description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+      description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+
+      const subject = "BIISPLUSPLUS : Scholarship Paid";
+
+      const text = description;
+
+      mailController.sendMail(email, subject, text);
     }
 
     res.json({ message: "postMarkScholarshipPaid successful" });

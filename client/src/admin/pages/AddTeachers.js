@@ -14,6 +14,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Stack } from "@mui/material";
 
 const allowedExtensions = ["csv"];
 
@@ -165,10 +166,12 @@ const AddTeachers = () => {
                 </div>
               </div>
 
-              <div className="file-input_container" style={{ width: "350px", margin: "auto" }}>
+              <div className="file-input_container" style={{ 
+                  width: "350px", margin: "auto", background: "#fff3e3", 
+                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
+                }}>
                 <input
                   style={{
-                    background: "#faebd7a3",
                     borderRadius: "5px",
                     padding: "7px",
                     margin: "10px",
@@ -179,30 +182,45 @@ const AddTeachers = () => {
                   name="file"
                   type="File"
                 />
-                <CustomButton
-                  type="submit"
-                  label="Submit"
-                  variant="contained"
-                  color="#ffffff"
-                  bcolor="#b13137"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={handleFileSubmit}
-                />
-              </div>
 
-              <CustomButton
-                type="submit"
-                label="Download Sample CSV"
-                variant="contained"
-                color="#ffffff"
-                bcolor="#b13137"
-                margin="20px"
-                padding="10px"
-                fontSize="17px !important"
-                onClickFunction={downloadSampleCSV}
-              />
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  style={{
+                    margin: "auto",
+                    width: "350px",
+                    padding: "10px",
+                    textAlign: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <CustomButton
+                    type="submit"
+                    label="Submit"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#b13137"
+                    margin="20px"
+                    width="fit-content"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={handleFileSubmit}
+                  />
+                  <CustomButton
+                    type="submit"
+                    label="Download Sample CSV"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#5e6873"
+                    margin="20px"
+                    width="fit-content"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={downloadSampleCSV}
+                  />
+                </Stack>              
+
+              </div>
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
                 <div

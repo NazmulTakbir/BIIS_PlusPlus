@@ -13,7 +13,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import CustomSearch from "../../shared/components/CustomSearch/CustomSearch";
 import { getSearchBarData } from "../components/SearchMenuData";
+import { Stack } from "@mui/material";
 
 const allowedExtensions = ["csv"];
 const level_list = ["1", "2", "3", "4"];
@@ -30,11 +32,14 @@ const AddCourses = () => {
   const [course_name, set_course_name] = useState("");
   const [offered_by_dept_id, setOffered_by_dept_id] = useState("");
   const [offered_by_dept_name, setOffered_by_dept_name] = useState("");
-  const [offered_to_list, set_offered_to_list] = useState([]);
   const [offered_to_dept_id, set_offered_to_dept_id] = useState("Select a department");
   const [level, set_level] = useState("");
   const [term, set_term] = useState("");
   const [credits, set_credits] = useState("");
+
+  //for searchable dept ids
+  const [search_dept_list, setSearch_dept_list] = useState([]);
+  const is_dept_id_valid = search_dept_list.some((element) => element.value === offered_to_dept_id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +56,17 @@ const AddCourses = () => {
           headers: { Authorization: "Bearer " + auth.token },
         });
         jsonData = await response.json();
-        set_offered_to_list(jsonData.data);
+
+        //set data in valid format for search component
+        let search_list = [];
+        for (var i = 0; i < jsonData.data.length; i++) {
+          search_list.push({
+            name: jsonData.data[i].dept_name,
+            value: jsonData.data[i].dept_id,
+          });
+        }
+        setSearch_dept_list(search_list);
+
       } catch (err) {
         console.log(err);
       }
@@ -116,27 +131,31 @@ const AddCourses = () => {
   };
 
   const submissionHandler = async (e) => {
-    try {
-      let data = [
-        {
-          course_id: course_id,
-          course_name: course_name,
-          offered_by_dept_id: offered_by_dept_id,
-          offered_to_dept_id: offered_to_dept_id,
-          level: level,
-          term: term,
-          credits: credits,
-        },
-      ];
-
-      await fetch(`/api/admin/course/add`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-        body: JSON.stringify({
-          data: data,
-        }),
-      });
-    } catch (err) {}
+    if(is_dept_id_valid){
+      try {
+        let data = [
+          {
+            course_id: course_id,
+            course_name: course_name,
+            offered_by_dept_id: offered_by_dept_id,
+            offered_to_dept_id: offered_to_dept_id,
+            level: level,
+            term: term,
+            credits: credits,
+          },
+        ];
+  
+        await fetch(`/api/admin/course/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+          body: JSON.stringify({
+            data: data,
+          }),
+        });
+      } catch (err) {}
+    }else{
+      alert("Entered Department is not valid");
+    }
   };
 
   return (
@@ -162,10 +181,12 @@ const AddCourses = () => {
                 </div>
               </div>
 
-              <div className="file-input_container" style={{ width: "350px", margin: "auto" }}>
+              <div className="file-input_container" style={{ 
+                  width: "350px", margin: "auto", background: "#fff3e3", 
+                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
+                }}>
                 <input
                   style={{
-                    background: "#faebd7a3",
                     borderRadius: "5px",
                     padding: "7px",
                     margin: "10px",
@@ -176,28 +197,43 @@ const AddCourses = () => {
                   name="file"
                   type="File"
                 />
-                <CustomButton
-                  type="submit"
-                  label="Submit"
-                  variant="contained"
-                  color="#ffffff"
-                  bcolor="#b13137"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={handleFileSubmit}
-                />
-                <CustomButton
-                  type="submit"
-                  label="Download Sample CSV"
-                  variant="contained"
-                  color="#ffffff"
-                  bcolor="#b13137"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={downloadSampleCSV}
-                />
+      
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  style={{
+                    margin: "auto",
+                    width: "350px",
+                    padding: "10px",
+                    textAlign: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                    <CustomButton
+                      type="submit"
+                      label="Submit"
+                      variant="contained"
+                      color="#ffffff"
+                      bcolor="#b13137"
+                      margin="20px"
+                      width="fit-content"
+                      padding="10px"
+                      fontSize="17px !important"
+                    />
+                    <CustomButton
+                      type="submit"
+                      label="Download Sample CSV"
+                      variant="contained"
+                      color="#ffffff"
+                      bcolor="#5e6873"
+                      margin="20px"
+                      width="fit-content"
+                      padding="10px"
+                      fontSize="17px !important"
+                      onClickFunction={downloadSampleCSV}
+                    />
+                </Stack>
+
               </div>
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
@@ -256,25 +292,14 @@ const AddCourses = () => {
                     </Select>
                   </FormControl>
 
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
-                    <InputLabel id="demo-simple-select-label">Offered to Department</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="offered_to_dept_id"
-                      name="offered_to_dept_id"
-                      value={offered_to_dept_id}
-                      label="Offered to Department"
-                      onChange={(e) => set_offered_to_dept_id(e.target.value)}
-                    >
-                      {offered_to_list.map((val, key) => {
-                        return (
-                          <MenuItem key={key} value={val.dept_id}>
-                            {val.dept_name}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
+                  <CustomSearch
+                    data={search_dept_list}
+                    parentCallback={set_offered_to_dept_id}
+                    required={true}
+                    margin="25px 0px 10px 0px"
+                    width="100%"
+                    label="Search Offered to Department"
+                  />
 
                   <FormControl fullWidth style={{ marginTop: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Select Level</InputLabel>
