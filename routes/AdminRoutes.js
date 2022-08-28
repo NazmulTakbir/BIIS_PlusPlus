@@ -27,6 +27,7 @@ AdminRoutes.get("/sessionlist/get", DepartmentsController.getSessionList);
 AdminRoutes.get("/scholarshiptypelist/get", DepartmentsController.getScholarshipTypeList);
 
 AdminRoutes.post("/scholarship/add", ScholarshipController.postAddScholarship);
+AdminRoutes.post("/scholarship/addsingle", ScholarshipController.postAddScholarshipSingle);
 AdminRoutes.get("/scholarship/samplefile", ScholarshipController.getSampleFile);
 
 AdminRoutes.post("/student/add", StudentController.postAddStudent);

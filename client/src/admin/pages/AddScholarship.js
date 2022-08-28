@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import Papa from "papaparse";
+import axios from "axios";
 
 import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
@@ -23,6 +24,9 @@ const AddScholarship = () => {
   const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
   const [file, setFile] = useState("");
+
+  const [applicationFile, setApplicationFile] = useState();
+  const applicationFilePickerRef = useRef();
 
   const [student_id, setStudent_id] = useState("");
   const [session_id, set_session_id] = useState("");
@@ -141,32 +145,42 @@ const AddScholarship = () => {
   const submissionHandler = async (e) => {
     e.preventDefault();
     if (is_student_id_valid) {
+      if (!applicationFile || applicationFile === "") {
+        alert("Please select a file");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", applicationFile);
+      formData.append("student_id", student_id);
+      formData.append("session_id", session_id);
+      formData.append("scholarship_type_id", scholarship_type_id);
       try {
-        let data = [
-          {
-            student_id: student_id,
-            session_id: session_id,
-            scholarship_type_id: scholarship_type_id,
+        await axios.post("/api/admin/scholarship/addsingle", formData, {
+          headers: {
+            "Content-Type": "application/form-data",
+            Authorization: "Bearer " + auth.token,
           },
-        ];
-
-        await fetch(`/api/admin/scholarship/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-          body: JSON.stringify({
-            data: data,
-          }),
         });
+        alert("Scholarship Added Successfully");
 
         //form reset
+        setApplicationFile();
         setStudent_id("");
         set_session_id("");
         set_scholarship_type_id("");
-
-        alert("Scholarship Added Successfully");
       } catch (err) {}
     } else {
       alert("Entered Student Id is not valid");
+    }
+  };
+
+  const handleAppFileChangeClick = () => {
+    applicationFilePickerRef.current.click();
+  };
+
+  const handleAppFileChange = async (e) => {
+    if (e.target.files && e.target.files.length === 1) {
+      setApplicationFile(e.target.files[0]);
     }
   };
 
@@ -193,11 +207,16 @@ const AddScholarship = () => {
                 </div>
               </div>
 
-              <div className="file-input_container" 
-                style={{ 
-                  width: "350px", margin: "auto", background: "#fff3e3", 
-                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
-                }}>
+              <div
+                className="file-input_container"
+                style={{
+                  width: "350px",
+                  margin: "auto",
+                  background: "#fff3e3",
+                  border: "1px solid rgb(189, 189, 189)",
+                  borderRadius: "10px",
+                }}
+              >
                 <input
                   style={{
                     borderRadius: "5px",
@@ -295,7 +314,7 @@ const AddScholarship = () => {
                     </Select>
                   </FormControl>
 
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
+                  <FormControl fullWidth style={{ marginTop: "25px", marginBottom: "25px" }}>
                     <InputLabel id="demo-simple-select-label">Select a Session</InputLabel>
                     <Select
                       required={true}
@@ -316,16 +335,48 @@ const AddScholarship = () => {
                     </Select>
                   </FormControl>
 
-                  <CustomButton
-                    type="submit"
-                    label="Submit"
-                    variant="contained"
-                    color="#ffffff"
-                    bcolor="#b13137"
-                    margin="40px"
-                    padding="10px"
-                    fontSize="17px !important"
+                  <input
+                    ref={applicationFilePickerRef}
+                    style={{ display: "none" }}
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleAppFileChange}
                   />
+                  <div
+                    className="buttons-stack"
+                    style={{
+                      margin: "auto",
+                      marginBottom: "50px",
+                    }}
+                  >
+                    {applicationFile && applicationFile.name !== "" ? (
+                      <span>
+                        <strong>File Selected:</strong> {applicationFile.name}
+                      </span>
+                    ) : null}
+
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      style={{
+                        margin: "auto",
+                        width: "70%",
+                        padding: "25px 10px 10px 10px",
+                        textAlign: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <CustomButton
+                        width={100}
+                        label="Select File"
+                        variant="contained"
+                        color="#ffffff"
+                        bcolor="#555555"
+                        onClickFunction={handleAppFileChangeClick}
+                      />
+                      <CustomButton type="submit" label="Submit" variant="contained" color="#ffffff" bcolor="#b13137" />
+                    </Stack>
+                  </div>
                 </form>
               </div>
             </div>

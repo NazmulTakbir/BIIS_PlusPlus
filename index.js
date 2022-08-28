@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const fileUpload = require("express-fileupload");
 const PORT = process.env.PORT || 5000;
 
@@ -16,6 +18,9 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(fileUpload());
+
+app.use("/uploads/notices", express.static(path.join("uploads", "notices")));
+app.use("/uploads/scholarships", express.static(path.join("uploads", "scholarships")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -39,6 +44,11 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
   if (res.headerSent) {
     return next(error);
   }
@@ -49,4 +59,3 @@ app.use((error, req, res, next) => {
 const server = app.listen(PORT, () => {
   console.log(`server has started on port ${PORT}`);
 });
-

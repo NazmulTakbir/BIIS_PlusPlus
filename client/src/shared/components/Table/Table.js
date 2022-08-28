@@ -6,6 +6,7 @@ import Buttons from "./Buttons";
 import CheckBox from "./CheckBox";
 import TextboxCell from "./TextboxCell";
 import MultiBodyModal from "./MultiBodyModal";
+import CustomAnchor from "./CustomAnchor";
 
 const Table = (props) => {
   const { columnLabels, tableData, margin_bottom, noDataMessage } = props;
@@ -31,6 +32,8 @@ const Table = (props) => {
         return <TextboxCell data={cellData.data} />;
       case "MultiBodyModal":
         return <MultiBodyModal data={cellData.data} />;
+      case "CustomAnchor":
+        return <CustomAnchor data={cellData.data} />;
       case "empty":
         return <td className="text-left"></td>;
       default:

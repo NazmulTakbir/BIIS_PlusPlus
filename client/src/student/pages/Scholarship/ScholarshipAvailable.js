@@ -11,24 +11,34 @@ import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
 import Table from "../../../shared/components/Table/Table";
 
-const columnLabels = ["TYPE", "SESSION", "AMOUNT", "ACTION"];
+const columnLabels = ["TYPE", "SESSION", "AMOUNT", "APPLY", "DOWNLOAD"];
 
 const applyScholarship = async (args) => {
   if (window.confirm("Apply for this Scholarship?")) {
     const auth = args[1];
     console.log(args);
     try {
-        await fetch(`/api/student/scholarship/apply/${args[0]}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-        });
-        alert("Application Sent Successfully!");
+      await fetch(`/api/student/scholarship/apply/${args[0]}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      });
+      alert("Application Sent Successfully!");
     } catch (err) {
       console.log(err);
-    }    
+    }
   } else {
     return false;
   }
+};
+
+const downloadSchApp = async (args) => {
+  const file_id = args[0];
+  const auth = args[1];
+
+  const queryRes = await fetch(`/uploads/scholarships/${file_id}`, {
+    Authorization: "Bearer " + auth.token,
+  });
+  console.log(queryRes.files);
 };
 
 const fetchTableData = async (api_route, setTableData, auth) => {
@@ -47,16 +57,26 @@ const fetchTableData = async (api_route, setTableData, auth) => {
         type: "Buttons",
         data: {
           buttonList: [
-            { 
-              buttonText: "Apply", textColor: "white", backColor: "#697A8D",
+            {
+              buttonText: "Apply",
+              textColor: "white",
+              backColor: "#697A8D",
               onClickFunction: applyScholarship,
               onClickArguments: [jsonData[i]["scholarship_id"], auth],
             },
-            { 
-              buttonText: "Download", textColor: "white", backColor: "#DB6066"
-            },
+            // {
+            //   buttonText: "Download",
+            //   textColor: "white",
+            //   backColor: "#DB6066",
+            //   onClickFunction: downloadSchApp,
+            //   onClickArguments: [jsonData[i]["application_file"], auth],
+            // },
           ],
         },
+      });
+      row.push({
+        type: "CustomAnchor",
+        data: { url: `http://localhost:5000/uploads/scholarships/${jsonData[i]["application_file"]}` },
       });
       tableData.push(row);
     }
@@ -72,12 +92,12 @@ const ScholarshipAvailable = () => {
 
   useEffect(() => {
     fetchTableData(`/api/student/scholarship/available`, setTableData, auth);
-  }, [auth, tableData]);
+  }, [auth]);
 
   return (
     <React.Fragment>
       <div className="App">
-        <Header searchData={SearchMenuData}/>
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">

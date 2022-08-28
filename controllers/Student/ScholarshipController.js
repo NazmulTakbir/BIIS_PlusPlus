@@ -75,7 +75,7 @@ const getProcessing = async (req, res, next) => {
 const getAvailable = async (req, res, next) => {
   try {
     let queryRes = await pool.query(
-      "select s.scholarship_id , s.scholarship_state , s.session_id , s.payment_date , st.scholarship_name , st.amount \
+      "select s.scholarship_id , s.scholarship_state , s.session_id , s.payment_date , s.application_file, st.scholarship_name , st.amount \
       from scholarship as s , \"scholarship type\" as st \
       where s.scholarship_type_id = st.scholarship_type_id and s.student_id = $1 and \
       s.scholarship_state='awaiting_application'",
@@ -91,6 +91,7 @@ const getAvailable = async (req, res, next) => {
       sc_obj["scholarship_state"] = element["scholarship_state"];
       sc_obj["session_id"] = element["session_id"];
       sc_obj["payment_date"] = element["payment_date"];
+      sc_obj["application_file"] = element["application_file"];
 
       scholarship_list.push(sc_obj);
     }
