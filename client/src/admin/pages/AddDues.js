@@ -199,7 +199,10 @@ const AddDues = () => {
                 </div>
               </div>
 
-              <div className="file-input_container" style={{ width: "350px", margin: "auto" }}>
+              <div className="file-input_container" style={{ 
+                  width: "350px", margin: "auto", background: "#fff3e3", 
+                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
+                }}>
                 <input
                   style={{
                     background: "#faebd7a3",

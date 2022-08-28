@@ -8,6 +8,9 @@ import { getSearchBarData } from "../components/SearchMenuData";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
+import { Stack } from "@mui/material";
+import CustomButton from "../../shared/components/CustomButton/CustomButton";
+import { height } from "@mui/system";
 
 const allowedExtensions = ["csv"];
 
@@ -15,7 +18,6 @@ const AddStudents = () => {
   const auth = useContext(AuthContext);
   const [SearchMenuData, setSearchMenuData] = useState([]);
   const fileRef = useRef();
-  const [error, setMessage] = useState("");
   const [file, setFile] = useState("");
 
   useEffect(() => {
@@ -37,12 +39,11 @@ const AddStudents = () => {
   };
 
   const handleFileChange = async (e) => {
-    setMessage("");
     if (e.target.files.length) {
       const inputFile = e.target.files[0];
       const fileExtension = inputFile?.type.split("/")[1];
       if (!allowedExtensions.includes(fileExtension)) {
-        setMessage("Please input a csv file");
+        alert("Please input a csv file");
         return;
       }
       setFile(inputFile);
@@ -50,7 +51,10 @@ const AddStudents = () => {
   };
 
   const handleFileSubmit = async () => {
-    if (!file) return setMessage("Enter a valid file");
+    if (!file) {
+      alert("Enter a valid file");
+      return;
+    }
 
     const reader = new FileReader();
 
@@ -68,7 +72,7 @@ const AddStudents = () => {
             }),
           });
           setFile("");
-          setMessage("Students added successfully");
+          alert("Students added successfully");
           fileRef.current.value = null;
         },
       });
@@ -84,10 +88,83 @@ const AddStudents = () => {
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
             <div className="content">
-              <p>{error}</p>
-              <input ref={fileRef} onChange={handleFileChange} id="csvInput" name="file" type="File" />
-              <button onClick={handleFileSubmit}>Submit</button>
-              <button onClick={downloadSampleCSV}>Download Sample CSV</button>
+
+            <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
+                <div
+                  className="sections-heading"
+                  style={{
+                    marginTop: "30px",
+                    padding: "25px 0px 5px 0px",
+                    fontWeight: "bolder",
+                    fontSize: "17px",
+                    color: "#b13137",
+                  }}
+                >
+                  Add Students by uploading a CSV File:
+                </div>
+              </div>         
+
+
+              <div className="file-input_container" style={{ 
+                  width: "350px", background: "#fff3e3", 
+                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px",
+                  margin: "10px auto auto auto", height: "240px",
+                }}>
+                  <div className="inner-div" style={{marginTop: "50px"}}>
+                    <input
+                      style={{
+                        background: "#faebd7a3",
+                        borderRadius: "5px",
+                        padding: "7px",
+                        margin: "10px",
+                      }}
+                      ref={fileRef}
+                      onChange={handleFileChange}
+                      id="csvInput"
+                      name="file"
+                      type="File"
+                    />
+
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      style={{
+                        margin: "auto",
+                        width: "350px",
+                        padding: "10px",
+                        textAlign: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                        <CustomButton
+                          type="submit"
+                          label="Submit"
+                          variant="contained"
+                          color="#ffffff"
+                          bcolor="#b13137"
+                          margin="20px"
+                          width="fit-content"
+                          padding="10px"
+                          fontSize="17px !important"
+                          onClickFunction={handleFileSubmit}
+                        />
+                        <CustomButton
+                          type="submit"
+                          label="Download Sample CSV"
+                          variant="contained"
+                          color="#ffffff"
+                          bcolor="#5e6873"
+                          margin="20px"
+                          width="fit-content"
+                          padding="10px"
+                          fontSize="17px !important"
+                          onClickFunction={downloadSampleCSV}
+                        />
+                    </Stack>                    
+                  </div>
+              </div>
+
+
             </div>
           </div>
         </div>
