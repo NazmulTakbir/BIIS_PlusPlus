@@ -74,7 +74,6 @@ const FeedbackOld = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
   const [tableData_, setTableData_] = useState([]);
-  
 
   useEffect(() => {
     fetchTableData(`/api/student/feedback/pastsubmissions`, setTableData, auth);
@@ -90,9 +89,23 @@ const FeedbackOld = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <h1>General Feedbacks</h1>
+              <div style={{ margin: "auto", textAlign: "center" }}>
+                <div
+                  className="session-text"
+                  style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+                >
+                  General Feedbacks
+                </div>
+              </div>
               <Table columnLabels={columnLabels} tableData={tableData} modal="true" />
-              <h1>Course Feedbacks</h1>
+              <div style={{ margin: "auto", textAlign: "center" }}>
+                <div
+                  className="session-text"
+                  style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+                >
+                  Course Feedbacks
+                </div>
+              </div>
               <Table columnLabels={columnLabels_} tableData={tableData_} modal="true" />
             </div>
           </div>

@@ -13,12 +13,13 @@ import Table from "../../../shared/components/Table/Table";
 
 const columnLabels = ["COURSE ID", "COURSE TITLE", "CREDIT HOURS", "REQUEST TYPE", "STATUS"];
 
-const fetchTableData = async (api_route, setTableData, setSessionData, auth) => {
+const fetchTableData = async (api_route, setTableData, setSessionData, setMessage, auth) => {
   try {
     let response = await fetch(`/api/shared/session/getcurrent`, {
       headers: { Authorization: "Bearer " + auth.token },
     });
     let jsonData = (await response.json())["data"];
+    const sessionID = jsonData["session_id"];
     setSessionData(jsonData);
 
     if (jsonData["registration_phase"] === "open" || jsonData["registration_phase"] === "closed") {
@@ -36,6 +37,9 @@ const fetchTableData = async (api_route, setTableData, setSessionData, auth) => 
         row.push({ type: "PlainText", data: { value: jsonData[i]["reg_status"] } });
         tableData.push(row);
       }
+      if (tableData.length === 0) {
+        setMessage("You Have Not Placed Any Registration Request For Session " + sessionID);
+      }
       setTableData(tableData);
     }
   } catch (err) {
@@ -47,35 +51,40 @@ const CoursesPending = () => {
   const auth = useContext(AuthContext);
   const [tableData, setTableData] = useState([]);
   const [sessionData, setSessionData] = useState({});
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetchTableData(`/api/student/courses/pending`, setTableData, setSessionData, auth);
+    fetchTableData(`/api/student/courses/pending`, setTableData, setSessionData, setMessage, auth);
   }, [auth]);
 
   const renderPage = () => {
-    if (tableData.length === 0) {
-      return <h3>You Have Not Placed Any Registration Request For Session {sessionData.session_id}</h3>;
-    } else {
-      return (
-        <React.Fragment>
-          <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
-            <div
-              className="session-text"
-              style={{ marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
-            >
-              SESSION: {sessionData.session_id}
-            </div>
+    return (
+      <React.Fragment>
+        <div style={{ margin: "auto", textAlign: "center" }}>
+          <div
+            className="session-text"
+            style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+          >
+            {message}
           </div>
-          <Table columnLabels={columnLabels} tableData={tableData} />
-        </React.Fragment>
-      );
-    }
+        </div>
+        <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
+          <div
+            className="session-text"
+            style={{ marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
+          >
+            SESSION: {sessionData.session_id}
+          </div>
+        </div>
+        <Table columnLabels={columnLabels} tableData={tableData} />
+      </React.Fragment>
+    );
   };
 
   return (
     <React.Fragment>
       <div className="App">
-        <Header searchData={SearchMenuData}/>
+        <Header searchData={SearchMenuData} />
         <div className="wrapper">
           <Sidebar SidebarData={SidebarData} />
           <div className="main_container">
