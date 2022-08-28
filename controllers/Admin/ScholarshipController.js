@@ -2,23 +2,42 @@ const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const mailController = require("../Shared/email");
 const { v4: uuidv4 } = require("uuid");
+const { generateScholarshipPDF } = require("../../util/GeneratePdf");
 
-const allAttributes = ["student_id", "session_id", "scholarship_type_id", "application_file"];
+const allAttributes = ["student_id", "session_id", "scholarship_type_id"];
 
 const createScholarship = async (data) => {
+  const fileName = uuidv4() + ".pdf";
+  const student_id = data[0];
+  const session_id = data[1];
+  const scholarship_type_id = data[2];
+
+  let qeuryRes = await pool.query(
+    'select t1.name, t2.scholarship_name, t2.amount \
+     from student as t1, "scholarship type" as t2 where student_id=$1 \
+     and scholarship_type_id=$2',
+    [student_id, scholarship_type_id]
+  );
+  const fileData = qeuryRes.rows[0];
+  generateScholarshipPDF(
+    fileName,
+    fileData["name"],
+    student_id,
+    fileData["scholarship_name"],
+    fileData["amount"],
+    session_id
+  );
+
   await pool.query(
     `INSERT INTO public.scholarship(student_id, session_id, scholarship_state, scholarship_type_id, payment_date, application_file) \
     VALUES ($1, $2,'awaiting_application', $3, NULL, $4);`,
-    data
+    [data[0], data[1], data[2], fileName]
   );
-
-  const student_id = data[0];
-  const scholarship_type = data[2];
 
   let scholarship_info = await pool.query(
     'select scholarship_name, amount from public."scholarship type" \
     where scholarship_type_id = $1',
-    [scholarship_type]
+    [scholarship_type_id]
   );
   let description =
     "Eligible for " +
@@ -104,23 +123,10 @@ const postAddScholarship = async (req, res, next) => {
 
 const postAddScholarshipSingle = async (req, res, next) => {
   try {
-    if (req.files === null) {
-      return res.status(400).json({ msg: "No file uploaded" });
-    }
-    const file = req.files.file;
-    const fileName = uuidv4() + ".pdf";
     const student_id = req.body.student_id;
     const session_id = req.body.session_id;
     const scholarship_type_id = req.body.scholarship_type_id;
-
-    file.mv(`${__dirname}/../../uploads/scholarships/${fileName}`, (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
-
-    await createScholarship([student_id, session_id, scholarship_type_id, fileName]);
-
+    await createScholarship([student_id, session_id, scholarship_type_id]);
     res.status(201).json({ message: "postAddScholarshipSingle successful" });
   } catch (err) {
     console.log(err);

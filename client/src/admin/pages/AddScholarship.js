@@ -25,9 +25,6 @@ const AddScholarship = () => {
   const fileRef = useRef();
   const [file, setFile] = useState("");
 
-  const [applicationFile, setApplicationFile] = useState();
-  const applicationFilePickerRef = useRef();
-
   const [student_id, setStudent_id] = useState("");
   const [session_id, set_session_id] = useState("");
   const [session_list, set_session_list] = useState([]);
@@ -145,12 +142,7 @@ const AddScholarship = () => {
   const submissionHandler = async (e) => {
     e.preventDefault();
     if (is_student_id_valid) {
-      if (!applicationFile || applicationFile === "") {
-        alert("Please select a file");
-        return;
-      }
       const formData = new FormData();
-      formData.append("file", applicationFile);
       formData.append("student_id", student_id);
       formData.append("session_id", session_id);
       formData.append("scholarship_type_id", scholarship_type_id);
@@ -164,23 +156,12 @@ const AddScholarship = () => {
         alert("Scholarship Added Successfully");
 
         //form reset
-        setApplicationFile();
         setStudent_id("");
         set_session_id("");
         set_scholarship_type_id("");
       } catch (err) {}
     } else {
       alert("Entered Student Id is not valid");
-    }
-  };
-
-  const handleAppFileChangeClick = () => {
-    applicationFilePickerRef.current.click();
-  };
-
-  const handleAppFileChange = async (e) => {
-    if (e.target.files && e.target.files.length === 1) {
-      setApplicationFile(e.target.files[0]);
     }
   };
 
@@ -335,13 +316,6 @@ const AddScholarship = () => {
                     </Select>
                   </FormControl>
 
-                  <input
-                    ref={applicationFilePickerRef}
-                    style={{ display: "none" }}
-                    type="file"
-                    accept=".pdf"
-                    onChange={handleAppFileChange}
-                  />
                   <div
                     className="buttons-stack"
                     style={{
@@ -349,33 +323,7 @@ const AddScholarship = () => {
                       marginBottom: "50px",
                     }}
                   >
-                    {applicationFile && applicationFile.name !== "" ? (
-                      <span>
-                        <strong>File Selected:</strong> {applicationFile.name}
-                      </span>
-                    ) : null}
-
-                    <Stack
-                      spacing={2}
-                      direction="row"
-                      style={{
-                        margin: "auto",
-                        width: "70%",
-                        padding: "25px 10px 10px 10px",
-                        textAlign: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <CustomButton
-                        width={100}
-                        label="Select File"
-                        variant="contained"
-                        color="#ffffff"
-                        bcolor="#555555"
-                        onClickFunction={handleAppFileChangeClick}
-                      />
-                      <CustomButton type="submit" label="Submit" variant="contained" color="#ffffff" bcolor="#b13137" />
-                    </Stack>
+                    <CustomButton type="submit" label="Submit" variant="contained" color="#ffffff" bcolor="#b13137" />
                   </div>
                 </form>
               </div>
