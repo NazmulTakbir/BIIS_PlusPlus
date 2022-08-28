@@ -55,6 +55,10 @@ const getRegistrationRequestSummary = async (req, res, next) => {
   }
 };
 
+const approveAllRegistrationRequests = async (req, res, next) => {
+  const studentID = req.body.studentID;
+};
+
 const postApproveRegistrationRequests = async (req, res, next) => {
   try {
     const { requestIDs } = req.body;
@@ -102,14 +106,20 @@ const postRejectRegistrationRequests = async (req, res, next) => {
 
       const student_id = queryRes.rows[0].student_id;
 
-      let mailInfo = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      let mailInfo = await pool.query("select email from public.student where student_id = $1", [student_id]);
       const email = mailInfo.rows[0].email;
-      
+
       const subject = "BIISPLUSPLUS : Course Registration Rejected by Advisor";
 
-      description = "Your " + queryRes.rows[0].request_type +" request for " + queryRes.rows[0].course_id + " course has been rejected by Advisor.";
+      description =
+        "Your " +
+        queryRes.rows[0].request_type +
+        " request for " +
+        queryRes.rows[0].course_id +
+        " course has been rejected by Advisor.";
       description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
-      description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+      description +=
+        "\nDo not reply to this email. This email is sent from a system that cannot receive email messages.";
       const text = description;
 
       mailController.sendMail(email, subject, text);

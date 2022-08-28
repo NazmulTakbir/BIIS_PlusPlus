@@ -61,7 +61,21 @@ const Notifications = () => {
   //The List of Notifications:
   const renderPage = () => {
     if (dataTable.length === 0) {
-      return <h3>You Have No New Notifications</h3>;
+      return (
+        <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
+          <div
+            className="session-text"
+            style={{
+              marginTop: "20px",
+              fontSize: "19px",
+              fontWeight: "bolder",
+              color: "#b13137",
+            }}
+          >
+            You Have No Notifications Yet
+          </div>
+        </div>
+      );
     } else {
       return (
         <React.Fragment>
@@ -76,8 +90,6 @@ const Notifications = () => {
       );
     }
   };
-
-
 
   return (
     <React.Fragment>
