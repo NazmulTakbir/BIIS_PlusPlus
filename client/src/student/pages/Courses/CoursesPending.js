@@ -34,6 +34,20 @@ const fetchTableData = async (api_route, setTableData, setSessionData, setMessag
         row.push({ type: "PlainText", data: { value: jsonData[i]["course_name"] } });
         row.push({ type: "PlainText", data: { value: jsonData[i]["credits"] } });
         row.push({ type: "PlainText", data: { value: jsonData[i]["request_type"] } });
+
+        if(jsonData[i]["reg_status"] === 'awaiting_advisor'){
+          jsonData[i]["reg_status"] = "Pending for Advisor's Approval";
+        }
+        else if(jsonData[i]["reg_status"] === 'awaiting_head'){
+          jsonData[i]["reg_status"] = "Pending for Department Head's Approval";
+        }
+        else if(jsonData[i]["reg_status"] === 'rejected_head'){
+          jsonData[i]["reg_status"] = "Rejected by Department Head";
+        }
+        else if(jsonData[i]["reg_status"] === 'rejected_advisor'){
+          jsonData[i]["reg_status"] = "Rejected by Advisor";
+        }
+        
         row.push({ type: "PlainText", data: { value: jsonData[i]["reg_status"] } });
         tableData.push(row);
       }
