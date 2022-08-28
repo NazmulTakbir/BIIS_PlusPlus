@@ -5,6 +5,7 @@ import Sidebar from "../../shared/components/Sidebar/Sidebar";
 import Header from "../../shared/components/Header/Header";
 import { SidebarData } from "../components/SidebarData";
 import { getSearchBarData } from "../components/SearchMenuData";
+import CustomSearch from "../../shared/components/CustomSearch/CustomSearch";
 
 import { AuthContext } from "../../shared/context/AuthContext";
 import "../../shared/components/MainContainer.css";
@@ -31,6 +32,10 @@ const AddCourseTeachers = () => {
 
   const [countTeachers, setCountTeachers] = useState(1);
 
+  //for searchable course offering ids
+  const [search_offerings_list, setSearch_offerings_list] = useState([]);
+  const is_offering_id_valid = search_offerings_list.some((element) => element.value === offering_id);  
+
   const incrementCountTeachers = (args) => {
     setCountTeachers(Math.min(countTeachers + 1, 6));
   };
@@ -48,12 +53,26 @@ const AddCourseTeachers = () => {
         });
         let jsonData = await response.json();
         setTeacher_list(jsonData.data);
+        
+        //set data in valid format for search component
+        let search_list = [];
 
         response = await fetch(`/api/admin/offering/getOffering_admin_dept`, {
           headers: { Authorization: "Bearer " + auth.token },
         });
         jsonData = await response.json();
         setOffering_list(jsonData.data);
+
+        //set data in valid format for search component
+        search_list = [];
+        for (var i = 0; i < jsonData.data.length; i++) {
+          search_list.push({
+            name: jsonData.data[i].course_name,
+            value: jsonData.data[i].offering_id,
+          });
+        }
+        setSearch_offerings_list(search_list);
+
       } catch (err) {
         console.log(err);
       }
@@ -119,30 +138,34 @@ const AddCourseTeachers = () => {
 
   const submissionHandler = async (e) => {
     e.preventDefault();
-    try {
-      let data = [];
-      for (let i = 0; i < countTeachers; i++) {
-        data.push({
-          offering_id: offering_id,
-          teacher_id: teacher_ids[i],
-          role: roles[i],
+    if(is_offering_id_valid){
+      try {
+        let data = [];
+        for (let i = 0; i < countTeachers; i++) {
+          data.push({
+            offering_id: offering_id,
+            teacher_id: teacher_ids[i],
+            role: roles[i],
+          });
+        }
+        await fetch(`/api/admin/courseteacher/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+          body: JSON.stringify({
+            data: data,
+          }),
         });
-      }
-      await fetch(`/api/admin/courseteacher/add`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
-        body: JSON.stringify({
-          data: data,
-        }),
-      });
-
-      setOffering_id("");
-      setTeacher_ids([]);
-      setRoles([]);
-
-      alert("Course Teacher Added Successfully");
-      setCountTeachers(1);
-    } catch (err) {}
+  
+        setOffering_id("");
+        setTeacher_ids([]);
+        setRoles([]);
+  
+        alert("Course Teacher Added Successfully");
+        setCountTeachers(1);
+      } catch (err) {}
+    }else{
+      alert("Invalid Inputs Selected");
+    }
   };
 
   const teacherInput = () => {
@@ -275,25 +298,15 @@ const AddCourseTeachers = () => {
 
               <div className="admin-form-container" style={{ paddingTop: "10px" }}>
                 <form onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
-                  <FormControl fullWidth style={{ marginTop: "25px" }}>
-                    <InputLabel id="demo-simple-select-label">Course offering</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="offering_id"
-                      name="offering_id"
-                      value={offering_id}
-                      label="Course Offering"
-                      onChange={(e) => setOffering_id(e.target.value)}
-                    >
-                      {offering_list.map((val, key) => {
-                        return (
-                          <MenuItem key={key} value={val.offering_id}>
-                            {val.course_name}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
+                  
+                  <CustomSearch
+                    data={search_offerings_list}
+                    parentCallback={setOffering_id}
+                    required={true}
+                    margin="25px 0px 10px 0px"
+                    width="100%"
+                    label="Search Course Offering"
+                  />   
 
                   {teacherInput()}
 
