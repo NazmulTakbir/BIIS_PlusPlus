@@ -10,7 +10,6 @@ const getNotifications = async (req, res, next) => {
   );
   
    await pool.query("update student_notifications set seen=true where student_id=$1", [req.userData.id]);
-   
     
     res.status(201).json({ message: "getNotifications successful", data: queryRes.rows });
   } catch (err) {
@@ -22,7 +21,8 @@ const getNotifications = async (req, res, next) => {
 const getSubscriptions = async (req, res, next) => {
   try {
     const allPossibleSubscriptions = [
-      "Course Registration Approval/Rejection",
+      "Course Registration Approval",
+      "Course Registration Rejection",
       "Dues Payment Confirmed",
       "New Dues to be Paid",
       "Notice Added",
