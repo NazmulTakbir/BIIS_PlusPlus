@@ -235,7 +235,7 @@ const AddScholarship = () => {
                     label="Download Sample CSV"
                     variant="contained"
                     color="#ffffff"
-                    bcolor="#b13137"
+                    bcolor="#5e6873"
                     margin="20px"
                     width="fit-content"
                     padding="10px"

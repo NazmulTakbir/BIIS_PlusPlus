@@ -13,6 +13,7 @@ const NativeDatePicker = (props) => {
           color: props.color,
           backgroundColor: props.backgroundColor,
         }}
+        required={props.required}
         value={props.value}
         onChange={props.onChange}
       />
