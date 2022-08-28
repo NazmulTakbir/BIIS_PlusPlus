@@ -54,6 +54,11 @@ const SearchMenuData = [
     value: "/paymentscholarships",
     userType: ["comptroller admin"],
   },
+  {
+    name: "Upload Notice",
+    value: "/uploadnotice",
+    userType: ["office admin"],
+  },
 ];
 
 const getSearchBarData = (userType) => {

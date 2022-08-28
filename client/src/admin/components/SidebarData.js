@@ -65,4 +65,9 @@ export const SidebarData = [
     icon: <BookIcon />,
     link: "/paymentscholarships",
   },
+  {
+    title: "Upload Notice",
+    icon: <BookIcon />,
+    link: "/uploadnotice",
+  },
 ];
