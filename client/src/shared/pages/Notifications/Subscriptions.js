@@ -77,8 +77,17 @@ const Subscriptions = () => {
   const renderPage = () => {
     return (
       <React.Fragment>
-        {unsavedChanges ? <p>You Have Saved Changes</p> : null}
-        <Table columnLabels={columnLabels} tableData={tableData} />
+        {unsavedChanges ? (
+          <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
+            <div
+              className="session-text"
+              style={{ marginTop: "0px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
+            >
+              You Have Unsaved Changes
+            </div>
+          </div>
+        ) : null}
+        <Table margin_bottom="0px" columnLabels={columnLabels} tableData={tableData} />
         <br />
         <br />
         <CustomButton
