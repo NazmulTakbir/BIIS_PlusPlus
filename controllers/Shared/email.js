@@ -1,12 +1,14 @@
 
 const nodemailer = require('nodemailer');
+require("dotenv").config();
+
 
 const transporter = nodemailer.createTransport({
     port: 465,
     host: "smtp.gmail.com",
     auth: {
         user: 'biisplusplus@gmail.com',
-        pass: 'vofq wokp zzmi xtrw'
+        pass: process.env.MAIL_PASSWORD,
     },
     secure: true, // upgrades later with STARTTLS -- change this based on the PORT
 });

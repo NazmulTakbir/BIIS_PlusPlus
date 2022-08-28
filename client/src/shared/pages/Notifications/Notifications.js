@@ -31,7 +31,7 @@ const Notifications = () => {
       }
     };
     fetchData();
-  }, [auth]);
+  });
 
   const renderCell = (element) => {
     return (
@@ -76,6 +76,8 @@ const Notifications = () => {
       );
     }
   };
+
+
 
   return (
     <React.Fragment>
