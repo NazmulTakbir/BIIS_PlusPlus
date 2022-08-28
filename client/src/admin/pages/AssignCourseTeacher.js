@@ -14,6 +14,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Stack } from "@mui/material";
 
 const allowedExtensions = ["csv"];
 
@@ -204,7 +205,7 @@ const AddCourseTeachers = () => {
           parentCallback={setTeacherIDFromSearch}
           index={i}
           required={true}
-          margin="25px 0px 10px 0px"
+          margin="15px 0px 10px 0px"
           width="100%"
           label="Search Teacher by names"
         />
@@ -318,33 +319,45 @@ const AddCourseTeachers = () => {
                     label="Search Course Offering"
                   />   
 
+                  <div className="offering-border"
+                    style={{
+                      borderBottom: "2px solid #b13137",
+                      marginTop: "20px"
+                    }}
+                  ></div>
+
                   {teacherInput()}
 
-                  <CustomButton
-                    type="button"
-                    label="Add More Teachers"
-                    variant="contained"
-                    color="#ffffff"
-                    bcolor="#b13137"
-                    margin="40px"
-                    padding="10px"
-                    fontSize="17px !important"
-                    onClickFunction={incrementCountTeachers}
-                    onClickFunctionArguements={[]}
-                  />
 
-                  <CustomButton
-                    type="button"
-                    label="Add Less Teachers"
-                    variant="contained"
-                    color="#ffffff"
-                    bcolor="#b13137"
-                    margin="40px"
-                    padding="10px"
-                    fontSize="17px !important"
-                    onClickFunction={decrementCountTeachers}
-                    onClickFunctionArguements={[]}
-                  />
+                  <Stack direction="row" style={{ display: "flex", justifyContent: "space-around", marginTop: "30px" }}>
+                    <CustomButton
+                      type="button"
+                      label="Add More Teachers"
+                      variant="contained"
+                      color="#ffffff"
+                      bcolor="rgb(114 115 115)"
+                      margin="10px"
+                      padding="10px"
+                      width="150px"
+                      fontSize="17px !important"
+                      onClickFunction={incrementCountTeachers}
+                      onClickFunctionArguements={[]}
+                    />
+
+                    <CustomButton
+                      type="button"
+                      label="Add Less Teachers"
+                      variant="contained"
+                      color="#ffffff"
+                      bcolor="rgb(72 106 145)"
+                      margin="10px"
+                      padding="10px"
+                      width="150px"
+                      fontSize="17px !important"
+                      onClickFunction={decrementCountTeachers}
+                      onClickFunctionArguements={[]}
+                    />
+                  </Stack>
 
                   <CustomButton
                     type="submit"
