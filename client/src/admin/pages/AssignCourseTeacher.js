@@ -263,10 +263,12 @@ const AddCourseTeachers = () => {
                 </div>
               </div>
 
-              <div className="file-input_container" style={{ width: "350px", margin: "auto" }}>
+              <div className="file-input_container" style={{ 
+                  width: "350px", margin: "auto", background: "#fff3e3", 
+                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
+                }}>
                 <input
                   style={{
-                    background: "#faebd7a3",
                     borderRadius: "5px",
                     padding: "7px",
                     margin: "10px",
@@ -277,27 +279,53 @@ const AddCourseTeachers = () => {
                   name="file"
                   type="File"
                 />
-                <CustomButton
-                  type="submit"
-                  label="Submit"
-                  variant="contained"
-                  color="#ffffff"
-                  bcolor="#b13137"
-                  margin="20px"
-                  padding="10px"
-                  fontSize="17px !important"
-                  onClickFunction={handleFileSubmit}
-                />
+
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  style={{
+                    margin: "auto",
+                    width: "350px",
+                    padding: "10px",
+                    textAlign: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <CustomButton
+                    type="submit"
+                    label="Submit"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#b13137"
+                    margin="20px"
+                    width="fit-content"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={handleFileSubmit}
+                  />
+                  <CustomButton
+                    type="submit"
+                    label="Download Sample CSV"
+                    variant="contained"
+                    color="#ffffff"
+                    bcolor="#5e6873"
+                    margin="20px"
+                    width="fit-content"
+                    padding="10px"
+                    fontSize="17px !important"
+                    onClickFunction={downloadSampleCSV}
+                  />
+                </Stack>     
+
               </div>
 
-              <button onClick={downloadSampleCSV}>Download Sample CSV</button>
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
                 <div
                   className="sections-heading"
                   style={{
                     textAlign: "left",
-                    padding: "25px 0px 5px 0px",
+                    padding: "40px 0px 5px 0px",
                     fontWeight: "bolder",
                     fontSize: "17px",
                     color: "#b13137",
@@ -314,7 +342,7 @@ const AddCourseTeachers = () => {
                     data={search_offerings_list}
                     parentCallback={setOffering_id}
                     required={true}
-                    margin="25px 0px 10px 0px"
+                    margin="auto"
                     width="100%"
                     label="Search Course Offering"
                   />   

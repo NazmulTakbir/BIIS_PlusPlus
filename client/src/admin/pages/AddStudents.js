@@ -113,7 +113,6 @@ const AddStudents = () => {
                   <div className="inner-div" style={{marginTop: "50px"}}>
                     <input
                       style={{
-                        background: "#faebd7a3",
                         borderRadius: "5px",
                         padding: "7px",
                         margin: "10px",

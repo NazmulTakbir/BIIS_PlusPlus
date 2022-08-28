@@ -185,16 +185,18 @@ const UploadAcademicCalender = () => {
                     onChange={(e) => setEndDate(e.target.value)}
                 />                
 
-                <div className="file-section" style={{margin: "30px auto"}}>
-                  <div className="header-text"
-                    style={{
-                      color: "#b13127", fontSize: "17px", fontWeight: "bold",
-                    }}>File Detailing Session Phases
-                  </div>                  
+                <div className="header-text"
+                  style={{
+                    color: "#b13127", fontSize: "17px", fontWeight: "bold", margin: "30px auto 10px auto",
+                  }}>File Detailing Session Phases
+                </div>  
+                <div className="file-section" style={{ 
+                  width: "350px", margin: "auto", background: "#fff3e3", 
+                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
+                }}>                
  
                   <input
                     style={{
-                      background: "#faebd7a3",
                       borderRadius: "5px",
                       padding: "7px",
                       margin: "10px",

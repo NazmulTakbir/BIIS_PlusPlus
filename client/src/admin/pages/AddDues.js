@@ -205,7 +205,6 @@ const AddDues = () => {
                 }}>
                 <input
                   style={{
-                    background: "#faebd7a3",
                     borderRadius: "5px",
                     padding: "7px",
                     margin: "10px",
