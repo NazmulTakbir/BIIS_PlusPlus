@@ -93,7 +93,8 @@ const PaymentDues = () => {
               </div>
               <Table columnLabels={columnLabels} tableData={addTableData} />
 
-              <Stack
+              {addTableData.length > 0 ? (
+                <Stack
                 spacing={2}
                 direction="row"
                 style={{
@@ -113,6 +114,10 @@ const PaymentDues = () => {
                   onClickFunction={markAsPaid}
                 />
               </Stack>
+              ):(
+                <br></br>
+              )}
+
             </div>
           </div>
         </div>

@@ -169,8 +169,9 @@ const AddDues = () => {
         setStudent_id("");
         setSpecification("");
         setDeadline("");
-
+        window.location.reload();
         alert("Dues Added Successfully");
+        
       } catch (err) {}
     }
     //Invalid Student id

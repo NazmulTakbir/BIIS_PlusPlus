@@ -54,16 +54,20 @@ const AdviseeRegistration = () => {
   const NavbarData = [
     {
       title: "Student Info",
-      link: "/advisees/profile/info/" + studentID,
+      link: "/deptStudents/profile/info/" + studentID,
     },
     {
       title: "Academic Profile",
-      link: "/advisees/profile/academic/" + studentID,
+      link: "/deptStudents/profile/academic/" + studentID,
     },
     {
       title: "Course Registration",
-      link: "/advisees/profile/registration/" + studentID,
+      link: "/deptStudents/profile/registration/" + studentID,
     },
+    {
+      title: "Scholarships",
+      link: "/deptStudents/profile/scholarships/" + studentID,
+    },    
   ];
 
   const approveRequests = async () => {
@@ -121,38 +125,42 @@ const AdviseeRegistration = () => {
               </div>
 
               <Navbar NavbarData={NavbarData} />
-              <h3>Add Course Requests</h3>
               <Table columnLabels={columnLabels} tableData={tableData} />
               <br />
 
-              <Stack
-                spacing={2}
-                direction="row"
-                style={{
-                  margin: "auto",
-                  width: "350px",
-                  padding: "10px",
-                  textAlign: "left",
-                  justifyContent: "space-between",
-                }}
-              >
-                <CustomButton
-                  label="Approve Selections"
-                  variant="contained"
-                  color="white"
-                  bcolor="#697A8D"
-                  width="150px"
-                  onClickFunction={approveRequests}
-                />
-                <CustomButton
-                  label="Reject Selections"
-                  variant="contained"
-                  color="white"
-                  bcolor="#b13137"
-                  width="150px"
-                  onClickFunction={rejectRequests}
-                />
-              </Stack>
+              {tableData.length > 0 ? (
+                  <Stack
+                  spacing={2}
+                  direction="row"
+                  style={{
+                    margin: "auto",
+                    width: "350px",
+                    padding: "10px",
+                    textAlign: "left",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <CustomButton
+                    label="Approve Selections"
+                    variant="contained"
+                    color="white"
+                    bcolor="#697A8D"
+                    width="150px"
+                    onClickFunction={approveRequests}
+                  />
+                  <CustomButton
+                    label="Reject Selections"
+                    variant="contained"
+                    color="white"
+                    bcolor="#b13137"
+                    width="150px"
+                    onClickFunction={rejectRequests}
+                  />
+                </Stack>
+              ) : (
+                <br></br>
+              )}
+
             </div>
           </div>
         </div>

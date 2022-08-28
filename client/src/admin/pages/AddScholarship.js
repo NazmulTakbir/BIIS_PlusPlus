@@ -153,12 +153,13 @@ const AddScholarship = () => {
             Authorization: "Bearer " + auth.token,
           },
         });
-        alert("Scholarship Added Successfully");
-
+        
         //form reset
         setStudent_id("");
         set_session_id("");
-        set_scholarship_type_id("");
+        set_scholarship_type_id("");        
+        window.location.reload();
+        alert("Scholarship Added Successfully");
       } catch (err) {}
     } else {
       alert("Entered Student Id is not valid");
