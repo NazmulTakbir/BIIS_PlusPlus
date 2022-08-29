@@ -303,11 +303,11 @@ const CoursesTaught = () => {
                             <form onSubmit={saveScoresHandler}>
                               <CustomButton
                                 type="submit"
-                                label="Save  Scores"
+                                label="Save Scores"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#b13137"
-                                width="100px"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
@@ -320,7 +320,7 @@ const CoursesTaught = () => {
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#bdbdbd"
-                                width="100px"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
@@ -344,7 +344,7 @@ const CoursesTaught = () => {
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#b13137"
-                                width="100px"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
@@ -353,11 +353,11 @@ const CoursesTaught = () => {
                             <form onSubmit={sendAllForScrutinyHandler}>
                               <CustomButton
                                 type="submit"
-                                label="Send All To Scrutiny"
+                                label="All To Scrutiny"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#bdbdbd"
-                                width="100px"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
