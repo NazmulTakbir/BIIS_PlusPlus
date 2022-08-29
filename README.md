@@ -4,4 +4,4 @@
 - Dues, Scholarship
 - Result processing
 
-[!(B2_Group8.mp4)]
+![watch](B2_Group8.mp4)
