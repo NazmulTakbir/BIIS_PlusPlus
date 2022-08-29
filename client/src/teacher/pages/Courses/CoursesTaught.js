@@ -216,7 +216,7 @@ const CoursesTaught = () => {
   };
 
   const saveAllScoresHandler = async (e) => {
-    e.preventDefault();
+    
   };
 
   const sendAllForScrutinyHandler = async (e) => {
