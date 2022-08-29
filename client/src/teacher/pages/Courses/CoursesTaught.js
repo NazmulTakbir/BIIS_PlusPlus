@@ -302,12 +302,12 @@ const CoursesTaught = () => {
                           >
                             <form onSubmit={saveScoresHandler}>
                               <CustomButton
-                                width="150px"
                                 type="submit"
-                                label="Save  Scores"
+                                label="Save Scores"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#b13137"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
@@ -315,12 +315,12 @@ const CoursesTaught = () => {
 
                             <form onSubmit={sendForScrutinyHandler}>
                               <CustomButton
-                                width="150px"
                                 type="submit"
                                 label="Send For Scrutiny"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#bdbdbd"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
@@ -339,12 +339,12 @@ const CoursesTaught = () => {
                           >
                             <form onSubmit={saveAllScoresHandler}>
                               <CustomButton
-                                width="150px"
                                 type="submit"
                                 label="Save All Scores"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#b13137"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
@@ -352,12 +352,12 @@ const CoursesTaught = () => {
 
                             <form onSubmit={sendAllForScrutinyHandler}>
                               <CustomButton
-                                width="150px"
                                 type="submit"
                                 label="All To Scrutiny"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#bdbdbd"
+                                width="150px"
                                 padding="10px"
                                 fontSize="17px !important"
                               />
