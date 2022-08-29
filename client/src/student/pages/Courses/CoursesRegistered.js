@@ -61,23 +61,30 @@ const CoursesRegistered = () => {
   const renderPage = () => {
     return (
       <React.Fragment>
-        <div style={{ margin: "auto", textAlign: "center" }}>
-          <div
-            className="session-text"
-            style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
-          >
-            {message}
+        {tableData.length > 0 ? (
+          <div>
+            <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
+              <div
+                className="session-text"
+                style={{ marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
+              >
+                SESSION: {sessionData.session_id}
+              </div>
+            </div>
+            <Table columnLabels={columnLabels} tableData={tableData} />
           </div>
-        </div>
-        <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
-          <div
-            className="session-text"
-            style={{ marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
-          >
-            SESSION: {sessionData.session_id}
+        ): (
+          <div>
+            <div style={{ margin: "auto", textAlign: "center" }}>
+              <div
+                className="session-text"
+                style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+              >
+                {message}
+              </div>
+            </div>            
           </div>
-        </div>
-        <Table columnLabels={columnLabels} tableData={tableData} />
+        )};
       </React.Fragment>
     );
   };

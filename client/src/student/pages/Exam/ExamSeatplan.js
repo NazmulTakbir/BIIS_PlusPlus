@@ -64,7 +64,9 @@ const ExamSeatPlan = () => {
           <div className="main_container">
             <div className="content">
               <Navbar NavbarData={NavbarData} />
-              <div
+
+              {seatplan.length > 0 ? (
+                <div
                 className="room-no"
                 style={{
                   fontWeight: "bolder",
@@ -79,6 +81,19 @@ const ExamSeatPlan = () => {
               >
                 Exam Room: {building} {roomNo}{" "}
               </div>
+              ): (
+                <div>
+                  <div style={{ margin: "auto", textAlign: "center" }}>
+                    <div
+                      className="session-text"
+                      style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+                    >
+                      No Exams are being held right now!
+                    </div>
+                  </div>                   
+                </div>
+              )}
+
               <div className="table-container">
                 <table className="table-custom">
                   <tbody className="table-hover">

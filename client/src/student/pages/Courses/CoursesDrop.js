@@ -76,16 +76,20 @@ const CoursesDrop = () => {
                 SESSION: {sessionData.session_id}
               </div>
             </div>
-            <Table columnLabels={columnLabels} tableData={tableData} />;<CustomButton>Submit Request</CustomButton>
-            <CustomButton
-              label="Submit Drop Request"
-              variant="contained"
-              color="white"
-              bcolor="#b13137"
-              width="160px"
-              onClickFunction={submissionHandler}
-              onClickArguments={[]}
-            />
+            <Table columnLabels={columnLabels} tableData={tableData} />
+            {tableData.length > 0 ? (
+                <CustomButton
+                  label="Submit Drop Request"
+                  variant="contained"
+                  color="white"
+                  bcolor="#b13137"
+                  width="160px"
+                  onClickFunction={submissionHandler}
+                  onClickArguments={[]}
+                />                  
+              ): (
+                <div></div>
+            )}            
           </React.Fragment>
         );
       default:

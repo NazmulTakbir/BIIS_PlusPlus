@@ -101,51 +101,67 @@ const ExamGrades = () => {
             <div className="content">
               <Navbar NavbarData={NavbarData} />
 
-              <Dropdown>
-                <Dropdown.Toggle variant="danger" id="dropdown-basic">
-                  {dropDownText}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  {dropDownOptions.map((option, optionNo) => {
-                    return (
-                      <Dropdown.Item key={optionNo} onClick={() => dropDownSelect(option)}>
-                        Level {option[0]} Term {option[2]}
-                      </Dropdown.Item>
-                    );
-                  })}
-                </Dropdown.Menu>
-              </Dropdown>
-
-              {noneSelected ? null : (
+              {dropDownOptions.length > 0  ? (
                 <div>
-                  <Table columnLabels={columnLabels} tableData={tableData} />
+                    <Dropdown>
+                      <Dropdown.Toggle variant="danger" id="dropdown-basic">
+                        {dropDownText}
+                      </Dropdown.Toggle>
 
-                  <div className="gpa-container" style={{ margin: "50px" }}>
-                    <Box className="modal-box" sx={boxStyle}>
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h6"
-                        sx={{ fontWeight: "bold", fontSize: "1rem" }}
-                      >
-                        GPA for Term: {String(extraData.gpa).substring(0, 4)}
-                      </Typography>
-                      <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: "15px" }}>
-                        <div>Registered Credit Hours in this Term: {extraData.registeredCredits}</div>
-                        <div>Credit Hours Earned in this Term: {extraData.earnedCredits}</div>
-                      </Typography>
-                      <Typography
-                        id="modal-modal-description"
-                        sx={{ mt: 2, fontSize: "15px", color: "#b70009", fontWeight: "bolder" }}
-                      >
-                        <div>Total Credit Hours: {extraData.totalCreditsEarned}</div>
-                        <div>CGPA: {extraData.cgpa}</div>
-                      </Typography>
-                    </Box>
-                  </div>
+                      <Dropdown.Menu>
+                        {dropDownOptions.map((option, optionNo) => {
+                          return (
+                            <Dropdown.Item key={optionNo} onClick={() => dropDownSelect(option)}>
+                              Level {option[0]} Term {option[2]}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+
+                    {noneSelected ? null : (
+                      <div>
+                        <Table columnLabels={columnLabels} tableData={tableData} />
+
+                        <div className="gpa-container" style={{ margin: "50px" }}>
+                          <Box className="modal-box" sx={boxStyle}>
+                            <Typography
+                              id="modal-modal-title"
+                              variant="h6"
+                              component="h6"
+                              sx={{ fontWeight: "bold", fontSize: "1rem" }}
+                            >
+                              GPA for Term: {String(extraData.gpa).substring(0, 4)}
+                            </Typography>
+                            <Typography id="modal-modal-description" sx={{ mt: 2, fontSize: "15px" }}>
+                              <div>Registered Credit Hours in this Term: {extraData.registeredCredits}</div>
+                              <div>Credit Hours Earned in this Term: {extraData.earnedCredits}</div>
+                            </Typography>
+                            <Typography
+                              id="modal-modal-description"
+                              sx={{ mt: 2, fontSize: "15px", color: "#b70009", fontWeight: "bolder" }}
+                            >
+                              <div>Total Credit Hours: {extraData.totalCreditsEarned}</div>
+                              <div>CGPA: {extraData.cgpa}</div>
+                            </Typography>
+                          </Box>
+                        </div>
+                      </div>
+                    )}
                 </div>
-              )}
+              ) : (
+                <div>
+                  <div style={{ margin: "auto", textAlign: "center" }}>
+                    <div
+                      className="session-text"
+                      style={{ marginTop: "20px", fontSize: "22px", fontWeight: "bolder", color: "#b13137" }}
+                    >
+                      You have not given any exams yet.
+                    </div>
+                  </div>                   
+                </div>
+              )};
+
             </div>
           </div>
         </div>
