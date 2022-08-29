@@ -254,6 +254,7 @@ const CoursesScrutinized = () => {
                           >
                             <form onSubmit={approveHandler}>
                               <CustomButton
+                                width="150px"
                                 type="submit"
                                 label="Approve Selected"
                                 variant="contained"
@@ -266,6 +267,7 @@ const CoursesScrutinized = () => {
 
                             <form onSubmit={rejectHandler}>
                               <CustomButton
+                                width="150px"
                                 type="submit"
                                 label="Reject Selected"
                                 variant="contained"
@@ -289,6 +291,7 @@ const CoursesScrutinized = () => {
                           >
                             <form onSubmit={approveAllHandler}>
                               <CustomButton
+                                width="150px"
                                 type="submit"
                                 label="Approve All"
                                 variant="contained"
@@ -302,11 +305,12 @@ const CoursesScrutinized = () => {
                             <form onSubmit={rejectAllHandler}>
                               <CustomButton
                                 type="submit"
-                                label=" Reject  All"
+                                label=" Reject All"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#bdbdbd"
                                 padding="10px"
+                                width="150px"
                                 fontSize="17px !important"
                               />
                             </form>
