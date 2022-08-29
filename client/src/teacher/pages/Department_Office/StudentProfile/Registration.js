@@ -13,6 +13,9 @@ const columnLabels = ["STUDENT ID", "COURSE ID", "REQUEST DATE", "APPROVE"];
 let checkedAddRequests = [];
 let checkedDropRequests = [];
 
+let allAddRequests = [];
+let allDropRequests = [];
+
 const approveAddCallback = (id, actionType) => {
   if (actionType === "check") {
     checkedAddRequests.push(id);
@@ -31,6 +34,9 @@ const approveDropCallback = (id, actionType) => {
 
 const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth) => {
   try {
+    allAddRequests = [];
+    allDropRequests = [];
+
     const response = await fetch(api_route, {
       headers: { Authorization: "Bearer " + auth.token },
     });
@@ -43,9 +49,11 @@ const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth
       row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
       if (jsonData[i]["request_type"].toUpperCase() === "ADD") {
+        allAddRequests.push(jsonData[i]["reg_request_id"]);
         row.push({ type: "CheckBox", data: { id: jsonData[i]["reg_request_id"], callback: approveAddCallback } });
         addTableData.push(row);
       } else if (jsonData[i]["request_type"].toUpperCase() === "DROP") {
+        allDropRequests.push(jsonData[i]["reg_request_id"]);
         row.push({ type: "CheckBox", data: { id: jsonData[i]["reg_request_id"], callback: approveDropCallback } });
         dropTableData.push(row);
       }
@@ -63,6 +71,54 @@ const DeptStudentRegistration = () => {
   const [addTableData, setAddTableData] = useState([]);
   const [dropTableData, setDropTableData] = useState([]);
   let { studentID } = useParams();
+
+  const approveAllAddRequests = async() => {
+    await fetch("/api/teacher/departmenthead/approveregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allAddRequests,
+        submission_date: new Date(),
+      }),
+    });
+    setStateNo((stateNo + 1) % 100);
+  };
+
+  const rejectAllAddRequests = async() => {
+    await fetch("/api/teacher/departmenthead/rejectregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allAddRequests,
+        submission_date: new Date(),
+      }),
+    });
+    setStateNo((stateNo + 1) % 100);
+  };
+
+  const approveAllDropRequests = async() => {
+    await fetch("/api/teacher/departmenthead/approveregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allDropRequests,
+        submission_date: new Date(),
+      }),
+    });
+    setStateNo((stateNo + 1) % 100);
+  };
+
+  const rejectAllDropRequests = async() => {
+    await fetch("/api/teacher/departmenthead/rejectregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allDropRequests,
+        submission_date: new Date(),
+      }),
+    });
+    setStateNo((stateNo + 1) % 100);
+  };
 
   const NavbarData = [
     {
@@ -158,35 +214,66 @@ const DeptStudentRegistration = () => {
               <br />
 
               <Stack
-                spacing={2}
-                direction="row"
-                style={{
-                  margin: "auto",
-                  width: "350px",
-                  padding: "10px",
-                  textAlign: "left",
-                  justifyContent: "space-between",
-                }}
-              >
-                <CustomButton
-                  label="Approve Selections"
-                  variant="contained"
-                  color="white"
-                  bcolor="#697A8D"
-                  width="150px"
-                  onClickFunction={approveRequests}
-                  onClickArguments={["add"]}
-                />
-                <CustomButton
-                  label="Reject Selections"
-                  variant="contained"
-                  color="white"
-                  bcolor="#b13137"
-                  width="150px"
-                  onClickFunction={rejectRequests}
-                  onClickArguments={["add"]}
-                />
-              </Stack>
+                    spacing={2}
+                    direction="row"
+                    style={{
+                      margin: "auto",
+                      width: "350px",
+                      padding: "10px",
+                      textAlign: "left",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <CustomButton
+                      label="Approve Selections"
+                      variant="contained"
+                      color="white"
+                      bcolor="#697A8D"
+                      width="150px"
+                      onClickFunction={approveRequests}
+                      onClickArguments={["add"]}
+                    />
+                    <CustomButton
+                      label="Reject Selections"
+                      variant="contained"
+                      color="white"
+                      bcolor="#b13137"
+                      width="150px"
+                      onClickFunction={rejectRequests}
+                      onClickArguments={["add"]}
+                    />
+                  </Stack>
+
+                  <Stack
+                    spacing={2}
+                    direction="row"
+                    style={{
+                      margin: "auto",
+                      width: "350px",
+                      padding: "10px",
+                      textAlign: "left",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <CustomButton
+                      label="Approve All"
+                      variant="contained"
+                      color="white"
+                      bcolor="#697A8D"
+                      width="150px"
+                      onClickFunction={approveAllAddRequests}
+                      onClickArguments={["add"]}
+                    />
+                    <CustomButton
+                      label="Reject All"
+                      variant="contained"
+                      color="white"
+                      bcolor="#b13137"
+                      width="150px"
+                      onClickFunction={rejectAllAddRequests}
+                      onClickArguments={["add"]}
+                    />
+                  </Stack>
 
               <br />
               <br />
@@ -196,35 +283,66 @@ const DeptStudentRegistration = () => {
               <br />
 
               <Stack
-                spacing={2}
-                direction="row"
-                style={{
-                  margin: "auto",
-                  width: "350px",
-                  padding: "10px",
-                  textAlign: "left",
-                  justifyContent: "space-between",
-                }}
-              >
-                <CustomButton
-                  label="Approve Selections"
-                  variant="contained"
-                  color="white"
-                  bcolor="#697A8D"
-                  width="150px"
-                  onClickFunction={approveRequests}
-                  onClickArguments={["drop"]}
-                />
-                <CustomButton
-                  label="Reject Selections"
-                  variant="contained"
-                  color="white"
-                  bcolor="#b13137"
-                  width="150px"
-                  onClickFunction={rejectRequests}
-                  onClickArguments={["drop"]}
-                />
-              </Stack>
+                    spacing={2}
+                    direction="row"
+                    style={{
+                      margin: "auto",
+                      width: "350px",
+                      padding: "10px",
+                      textAlign: "left",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <CustomButton
+                      label="Approve Selections"
+                      variant="contained"
+                      color="white"
+                      bcolor="#697A8D"
+                      width="150px"
+                      onClickFunction={approveRequests}
+                      onClickArguments={["add"]}
+                    />
+                    <CustomButton
+                      label="Reject Selections"
+                      variant="contained"
+                      color="white"
+                      bcolor="#b13137"
+                      width="150px"
+                      onClickFunction={rejectRequests}
+                      onClickArguments={["add"]}
+                    />
+                  </Stack>
+
+                  <Stack
+                    spacing={2}
+                    direction="row"
+                    style={{
+                      margin: "auto",
+                      width: "350px",
+                      padding: "10px",
+                      textAlign: "left",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <CustomButton
+                      label="Approve All"
+                      variant="contained"
+                      color="white"
+                      bcolor="#697A8D"
+                      width="150px"
+                      onClickFunction={approveAllDropRequests}
+                      onClickArguments={["add"]}
+                    />
+                    <CustomButton
+                      label="Reject All"
+                      variant="contained"
+                      color="white"
+                      bcolor="#b13137"
+                      width="150px"
+                      onClickFunction={rejectAllDropRequests}
+                      onClickArguments={["add"]}
+                    />
+                  </Stack>
             </div>
           </div>
         </div>

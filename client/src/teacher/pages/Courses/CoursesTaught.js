@@ -215,14 +215,6 @@ const CoursesTaught = () => {
     }
   };
 
-  const saveAllScoresHandler = async (e) => {
-    e.preventDefault();
-  };
-
-  const sendAllForScrutinyHandler = async (e) => {
-    e.preventDefault();
-  };
-
   return (
     <React.Fragment>
       <div className="App">
@@ -317,43 +309,6 @@ const CoursesTaught = () => {
                               <CustomButton
                                 type="submit"
                                 label="Send For Scrutiny"
-                                variant="contained"
-                                color="#ffffff"
-                                bcolor="#bdbdbd"
-                                width="150px"
-                                padding="10px"
-                                fontSize="17px !important"
-                              />
-                            </form>
-                          </Stack>
-                          <Stack
-                            spacing={2}
-                            direction="row"
-                            style={{
-                              margin: "auto",
-                              width: "350px",
-                              padding: "10px",
-                              textAlign: "left",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <form onSubmit={saveAllScoresHandler}>
-                              <CustomButton
-                                type="submit"
-                                label="Save All Scores"
-                                variant="contained"
-                                color="#ffffff"
-                                bcolor="#b13137"
-                                width="150px"
-                                padding="10px"
-                                fontSize="17px !important"
-                              />
-                            </form>
-
-                            <form onSubmit={sendAllForScrutinyHandler}>
-                              <CustomButton
-                                type="submit"
-                                label="All To Scrutiny"
                                 variant="contained"
                                 color="#ffffff"
                                 bcolor="#bdbdbd"
