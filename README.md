@@ -4,4 +4,8 @@
 - Dues, Scholarship
 - Result processing
 
-![watch](B2_Group8.mp4)
+
+https://user-images.githubusercontent.com/57033114/187141626-493a489a-7e7a-4be0-9d61-87edaca0aa53.mp4
+
+
+
