@@ -12,7 +12,7 @@ import { getSearchBarData } from "../../components/SearchMenuData";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import Typography  from "@mui/material/Typography";
+import Typography from "@mui/material/Typography";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -21,6 +21,8 @@ import { display } from "@mui/system";
 const studentTableColumns = ["STUDENT ID", "CURRENT SCORE", "STATUS", "EDIT SCORE"];
 
 let studentMarks = {};
+
+let allStudentIDs = [];
 
 const boxStyle = {
   bgcolor: "background.paper",
@@ -32,7 +34,7 @@ const boxStyle = {
   width: "80%",
   margin: "auto",
   borderRadius: "10px !important",
-  marginTop: "25px"
+  marginTop: "25px",
 };
 
 const CoursesTaught = () => {
@@ -107,6 +109,7 @@ const CoursesTaught = () => {
       let tableData = [];
       for (let i = 0; i < data.length; i++) {
         let row = [];
+        allStudentIDs.push(data[i]["student_id"]);
         row.push({ type: "PlainText", data: { value: data[i]["studentID"] } });
         row.push({ type: "PlainText", data: { value: data[i]["marks"] } });
         row.push({ type: "PlainText", data: { value: data[i]["status"] } });
@@ -263,60 +266,60 @@ const CoursesTaught = () => {
 
                   {noCriteriaSelected ? null : (
                     <div>
-
-                      <Box id="modal-box" sx={boxStyle}>                        
-                        <Typography 
-                          id="modal-marks"
-                          sx={{display: "flex", justifyContent: "space-around" }}>
-                          <span style={{fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px"}}>
+                      <Box id="modal-box" sx={boxStyle}>
+                        <Typography id="modal-marks" sx={{ display: "flex", justifyContent: "space-around" }}>
+                          <span style={{ fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px" }}>
                             Total Marks: {total_marks}
                           </span>
-                          <span style={{fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px"}}>
+                          <span style={{ fontSize: "20px", color: "grey", fontWeight: "bolder", padding: "15px" }}>
                             Criteria Weight: {criteria_weight}
                           </span>
                         </Typography>
-                      </Box> 
-                      
+                      </Box>
+
                       <Table columnLabels={studentTableColumns} tableData={studentTableData} />
 
+                      {studentTableData.length > 0 ? (
+                        <div>
+                          <Stack
+                            spacing={2}
+                            direction="row"
+                            style={{
+                              margin: "auto",
+                              width: "350px",
+                              padding: "10px",
+                              textAlign: "left",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <form onSubmit={saveScoresHandler}>
+                              <CustomButton
+                                type="submit"
+                                label="Save Scores"
+                                variant="contained"
+                                color="#ffffff"
+                                bcolor="#b13137"
+                                width="150px"
+                                padding="10px"
+                                fontSize="17px !important"
+                              />
+                            </form>
 
-                      <Stack
-                        spacing={2}
-                        direction="row"
-                        style={{
-                          margin: "auto",
-                          width: "350px",
-                          padding: "10px",
-                          textAlign: "left",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <form onSubmit={saveScoresHandler}>
-                          <CustomButton
-                            type="submit"
-                            label="Save Scores"
-                            variant="contained"
-                            color="#ffffff"
-                            bcolor="#b13137"
-                            margin="40px"
-                            padding="10px"
-                            fontSize="17px !important"
-                          />
-                        </form>
-
-                        <form onSubmit={sendForScrutinyHandler}>
-                          <CustomButton
-                            type="submit"
-                            label="Send For Scrutiny"
-                            variant="contained"
-                            color="#ffffff"
-                            bcolor="#bdbdbd"
-                            margin="40px"
-                            padding="10px"
-                            fontSize="17px !important"
-                          />
-                        </form>
-                      </Stack>
+                            <form onSubmit={sendForScrutinyHandler}>
+                              <CustomButton
+                                type="submit"
+                                label="Send For Scrutiny"
+                                variant="contained"
+                                color="#ffffff"
+                                bcolor="#bdbdbd"
+                                width="150px"
+                                padding="10px"
+                                fontSize="17px !important"
+                              />
+                            </form>
+                          </Stack>
+                        </div>
+                      ) : null}
                     </div>
                   )}
                 </div>

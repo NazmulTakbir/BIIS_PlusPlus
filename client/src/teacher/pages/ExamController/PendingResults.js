@@ -7,6 +7,7 @@ import { SidebarData } from "../../components/SidebarData";
 import { NavbarData } from "./NavbarData";
 import { getSearchBarData } from "../../components/SearchMenuData";
 import CustomButton from "../../../shared/components/CustomButton/CustomButton";
+import Stack from "@mui/material/Stack";
 
 import { AuthContext } from "../../../shared/context/AuthContext";
 import "../../../shared/components/MainContainer.css";
@@ -15,6 +16,8 @@ import Table from "../../../shared/components/Table/Table";
 const resultTableColumns = ["STUDENT ID", "RESULT DETAILS", "STUDENT DETAILS", "SELECT"];
 
 let selectedList = [];
+
+let allStudents = [];
 
 const PendingResults = () => {
   const auth = useContext(AuthContext);
@@ -58,6 +61,7 @@ const PendingResults = () => {
           }
 
           let row = [];
+          allStudents.push(studentID);
           row.push({ type: "PlainText", data: { value: studentID } });
           row.push({
             type: "MultiBodyModal",
@@ -129,6 +133,14 @@ const PendingResults = () => {
     } catch (err) {}
   };
 
+  const approveAllHandler = async (e) => {
+    e.preventDefault();
+  };
+
+  const rejectAllHandler = async (e) => {
+    e.preventDefault();
+  };
+
   return (
     <React.Fragment>
       <div className="App">
@@ -140,31 +152,80 @@ const PendingResults = () => {
               <Navbar NavbarData={NavbarData} />
               <Table columnLabels={resultTableColumns} tableData={resultTableData} modal="true" />
 
-              <form onSubmit={approveHandler}>
-                <CustomButton
-                  type="submit"
-                  label="Approve Selected"
-                  variant="contained"
-                  color="#ffffff"
-                  bcolor="#b13137"
-                  margin="40px"
-                  padding="10px"
-                  fontSize="17px !important"
-                />
-              </form>
+              {resultTableData.length > 0 ? (
+                <div>
+                  <Stack
+                    spacing={2}
+                    direction="row"
+                    style={{
+                      margin: "auto",
+                      width: "350px",
+                      padding: "10px",
+                      textAlign: "left",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <form onSubmit={approveHandler}>
+                      <CustomButton
+                        type="submit"
+                        label="Approve Selected"
+                        variant="contained"
+                        color="#ffffff"
+                        bcolor="#b13137"
+                        padding="10px"
+                        fontSize="17px !important"
+                      />
+                    </form>
 
-              <form onSubmit={rejectHandler}>
-                <CustomButton
-                  type="submit"
-                  label="Reject Selected"
-                  variant="contained"
-                  color="#ffffff"
-                  bcolor="#bdbdbd"
-                  margin="40px"
-                  padding="10px"
-                  fontSize="17px !important"
-                />
-              </form>
+                    <form onSubmit={rejectHandler}>
+                      <CustomButton
+                        type="submit"
+                        label="Reject Selected"
+                        variant="contained"
+                        color="#ffffff"
+                        bcolor="#bdbdbd"
+                        padding="10px"
+                        fontSize="17px !important"
+                      />
+                    </form>
+                  </Stack>
+                  <Stack
+                    spacing={2}
+                    direction="row"
+                    style={{
+                      margin: "auto",
+                      width: "350px",
+                      padding: "10px",
+                      textAlign: "left",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <form onSubmit={approveAllHandler}>
+                      <CustomButton
+                        type="submit"
+                        label="Approve All"
+                        variant="contained"
+                        color="#ffffff"
+                        bcolor="#b13137"
+                        padding="10px"
+                        fontSize="17px !important"
+                      />
+                    </form>
+
+                    <form onSubmit={rejectAllHandler}>
+                      <CustomButton
+                        type="submit"
+                        label=" Reject  All"
+                        variant="contained"
+                        color="#ffffff"
+                        bcolor="#bdbdbd"
+                        padding="10px"
+                        fontSize="17px !important"
+                      />
+                    </form>
+                  </Stack>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

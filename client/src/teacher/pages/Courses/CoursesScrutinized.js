@@ -34,6 +34,8 @@ const boxStyle = {
 
 let selectedList = [];
 
+let allStudentIDs = [];
+
 const CoursesScrutinized = () => {
   const auth = useContext(AuthContext);
   const [SearchMenuData, setSearchMenuData] = useState([]);
@@ -103,6 +105,9 @@ const CoursesScrutinized = () => {
       let tableData = [];
       for (let i = 0; i < data.length; i++) {
         let row = [];
+        if (data[i]["status"] === "Awaiting Scrutiny") {
+          allStudentIDs.push(data[i]["studentID"]);
+        }
         row.push({ type: "PlainText", data: { value: data[i]["studentID"] } });
         row.push({ type: "PlainText", data: { value: data[i]["marks"] } });
         row.push({ type: "PlainText", data: { value: data[i]["status"] } });
@@ -141,6 +146,7 @@ const CoursesScrutinized = () => {
       });
       alert("Approved Successfully");
 
+      allStudentIDs = [];
       selectedList = [];
       setStudentTableData([]);
       fetchStudentData(`/api/teacher/scrutinize/getall/${course_id}/${selectedCriteria}`);
@@ -157,6 +163,41 @@ const CoursesScrutinized = () => {
       });
       alert("Rejected Successfully");
 
+      selectedList = [];
+      setStudentTableData([]);
+      fetchStudentData(`/api/teacher/scrutinize/getall/${course_id}/${selectedCriteria}`);
+    } catch (err) {}
+  };
+
+  const approveAllHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await fetch(`/api/teacher/scrutinize/approve/${course_id}/${selectedCriteria}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify(allStudentIDs),
+      });
+      alert("Approved Successfully");
+
+      allStudentIDs = [];
+      selectedList = [];
+      setStudentTableData([]);
+      fetchStudentData(`/api/teacher/scrutinize/getall/${course_id}/${selectedCriteria}`);
+    } catch (err) {}
+  };
+
+  const rejectAllHandler = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(allStudentIDs);
+      await fetch(`/api/teacher/scrutinize/reject/${course_id}/${selectedCriteria}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify(allStudentIDs),
+      });
+      alert("Rejected Successfully");
+
+      allStudentIDs = [];
       selectedList = [];
       setStudentTableData([]);
       fetchStudentData(`/api/teacher/scrutinize/getall/${course_id}/${selectedCriteria}`);
@@ -228,43 +269,84 @@ const CoursesScrutinized = () => {
                         <Table columnLabels={studentTableColumns} tableData={studentTableData} />
                       </h4>
 
-                      <Stack
-                        spacing={2}
-                        direction="row"
-                        style={{
-                          margin: "auto",
-                          width: "350px",
-                          padding: "10px",
-                          textAlign: "left",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <form onSubmit={approveHandler}>
-                          <CustomButton
-                            type="submit"
-                            label="Approve Selected"
-                            variant="contained"
-                            color="#ffffff"
-                            bcolor="#b13137"
-                            margin="40px"
-                            padding="10px"
-                            fontSize="17px !important"
-                          />
-                        </form>
+                      {studentTableData.length > 0 ? (
+                        <div>
+                          <Stack
+                            spacing={2}
+                            direction="row"
+                            style={{
+                              margin: "auto",
+                              width: "350px",
+                              padding: "10px",
+                              textAlign: "left",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <form onSubmit={approveHandler}>
+                              <CustomButton
+                                width="150px"
+                                type="submit"
+                                label="Approve Selected"
+                                variant="contained"
+                                color="#ffffff"
+                                bcolor="#b13137"
+                                padding="10px"
+                                fontSize="17px !important"
+                              />
+                            </form>
 
-                        <form onSubmit={rejectHandler}>
-                          <CustomButton
-                            type="submit"
-                            label="Reject Selected"
-                            variant="contained"
-                            color="#ffffff"
-                            bcolor="#bdbdbd"
-                            margin="40px"
-                            padding="10px"
-                            fontSize="17px !important"
-                          />
-                        </form>
-                      </Stack>
+                            <form onSubmit={rejectHandler}>
+                              <CustomButton
+                                width="150px"
+                                type="submit"
+                                label="Reject Selected"
+                                variant="contained"
+                                color="#ffffff"
+                                bcolor="#bdbdbd"
+                                padding="10px"
+                                fontSize="17px !important"
+                              />
+                            </form>
+                          </Stack>
+                          <Stack
+                            spacing={2}
+                            direction="row"
+                            style={{
+                              margin: "auto",
+                              width: "350px",
+                              padding: "10px",
+                              textAlign: "left",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <form onSubmit={approveAllHandler}>
+                              <CustomButton
+                                width="150px"
+                                type="submit"
+                                label="Approve All"
+                                variant="contained"
+                                color="#ffffff"
+                                bcolor="#b13137"
+                                padding="10px"
+                                fontSize="17px !important"
+                              />
+                            </form>
+
+                            <form onSubmit={rejectAllHandler}>
+                              <CustomButton
+                                type="submit"
+                                label=" Reject All"
+                                variant="contained"
+                                color="#ffffff"
+                                bcolor="#bdbdbd"
+                                padding="10px"
+                                width="150px"
+                                fontSize="17px !important"
+                              />
+                            </form>
+                          </Stack>
+                        </div>
+                      ) : null}
                     </div>
                   )}
                 </div>

@@ -31,7 +31,7 @@ const Notifications = () => {
       }
     };
     fetchData();
-  });
+  }, [auth]);
 
   const renderCell = (element) => {
     return (

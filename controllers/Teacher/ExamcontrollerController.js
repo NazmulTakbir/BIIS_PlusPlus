@@ -1,6 +1,7 @@
 const pool = require("../../db");
 const HttpError = require("../../models/HttpError");
 const { getCurrentSession } = require("../../util/CurrentSession");
+const mailController = require("../Shared/email");
 
 const getPendingResults = async (req, res, next) => {
   try {
@@ -63,12 +64,59 @@ const postApproveResults = async (req, res, next) => {
 
     const student_ids = req.body;
     for (let i = 0; i < student_ids.length; i++) {
+      let queryRes = await pool.query(
+        'select distinct(offering_id) from "result details" natural join "course offering" where student_id=$1 and session_id=$2 and status=\'Awaiting Exam Controller Approval\'',
+        [student_ids[i], session_id]
+      );
+      let offering_ids = queryRes.rows;
+
+      for (let j = 0; j < offering_ids.length; j++) {
+        queryRes = await pool.query(
+          'INSERT INTO public."result summary"(offering_id, student_id, grade_point, letter_grade) \
+           VALUES ($2, $1, CAST (get_grade_point($1, $2) AS DOUBLE PRECISION), get_letter_grade($1, $2));',
+          [student_ids[i], offering_ids[j].offering_id]
+        );
+      }
       await pool.query(
         'UPDATE public."result details" as t1 SET status=\'Published\' \
           from "course offering" as t2 WHERE t1.offering_id=t2.offering_id and \
           t1.student_id=$1 and t2.session_id=$2',
         [student_ids[i], session_id]
       );
+
+      queryRes = await pool.query(
+        'select sum(grade_point*credits)/sum(credits) as gpa  \
+      from "course offering" natural join "result summary" natural join course \
+      where session_id=$1 and student_id=$2',
+        [session_id, student_ids[i]]
+      );
+      let gpa = queryRes.rows[0].gpa;
+
+      let description =
+        "Result has been published for Session: " + session_id + " Obtained GPA: " + Math.round(gpa * 100) / 100;
+      await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
+        "student",
+        student_ids[i],
+        "Results Published",
+        new Date(),
+        description,
+      ]);
+
+      const student_id = student_ids[i];
+
+      let mailInfo = await pool.query("select email from public.student where student_id = $1", [student_id]);
+      const email = mailInfo.rows[0].email;
+
+      const subject = "BIISPLUSPLUS : Results Published";
+
+      description =
+        "Results for Session " + session_id + " has been published. Obtained GPA: " + Math.round(gpa * 100) / 100;
+      description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
+      description +=
+        "\nDo not reply to this email. This email is sent from a system that cannot receive email messages.";
+      const text = description;
+
+      mailController.sendMail(email, subject, text);
     }
 
     res.json({ message: "postApproveResults" });

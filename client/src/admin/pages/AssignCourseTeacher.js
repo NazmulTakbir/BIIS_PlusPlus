@@ -35,7 +35,7 @@ const AddCourseTeachers = () => {
 
   //for searchable course offering ids
   const [search_offerings_list, setSearch_offerings_list] = useState([]);
-  const is_offering_id_valid = search_offerings_list.some((element) => element.value === offering_id);  
+  const is_offering_id_valid = search_offerings_list.some((element) => element.value === offering_id);
 
   //for searchable course ids
   const [search_teacherid_list, setSearch_teacherid_list] = useState([]);
@@ -45,13 +45,12 @@ const AddCourseTeachers = () => {
       if (!is_teacher_id_valid) return false;
     }
     return true;
-  };
-
+  }
 
   const setTeacherIDFromSearch = (value, i) => {
-      let temp_ids = [...teacher_ids];
-      temp_ids[i] = value;
-      setTeacher_ids(temp_ids);
+    let temp_ids = [...teacher_ids];
+    temp_ids[i] = value;
+    setTeacher_ids(temp_ids);
   };
 
   const incrementCountTeachers = (args) => {
@@ -71,7 +70,7 @@ const AddCourseTeachers = () => {
         });
         let jsonData = await response.json();
         setTeacher_list(jsonData.data);
-        
+
         //set data in valid format for search component
         let search_list = [];
         for (var i = 0; i < jsonData.data.length; i++) {
@@ -92,12 +91,11 @@ const AddCourseTeachers = () => {
         search_list = [];
         for (var i = 0; i < jsonData.data.length; i++) {
           search_list.push({
-            name: jsonData.data[i].course_name,
+            name: jsonData.data[i].course_id,
             value: jsonData.data[i].offering_id,
           });
         }
         setSearch_offerings_list(search_list);
-
       } catch (err) {
         console.log(err);
       }
@@ -163,7 +161,7 @@ const AddCourseTeachers = () => {
 
   const submissionHandler = async (e) => {
     e.preventDefault();
-    if(is_offering_id_valid && are_teacher_ids_valid()){
+    if (is_offering_id_valid && are_teacher_ids_valid()) {
       try {
         let data = [];
         for (let i = 0; i < countTeachers; i++) {
@@ -180,15 +178,15 @@ const AddCourseTeachers = () => {
             data: data,
           }),
         });
-  
+
         setOffering_id("");
         setTeacher_ids([]);
         setRoles([]);
-  
+
         alert("Course Teacher Added Successfully");
         setCountTeachers(1);
       } catch (err) {}
-    }else{
+    } else {
       alert("Invalid Inputs Selected");
     }
   };
@@ -199,7 +197,7 @@ const AddCourseTeachers = () => {
       inputs.push(<br />);
       inputs.push(<br />);
 
-      inputs.push(   
+      inputs.push(
         <CustomSearch
           data={search_teacherid_list}
           parentCallback={setTeacherIDFromSearch}
@@ -263,10 +261,16 @@ const AddCourseTeachers = () => {
                 </div>
               </div>
 
-              <div className="file-input_container" style={{ 
-                  width: "350px", margin: "auto", background: "#fff3e3", 
-                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
-                }}>
+              <div
+                className="file-input_container"
+                style={{
+                  width: "350px",
+                  margin: "auto",
+                  background: "#fff3e3",
+                  border: "1px solid rgb(189, 189, 189)",
+                  borderRadius: "10px",
+                }}
+              >
                 <input
                   style={{
                     borderRadius: "5px",
@@ -315,10 +319,8 @@ const AddCourseTeachers = () => {
                     fontSize="17px !important"
                     onClickFunction={downloadSampleCSV}
                   />
-                </Stack>     
-
+                </Stack>
               </div>
-
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
                 <div
@@ -337,7 +339,6 @@ const AddCourseTeachers = () => {
 
               <div className="admin-form-container" style={{ paddingTop: "10px" }}>
                 <form onSubmit={submissionHandler} style={{ width: "350px", margin: "auto" }}>
-                  
                   <CustomSearch
                     data={search_offerings_list}
                     parentCallback={setOffering_id}
@@ -345,17 +346,17 @@ const AddCourseTeachers = () => {
                     margin="auto"
                     width="100%"
                     label="Search Course Offering"
-                  />   
+                  />
 
-                  <div className="offering-border"
+                  <div
+                    className="offering-border"
                     style={{
                       borderBottom: "2px solid #b13137",
-                      marginTop: "20px"
+                      marginTop: "20px",
                     }}
                   ></div>
 
                   {teacherInput()}
-
 
                   <Stack direction="row" style={{ display: "flex", justifyContent: "space-around", marginTop: "30px" }}>
                     <CustomButton

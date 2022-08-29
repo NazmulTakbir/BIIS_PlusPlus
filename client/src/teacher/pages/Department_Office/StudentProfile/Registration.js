@@ -34,6 +34,9 @@ const approveDropCallback = (id, actionType) => {
 
 const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth) => {
   try {
+    allAddRequests = [];
+    allDropRequests = [];
+
     const response = await fetch(api_route, {
       headers: { Authorization: "Bearer " + auth.token },
     });
@@ -69,8 +72,7 @@ const DeptStudentRegistration = () => {
   const [dropTableData, setDropTableData] = useState([]);
   let { studentID } = useParams();
 
-  const approveAllAddRequests = async () => {
-    console.log(allAddRequests);
+  const approveAllAddRequests = async() => {
     await fetch("/api/teacher/departmenthead/approveregistrationrequests", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
@@ -79,7 +81,6 @@ const DeptStudentRegistration = () => {
         submission_date: new Date(),
       }),
     });
-    allAddRequests = [];
     setStateNo((stateNo + 1) % 100);
   };
 
@@ -208,19 +209,7 @@ const DeptStudentRegistration = () => {
               </div>
 
               <Navbar NavbarData={NavbarData} />
-              <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
-                <div
-                  className="session-text"
-                  style={{
-                    marginTop: "20px",
-                    fontSize: "25px",
-                    fontWeight: "bolder",
-                    color: "#b13137",
-                  }}
-                >
-                  Add Course Requests
-                </div>
-              </div>
+              <h3>Add Course Requests</h3>
               <Table columnLabels={columnLabels} tableData={addTableData} />
               <br />
 
@@ -289,19 +278,7 @@ const DeptStudentRegistration = () => {
               <br />
               <br />
               <br />
-              <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
-                <div
-                  className="session-text"
-                  style={{
-                    marginTop: "20px",
-                    fontSize: "25px",
-                    fontWeight: "bolder",
-                    color: "#b13137",
-                  }}
-                >
-                  Drop Course Requests
-                </div>
-              </div>
+              <h3>Drop Course Requests</h3>
               <Table columnLabels={columnLabels} tableData={dropTableData} />
               <br />
 

@@ -89,18 +89,20 @@ const getexamslots = async (req, res, next) => {
   try {
     const currentSession = await getCurrentSession();
 
-    data = [];
+    let exam_slots = [];
+    let exam_dates = [];
     let queryRes = await pool.query(
-      'select exam_slot_id from public."exam time" where \
+      'select exam_slot_id, exam_date from public."exam time" where \
        session_id = $1 \
        ',
       [currentSession]
     );
 
     for (let i = 0; i < queryRes.rows.length; i++) {
-      data.push(queryRes.rows[i].exam_slot_id);
+      exam_slots.push(queryRes.rows[i].exam_slot_id);
+      exam_dates.push(queryRes.rows[i].exam_date);
     }
-    res.json({ message: "getunofferedcourses successful", data: data });
+    res.json({ message: "getunofferedcourses successful", exam_dates: exam_dates, exam_slots: exam_slots });
   } catch (err) {
     console.log(err);
     const error = new HttpError("getexamslots failed", 500);
@@ -120,7 +122,7 @@ const getOffering_admin_dept = async (req, res, next) => {
 
     data = [];
     queryRes = await pool.query(
-      'select c.course_name , co.offering_id from public."course" as c , public."course offering" as co where \
+      'select c.course_id, c.course_name , co.offering_id from public."course" as c , public."course offering" as co where \
        c.offered_by_dept_id = $1 and \
        c.course_id = co.course_id \
        and co.session_id = $2',

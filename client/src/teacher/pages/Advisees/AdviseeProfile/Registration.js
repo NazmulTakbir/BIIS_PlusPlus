@@ -71,8 +71,7 @@ const AdviseeRegistration = () => {
   const [dropTableData, setDropTableData] = useState([]);
   let { studentID } = useParams();
 
-  const approveAllAddRequests = async () => {
-    console.log(allAddRequests);
+  const approveAllAddRequests = async() => {
     await fetch("/api/teacher/advisees/approveregistrationrequests", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
@@ -81,7 +80,6 @@ const AdviseeRegistration = () => {
         submission_date: new Date(),
       }),
     });
-    allAddRequests = [];
     setStateNo((stateNo + 1) % 100);
   };
 
@@ -348,43 +346,12 @@ const AdviseeRegistration = () => {
                     }}
                   >
                     <CustomButton
-                      label="Approve Selections"
-                      variant="contained"
-                      color="white"
-                      bcolor="#697A8D"
-                      width="150px"
-                      onClickFunction={approveRequests}
-                      onClickArguments={["add"]}
-                    />
-                    <CustomButton
-                      label="Reject Selections"
-                      variant="contained"
-                      color="white"
-                      bcolor="#b13137"
-                      width="150px"
-                      onClickFunction={rejectRequests}
-                      onClickArguments={["add"]}
-                    />
-                  </Stack>
-
-                  <Stack
-                    spacing={2}
-                    direction="row"
-                    style={{
-                      margin: "auto",
-                      width: "350px",
-                      padding: "10px",
-                      textAlign: "left",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <CustomButton
                       label="Approve All"
                       variant="contained"
                       color="white"
                       bcolor="#697A8D"
                       width="150px"
-                      onClickFunction={approveAllAddRequests}
+                      onClickFunction={approveAllDropRequests}
                       onClickArguments={["add"]}
                     />
                     <CustomButton
@@ -393,7 +360,7 @@ const AdviseeRegistration = () => {
                       color="white"
                       bcolor="#b13137"
                       width="150px"
-                      onClickFunction={rejectAllAddRequests}
+                      onClickFunction={rejectAllDropRequests}
                       onClickArguments={["add"]}
                     />
                   </Stack>

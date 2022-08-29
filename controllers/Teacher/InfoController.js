@@ -38,15 +38,17 @@ const getCoursesCoordinated = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
     let queryRes = await pool.query(
-      'select course_id from "course offering teacher" natural join "course offering" where session_id=$1 and \
+      'select course_id, course_name from "course offering teacher" natural join "course offering" natural join course where session_id=$1 and \
       teacher_id=$2 and role=\'Coordinator\';',
       [session_id, req.userData.id]
     );
     data = [];
+    course_names = [];
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i]["course_id"]);
+      course_names.push(queryRes.rows[i]["course_name"]);
     }
-    res.json({ message: "getCoursesCoordinated", data: data });
+    res.json({ message: "getCoursesCoordinated", course_names: course_names, data: data });
   } catch (err) {
     console.log(err);
     const error = new HttpError("getCoursesCoordinated Failed", 500);
@@ -58,15 +60,17 @@ const getCoursesTaught = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
     let queryRes = await pool.query(
-      'select course_id from "course offering teacher" natural join "course offering" where session_id=$1 and \
+      'select course_id, course_name from "course offering teacher" natural join "course offering" natural join course where session_id=$1 and \
       teacher_id=$2 and role=\'Course Teacher\';',
       [session_id, req.userData.id]
     );
     data = [];
+    course_names = [];
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i]["course_id"]);
+      course_names.push(queryRes.rows[i]["course_name"]);
     }
-    res.json({ message: "getCoursesTaught", data: data });
+    res.json({ message: "getCoursesTaught", course_names: course_names, data: data });
   } catch (err) {
     console.log(err);
     const error = new HttpError("getCoursesTaught Failed", 500);
@@ -78,15 +82,17 @@ const getCoursesScrutinized = async (req, res, next) => {
   try {
     const session_id = await getCurrentSession();
     let queryRes = await pool.query(
-      'select course_id from "course offering teacher" natural join "course offering" where session_id=$1 and \
+      'select course_id, course_name from "course offering teacher" natural join "course offering" natural join course where session_id=$1 and \
       teacher_id=$2 and role=\'Scrutinizer\';',
       [session_id, req.userData.id]
     );
     data = [];
+    course_names = [];
     for (let i = 0; i < queryRes.rows.length; i++) {
       data.push(queryRes.rows[i]["course_id"]);
+      course_names.push(queryRes.rows[i]["course_id"]);
     }
-    res.json({ message: "getCoursesScrutinized", data: data });
+    res.json({ message: "getCoursesScrutinized", course_names: course_names, data: data });
   } catch (err) {
     console.log(err);
     const error = new HttpError("getCoursesScrutinized Failed", 500);

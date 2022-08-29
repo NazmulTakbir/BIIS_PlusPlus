@@ -74,6 +74,19 @@ const CoursesPending = () => {
   const renderPage = () => {
     return (
       <React.Fragment>
+      {tableData.length > 0 ? (
+        <div>
+          <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
+            <div
+              className="session-text"
+              style={{ marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
+            >
+              SESSION: {sessionData.session_id}
+            </div>
+          </div>
+          <Table columnLabels={columnLabels} tableData={tableData} />          
+        </div>
+      ): (
         <div style={{ margin: "auto", textAlign: "center" }}>
           <div
             className="session-text"
@@ -81,17 +94,9 @@ const CoursesPending = () => {
           >
             {message}
           </div>
-        </div>
-        <div className="session-header" style={{ margin: "auto", textAlign: "center" }}>
-          <div
-            className="session-text"
-            style={{ marginTop: "20px", fontSize: "17px", fontWeight: "bolder", color: "#b13137" }}
-          >
-            SESSION: {sessionData.session_id}
-          </div>
-        </div>
-        <Table columnLabels={columnLabels} tableData={tableData} />
-      </React.Fragment>
+      </div>
+      )}
+      </React.Fragment>      
     );
   };
 

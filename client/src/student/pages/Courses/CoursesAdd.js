@@ -108,16 +108,20 @@ const CoursesAdd = () => {
             </div>
 
 
-            <Table columnLabels={columnLabels} tableData={tableData} />;
-            <CustomButton
-              label="Submit Add Request"
-              variant="contained"
-              color="white"
-              bcolor="#b13137"
-              width="150px"
-              onClickFunction={submissionHandler}
-              onClickArguments={[]}
-            />
+            <Table columnLabels={columnLabels} tableData={tableData} />
+            {tableData.length > 0 ? (
+              <CustomButton
+                label="Submit Add Request"
+                variant="contained"
+                color="white"
+                bcolor="#b13137"
+                width="150px"
+                onClickFunction={submissionHandler}
+                onClickArguments={[]}
+              />                
+              ): (
+                <div></div>
+              )}              
           </React.Fragment>
         );
       default:
