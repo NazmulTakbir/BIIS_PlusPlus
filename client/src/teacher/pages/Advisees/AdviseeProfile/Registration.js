@@ -48,11 +48,11 @@ const fetchTableData = async (api_route, setAddTableData, setDropTableData, auth
       row.push({ type: "PlainText", data: { value: jsonData[i]["course_id"] } });
       row.push({ type: "PlainText", data: { value: jsonData[i]["request_date"] } });
       if (jsonData[i]["request_type"].toUpperCase() === "ADD") {
-        allAddRequests.push(jsonData[i]["request_id"]);
+        allAddRequests.push(jsonData[i]["reg_request_id"]);
         row.push({ type: "CheckBox", data: { id: jsonData[i]["reg_request_id"], callback: approveAddCallback } });
         addTableData.push(row);
       } else if (jsonData[i]["request_type"].toUpperCase() === "DROP") {
-        allDropRequests.push(jsonData[i]["request_id"]);
+        allDropRequests.push(jsonData[i]["reg_request_id"]);
         row.push({ type: "CheckBox", data: { id: jsonData[i]["reg_request_id"], callback: approveDropCallback } });
         dropTableData.push(row);
       }
@@ -71,19 +71,53 @@ const AdviseeRegistration = () => {
   const [dropTableData, setDropTableData] = useState([]);
   let { studentID } = useParams();
 
-  const approveAllAddRequests = () => {
+  const approveAllAddRequests = async () => {
+    console.log(allAddRequests);
+    await fetch("/api/teacher/advisees/approveregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allAddRequests,
+        submission_date: new Date(),
+      }),
+    });
+    allAddRequests = [];
     setStateNo((stateNo + 1) % 100);
   };
 
-  const rejectAllAddRequests = () => {
+  const rejectAllAddRequests = async() => {
+    await fetch("/api/teacher/advisees/rejectregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allAddRequests,
+        submission_date: new Date(),
+      }),
+    });
     setStateNo((stateNo + 1) % 100);
   };
 
-  const approveAllDropRequests = () => {
+  const approveAllDropRequests = async() => {
+    await fetch("/api/teacher/advisees/approveregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allDropRequests,
+        submission_date: new Date(),
+      }),
+    });
     setStateNo((stateNo + 1) % 100);
   };
 
-  const rejectAllDropRequests = () => {
+  const rejectAllDropRequests = async() => {
+    await fetch("/api/teacher/advisees/rejectregistrationrequests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+      body: JSON.stringify({
+        requestIDs: allDropRequests,
+        submission_date: new Date(),
+      }),
+    });
     setStateNo((stateNo + 1) % 100);
   };
 
@@ -314,12 +348,43 @@ const AdviseeRegistration = () => {
                     }}
                   >
                     <CustomButton
+                      label="Approve Selections"
+                      variant="contained"
+                      color="white"
+                      bcolor="#697A8D"
+                      width="150px"
+                      onClickFunction={approveRequests}
+                      onClickArguments={["add"]}
+                    />
+                    <CustomButton
+                      label="Reject Selections"
+                      variant="contained"
+                      color="white"
+                      bcolor="#b13137"
+                      width="150px"
+                      onClickFunction={rejectRequests}
+                      onClickArguments={["add"]}
+                    />
+                  </Stack>
+
+                  <Stack
+                    spacing={2}
+                    direction="row"
+                    style={{
+                      margin: "auto",
+                      width: "350px",
+                      padding: "10px",
+                      textAlign: "left",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <CustomButton
                       label="Approve All"
                       variant="contained"
                       color="white"
                       bcolor="#697A8D"
                       width="150px"
-                      onClickFunction={approveAllDropRequests}
+                      onClickFunction={approveAllAddRequests}
                       onClickArguments={["add"]}
                     />
                     <CustomButton
@@ -328,7 +393,7 @@ const AdviseeRegistration = () => {
                       color="white"
                       bcolor="#b13137"
                       width="150px"
-                      onClickFunction={rejectAllDropRequests}
+                      onClickFunction={rejectAllAddRequests}
                       onClickArguments={["add"]}
                     />
                   </Stack>
