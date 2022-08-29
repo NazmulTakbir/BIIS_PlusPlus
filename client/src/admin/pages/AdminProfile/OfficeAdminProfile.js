@@ -30,7 +30,7 @@ const OfficeAdminProfile = (props) => {
         <div className="profile-data">
           <div className="item">
             <div className="heading">Admin Type </div>
-            <div className="text">{auth.userType}</div>
+            <div className="text">Office Admin</div>
             <br />
             <div className="heading">Name: </div>
             <div className="text">{name}</div>

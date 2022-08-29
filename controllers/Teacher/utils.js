@@ -20,7 +20,7 @@ const getStudentResults = async (studentList, offeringID) => {
   // get letter grade and grade point of students
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < gradingPolicy.length; j++) {
-      const obtained_marks = data[i]["obtained_marks"];
+      const obtained_marks = data[i]["total_marks_obtained"];
       const upper_bound = gradingPolicy[j]["upper_bound"];
       const lower_bound = gradingPolicy[j]["lower_bound"];
 

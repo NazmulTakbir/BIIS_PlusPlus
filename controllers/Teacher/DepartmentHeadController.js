@@ -240,7 +240,6 @@ const postApproveRegistrationRequests = async (req, res, next) => {
         queryRes.rows[0].course_id +
         ". Session: " +
         queryRes.rows[0].session_id;
-        console.log(description);
       await pool.query("call insert_notification($1, $2, $3, $4, $5)", [
         "student",
         queryRes.rows[0].student_id,
@@ -249,18 +248,22 @@ const postApproveRegistrationRequests = async (req, res, next) => {
         description,
       ]);
 
-      console.log(description);
-
       const student_id = queryRes.rows[0].student_id;
 
-      let mailInfo = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      let mailInfo = await pool.query("select email from public.student where student_id = $1", [student_id]);
       const email = mailInfo.rows[0].email;
-      
+
       const subject = "BIISPLUSPLUS : Course Registration Approved";
 
-      description = "Your " + queryRes.rows[0].request_type +" request for " + queryRes.rows[0].course_id + " course has been approved.";
+      description =
+        "Your " +
+        queryRes.rows[0].request_type +
+        " request for " +
+        queryRes.rows[0].course_id +
+        " course has been approved.";
       description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
-      description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+      description +=
+        "\nDo not reply to this email. This email is sent from a system that cannot receive email messages.";
       const text = description;
 
       mailController.sendMail(email, subject, text);
@@ -303,18 +306,23 @@ const postRejectRegistrationRequests = async (req, res, next) => {
 
       const student_id = queryRes.rows[0].student_id;
 
-      let mailInfo = await pool.query('select email from public.student where student_id = $1', [student_id]);
+      let mailInfo = await pool.query("select email from public.student where student_id = $1", [student_id]);
       const email = mailInfo.rows[0].email;
-      
+
       const subject = "BIISPLUSPLUS : Course Registration Rejected";
 
-      description = "Your " + queryRes.rows[0].request_type +" request for " + queryRes.rows[0].course_id + " course has been rejected.";
+      description =
+        "Your " +
+        queryRes.rows[0].request_type +
+        " request for " +
+        queryRes.rows[0].course_id +
+        " course has been rejected.";
       description = "Dear Student,\n" + description + "\n\nRegards,\nBIISPLUSPLUS";
-      description += "\nDo not reply to this email. This email is sent from a system that cannot receive email messages." 
+      description +=
+        "\nDo not reply to this email. This email is sent from a system that cannot receive email messages.";
       const text = description;
 
       mailController.sendMail(email, subject, text);
-
     }
     res.json({ message: "postRejectRegistrationRequests" });
   } catch (err) {
@@ -587,9 +595,9 @@ const getPendingResults = async (req, res, next) => {
       // find out the criteria list whose results are not completely prepared for the student
       queryRes = await pool.query(
         "select criteria_name, status from \"result details\" \
-         where student_id=$1 and (status='Added by Course Teacher' \
+         where student_id=$1 and offering_id=$2 and (status='Added by Course Teacher' \
          or status='Awaiting Scrutiny' or status='Rejected by Dept Head')",
-        [student_id]
+        [student_id, offering_id]
       );
 
       for (let j = 0; j < queryRes.rows.length; j++) {
@@ -624,7 +632,7 @@ const getPendingResults = async (req, res, next) => {
       for (let j = 0; j < data[i]["details"].length; j++) {
         const criteria_name = data[i]["details"][j].criteria;
         queryRes = await pool.query(
-          "select course_teacher_name, scrutinizer_name from offering_teachers \
+          "select offering_id, course_teacher_name, scrutinizer_name from offering_teachers \
           where offering_id=$1 and criteria_name=$2",
           [offering_id, criteria_name]
         );
@@ -632,8 +640,6 @@ const getPendingResults = async (req, res, next) => {
         data[i]["details"][j].scrutinizer_name = queryRes.rows[0]["scrutinizer_name"];
       }
     }
-
-    console.log(data);
 
     res.json({ message: "getPendingResults", data: data });
   } catch (err) {

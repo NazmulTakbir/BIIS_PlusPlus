@@ -8,10 +8,6 @@ import { getSearchBarData } from "../components/SearchMenuData";
 
 import "../../shared/components/MainContainer.css";
 import CustomButton from "../../shared/components/CustomButton/CustomButton";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import CustomSearch from "../../shared/components/CustomSearch/CustomSearch";
 
 import { AuthContext } from "../../shared/context/AuthContext";
@@ -35,11 +31,11 @@ const AddOffering = () => {
 
   //for searchable exam slot ids
   const [search_examslot_list, setSearch_examslot_list] = useState([]);
-  const is_examslot_id_valid = search_examslot_list.some((element) => element.value === dropDownTextExamSlotID);  
+  const is_examslot_id_valid = search_examslot_list.some((element) => element.value === dropDownTextExamSlotID);
 
   //for searchable course ids
   const [search_courseid_list, setSearch_courseid_list] = useState([]);
-  const is_course_id_valid = search_courseid_list.some((element) => element.value === dropDownTextCourseID);   
+  const is_course_id_valid = search_courseid_list.some((element) => element.value === dropDownTextCourseID);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,7 +59,7 @@ const AddOffering = () => {
         let search_list = [];
         for (var i = 0; i < course_id_jsonData["data"].length; i++) {
           search_list.push({
-            name: "Course ID : "+ course_id_jsonData["data"][i],
+            name: "Course ID : " + course_id_jsonData["data"][i],
             value: course_id_jsonData["data"][i],
           });
         }
@@ -74,18 +70,21 @@ const AddOffering = () => {
           headers: { Authorization: "Bearer " + auth.token },
         });
         const exam_slot_id_jsonData = await exam_slot_id_response.json();
-        setdropDownOptionsExamSlotID(exam_slot_id_jsonData["data"]);
+        setdropDownOptionsExamSlotID(exam_slot_id_jsonData["exam_slots"]);
 
         //set data in valid format for search component
         search_list = [];
-        for (var i = 0; i < exam_slot_id_jsonData["data"].length; i++) {
+        for (var i = 0; i < exam_slot_id_jsonData["exam_slots"].length; i++) {
           search_list.push({
-            name: "Exam Slot - "+ exam_slot_id_jsonData["data"][i],
-            value: exam_slot_id_jsonData["data"][i],
+            name:
+              "Exam Slot - " +
+              exam_slot_id_jsonData["exam_slots"][i] +
+              "  ::  " +
+              exam_slot_id_jsonData["exam_dates"][i].substring(0, 10),
+            value: exam_slot_id_jsonData["exam_slots"][i],
           });
         }
         setSearch_examslot_list(search_list);
-
       } catch (err) {
         console.log(err);
       }
@@ -96,8 +95,7 @@ const AddOffering = () => {
   const addCourseOffering = async (e) => {
     e.preventDefault();
 
-    if(is_examslot_id_valid && is_course_id_valid)
-    {
+    if (is_examslot_id_valid && is_course_id_valid) {
       try {
         let data;
         if (Number.isInteger(parseInt(dropDownTextExamSlotID))) {
@@ -117,7 +115,7 @@ const AddOffering = () => {
             },
           ];
         }
-    
+
         await fetch(`/api/admin/offering/add`, {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
@@ -125,26 +123,45 @@ const AddOffering = () => {
             data: data,
           }),
         });
-    
+
         alert("Course Offering Add Successful");
       } catch (error) {
         console.log(error);
       }
-    }else{
+    } else {
       alert("Invalid Inputs Selected!");
     }
   };
 
   const downloadSampleCSV = async (e) => {
-    const response = await fetch("/api/admin/offering/samplefile", {
+    let response = await fetch("/api/admin/offering/samplefile", {
       headers: { Authorization: "Bearer " + auth.token },
     });
-    const fileData = (await response.json())["data"];
+    let fileData = (await response.json())["data"];
 
-    const blob = new Blob([fileData], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
+    let blob = new Blob([fileData], { type: "text/plain" });
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement("a");
     link.download = "offerings.csv";
+    link.href = url;
+    link.click();
+
+    response = await fetch(`/api/admin/offering/getexamslots`, {
+      headers: { Authorization: "Bearer " + auth.token },
+    });
+    response = await response.json();
+
+    let allExamSlots = response["exam_slots"];
+    let allExamDates = response["exam_dates"];
+
+    fileData = "Exam Slot ID, Exam Data";
+    for (let i = 0; i < allExamSlots.length; i++) {
+      fileData += "\n" + allExamSlots[i] + "," + allExamDates[i].substring(0, 10);
+    }
+    blob = new Blob([fileData], { type: "text/plain" });
+    url = URL.createObjectURL(blob);
+    link = document.createElement("a");
+    link.download = "exam_slot_data.csv";
     link.href = url;
     link.click();
   };
@@ -214,10 +231,16 @@ const AddOffering = () => {
                 </div>
               </div>
 
-              <div className="file-input_container" style={{ 
-                  width: "350px", margin: "auto", background: "#fff3e3", 
-                  border: "1px solid rgb(189, 189, 189)", borderRadius: "10px"                 
-                }}>
+              <div
+                className="file-input_container"
+                style={{
+                  width: "350px",
+                  margin: "auto",
+                  background: "#fff3e3",
+                  border: "1px solid rgb(189, 189, 189)",
+                  borderRadius: "10px",
+                }}
+              >
                 <input
                   style={{
                     borderRadius: "5px",
@@ -266,8 +289,7 @@ const AddOffering = () => {
                     fontSize="17px !important"
                     onClickFunction={downloadSampleCSV}
                   />
-                </Stack>              
-
+                </Stack>
               </div>
 
               <div className="sections-header" style={{ width: "350px", margin: "auto" }}>
@@ -286,23 +308,22 @@ const AddOffering = () => {
               </div>
 
               <form onSubmit={addCourseOffering} style={{ width: "350px", margin: "auto" }}>
-                
                 <CustomSearch
-                    data={search_courseid_list}
-                    parentCallback={setdropDownTextCourseID}
-                    required={true}
-                    margin="25px 0px 10px 0px"
-                    width="100%"
-                    label="Search Course ID"
+                  data={search_courseid_list}
+                  parentCallback={setdropDownTextCourseID}
+                  required={true}
+                  margin="25px 0px 10px 0px"
+                  width="100%"
+                  label="Search Course ID"
                 />
 
                 <CustomSearch
-                    data={search_examslot_list}
-                    parentCallback={setdropDownTextExamSlotID}
-                    required={true}
-                    margin="25px 0px 10px 0px"
-                    width="100%"
-                    label="Search Exam Slot"
+                  data={search_examslot_list}
+                  parentCallback={setdropDownTextExamSlotID}
+                  required={true}
+                  margin="25px 0px 10px 0px"
+                  width="100%"
+                  label="Search Exam Slot"
                 />
 
                 <CustomButton

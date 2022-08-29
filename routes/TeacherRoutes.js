@@ -25,14 +25,13 @@ TeacherRoutes.get("/coursestaught", InfoController.getCoursesTaught);
 TeacherRoutes.get("/coursesscrutinized", InfoController.getCoursesScrutinized);
 TeacherRoutes.get("/assignedteachers/:course_id", InfoController.getAssignedTeachers);
 TeacherRoutes.get("/assignedscrutinizers/:course_id", InfoController.getAssignedScrutinizers);
+TeacherRoutes.get("/coursecriteriabyteacher/:course_id", InfoController.getCourseCriteriaByTeacher);
+TeacherRoutes.get("/coursecriteriabyscrutinizer/:course_id", InfoController.getCourseCriteriaByScrutinizer);
 
 TeacherRoutes.post("/newmarkingcriteria", CourseCoordinatorController.postMarkingCriteria);
 TeacherRoutes.get("/markingcriteria/:course_id", CourseCoordinatorController.getMarkingCriteria);
 TeacherRoutes.post("/newgradingboundary", CourseCoordinatorController.postGradingBoundary);
 TeacherRoutes.get("/gradingboundary/:course_id", CourseCoordinatorController.getGradingBoundary);
-
-TeacherRoutes.get("/coursecriteriabyteacher/:course_id", InfoController.getCourseCriteriaByTeacher);
-TeacherRoutes.get("/coursecriteriabyscrutinizer/:course_id", InfoController.getCourseCriteriaByScrutinizer);
 
 TeacherRoutes.get("/adviseeinfo/:sid", AdviseeInfoController.getAdviseeInfo);
 TeacherRoutes.get("/advisee/:sid/getAvailableResults", AdviseeInfoController.getAvailableResults);

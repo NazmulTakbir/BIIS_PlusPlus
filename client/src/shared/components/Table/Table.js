@@ -13,7 +13,7 @@ const Table = (props) => {
 
   let emptyTableMessage;
   if (!noDataMessage || noDataMessage.length === 0) {
-    emptyTableMessage = "You have no data for this page!";
+    emptyTableMessage = "You have no data for this item!";
   } else {
     emptyTableMessage = noDataMessage;
   }
