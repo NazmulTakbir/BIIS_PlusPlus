@@ -22,24 +22,24 @@ const getAll = async (req, res, next) => {
     for (let i = 0; i < queryRes.rows.length; i++) {
       const student_id = queryRes.rows[i]["student_id"];
 
-      queryRes = await pool.query(
+      let queryRes2 = await pool.query(
         'select marks, status from "result details" where student_id=$1 and offering_id=$2 and criteria_name=$3;',
         [student_id, offering_id, criteria]
       );
 
-      if (queryRes.rows.length > 0) {
-        data.push({ studentID: student_id, marks: queryRes.rows[0]["marks"], status: queryRes.rows[0]["status"] });
+      if (queryRes2.rows.length > 0) {
+        data.push({ studentID: student_id, marks: queryRes2.rows[0]["marks"], status: queryRes2.rows[0]["status"] });
       } else {
         data.push({ studentID: student_id, marks: "", status: "No Score Added" });
       }
     }
 
-    queryRes = await pool.query(
+    let queryRes3 = await pool.query(
       'select total_marks, criteria_weight from "mark distribution policy" where offering_id=$1 and criteria_name=$2;',
       [offering_id, criteria]
     );
-    total_marks = queryRes.rows[0]["total_marks"];
-    criteria_weight = queryRes.rows[0]["criteria_weight"];
+    total_marks = queryRes3.rows[0]["total_marks"];
+    criteria_weight = queryRes3.rows[0]["criteria_weight"];
 
     res.json({ message: "getAll", data: data, total_marks: total_marks, criteria_weight: criteria_weight });
   } catch (err) {

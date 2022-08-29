@@ -105,7 +105,9 @@ const CoursesScrutinized = () => {
       let tableData = [];
       for (let i = 0; i < data.length; i++) {
         let row = [];
-        allStudentIDs.push(data[i]["student_id"]);
+        if (data[i]["status"] === "Awaiting Scrutiny") {
+          allStudentIDs.push(data[i]["studentID"]);
+        }
         row.push({ type: "PlainText", data: { value: data[i]["studentID"] } });
         row.push({ type: "PlainText", data: { value: data[i]["marks"] } });
         row.push({ type: "PlainText", data: { value: data[i]["status"] } });
@@ -144,6 +146,7 @@ const CoursesScrutinized = () => {
       });
       alert("Approved Successfully");
 
+      allStudentIDs = [];
       selectedList = [];
       setStudentTableData([]);
       fetchStudentData(`/api/teacher/scrutinize/getall/${course_id}/${selectedCriteria}`);
@@ -168,10 +171,37 @@ const CoursesScrutinized = () => {
 
   const approveAllHandler = async (e) => {
     e.preventDefault();
+    try {
+      await fetch(`/api/teacher/scrutinize/approve/${course_id}/${selectedCriteria}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify(allStudentIDs),
+      });
+      alert("Approved Successfully");
+
+      allStudentIDs = [];
+      selectedList = [];
+      setStudentTableData([]);
+      fetchStudentData(`/api/teacher/scrutinize/getall/${course_id}/${selectedCriteria}`);
+    } catch (err) {}
   };
 
   const rejectAllHandler = async (e) => {
     e.preventDefault();
+    try {
+      console.log(allStudentIDs);
+      await fetch(`/api/teacher/scrutinize/reject/${course_id}/${selectedCriteria}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + auth.token },
+        body: JSON.stringify(allStudentIDs),
+      });
+      alert("Rejected Successfully");
+
+      allStudentIDs = [];
+      selectedList = [];
+      setStudentTableData([]);
+      fetchStudentData(`/api/teacher/scrutinize/getall/${course_id}/${selectedCriteria}`);
+    } catch (err) {}
   };
 
   return (
