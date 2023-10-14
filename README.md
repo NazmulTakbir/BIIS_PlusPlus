@@ -16,5 +16,13 @@ Presentation (Bangla)  : [https://youtu.be/-7aKLwsmwoU](https://youtu.be/-7aKLws
 - clone the repo & run `nodemon index.js` from the root directory which will start the express server
 - run `cd client && npm start` to start react server
 
+### Contributors :
+
+| Name              | Email                    |
+| ----------------- | ------------------------ |
+| [Nazmul Takbir](https://nazmultakbir.github.io/)     | takbir.nazmul@gmail.com |
+| [Saif Ahmed Khan](https://github.com/ksaifahmed) | ksaifahmed4@gmail.com      |
+| [Sihat Afnan](https://github.com/AfnanCSE98) | sihatafnan15.9.1997@gmail.com      |
+
 
 
