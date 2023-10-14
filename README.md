@@ -1,7 +1,6 @@
 # BIIS_PlusPlus
 ### Video Demonstration of Major features
 - Course Registration
-- Dues, Scholarship
 - Result processing
 
 Presentation (English) : [https://youtu.be/4mpUwZjIY_Y](https://youtu.be/4mpUwZjIY_Y)
